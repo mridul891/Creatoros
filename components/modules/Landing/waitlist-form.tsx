@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type FormEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -15,11 +15,11 @@ export function WaitlistForm() {
   } | null>(null)
 
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      const formData = new FormData(e.target);
+      const formData = new FormData(e.currentTarget);
       const email = formData.get("email") as string;
       if (!email) {
         setMessage({ type: "error", text: "Email is required" })
