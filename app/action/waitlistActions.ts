@@ -36,3 +36,5 @@ export async function joinWaitlist(formData: FormData) {
     message: "You're on the waitlist 🎉",
   }
 }
+
+

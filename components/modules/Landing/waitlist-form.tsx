@@ -3,16 +3,14 @@
 import { useState, type FormEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
 import { joinWaitlist } from "@/app/action/waitlistActions"
+import { toast } from "sonner"
+import { sendEmail } from "@/app/action/mailAction"
 
 export function WaitlistForm() {
   const [email, setEmail] = useState("")
+  const [firstName, setFirstName] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [message, setMessage] = useState<{
-    type: "success" | "error"
-    text: string
-  } | null>(null)
 
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -22,52 +20,50 @@ export function WaitlistForm() {
       const formData = new FormData(e.currentTarget);
       const email = formData.get("email") as string;
       if (!email) {
-        setMessage({ type: "error", text: "Email is required" })
+        toast.error("Email is required")
         return
       }
       await joinWaitlist(formData)
-      setMessage({ type: "success", text: "You've joined the waitlist! We'll be in touch soon." })
-    } catch (error) {
-      setMessage({ type: "error", text: "Failed to join waitlist" })
+      await sendEmail(email)
+
+      toast.success("You're on the waitlist 🎉")
+    } catch {
+      toast.error("Failed to join waitlist")
     } finally {
       setIsSubmitting(false)
     }
   }
   return (
-    <>
-      <form
-        onSubmit={onSubmit}
-        className="mx-auto mt-6 flex w-md max-w-lg items-center gap-1.5 rounded-xl border border-input bg-background p-1.5 shadow-sm focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50"
+    <form
+      onSubmit={onSubmit}
+      className="mx-auto mt-8 flex w-full max-w-md flex-col gap-3 rounded-2xl border border-white/10 bg-white/3 p-3 shadow-[0_8px_40px_-12px_rgba(247,255,155,0.15)] backdrop-blur-md"
+    >
+      <Input
+        type="text"
+        name="firstName"
+        placeholder="First name"
+        value={firstName}
+        onChange={(event) => setFirstName(event.target.value)}
+        required
+        className="h-12 w-full rounded-xl border border-white/10 bg-white/4 px-4 text-base text-white shadow-none transition-colors placeholder:text-white/40 focus-visible:border-[#F7FF9B]/60 focus-visible:ring-2 focus-visible:ring-[#F7FF9B]/30 dark:bg-white/4"
+      />
+      <Input
+        type="email"
+        name="email"
+        placeholder="you@example.com"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        required
+        className="h-12 w-full rounded-xl border border-white/10 bg-white/4 px-4 text-base text-white shadow-none transition-colors placeholder:text-white/40 focus-visible:border-[#F7FF9B]/60 focus-visible:ring-2 focus-visible:ring-[#F7FF9B]/30 dark:bg-white/4"
+      />
+      <Button
+        type="submit"
+        size="lg"
+        disabled={isSubmitting}
+        className="h-12 w-full rounded-xl bg-[#F7FF9B] text-base font-semibold text-black transition-all hover:bg-[#F7FF9B]/90 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <Input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-          className="h-9 border-0 bg-transparent shadow-none focus-visible:border-0 focus-visible:ring-0 dark:bg-transparent w-full"
-        />
-        <Button
-          type="submit"
-          size="lg"
-          disabled={isSubmitting}
-        className="shrink-0 text-[#F7FC9B] bg-[#27272B] hover:bg-[#27272B]/80"
-        >
-          {isSubmitting ? "Joining..." : "Join waitlist"}
-        </Button>
-      </form>
-
-      {message && (
-        <p
-          className={cn(
-            "mt-3 text-sm",
-            message.type === "success" ? "text-green-500" : "text-destructive"
-          )}
-        >
-          {message.text}
-        </p>
-      )}
-    </>
+        {isSubmitting ? "Joining..." : "Join waitlist"}
+      </Button>
+    </form>
   )
 }

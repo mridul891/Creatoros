@@ -4,6 +4,7 @@ import { Figtree } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/sonner"
 
 const FigtreeFont = Figtree({ subsets: ["latin"] });
 const siteUrl ="https://www.notyetlaunched.xyz"
@@ -223,6 +224,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <ThemeProvider>{children}</ThemeProvider>
+        <Toaster richColors/>
+
       </body>
     </html>
   )
