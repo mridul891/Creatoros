@@ -11,7 +11,8 @@ const inter = Inter({
 })
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://notyetlaunched.xyz"
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
 
 export const metadata: Metadata = {

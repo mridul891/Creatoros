@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next"
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://dealflow.app"
+const siteUrl ="https://www.notyetlaunched.xyz"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
