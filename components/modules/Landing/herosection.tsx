@@ -25,7 +25,7 @@ export default function HeroSection() {
               as="h1"
               className="mx-auto mt-8 max-w-4xl font-sans text-4xl font-medium tracking-tight text-balance md:text-6xl lg:mt-16 xl:text-6xl"
             >
-              The Operating System for
+              The Brand Deal Tracker &amp; Creator CRM for
             </TextEffect>
             <TextEffect
               per="word"
@@ -34,7 +34,7 @@ export default function HeroSection() {
               as="span"
               className="mx-auto text-primary mt-8 max-w-4xl font-sans text-4xl font-medium tracking-tight text-balance md:text-6xl lg:mt-16 xl:text-6xl"
             >
-              Creator Partnerships.
+              Content Creators.
             </TextEffect>
 
             <TextEffect
@@ -45,8 +45,10 @@ export default function HeroSection() {
               as="p"
               className="mx-auto mt-4 max-w-2xl text-lg font-semibold text-balance text-muted-foreground"
             >
-              Manage every sponsorship, brand collaboration, invoice, payment,
-              and deadline from one streamlined workspace.
+              NotYetLaunched is the creator CRM for content creators, YouTubers, and
+              influencers. Manage every brand deal, sponsorship, invoice,
+              payment, and deadline from one streamlined workspace — and never
+              miss a brand deal deadline again.
             </TextEffect>
           </div>
         </div>
