@@ -1,18 +1,12 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Figtree } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "https://www.notyetlaunched.xyz"
+const FigtreeFont = Figtree({ subsets: ["latin"] });
+const siteUrl ="https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
 
 export const metadata: Metadata = {
@@ -205,8 +199,24 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", inter.variable, "font-sans")}
+      className={FigtreeFont.className}
     >
+      <meta
+        property="og:url"
+        content={siteUrl}
+      />
+       <meta
+        property="og:site_name"
+        content={siteName}
+      />
+      <meta
+        property="og:title"
+        content="NotYetLaunched — Brand Deal Tracker & Creator CRM for Content Creators"
+      />
+      <meta
+        property="og:description"
+        content="The brand deal tracker and creator CRM built for content creators. Manage brand deals, influencer sponsorships, invoices, payments, and deadlines from one streamlined workspace."
+      />
       <body suppressHydrationWarning>
         <script
           type="application/ld+json"

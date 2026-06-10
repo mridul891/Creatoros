@@ -52,7 +52,7 @@ export function WaitlistForm() {
           type="submit"
           size="lg"
           disabled={isSubmitting}
-          className="shrink-0"
+        className="shrink-0 text-[#F7FC9B] bg-[#27272B] hover:bg-[#27272B]/80"
         >
           {isSubmitting ? "Joining..." : "Join waitlist"}
         </Button>
