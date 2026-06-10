@@ -31,7 +31,7 @@ import {
           </Section>
   
           <Img
-            src="https://www.notyetlaunched.xyz/notyetlaunched.svg"
+            src="https://www.notyetlaunched.xyz/notyetlaunchedlogo.svg"
             width="180"
             alt="NotYetLaunched"
             style={logo}
