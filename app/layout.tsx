@@ -3,7 +3,6 @@ import { Figtree } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/sonner"
 
 const FigtreeFont = Figtree({ subsets: ["latin"] });
@@ -21,6 +20,9 @@ export const metadata: Metadata = {
     "NotYetLaunched is the brand deal tracker and creator CRM for content creators. Manage brand deals, influencer sponsorships, invoices, payments, and deadlines in one app — track your brand partnership pipeline and never miss a deadline.",
   applicationName: siteName,
   category: "Business Software",
+  icons: {
+    icon: "/notyetlaunchedlogo.svg",
+  },
   keywords: [
     // Primary keywords
     "brand deal tracker for creators",
