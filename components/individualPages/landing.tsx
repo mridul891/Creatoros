@@ -1,16 +1,16 @@
-import { FooterCTA } from "../modules/landing/footer-cta";
-import { Hero } from "../modules/landing/hero";
-import { MadeFor } from "../modules/landing/made-for";
-import { Nav } from "../modules/landing/nav";
-import { Pricing } from "../modules/landing/pricing";
-import { SplitSection } from "../modules/landing/split-section";
-import { StatsSection } from "../modules/landing/stats-section";
+import { FooterCTA } from "../modules/Landing/footer-cta";
+import { Hero } from "../modules/Landing/hero";
+import { MadeFor } from "../modules/Landing/made-for";
+import { Nav } from "../modules/Landing/nav";
+import { Pricing } from "../modules/Landing/pricing";
+import { SplitSection } from "../modules/Landing/split-section";
+import { StatsSection } from "../modules/Landing/stats-section";
 import {
   IMG_FEATURE_CALENDAR,
   IMG_FEATURE_DASHBOARD,
   IMG_INVOICING_SCREEN,
   IMG_PIPELINE_SCREEN,
-} from "../modules/landing/image-urls";
+} from "../modules/Landing/image-urls";
 
 export function LandingPage() {
   return (

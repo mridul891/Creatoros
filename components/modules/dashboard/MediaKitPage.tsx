@@ -560,7 +560,7 @@ export function MediaKitPage() {
               {/* Notes + contact */}
               <div className="grid grid-cols-2 gap-[16px]">
                 <div className="rounded-[16px] border border-[#E8402A]/15 bg-[#E8402A]/5 p-[22px]">
-                  <div className="mb-[12px] text-[12px] font-bold tracking-[0.06em] text-[#E8402A] font-mono">WHAT'S INCLUDED</div>
+                  <div className="mb-[12px] text-[12px] font-bold tracking-[0.06em] text-[#E8402A] font-mono">WHAT&apos;S INCLUDED</div>
                   {["Full creative direction & script", "2 rounds of revision", "30-day exclusivity (campaign packages)", "Analytics report post-campaign", "Story reposts for feed posts", "Professional editing & colour grade"].map(item => (
                     <div key={item} className="mb-[7px] flex items-center gap-[8px] text-[12px] text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">
                       <div className="h-[5px] w-[5px] shrink-0 rounded-full bg-[#E8402A]" />
@@ -570,7 +570,7 @@ export function MediaKitPage() {
                 </div>
                 <div className="rounded-[16px] bg-(--cos-primary) p-[22px]">
                   <div className="mb-[12px] text-[12px] font-bold tracking-[0.06em] text-[rgba(255,255,255,0.5)] font-mono">GET IN TOUCH</div>
-                  <div className="mb-[6px] text-[16px] font-extrabold tracking-[-0.03em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Let's work together</div>
+                  <div className="mb-[6px] text-[16px] font-extrabold tracking-[-0.03em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Let&apos;s work together</div>
                   <div className="mb-[18px] text-[12px] leading-[1.6] text-[rgba(255,255,255,0.5)] font-['SF_Pro_Display',-apple-system,sans-serif]">
                     All rates are starting points — final pricing depends on brief scope, exclusivity, and timeline.
                   </div>

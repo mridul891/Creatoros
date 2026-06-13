@@ -21,7 +21,7 @@ import {
     <Html>
       <Head />
       <Preview>
-        🚀 You're on the NotYetLaunched waitlist
+        🚀 You&apos;re on the NotYetLaunched waitlist
       </Preview>
   
       <Body style={main}>
@@ -46,7 +46,7 @@ import {
           </Text>
   
           <Text style={paragraph}>
-            You're officially among the first creators getting
+            You&apos;re officially among the first creators getting
             access to a platform designed to help content creators
             manage the business side of creating.
           </Text>
@@ -82,7 +82,7 @@ import {
   
           <Section style={featureCard}>
             <Text style={featureTitle}>
-              What's Next?
+              What&apos;s Next?
             </Text>
   
             <Text style={list}>
@@ -97,11 +97,11 @@ import {
           </Section>
   
           <Text style={paragraph}>
-            We're building NotYetLaunched alongside creators.
+            We&apos;re building NotYetLaunched alongside creators.
           </Text>
   
           <Text style={paragraph}>
-            What's the most frustrating part of managing brand
+            What&apos;s the most frustrating part of managing brand
             deals today?
           </Text>
   
@@ -125,7 +125,7 @@ import {
             You received this email because you joined the
             NotYetLaunched waitlist.
             <br />
-            If this wasn't you, you can safely ignore this email.
+            If this wasn&apos;t you, you can safely ignore this email.
           </Text>
         </Container>
       </Body>

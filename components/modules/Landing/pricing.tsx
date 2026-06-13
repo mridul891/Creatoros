@@ -152,7 +152,7 @@ export function Pricing() {
               Need an Enterprise Solution?
             </p>
             <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[13px] text-[rgba(255,255,255,0.4)]">
-              Managing multiple creators or large-scale campaigns? Let's build a
+              Managing multiple creators or large-scale campaigns? Let&apos;s build a
               custom workflow for your team.
             </p>
           </div>
