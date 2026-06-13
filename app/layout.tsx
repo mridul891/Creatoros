@@ -1,11 +1,13 @@
 import type { Metadata } from "next"
-import { Figtree } from "next/font/google"
-
+import "../styles/index.css";
+import { Geist } from "next/font/google";
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
+import { cn } from "@/lib/utils";
 
-const FigtreeFont = Figtree({ subsets: ["latin"] });
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 const siteUrl ="https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
 
@@ -21,7 +23,8 @@ export const metadata: Metadata = {
   applicationName: siteName,
   category: "Business Software",
   icons: {
-    icon: "/notyetlaunchedlogo.svg",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
   },
   keywords: [
     // Primary keywords
@@ -202,7 +205,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={FigtreeFont.className}
+      className={cn(geist.variable, "font-sans")}
     >
       <meta
         property="og:url"

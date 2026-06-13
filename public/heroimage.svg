@@ -1,0 +1,245 @@
+<svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#EB5050" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#EB5050" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="barG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#EB5050" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#EB5050" stop-opacity="0.35"/>
+      </linearGradient>
+      <linearGradient id="sideG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#0A0A0A"/>
+        <stop offset="100%" stop-color="#060606"/>
+      </linearGradient>
+      <linearGradient id="fadeG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#050505" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#050505" stop-opacity="1"/>
+      </linearGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+  
+    <rect width="1440" height="900" fill="#050505"/>
+    <rect width="1440" height="900" fill="url(#sideG)" opacity="0.3"/>
+  
+    <rect x="0" y="0" width="220" height="900" fill="url(#sideG)"/>
+    <rect x="219" y="0" width="1" height="900" fill="rgba(255,255,255,0.07)"/>
+  
+    <text x="20" y="70" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="rgba(255,255,255,0.22)" letter-spacing="0.16em">WORKSPACE</text>
+  
+    <rect x="12" y="86" width="196" height="40" rx="10" fill="rgba(255,255,255,0.08)"/>
+    <rect x="12" y="86" width="3" height="40" rx="1.5" fill="#EB5050"/>
+    <rect x="28" y="98" width="5" height="5" rx="1.5" fill="white"/>
+    <rect x="35" y="98" width="5" height="5" rx="1.5" fill="white"/>
+    <rect x="28" y="105" width="5" height="5" rx="1.5" fill="white"/>
+    <rect x="35" y="105" width="5" height="5" rx="1.5" fill="white"/>
+    <text x="52" y="111" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13.5" font-weight="600" fill="white">Dashboard</text>
+    <circle cx="196" cy="106" r="4" fill="#EB5050"/>
+  
+    <rect x="12" y="134" width="196" height="40" rx="10" fill="none"/>
+    <rect x="26" y="146" width="15" height="15" rx="3" fill="none" stroke="rgba(255,255,255,0.38)" stroke-width="1.8"/>
+    <line x1="30" y1="143" x2="30" y2="149" stroke="rgba(255,255,255,0.38)" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="37" y1="143" x2="37" y2="149" stroke="rgba(255,255,255,0.38)" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="26" y1="152" x2="41" y2="152" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
+    <text x="52" y="159" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13.5" fill="rgba(255,255,255,0.42)">Calendar</text>
+  
+    <rect x="12" y="182" width="196" height="40" rx="10" fill="none"/>
+    <path d="M26 195 L33 191 L41 195 M26 203 L33 199 L41 203" stroke="rgba(255,255,255,0.38)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="52" y="207" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13.5" fill="rgba(255,255,255,0.42)">Sponsorships</text>
+  
+    <rect x="12" y="230" width="196" height="40" rx="10" fill="none"/>
+    <rect x="26" y="240" width="15" height="18" rx="2" fill="none" stroke="rgba(255,255,255,0.38)" stroke-width="1.8"/>
+    <line x1="30" y1="246" x2="37" y2="246" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
+    <line x1="30" y1="251" x2="37" y2="251" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
+    <text x="52" y="255" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13.5" fill="rgba(255,255,255,0.42)">Invoices</text>
+  
+    <rect x="12" y="278" width="196" height="40" rx="10" fill="none"/>
+    <polygon points="33,281 35,286 41,288 35,290 33,295 31,290 25,288 31,286" fill="rgba(255,255,255,0.32)"/>
+    <text x="52" y="303" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13.5" fill="rgba(255,255,255,0.42)">Media Kit</text>
+  
+    <rect x="12" y="350" width="196" height="64" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="24" y="366" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="rgba(255,255,255,0.25)" letter-spacing="0.1em">CONNECTED</text>
+    <rect x="24" y="373" width="7" height="9" rx="2" fill="#EB5050" opacity="0.85"/>
+    <text x="38" y="381" font-family="SF Mono,Menlo,monospace" font-size="9" fill="rgba(255,255,255,0.55)">Instagram</text>
+    <circle cx="178" cy="377" r="3.5" fill="#22c55e"/>
+    <rect x="24" y="388" width="7" height="9" rx="2" fill="#aaaaaa"/>
+    <text x="38" y="396" font-family="SF Mono,Menlo,monospace" font-size="9" fill="rgba(255,255,255,0.55)">YouTube</text>
+    <circle cx="178" cy="392" r="3.5" fill="#22c55e"/>
+  
+    <rect x="0" y="820" width="220" height="80" fill="rgba(255,255,255,0.02)"/>
+    <rect x="0" y="820" width="220" height="1" fill="rgba(255,255,255,0.06)"/>
+    <circle cx="36" cy="860" r="18" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+    <circle cx="36" cy="860" r="16" fill="#1e1e1e"/>
+    <circle cx="36" cy="860" r="16" fill="#EB5050" opacity="0.7"/>
+    <circle cx="36" cy="860" r="16" fill="#a78bfa" opacity="0.4"/>
+    <text x="66" y="855" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13" font-weight="600" fill="white">Admin</text>
+    <text x="66" y="872" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.3)">Pro Plan</text>
+    <circle cx="196" cy="860" r="7" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+    <circle cx="196" cy="860" r="2.5" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  
+    <rect x="260" y="40" width="270" height="130" rx="12" fill="#0D0D0D" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="280" y="70" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.38)" letter-spacing="0.08em">TOTAL VIEWS</text>
+    <rect x="485" y="52" width="28" height="28" rx="8" fill="rgba(235,80,80,0.1)"/>
+    <text x="499" y="71" font-family="serif" font-size="14" fill="#EB5050" text-anchor="middle">↗</text>
+    <text x="280" y="115" font-family="SF Pro Display,-apple-system,sans-serif" font-size="32" font-weight="700" fill="white" letter-spacing="-0.04em">14.2M</text>
+    <rect x="280" y="130" width="56" height="20" rx="10" fill="rgba(34,197,94,0.1)"/>
+    <circle cx="289" cy="140" r="3" fill="#22c55e"/>
+    <text x="296" y="143" font-family="SF Mono,Menlo,monospace" font-size="9" fill="#22c55e">+23%</text>
+    <polyline points="420,150 430,135 440,145 450,125 460,135 470,120 480,130 490,115 500,125 510,110" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+  
+    <rect x="550" y="40" width="270" height="130" rx="12" fill="#0D0D0D" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="570" y="70" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.38)" letter-spacing="0.08em">FOLLOWERS</text>
+    <rect x="775" y="52" width="28" height="28" rx="8" fill="rgba(34,197,94,0.1)"/>
+    <text x="789" y="71" font-family="serif" font-size="14" fill="#22c55e" text-anchor="middle">↑</text>
+    <text x="570" y="115" font-family="SF Pro Display,-apple-system,sans-serif" font-size="32" font-weight="700" fill="white" letter-spacing="-0.04em">890K</text>
+    <rect x="570" y="130" width="56" height="20" rx="10" fill="rgba(34,197,94,0.1)"/>
+    <circle cx="579" cy="140" r="3" fill="#22c55e"/>
+    <text x="586" y="143" font-family="SF Mono,Menlo,monospace" font-size="9" fill="#22c55e">+4.8%</text>
+    <polyline points="710,150 720,135 730,145 740,125 750,135 760,120 770,130 780,115 790,125 800,110" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+  
+    <rect x="840" y="40" width="270" height="130" rx="12" fill="#0D0D0D" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="860" y="70" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.38)" letter-spacing="0.08em">AVG ENGAGEMENT</text>
+    <rect x="1065" y="52" width="28" height="28" rx="8" fill="rgba(99,102,241,0.1)"/>
+    <text x="1079" y="73" font-family="serif" font-size="16" fill="#6366f1" text-anchor="middle">◎</text>
+    <text x="860" y="115" font-family="SF Pro Display,-apple-system,sans-serif" font-size="32" font-weight="700" fill="white" letter-spacing="-0.04em">6.4%</text>
+    <rect x="860" y="130" width="56" height="20" rx="10" fill="rgba(34,197,94,0.1)"/>
+    <circle cx="869" cy="140" r="3" fill="#22c55e"/>
+    <text x="876" y="143" font-family="SF Mono,Menlo,monospace" font-size="9" fill="#22c55e">+1.2%</text>
+    <polyline points="1000,150 1010,135 1020,145 1030,125 1040,135 1050,120 1060,130 1070,115 1080,125 1090,110" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+  
+    <rect x="1130" y="40" width="270" height="130" rx="12" fill="#0D0D0D" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="1150" y="70" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.38)" letter-spacing="0.08em">FOLLOWER GROWTH</text>
+    <rect x="1355" y="52" width="28" height="28" rx="8" fill="rgba(235,80,80,0.1)"/>
+    <text x="1369" y="71" font-family="serif" font-size="14" fill="#EB5050" text-anchor="middle">↓</text>
+    <text x="1150" y="115" font-family="SF Pro Display,-apple-system,sans-serif" font-size="32" font-weight="700" fill="white" letter-spacing="-0.04em">+12.4K</text>
+    <rect x="1150" y="130" width="56" height="20" rx="10" fill="rgba(235,80,80,0.1)"/>
+    <circle cx="1159" cy="140" r="3" fill="#EB5050"/>
+    <text x="1166" y="143" font-family="SF Mono,Menlo,monospace" font-size="9" fill="#EB5050">-2.1%</text>
+    <polyline points="1290,150 1300,135 1310,145 1320,125 1330,135 1340,120 1350,130 1360,115 1370,125 1380,110" fill="none" stroke="#EB5050" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+
+    <rect x="260" y="190" width="1140" height="260" rx="16" fill="#0D0D0D" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    
+    <text x="290" y="230" font-family="SF Pro Display,-apple-system,sans-serif" font-size="18" font-weight="600" fill="white" letter-spacing="-0.02em">Audience Growth</text>
+    <text x="290" y="250" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.38)">Followers &amp; views · last 30 days</text>
+  
+    <line x1="1170" y1="235" x2="1195" y2="235" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round"/>
+    <text x="1205" y="239" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.38)">Followers</text>
+    <line x1="1285" y1="235" x2="1310" y2="235" stroke="#EB5050" stroke-width="3" stroke-linecap="round"/>
+    <text x="1320" y="239" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.38)">Views</text>
+  
+    <line x1="290" y1="270" x2="1370" y2="270" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="310" x2="1370" y2="310" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="350" x2="1370" y2="350" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="390" x2="1370" y2="390" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="430" x2="1370" y2="430" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+  
+    <text x="275" y="275" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.2)" text-anchor="end">100%</text>
+    <text x="275" y="355" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.2)" text-anchor="end">50%</text>
+    <text x="275" y="435" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.2)" text-anchor="end">0</text>
+  
+    <polygon points="290,430 290,410 367,380 444,390 521,340 598,350 675,290 752,300 829,260 906,270 983,300 1060,310 1137,270 1214,290 1291,250 1370,260 1370,430" fill="url(#areaG)"/>
+  
+    <polyline points="290,420 367,390 444,400 521,360 598,370 675,320 752,330 829,300 906,310 983,340 1060,350 1137,320 1214,330 1291,300 1370,310" fill="none" stroke="rgba(255,255,255,0.38)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+    <polyline points="290,410 367,380 444,390 521,340 598,350 675,290 752,300 829,260 906,270 983,300 1060,310 1137,270 1214,290 1291,250 1370,260" fill="none" stroke="#EB5050" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    <polyline points="290,410 367,380 444,390 521,340 598,350 675,290 752,300 829,260 906,270 983,300 1060,310 1137,270 1214,290 1291,250 1370,260" fill="none" stroke="#EB5050" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+    <circle cx="1291" cy="250" r="9" fill="rgba(235,80,80,0.18)"/>
+    <circle cx="1291" cy="250" r="5" fill="#EB5050"/>
+    <circle cx="1291" cy="250" r="2.5" fill="white"/>
+  
+    <line x1="1291" y1="260" x2="1291" y2="430" stroke="#EB5050" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.6"/>
+
+    <rect x="1175" y="225" width="90" height="38" rx="8" fill="#1a1a1a" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <text x="1220" y="242" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="rgba(255,255,255,0.45)" text-anchor="middle">Jun 12</text>
+    <text x="1220" y="255" font-family="SF Pro Display,-apple-system,sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle">4.8M views</text>
+  
+    <text x="290"  y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">May 1</text>
+    <text x="444"  y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">May 8</text>
+    <text x="598" y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">May 15</text>
+    <text x="752" y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">May 22</text>
+    <text x="906" y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">May 29</text>
+    <text x="1060" y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Jun 5</text>
+    <text x="1214" y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Jun 12</text>
+    <text x="1370" y="450" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.4)" text-anchor="middle">Today</text>
+
+    <rect x="260" y="470" width="560" height="400" rx="16" fill="#0D0D0D" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    
+    <text x="290" y="510" font-family="SF Pro Display,-apple-system,sans-serif" font-size="18" font-weight="600" fill="white" letter-spacing="-0.02em">Views per Post</text>
+    <text x="290" y="530" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.35)">Content performance · 30d</text>
+  
+    <rect x="730" y="500" width="65" height="24" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="762" y="516" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.38)" text-anchor="middle">Views ↓</text>
+  
+    <line x1="290" y1="570" x2="790" y2="570" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="630" x2="790" y2="630" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="690" x2="790" y2="690" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="750" x2="790" y2="750" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+    <line x1="290" y1="810" x2="790" y2="810" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+  
+    <rect x="312" y="690" width="36" height="120" rx="4" fill="url(#barG)" opacity="0.7"/>
+    <text x="330" y="682" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.45)" text-anchor="middle">142K</text>
+    
+    <rect x="392" y="730" width="36" height="80" rx="4" fill="url(#barG)" opacity="0.5"/>
+    <text x="410" y="722" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.35)" text-anchor="middle">98K</text>
+    
+    <rect x="472" y="630" width="36" height="180" rx="4" fill="url(#barG)" opacity="0.9"/>
+    <text x="490" y="622" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.5)" text-anchor="middle">210K</text>
+    
+    <rect x="552" y="750" width="36" height="60" rx="4" fill="url(#barG)" opacity="0.4"/>
+    <text x="570" y="742" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.3)" text-anchor="middle">74K</text>
+    
+    <rect x="632" y="650" width="36" height="160" rx="4" fill="url(#barG)" opacity="0.82"/>
+    <text x="650" y="642" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.45)" text-anchor="middle">187K</text>
+    
+    <rect x="712" y="570" width="36" height="240" rx="4" fill="#EB5050"/>
+    <text x="730" y="562" font-family="SF Mono,Menlo,monospace" font-size="10.5" font-weight="bold" fill="white" text-anchor="middle">265K</text>
+    
+    <rect x="792" y="760" width="36" height="50" rx="4" fill="url(#barG)" opacity="0.55"/>
+    <text x="810" y="752" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.35)" text-anchor="middle">56K</text>
+  
+    <text x="330" y="835" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.3)" text-anchor="middle">Coffee</text>
+    <text x="410" y="835" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.3)" text-anchor="middle">Desk</text>
+    <text x="490" y="835" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.3)" text-anchor="middle">Tips</text>
+    <text x="570" y="835" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Brand</text>
+    <text x="650" y="835" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.3)" text-anchor="middle">Study</text>
+    <text x="730" y="835" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.6)" text-anchor="middle">Tokyo</text>
+    <text x="810" y="835" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Q&amp;A</text>
+
+    <rect x="840" y="470" width="560" height="400" rx="16" fill="#0D0D0D" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    
+    <text x="870" y="510" font-family="SF Pro Display,-apple-system,sans-serif" font-size="18" font-weight="600" fill="white" letter-spacing="-0.02em">Engagement Breakdown</text>
+    <text x="870" y="530" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.35)">Likes · Comments · Shares · Saves · CTR</text>
+  
+    <rect x="1230" y="500" width="10" height="10" rx="3" fill="rgba(255,255,255,0.45)"/>
+    <text x="1245" y="509" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.38)">Instagram</text>
+    <rect x="1310" y="500" width="10" height="10" rx="3" fill="#EB5050" opacity="0.75"/>
+    <text x="1325" y="509" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.38)">YouTube</text>
+  
+    <polygon points="1120,560 1232.5,625 1232.5,755 1120,820 1007.5,755 1007.5,625" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+    <polygon points="1120,592.5 1204.4,641.25 1204.4,738.75 1120,787.5 1035.6,738.75 1035.6,641.25" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+    <polygon points="1120,625 1176.25,657.5 1176.25,722.5 1120,755 1063.75,722.5 1063.75,657.5" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+    <polygon points="1120,657.5 1148.1,673.75 1148.1,706.25 1120,722.5 1091.9,706.25 1091.9,673.75" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  
+    <line x1="1120" y1="560" x2="1120" y2="820" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+    <line x1="1232.5" y1="625" x2="1007.5" y2="755" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+    <line x1="1232.5" y1="755" x2="1007.5" y2="625" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  
+    <polygon points="1120,580 1200,640 1210,740 1120,800 1060,740 1050,660"
+      fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.6)" stroke-width="2.5" stroke-linejoin="round"/>
+  
+    <polygon points="1120,600 1180,660 1160,720 1120,740 1020,750 1020,620"
+      fill="rgba(235,80,80,0.1)" stroke="#EB5050" stroke-width="2.5" stroke-linejoin="round" opacity="0.95"/>
+  
+    <text x="1120" y="545" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.5)" text-anchor="middle">Likes</text>
+    <text x="1245" y="625" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.45)">Comments</text>
+    <text x="1245" y="765" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.45)">Shares</text>
+    <text x="1120" y="840" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.5)" text-anchor="middle">Saves</text>
+    <text x="995" y="765" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.45)" text-anchor="end">CTR</text>
+    <text x="995" y="625" font-family="SF Mono,Menlo,monospace" font-size="10.5" fill="rgba(255,255,255,0.45)" text-anchor="end">Watch %</text>
+
+    <rect x="0" y="820" width="1440" height="80" fill="url(#fadeG)" pointer-events="none"/>
+</svg>

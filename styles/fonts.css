@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
+
+/* SF Pro Display — uses the locally installed font on macOS/iOS; falls back to system-ui on other platforms */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: local('SF Pro Display'), local('SFProDisplay-Regular'), local('.SFNS-Regular'), local('.SFNSDisplay');
+  font-weight: 100 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: local('SF Pro Display Italic'), local('SFProDisplay-Italic'), local('.SFNS-Italic');
+  font-weight: 100 900;
+  font-style: italic;
+}

@@ -1,0 +1,174 @@
+<svg viewBox="0 0 400 296" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ══════ BACKGROUND ══════ -->
+  <rect width="400" height="296" rx="12" fill="#0D0D0D" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- ══════ HEADER ══════ -->
+  <!-- App Icon -->
+  <rect x="20" y="16" width="18" height="18" rx="5" fill="rgba(99,102,241,0.15)"/>
+  <rect x="23" y="19" width="12" height="12" rx="2" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="23" y1="23" x2="35" y2="23" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round"/>
+
+  <text x="48" y="29" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13" font-weight="600" fill="white" letter-spacing="-0.01em">Content Calendar</text>
+
+  <!-- Month Toggle -->
+  <rect x="290" y="15" width="90" height="20" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="335" y="28" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="white" text-anchor="middle">June 2026</text>
+  
+  <line x1="20" y1="48" x2="380" y2="48" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- ══════ CALENDAR GRID ══════ -->
+  <!-- Day headers (M T W T F S S) -->
+  <g font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">
+    <text x="38">MON</text>
+    <text x="92">TUE</text>
+    <text x="146">WED</text>
+    <text x="200">THU</text>
+    <text x="254">FRI</text>
+    <text x="308">SAT</text>
+    <text x="362">SUN</text>
+  </g>
+
+  <!-- === Row 1: days 1-7 === (y=74) -->
+  <rect x="20" y="74" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="24" y="85" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">1</text>
+  
+  <rect x="74" y="74" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="78" y="85" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">2</text>
+  <rect x="78" y="91" width="38" height="11" rx="3" fill="rgba(235,80,80,0.15)" stroke="rgba(235,80,80,0.3)" stroke-width="0.5"/>
+  <text x="83" y="99" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#EB5050">Reel</text>
+
+  <rect x="128" y="74" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="132" y="85" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">3</text>
+
+  <rect x="182" y="74" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="186" y="85" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">4</text>
+
+  <rect x="236" y="74" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="240" y="85" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">5</text>
+  <rect x="240" y="91" width="38" height="11" rx="3" fill="rgba(99,102,241,0.15)" stroke="rgba(99,102,241,0.3)" stroke-width="0.5"/>
+  <text x="245" y="99" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#6366f1">Video</text>
+
+  <rect x="290" y="74" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="294" y="85" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">6</text>
+
+  <rect x="344" y="74" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="348" y="85" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">7</text>
+
+  <!-- === Row 2: days 8-14 === (y=112) -->
+  <rect x="20" y="112" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="24" y="123" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">8</text>
+  <rect x="24" y="129" width="38" height="11" rx="3" fill="rgba(99,102,241,0.15)" stroke="rgba(99,102,241,0.3)" stroke-width="0.5"/>
+  <text x="29" y="137" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#6366f1">Vlog</text>
+
+  <rect x="74" y="112" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="78" y="123" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">9</text>
+  <rect x="78" y="129" width="38" height="11" rx="3" fill="rgba(235,80,80,0.15)" stroke="rgba(235,80,80,0.3)" stroke-width="0.5"/>
+  <text x="83" y="137" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#EB5050">Story</text>
+
+  <rect x="128" y="112" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="132" y="123" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">10</text>
+
+  <rect x="182" y="112" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="186" y="123" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">11</text>
+
+  <!-- Day 12 TODAY (highlighted) -->
+  <rect x="236" y="112" width="46" height="32" rx="6" fill="rgba(235,80,80,0.08)" stroke="rgba(235,80,80,0.5)" stroke-width="1.5" filter="url(#glow)"/>
+  <rect x="236" y="112" width="46" height="32" rx="6" fill="rgba(235,80,80,0.08)" stroke="rgba(235,80,80,0.8)" stroke-width="1.5"/>
+  <text x="240" y="123" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="700" fill="white">12</text>
+  <rect x="240" y="129" width="38" height="11" rx="3" fill="rgba(235,80,80,0.25)" stroke="rgba(235,80,80,0.5)" stroke-width="0.5"/>
+  <text x="245" y="137" font-family="SF Mono,Menlo,monospace" font-size="7" font-weight="600" fill="#EB5050">Carousel</text>
+
+  <rect x="290" y="112" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="294" y="123" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">13</text>
+
+  <rect x="344" y="112" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="348" y="123" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">14</text>
+
+  <!-- === Row 3: days 15-21 === (y=150) -->
+  <rect x="20"  y="150" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="24"  y="161" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">15</text>
+  <rect x="24"  y="167" width="38" height="11" rx="3" fill="rgba(235,80,80,0.15)" stroke="rgba(235,80,80,0.3)" stroke-width="0.5"/>
+  <text x="29"  y="175" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#EB5050">Collab</text>
+
+  <rect x="74"  y="150" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="78"  y="161" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">16</text>
+  <rect x="78"  y="167" width="38" height="11" rx="3" fill="rgba(99,102,241,0.15)" stroke="rgba(99,102,241,0.3)" stroke-width="0.5"/>
+  <text x="83"  y="175" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#6366f1">Q&amp;A</text>
+
+  <rect x="128" y="150" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="132" y="161" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">17</text>
+  
+  <rect x="182" y="150" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="186" y="161" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">18</text>
+  
+  <rect x="236" y="150" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="240" y="161" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">19</text>
+  <rect x="240" y="167" width="38" height="11" rx="3" fill="rgba(235,80,80,0.15)" stroke="rgba(235,80,80,0.3)" stroke-width="0.5"/>
+  <text x="245" y="175" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#EB5050">Reel</text>
+  
+  <rect x="290" y="150" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="294" y="161" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">20</text>
+  
+  <rect x="344" y="150" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="348" y="161" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">21</text>
+
+  <!-- === Row 4: days 22-28 === (y=188) -->
+  <rect x="20"  y="188" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="24"  y="199" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">22</text>
+  
+  <rect x="74"  y="188" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="78"  y="199" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">23</text>
+  
+  <!-- Day 24 scheduled -->
+  <rect x="128" y="188" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="132" y="199" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">24</text>
+  <rect x="132" y="205" width="38" height="11" rx="3" fill="transparent" stroke="rgba(235,80,80,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="137" y="213" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#EB5050" opacity="0.8">Spon.</text>
+  
+  <rect x="182" y="188" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="186" y="199" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">25</text>
+  
+  <!-- Day 26 scheduled -->
+  <rect x="236" y="188" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="240" y="199" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">26</text>
+  <rect x="240" y="205" width="38" height="11" rx="3" fill="transparent" stroke="rgba(235,80,80,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="245" y="213" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#EB5050" opacity="0.8">Reel</text>
+  
+  <rect x="290" y="188" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="294" y="199" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">27</text>
+  
+  <rect x="344" y="188" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="348" y="199" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">28</text>
+  <rect x="348" y="205" width="38" height="11" rx="3" fill="transparent" stroke="rgba(99,102,241,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="353" y="213" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#6366f1" opacity="0.8">Vlog</text>
+
+  <!-- === Row 5: days 29-30 === (y=226) -->
+  <rect x="20"  y="226" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="24"  y="237" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">29</text>
+  
+  <rect x="74"  y="226" width="46" height="32" rx="6" fill="rgba(255,255,255,0.02)"/>
+  <text x="78"  y="237" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.35)">30</text>
+  <rect x="78"  y="243" width="38" height="11" rx="3" fill="transparent" stroke="rgba(235,80,80,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="83"  y="251" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#EB5050" opacity="0.8">Wrap</text>
+
+  <!-- ══════ FOOTER LEGEND ══════ -->
+  <line x1="20" y1="270" x2="380" y2="270" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  
+  <circle cx="28" cy="283" r="3.5" fill="#22c55e"/>
+  <text x="36" y="286" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.5)">Published</text>
+  
+  <rect x="105" y="279" width="12" height="8" rx="2" fill="transparent" stroke="rgba(235,80,80,0.6)" stroke-width="1" stroke-dasharray="2,1"/>
+  <text x="123" y="286" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.5)">Scheduled</text>
+  
+  <text x="380" y="286" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="end">12 posts this month</text>
+</svg>

@@ -1,0 +1,186 @@
+<svg viewBox="0 0 486 334" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Premium Button Gradient -->
+    <linearGradient id="primaryGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF6B6B"/>
+      <stop offset="100%" stop-color="#EB5050"/>
+    </linearGradient>
+    
+    <!-- Avatar Gradients for variety -->
+    <linearGradient id="av1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#9333ea"/>
+    </linearGradient>
+    <linearGradient id="av2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <linearGradient id="av3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+
+    <!-- Glow for overdue elements -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ══════ BACKGROUND ══════ -->
+  <rect width="486" height="334" rx="12" fill="#0D0D0D" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- ══════ HEADER CHROME ══════ -->
+  <rect width="486" height="32" rx="12" fill="#111111"/>
+  <!-- Hide bottom rounded corners of header -->
+  <rect y="16" width="486" height="16" fill="#111111"/>
+  <line x1="0" y1="32" x2="486" y2="32" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  
+  <!-- macOS dots -->
+  <circle cx="16" cy="16" r="4" fill="#ff5f57"/>
+  <circle cx="28" cy="16" r="4" fill="#febc2e"/>
+  <circle cx="40" cy="16" r="4" fill="#28c840"/>
+  
+  <text x="56" y="19" font-family="SF Mono,Menlo,monospace" font-size="8.5" font-weight="500" fill="rgba(255,255,255,0.4)">Invoices</text>
+
+  <!-- "+ New" Button -->
+  <rect x="396" y="7" width="74" height="18" rx="9" fill="url(#primaryGrad)"/>
+  <text x="433" y="19.5" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9.5" font-weight="600" fill="white" text-anchor="middle">+ New Invoice</text>
+
+  <!-- ══════ KPI PANEL ══════ -->
+  <rect x="16" y="44" width="454" height="52" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  
+  <!-- Panel Inner Dividers -->
+  <line x1="129" y1="54" x2="129" y2="86" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="243" y1="54" x2="243" y2="86" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="357" y1="54" x2="357" y2="86" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <!-- Col 1: Total -->
+  <text x="28" y="61" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.06em">TOTAL INVOICED</text>
+  <text x="28" y="82" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="white" letter-spacing="-0.02em">$39,350</text>
+
+  <!-- Col 2: Paid -->
+  <text x="141" y="61" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.06em">PAID</text>
+  <text x="141" y="82" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="#22c55e" letter-spacing="-0.02em">$20,800</text>
+
+  <!-- Col 3: Pending -->
+  <text x="255" y="61" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.06em">PENDING</text>
+  <text x="255" y="82" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="#f59e0b" letter-spacing="-0.02em">$4,200</text>
+
+  <!-- Col 4: Overdue -->
+  <text x="369" y="61" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.06em">OVERDUE</text>
+  <text x="369" y="82" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="#EB5050" letter-spacing="-0.02em">$6,750</text>
+
+  <!-- ══════ TABLE ══════ -->
+  <!-- Table Header -->
+  <text x="24"  y="118" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="rgba(255,255,255,0.3)" letter-spacing="0.05em">CLIENT</text>
+  <text x="260" y="118" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="rgba(255,255,255,0.3)" letter-spacing="0.05em" text-anchor="end">AMOUNT</text>
+  <text x="290" y="118" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="rgba(255,255,255,0.3)" letter-spacing="0.05em">DUE DATE</text>
+  <text x="406" y="118" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="rgba(255,255,255,0.3)" letter-spacing="0.05em">STATUS</text>
+  
+  <line x1="16" y1="126" x2="470" y2="126" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <!-- Row 1: Glow Republic — Paid -->
+  <rect x="24" y="134" width="22" height="22" rx="6" fill="url(#av1)"/>
+  <text x="35" y="148.5" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9" font-weight="700" fill="white" text-anchor="middle">GR</text>
+  
+  <text x="54" y="143" font-family="SF Pro Display,-apple-system,sans-serif" font-size="11" font-weight="500" fill="white">Glow Republic</text>
+  <text x="54" y="153" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.4)">INV-2024</text>
+  
+  <text x="260" y="147" font-family="SF Mono,Menlo,monospace" font-size="10.5" font-weight="600" fill="white" text-anchor="end">$8,500</text>
+  <text x="290" y="147" font-family="SF Mono,Menlo,monospace" font-size="9" fill="rgba(255,255,255,0.5)">Jun 15, 2026</text>
+  
+  <rect x="396" y="135" width="56" height="20" rx="10" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.25)" stroke-width="1"/>
+  <circle cx="406" cy="145" r="2.5" fill="#22c55e"/>
+  <text x="414" y="148" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9.5" font-weight="600" fill="#22c55e">Paid</text>
+  
+  <line x1="16" y1="160" x2="470" y2="160" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+  <!-- Row 2: Nomad Gear — Pending -->
+  <rect x="24" y="168" width="22" height="22" rx="6" fill="rgba(255,255,255,0.1)"/>
+  <text x="35" y="182.5" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9" font-weight="700" fill="white" text-anchor="middle">NG</text>
+  
+  <text x="54" y="177" font-family="SF Pro Display,-apple-system,sans-serif" font-size="11" font-weight="500" fill="white">Nomad Gear Co.</text>
+  <text x="54" y="187" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.4)">INV-2023</text>
+  
+  <text x="260" y="181" font-family="SF Mono,Menlo,monospace" font-size="10.5" font-weight="600" fill="white" text-anchor="end">$4,200</text>
+  <text x="290" y="181" font-family="SF Mono,Menlo,monospace" font-size="9" fill="rgba(255,255,255,0.5)">Jun 8, 2026</text>
+  
+  <rect x="396" y="169" width="64" height="20" rx="10" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.25)" stroke-width="1"/>
+  <circle cx="406" cy="179" r="2.5" fill="#f59e0b"/>
+  <text x="414" y="182" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9.5" font-weight="600" fill="#f59e0b">Pending</text>
+  
+  <line x1="16" y1="194" x2="470" y2="194" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+  <!-- Row 3: ByteBrews — Overdue -->
+  <rect x="24" y="202" width="22" height="22" rx="6" fill="url(#av2)"/>
+  <text x="35" y="216.5" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9" font-weight="700" fill="white" text-anchor="middle">BB</text>
+  
+  <text x="54" y="211" font-family="SF Pro Display,-apple-system,sans-serif" font-size="11" font-weight="500" fill="white">ByteBrews</text>
+  <text x="54" y="221" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.4)">INV-2022</text>
+  
+  <text x="260" y="215" font-family="SF Mono,Menlo,monospace" font-size="10.5" font-weight="600" fill="#EB5050" text-anchor="end">$6,750</text>
+  <text x="290" y="215" font-family="SF Mono,Menlo,monospace" font-size="9" fill="#EB5050">Jun 1, 2026</text>
+  
+  <!-- Glowing Overdue Badge -->
+  <rect x="396" y="203" width="64" height="20" rx="10" fill="rgba(235,80,80,0.1)" stroke="rgba(235,80,80,0.3)" stroke-width="1"/>
+  <circle cx="406" cy="213" r="2.5" fill="#EB5050" filter="url(#glow)"/>
+  <circle cx="406" cy="213" r="2.5" fill="#EB5050"/>
+  <text x="414" y="216" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9.5" font-weight="600" fill="#EB5050">Overdue</text>
+  
+  <line x1="16" y1="228" x2="470" y2="228" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+  <!-- Row 4: Vibe Studio — Paid -->
+  <rect x="24" y="236" width="22" height="22" rx="6" fill="rgba(255,255,255,0.1)"/>
+  <text x="35" y="250.5" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9" font-weight="700" fill="white" text-anchor="middle">VS</text>
+  
+  <text x="54" y="245" font-family="SF Pro Display,-apple-system,sans-serif" font-size="11" font-weight="500" fill="white">Vibe Studio</text>
+  <text x="54" y="255" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.4)">INV-2021</text>
+  
+  <text x="260" y="249" font-family="SF Mono,Menlo,monospace" font-size="10.5" font-weight="600" fill="white" text-anchor="end">$3,100</text>
+  <text x="290" y="249" font-family="SF Mono,Menlo,monospace" font-size="9" fill="rgba(255,255,255,0.5)">May 24, 2026</text>
+  
+  <rect x="396" y="237" width="56" height="20" rx="10" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.25)" stroke-width="1"/>
+  <circle cx="406" cy="247" r="2.5" fill="#22c55e"/>
+  <text x="414" y="250" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9.5" font-weight="600" fill="#22c55e">Paid</text>
+
+  <line x1="16" y1="262" x2="470" y2="262" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+  <!-- Row 5: Meridian Health — Paid -->
+  <rect x="24" y="270" width="22" height="22" rx="6" fill="url(#av3)"/>
+  <text x="35" y="284.5" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9" font-weight="700" fill="white" text-anchor="middle">MH</text>
+  
+  <text x="54" y="279" font-family="SF Pro Display,-apple-system,sans-serif" font-size="11" font-weight="500" fill="white">Meridian Health</text>
+  <text x="54" y="289" font-family="SF Mono,Menlo,monospace" font-size="7.5" fill="rgba(255,255,255,0.4)">INV-2020</text>
+  
+  <text x="260" y="283" font-family="SF Mono,Menlo,monospace" font-size="10.5" font-weight="600" fill="white" text-anchor="end">$9,200</text>
+  <text x="290" y="283" font-family="SF Mono,Menlo,monospace" font-size="9" fill="rgba(255,255,255,0.5)">May 12, 2026</text>
+  
+  <rect x="396" y="271" width="56" height="20" rx="10" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.25)" stroke-width="1"/>
+  <circle cx="406" cy="281" r="2.5" fill="#22c55e"/>
+  <text x="414" y="284" font-family="SF Pro Display,-apple-system,sans-serif" font-size="9.5" font-weight="600" fill="#22c55e">Paid</text>
+
+  <!-- ══════ FOOTER ══════ -->
+  <line x1="0" y1="298" x2="486" y2="298" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  
+  <text x="24" y="318" font-family="SF Pro Display,-apple-system,sans-serif" font-size="10.5" fill="rgba(255,255,255,0.4)">Showing 5 of 7 invoices</text>
+
+  <!-- Revenue Trend Mini Chart -->
+  <text x="210" y="317.5" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="rgba(255,255,255,0.4)">YTD:</text>
+  <text x="238" y="317.5" font-family="SF Mono,Menlo,monospace" font-size="9" font-weight="600" fill="#22c55e">$39,350</text>
+  
+  <rect x="296" y="314" width="8" height="3"  rx="1.5" fill="rgba(255,255,255,0.1)"/>
+  <rect x="306" y="311" width="8" height="6"  rx="1.5" fill="rgba(235,80,80,0.3)"/>
+  <rect x="316" y="308" width="8" height="9" rx="1.5" fill="rgba(235,80,80,0.5)"/>
+  <rect x="326" y="305" width="8" height="12" rx="1.5" fill="#EB5050" filter="url(#glow)"/>
+  <rect x="326" y="305" width="8" height="12" rx="1.5" fill="#EB5050"/>
+  <rect x="336" y="307" width="8" height="10" rx="1.5" fill="rgba(235,80,80,0.7)"/>
+  <rect x="346" y="303" width="8" height="14" rx="1.5" fill="#EB5050"/>
+
+  <!-- Export Button -->
+  <rect x="410" y="307" width="56" height="20" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="438" y="319" font-family="SF Pro Display,-apple-system,sans-serif" font-size="10" font-weight="500" fill="rgba(255,255,255,0.8)" text-anchor="middle">Export ↓</text>
+</svg>

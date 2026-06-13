@@ -1,0 +1,109 @@
+<svg viewBox="0 0 486 334" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#EB5050" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#EB5050" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  
+    <rect width="486" height="334" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  
+    <rect width="486" height="28" rx="10" fill="#111111"/>
+    <rect y="18" width="486" height="10" fill="#111111"/>
+    <rect y="28" width="486" height="1" fill="rgba(255,255,255,0.07)"/>
+    
+    <circle cx="16" cy="14" r="4.5" fill="#ff5f57"/>
+    <circle cx="30" cy="14" r="4.5" fill="#febc2e"/>
+    <circle cx="44" cy="14" r="4.5" fill="#28c840"/>
+    
+    <text x="60" y="18" font-family="SF Mono,Menlo,monospace" font-size="9" fill="rgba(255,255,255,0.35)">Analytics</text>
+  
+    <rect x="12" y="38" width="108" height="48" rx="8" fill="#141414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="22" y="52" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.5">TOTAL VIEWS</text>
+    <text x="22" y="69" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="white" letter-spacing="-0.02em">14.2M</text>
+    <circle cx="24" cy="77" r="2.5" fill="#22c55e"/>
+    <text x="30" y="80" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="#22c55e">+23%</text>
+  
+    <rect x="130" y="38" width="108" height="48" rx="8" fill="#141414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="140" y="52" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.5">FOLLOWERS</text>
+    <text x="140" y="69" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="white" letter-spacing="-0.02em">890K</text>
+    <circle cx="142" cy="77" r="2.5" fill="#22c55e"/>
+    <text x="148" y="80" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="#22c55e">+4.8%</text>
+  
+    <rect x="248" y="38" width="108" height="48" rx="8" fill="#141414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="258" y="52" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.5">AVG ENGAGEMENT</text>
+    <text x="258" y="69" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="white" letter-spacing="-0.02em">6.4%</text>
+    <circle cx="260" cy="77" r="2.5" fill="#22c55e"/>
+    <text x="266" y="80" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="#22c55e">+1.2%</text>
+  
+    <rect x="366" y="38" width="108" height="48" rx="8" fill="#141414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="376" y="52" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.4)" letter-spacing="0.5">FOLLOWER GROWTH</text>
+    <text x="376" y="69" font-family="SF Pro Display,-apple-system,sans-serif" font-size="16" font-weight="700" fill="white" letter-spacing="-0.02em">+12.4K</text>
+    <circle cx="378" cy="77" r="2.5" fill="#EB5050"/>
+    <text x="384" y="80" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="#EB5050">-2.1%</text>
+  
+    <rect x="12" y="94" width="462" height="110" rx="8" fill="#141414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    
+    <text x="24" y="114" font-family="SF Pro Display,-apple-system,sans-serif" font-size="12" font-weight="600" fill="white" letter-spacing="-0.01em">Audience Growth</text>
+    
+    <line x1="360" y1="110" x2="376" y2="110" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
+    <text x="382" y="113" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)">Followers</text>
+    <line x1="428" y1="110" x2="444" y2="110" stroke="#EB5050" stroke-width="2" stroke-linecap="round"/>
+    <text x="450" y="113" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)">Views</text>
+  
+    <line x1="24" y1="135" x2="462" y2="135" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    <line x1="24" y1="155" x2="462" y2="155" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    <line x1="24" y1="175" x2="462" y2="175" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    <line x1="24" y1="195" x2="462" y2="195" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  
+    <polyline points="24,185 67,175 110,178 153,165 196,168 239,155 282,158 325,145 368,148 411,135 462,138" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+    <polygon points="24,195 24,190 67,175 110,182 153,155 196,162 239,135 282,142 325,115 368,125 411,105 462,110 462,195" fill="url(#areaFill)"/>
+    
+    <polyline points="24,190 67,175 110,182 153,155 196,162 239,135 282,142 325,115 368,125 411,105 462,110" fill="none" stroke="#EB5050" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    <polyline points="24,190 67,175 110,182 153,155 196,162 239,135 282,142 325,115 368,125 411,105 462,110" fill="none" stroke="#EB5050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+    <circle cx="462" cy="110" r="3" fill="#EB5050"/>
+    <circle cx="462" cy="110" r="6" fill="rgba(235,80,80,0.2)"/>
+  
+    <rect x="12" y="212" width="462" height="110" rx="8" fill="#141414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    
+    <text x="24" y="232" font-family="SF Pro Display,-apple-system,sans-serif" font-size="12" font-weight="600" fill="white" letter-spacing="-0.01em">Top Content</text>
+  
+    <text x="24"  y="250" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.35)" letter-spacing="0.5">CONTENT</text>
+    <text x="240" y="250" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.35)" letter-spacing="0.5">VIEWS</text>
+    <text x="310" y="250" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.35)" letter-spacing="0.5">ER</text>
+    <text x="380" y="250" font-family="SF Mono,Menlo,monospace" font-size="7" fill="rgba(255,255,255,0.35)" letter-spacing="0.5">PLATFORM</text>
+    
+    <line x1="12" y1="255" x2="474" y2="255" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  
+    <text x="24"  y="272" font-family="SF Pro Display,-apple-system,sans-serif" font-size="10.5" font-weight="500" fill="white">Tokyo BTS Reel</text>
+    <text x="240" y="272" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.65)">265K</text>
+    <text x="310" y="272" font-family="SF Mono,Menlo,monospace" font-size="9.5" font-weight="600" fill="#22c55e">9.1%</text>
+    <rect x="380" y="262" width="56" height="14" rx="7" fill="rgba(235,80,80,0.1)" stroke="rgba(235,80,80,0.2)" stroke-width="1"/>
+    <text x="408" y="272" font-family="SF Mono,Menlo,monospace" font-size="7" font-weight="600" fill="#EB5050" text-anchor="middle">instagram</text>
+  
+    <line x1="24" y1="281" x2="462" y2="281" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  
+    <text x="24"  y="298" font-family="SF Pro Display,-apple-system,sans-serif" font-size="10.5" font-weight="500" fill="white">Productivity Tips</text>
+    <text x="240" y="298" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.65)">210K</text>
+    <text x="310" y="298" font-family="SF Mono,Menlo,monospace" font-size="9.5" font-weight="600" fill="#22c55e">8.2%</text>
+    <rect x="380" y="288" width="56" height="14" rx="7" fill="rgba(235,80,80,0.1)" stroke="rgba(235,80,80,0.2)" stroke-width="1"/>
+    <text x="408" y="298" font-family="SF Mono,Menlo,monospace" font-size="7" font-weight="600" fill="#EB5050" text-anchor="middle">instagram</text>
+  
+    <line x1="24" y1="307" x2="462" y2="307" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  
+    <text x="24"  y="324" font-family="SF Pro Display,-apple-system,sans-serif" font-size="10.5" font-weight="500" fill="white">Study With Me</text>
+    <text x="240" y="324" font-family="SF Mono,Menlo,monospace" font-size="9.5" fill="rgba(255,255,255,0.65)">187K</text>
+    <text x="310" y="324" font-family="SF Mono,Menlo,monospace" font-size="9.5" font-weight="600" fill="#22c55e">7.4%</text>
+    <rect x="380" y="314" width="48" height="14" rx="7" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.2)" stroke-width="1"/>
+    <text x="404" y="324" font-family="SF Mono,Menlo,monospace" font-size="7" font-weight="600" fill="#6366f1" text-anchor="middle">youtube</text>
+  </svg>
+  

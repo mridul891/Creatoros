@@ -1,0 +1,94 @@
+<svg viewBox="0 0 400 296" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Avatar vibrant gradient -->
+    <linearGradient id="avatarGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EB5050"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ══════ BACKGROUND ══════ -->
+  <rect width="400" height="296" rx="12" fill="#0D0D0D" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- ══════ HEADER ══════ -->
+  <!-- Sparkles Icon -->
+  <rect x="20" y="16" width="20" height="20" rx="6" fill="rgba(167,139,250,0.15)"/>
+  <text x="30" y="29.5" font-family="serif" font-size="12" fill="#a78bfa" text-anchor="middle">✦</text>
+
+  <!-- Header Title -->
+  <text x="50" y="30" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13" font-weight="600" fill="white" letter-spacing="-0.01em">AI Media Kit</text>
+
+  <!-- Live Badge -->
+  <rect x="325" y="16" width="55" height="20" rx="10" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.25)" stroke-width="1"/>
+  <circle cx="337" cy="26" r="3" fill="#22c55e" filter="url(#glow)"/>
+  <circle cx="337" cy="26" r="3" fill="#22c55e"/>
+  <text x="345" y="29" font-family="SF Mono,Menlo,monospace" font-size="8.5" font-weight="600" fill="#22c55e">Live</text>
+
+  <!-- Separator Line -->
+  <line x1="20" y1="48" x2="380" y2="48" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- ══════ PROFILE SECTION ══════ -->
+  <!-- Avatar -->
+  <circle cx="56" cy="98" r="28" fill="url(#avatarGrad)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="56" y="106" font-family="SF Pro Display,-apple-system,sans-serif" font-size="22" font-weight="700" fill="white" text-anchor="middle">M</text>
+
+  <!-- Name & Info -->
+  <text x="100" y="86" font-family="SF Pro Display,-apple-system,sans-serif" font-size="22" font-weight="700" fill="white" letter-spacing="-0.02em">Maya Chen</text>
+  <text x="100" y="104" font-family="SF Pro Display,-apple-system,sans-serif" font-size="11.5" fill="rgba(255,255,255,0.5)">Lifestyle · Tech · Wellness · Travel</text>
+
+  <!-- AI-Generated Tag -->
+  <rect x="100" y="114" width="86" height="18" rx="9" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+  <text x="143" y="126" font-family="SF Mono,Menlo,monospace" font-size="7.5" font-weight="600" fill="#a78bfa" text-anchor="middle" letter-spacing="0.04em">AI-GENERATED</text>
+
+  <!-- ══════ STATS GRID (CLEAN PANEL) ══════ -->
+  <rect x="20" y="155" width="360" height="68" rx="12" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <!-- Subtle inner dividers -->
+  <line x1="110" y1="170" x2="110" y2="208" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="200" y1="170" x2="200" y2="208" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="290" y1="170" x2="290" y2="208" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <!-- Stat 1: Followers -->
+  <text x="65" y="174" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" letter-spacing="0.06em">FOLLOWERS</text>
+  <text x="65" y="196" font-family="SF Pro Display,-apple-system,sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.03em">890K</text>
+  <text x="65" y="210" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="#22c55e" text-anchor="middle">↑ 4.8%</text>
+
+  <!-- Stat 2: Avg. ER -->
+  <text x="155" y="174" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" letter-spacing="0.06em">AVG. ER</text>
+  <text x="155" y="196" font-family="SF Pro Display,-apple-system,sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.03em">6.4%</text>
+  <text x="155" y="210" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="#22c55e" text-anchor="middle">↑ 1.2%</text>
+
+  <!-- Stat 3: Avg CPM -->
+  <text x="245" y="174" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" letter-spacing="0.06em">AVG CPM</text>
+  <text x="245" y="196" font-family="SF Pro Display,-apple-system,sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.03em">$14.20</text>
+  <text x="245" y="210" font-family="SF Mono,Menlo,monospace" font-size="8.5" fill="rgba(255,255,255,0.4)" text-anchor="middle">Top 8%</text>
+
+  <!-- Stat 4: Rating -->
+  <text x="335" y="174" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" letter-spacing="0.06em">RATING</text>
+  <text x="335" y="196" font-family="SF Pro Display,-apple-system,sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.03em">4.9</text>
+  <text x="335" y="210" font-family="SF Pro Display,-apple-system,sans-serif" font-size="8.5" fill="#F59E0B" text-anchor="middle" letter-spacing="0.1em">★★★★★</text>
+
+  <!-- ══════ FOOTER / ACTIONS ══════ -->
+  <!-- Instagram Connected -->
+  <rect x="20" y="240" width="105" height="36" rx="10" fill="rgba(235,80,80,0.06)" stroke="rgba(235,80,80,0.18)" stroke-width="1"/>
+  <rect x="30" y="250" width="6" height="16" rx="2" fill="#EB5050" opacity="0.9"/>
+  <text x="44" y="262" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13" font-weight="600" fill="white">890K</text>
+  <text x="82" y="261" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)">IG</text>
+
+  <!-- YouTube Connected -->
+  <rect x="135" y="240" width="105" height="36" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="145" y="250" width="6" height="16" rx="2" fill="#aaaaaa"/>
+  <text x="159" y="262" font-family="SF Pro Display,-apple-system,sans-serif" font-size="13" font-weight="600" fill="white">215K</text>
+  <text x="197" y="261" font-family="SF Mono,Menlo,monospace" font-size="8" fill="rgba(255,255,255,0.4)">YT</text>
+
+  <!-- Share Button -->
+  <rect x="250" y="240" width="130" height="36" rx="10" fill="white"/>
+  <text x="315" y="262" font-family="SF Pro Display,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#050505" text-anchor="middle">Share Media Kit ↗</text>
+</svg>

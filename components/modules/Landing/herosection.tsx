@@ -48,7 +48,7 @@ export default function HeroSection() {
 
       <motion.div variants={itemVariants}>
         <TextBlur
-          className="mx-auto max-w-[37rem] pt-1.5 text-center text-base text-[#C5C5C5] sm:text-lg"
+          className="mx-auto max-w-148 pt-1.5 text-center text-base text-[#C5C5C5] sm:text-lg"
           text="Track brand deals, sponsorships, invoices, payments, and deadlines from one beautifully organized workspace built specifically for content creators."
           duration={0.8}
         />
