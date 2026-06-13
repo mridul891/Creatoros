@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Clock, Star, TrendingUp, Users } from "lucide-react";
+import { Clock, TrendingUp, Users } from "lucide-react";
 
-import { ImageWithFallback } from "@/components/modules/figma/ImageWithFallback";
+
 import { DIM, wrap } from "./constants";
-import { IMG_AVATAR_5 } from "./image-urls";
+
 
 export function StatsSection() {
   const stats = [
