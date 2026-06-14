@@ -12,7 +12,7 @@ export function Hero() {
       <div className="relative mx-auto w-full max-w-[1100px] px-7 text-center">
         <div className="mb-9 inline-flex items-center gap-[7px] rounded-full border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] px-[14px] py-[5px]">
           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#F53073]" />
-          <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.65)]">
+          <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.84)]">
             New: AI Media Kit Generator
           </span>
          
@@ -23,7 +23,7 @@ export function Hero() {
           everything.
         </h1>
 
-        <p className="mx-auto mb-10 max-w-[500px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[18px] leading-[1.65] tracking-[-0.015em] text-[rgba(255,255,255,0.65)]">
+        <p className="mx-auto mb-10 max-w-[500px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[18px] leading-[1.65] tracking-[-0.015em] text-[rgba(255,255,255,0.84)]">
           NotYetLaunchedOS eliminates the tool-switching chaos.
           Analytics, deals, invoicing, calendar, and AI media
           kits — all in one beautiful workspace.

@@ -24,7 +24,7 @@ export function SubpageHero({
           <h1 className="mb-5 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(34px,5vw,58px)] font-medium leading-[1.02] tracking-[-0.045em] text-white">
             {title}
           </h1>
-          <p className="mb-9 max-w-[600px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[17px] leading-[1.68] tracking-[-0.015em] text-[rgba(255,255,255,0.65)]">
+          <p className="mb-9 max-w-[600px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[17px] leading-[1.68] tracking-[-0.015em] text-[rgba(255,255,255,0.84)]">
             {body}
           </p>
           <div className="flex flex-wrap items-center gap-3">
@@ -36,7 +36,7 @@ export function SubpageHero({
             </a>
             <a
               href="#"
-              className="rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-6 py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-medium tracking-[-0.01em] text-[rgba(255,255,255,0.65)] no-underline"
+              className="rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-6 py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-medium tracking-[-0.01em] text-[rgba(255,255,255,0.84)] no-underline"
             >
               {secondaryCta}
             </a>

@@ -43,7 +43,7 @@ export function StatsSection() {
                 <p className="mb-2 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(36px,4.5vw,48px)] font-semibold tracking-[-0.045em] text-white">
                   {stat.n}
                 </p>
-                <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-[1.55] text-[rgba(255,255,255,0.65)]">
+                <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-[1.55] text-[rgba(255,255,255,0.84)]">
                   {stat.label}
                 </p>
               </div>

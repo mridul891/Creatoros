@@ -82,13 +82,13 @@ export function Pricing() {
     <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-24">
       <div style={wrap}>
         <div className="mb-14 text-center">
-          <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.4)]">
+          <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.72)]">
             Pricing
           </p>
           <h2 className="mb-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-white">
             Simple Pricing for Serious Creators
           </h2>
-          <p className="mx-auto m-0 max-w-[760px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] leading-relaxed text-[rgba(255,255,255,0.65)]">
+          <p className="mx-auto m-0 max-w-[760px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] leading-relaxed text-[rgba(255,255,255,0.84)]">
             Everything you need to manage brand deals, track sponsorships,
             automate follow-ups, and grow your creator business.
           </p>
@@ -108,18 +108,18 @@ export function Pricing() {
                   {plan.badge}
                 </div>
               )}
-              <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] font-semibold text-[rgba(255,255,255,0.65)]">
+              <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] font-semibold text-[rgba(255,255,255,0.84)]">
                 {plan.name}
               </p>
               <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(28px,3vw,36px)] font-semibold tracking-[-0.04em] text-white">
                 {plan.price}
                 {plan.price !== "Custom" && (
-                  <span className="text-[14px] font-normal text-[rgba(255,255,255,0.4)]">
+                  <span className="text-[14px] font-normal text-[rgba(255,255,255,0.72)]">
                     /month
                   </span>
                 )}
               </p>
-              <p className="mb-6 mt-0 min-h-[72px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-relaxed text-[rgba(255,255,255,0.48)]">
+              <p className="mb-6 mt-0 min-h-[72px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-relaxed text-[rgba(255,255,255,0.78)]">
                 {plan.desc}
               </p>
               <a
@@ -133,10 +133,10 @@ export function Pricing() {
                   <div key={feature} className="flex items-center gap-2">
                     <Check
                       size={12}
-                      color="rgba(255,255,255,0.45)"
+                      color="rgba(255,255,255,0.62)"
                       className="shrink-0"
                     />
-                    <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.65)]">
+                    <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.84)]">
                       {feature}
                     </span>
                   </div>
@@ -151,7 +151,7 @@ export function Pricing() {
             <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-semibold text-white">
               Need an Enterprise Solution?
             </p>
-            <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.4)]">
+            <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.72)]">
               Managing multiple creators or large-scale campaigns? Let&apos;s build a
               custom workflow for your team.
             </p>

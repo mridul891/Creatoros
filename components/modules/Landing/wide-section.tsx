@@ -35,7 +35,7 @@ export function WideSection({
           <h2 className="mb-[14px] font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-white">
             {title}
           </h2>
-          <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.65)]">
+          <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.84)]">
             {body}
           </p>
         </div>
@@ -72,7 +72,7 @@ export function WideSection({
               <p className="mb-2 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[14px] font-semibold tracking-[-0.015em] text-white">
                 {column.label}
               </p>
-              <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.4)]">
+              <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.78)]">
                 {column.desc}
               </p>
             </div>

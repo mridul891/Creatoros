@@ -21,7 +21,7 @@ export function FooterCTA() {
             <br />
             Build the future.
           </h2>
-          <p className="mx-auto mb-9 mt-0 max-w-[400px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-base leading-[1.65] text-[rgba(255,255,255,0.65)]">
+          <p className="mx-auto mb-9 mt-0 max-w-[400px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-base leading-[1.65] text-[rgba(255,255,255,0.84)]">
             Join 10,000+ creators who use NotYetLaunchedOS to grow their audience,
             close more brand deals, and build a real business.
           </p>
@@ -34,7 +34,7 @@ export function FooterCTA() {
             </a>
             <a
               href="#"
-              className="rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-[22px] py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] font-medium text-[rgba(255,255,255,0.65)] no-underline"
+              className="rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-[22px] py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] font-medium text-[rgba(255,255,255,0.84)] no-underline"
             >
               Free forever. Upgrade anytime.
             </a>
@@ -47,9 +47,9 @@ export function FooterCTA() {
             ].map((text) => (
               <span
                 key={text}
-                className="flex items-center gap-[5px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.4)]"
+                className="flex items-center gap-[5px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.72)]"
               >
-                <Check size={11} color="rgba(255,255,255,0.25)" /> {text}
+                <Check size={11} color="rgba(255,255,255,0.58)" /> {text}
               </span>
             ))}
           </div>
@@ -68,7 +68,7 @@ export function FooterCTA() {
                   NotYetLaunchedOS
                 </span>
               </div>
-              <p className="mb-5 mt-0 max-w-[200px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.4)]">
+              <p className="mb-5 mt-0 max-w-[200px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.78)]">
                 The operating system for professional content creators.
               </p>
             </div>
@@ -77,7 +77,7 @@ export function FooterCTA() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.65)] no-underline transition-colors duration-150 hover:text-white"
+                  className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.84)] no-underline transition-colors duration-150 hover:text-white"
                 >
                   {link.label}
                 </Link>
@@ -91,19 +91,19 @@ export function FooterCTA() {
 
 
           <div className="flex items-center justify-between border-t border-[rgba(255,255,255,0.07)] pt-6">
-            <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.4)]">
+            <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.72)]">
               © 2026 NotYetLaunchedOS. All rights reserved.
             </span>
             <div className="flex gap-5">
               <Link
                 href="/privacy-policy"
-                className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.4)] no-underline transition-colors duration-150 hover:text-white"
+                className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.78)] no-underline transition-colors duration-150 hover:text-white"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms-and-conditions"
-                className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.4)] no-underline transition-colors duration-150 hover:text-white"
+                className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.78)] no-underline transition-colors duration-150 hover:text-white"
               >
                 Terms & Conditions
               </Link>

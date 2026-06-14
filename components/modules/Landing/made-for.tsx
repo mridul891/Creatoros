@@ -38,13 +38,13 @@ export function MadeFor() {
     <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-24">
       <div className="mx-auto w-full max-w-[1100px] px-7">
         <div className="mb-12">
-          <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.4)]">
+          <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.72)]">
             One connected platform
           </p>
           <h2 className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-white">
             Made for modern creators
           </h2>
-          <p className="m-0 max-w-[480px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-base leading-[1.65] text-[rgba(255,255,255,0.65)]">
+          <p className="m-0 max-w-[480px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-base leading-[1.65] text-[rgba(255,255,255,0.84)]">
             Every part of your creator business in one intelligent workspace — not
             five disconnected apps.
           </p>
@@ -58,14 +58,14 @@ export function MadeFor() {
                   <div className="flex h-7 w-7 items-center justify-center rounded-[7px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)]">
                     {card.icon}
                   </div>
-                  <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-medium tracking-[0.04em] text-[rgba(255,255,255,0.4)]">
+                  <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-medium tracking-[0.04em] text-[rgba(255,255,255,0.72)]">
                     {card.eyebrow}
                   </span>
                 </div>
                 <h3 className="mb-2.5 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[17px] font-semibold tracking-tight text-white">
                   {card.title}
                 </h3>
-                <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] leading-[1.65] text-[rgba(255,255,255,0.65)]">
+                <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] leading-[1.65] text-[rgba(255,255,255,0.84)]">
                   {card.desc}
                 </p>
               </div>

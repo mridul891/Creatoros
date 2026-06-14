@@ -27,7 +27,7 @@ export function Nav() {
             <Link
               key={link.label}
               href={link.href}
-              className="rounded-[7px] px-[13px] py-1.5 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[13px] font-medium text-[rgba(255,255,255,0.65)] no-underline transition-colors duration-150 hover:text-white"
+              className="rounded-[7px] px-[13px] py-1.5 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[13px] font-medium text-[rgba(255,255,255,0.84)] no-underline transition-colors duration-150 hover:text-white"
             >
               {link.label}
             </Link>

@@ -20,13 +20,13 @@ export function ValuePillars({ eyebrow, title, body, pillars }: ValuePillarsProp
     <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#080808] py-24">
       <div style={wrap}>
         <div className="mb-12 max-w-[620px]">
-          <p className="mb-4 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.4)]">
+          <p className="mb-4 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.72)]">
             {eyebrow}
           </p>
           <h2 className="mb-4 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-white">
             {title}
           </h2>
-          <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.65)]">
+          <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.84)]">
             {body}
           </p>
         </div>
@@ -40,7 +40,7 @@ export function ValuePillars({ eyebrow, title, body, pillars }: ValuePillarsProp
               <h3 className="mb-2.5 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[17px] font-semibold tracking-[-0.025em] text-white">
                 {pillar.title}
               </h3>
-              <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[14px] leading-[1.65] text-[rgba(255,255,255,0.65)]">
+              <p className="m-0 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[14px] leading-[1.65] text-[rgba(255,255,255,0.84)]">
                 {pillar.body}
               </p>
             </div>

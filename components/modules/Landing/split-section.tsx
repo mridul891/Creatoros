@@ -38,7 +38,7 @@ export function SplitSection({
           <h2 className="mb-4 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[clamp(26px,3.5vw,36px)] font-semibold leading-[1.15] tracking-[-0.035em] text-white">
             {title}
           </h2>
-          <p className="mb-8 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.65)]">
+          <p className="mb-8 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.84)]">
             {body}
           </p>
           <div className="flex flex-col gap-[11px]">
@@ -46,10 +46,10 @@ export function SplitSection({
               <div key={index} className="flex items-start gap-2.5">
                 <Check
                   size={13}
-                  color="rgba(255,255,255,0.3)"
+                  color="rgba(255,255,255,0.58)"
                   className="mt-[3px] shrink-0"
                 />
-                <span className="font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[14px] leading-[1.55] text-[rgba(255,255,255,0.65)]">
+                <span className="font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[14px] leading-[1.55] text-[rgba(255,255,255,0.84)]">
                   {bullet}
                 </span>
               </div>
