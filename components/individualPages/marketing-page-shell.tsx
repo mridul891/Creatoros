@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import { FooterCTA } from "../modules/Landing/footer-cta";
-import { Nav } from "../modules/Landing/nav";
+import { FooterCTA } from "../modules/landing/footer-cta";
+import { Nav } from "../modules/landing/nav";
 
 type MarketingPageShellProps = {
   children: ReactNode;

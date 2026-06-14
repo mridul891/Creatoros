@@ -8,8 +8,9 @@ import {
   containerVariants,
   itemVariants,
 } from "@/lib/animation-variants"
-
 import { WaitlistForm } from "./waitlist-form"
+
+
 
 export default function HeroSection() {
   return (

@@ -9,16 +9,14 @@ export const metadata: Metadata = {
     template: "%s | Dashboard | NotYetLaunched",
   },
   robots: {
-    index: false,
-    follow: false,
-    nocache: true,
+    index: true,
+    follow: true,
     googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-      "max-image-preview": "none",
-      "max-snippet": 0,
-      "max-video-preview": 0,
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 };

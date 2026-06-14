@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Particles from "@/components/motion-primitives/particle"
-import HeroSection from "@/components/modules/Landing/herosection"
+import HeroSection from "@/components/modules/landing/herosection"
 
 export const metadata: Metadata = {
   title: "Waitlist",

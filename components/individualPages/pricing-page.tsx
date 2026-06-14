@@ -1,5 +1,5 @@
 import { MarketingPageShell } from "./marketing-page-shell";
-import { Pricing } from "../modules/Landing/pricing";
+import { Pricing } from "../modules/landing/pricing";
 
 export function PricingPage() {
   return (

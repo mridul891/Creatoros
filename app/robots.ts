@@ -10,7 +10,26 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard", "/dashboard/*"],
+      },
+      {
+        // OpenAI crawlers (search and retrieval contexts)
+        userAgent: ["GPTBot", "ChatGPT-User", "OAI-SearchBot"],
+        allow: "/",
+      },
+      {
+        // Anthropic crawler
+        userAgent: ["ClaudeBot", "Claude-Web"],
+        allow: "/",
+      },
+      {
+        // Google AI/LLM-related crawler identifiers
+        userAgent: ["Googlebot", "Google-Extended"],
+        allow: "/",
+      },
+      {
+        // Common AI/search crawlers used by assistants
+        userAgent: ["PerplexityBot", "CCBot", "Bytespider"],
+        allow: "/",
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
