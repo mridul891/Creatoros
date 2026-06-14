@@ -32,13 +32,13 @@ export function SplitSection({
         style={wrap}
       >
         <div className={contentOrder}>
-          <p className="mb-4 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(235,80,80,0.85)]">
+          <p className="mb-4 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(235,80,80,0.85)]">
             {eyebrow}
           </p>
-          <h2 className="mb-4 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[clamp(26px,3.5vw,36px)] font-semibold leading-[1.15] tracking-[-0.035em] text-white">
+          <h2 className="mb-4 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(26px,3.5vw,36px)] font-semibold leading-[1.15] tracking-[-0.035em] text-white">
             {title}
           </h2>
-          <p className="mb-8 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.84)]">
+          <p className="mb-8 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.84)]">
             {body}
           </p>
           <div className="flex flex-col gap-[11px]">
@@ -49,7 +49,7 @@ export function SplitSection({
                   color="rgba(255,255,255,0.58)"
                   className="mt-[3px] shrink-0"
                 />
-                <span className="font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[14px] leading-[1.55] text-[rgba(255,255,255,0.84)]">
+                <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] leading-[1.55] text-[rgba(255,255,255,0.84)]">
                   {bullet}
                 </span>
               </div>

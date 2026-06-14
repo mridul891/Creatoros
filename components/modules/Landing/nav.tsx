@@ -11,7 +11,7 @@ export function Nav() {
   ];
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-[100] flex h-14 items-center border-b border-[rgba(255,255,255,0.07)] bg-[rgba(5,5,5,0.82)] backdrop-blur-[24px]">
+    <nav className="fixed inset-x-0 top-0 z-100 flex h-14 items-center border-b border-[rgba(255,255,255,0.07)] bg-[rgba(5,5,5,0.82)] backdrop-blur-[24px]">
       <div className="flex items-center" style={wrap}>
         <Link href="/" className="flex items-center gap-2 no-underline">
           <div className="flex h-6 w-6 items-center justify-center rounded-[7px] bg-white">

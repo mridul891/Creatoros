@@ -89,7 +89,6 @@ export function FooterCTA() {
               NOTYETLAUNCHED
             </p>
 
-
           <div className="flex items-center justify-between border-t border-[rgba(255,255,255,0.07)] pt-6">
             <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.72)]">
               © 2026 NotYetLaunchedOS. All rights reserved.
