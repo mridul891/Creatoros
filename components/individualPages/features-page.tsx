@@ -1,16 +1,16 @@
 import { Bot, Calendar, Handshake } from "lucide-react";
 
 import { MarketingPageShell } from "./marketing-page-shell";
-import { SplitSection } from "../modules/landing/split-section";
-import { SubpageHero } from "../modules/landing/subpage-hero";
-import { ValuePillars } from "../modules/landing/value-pillars";
-import { DIM } from "../modules/landing/constants";
+import { SplitSection } from "../modules/Landing/split-section";
+import { SubpageHero } from "../modules/Landing/subpage-hero";
+import { ValuePillars } from "../modules/Landing/value-pillars";
+import { DIM } from "../modules/Landing/constants";
 import {
   IMG_FEATURE_CALENDAR,
   IMG_FEATURE_DASHBOARD,
   IMG_INVOICING_SCREEN,
   IMG_PIPELINE_SCREEN,
-} from "../modules/landing/image-urls";
+} from "../modules/Landing/image-urls";
 
 export function FeaturesPage() {
   return (
