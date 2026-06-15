@@ -1,6 +1,6 @@
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import Link from "next/link";
-
+import Image from "next/image";
 import { wrap } from "./constants";
 
 export function FooterCTA() {
@@ -61,12 +61,7 @@ export function FooterCTA() {
           <div className="mb-14 flex items-start justify-between gap-8">
             <div>
               <div className="mb-3 flex items-center gap-2">
-                <div className="flex h-[22px] w-[22px] items-center justify-center rounded-md bg-white">
-                  <Sparkles size={12} color="#000" />
-                </div>
-                <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-bold tracking-[-0.02em] text-white">
-                  NotYetLaunchedOS
-                </span>
+                <Image src="/logo.svg" alt="logo" width={100} height={100} />
               </div>
               <p className="mb-5 mt-0 max-w-[200px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.78)]">
                 The operating system for professional content creators.

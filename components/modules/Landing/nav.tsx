@@ -2,6 +2,7 @@ import { Sparkles } from "lucide-react";
 import Link from "next/link";
 
 import { wrap } from "./constants";
+import Image from "next/image";
 
 export function Nav() {
   const links = [
@@ -14,12 +15,7 @@ export function Nav() {
     <nav className="fixed inset-x-0 top-0 z-100 flex h-14 items-center border-b border-[rgba(255,255,255,0.07)] bg-[rgba(5,5,5,0.82)] backdrop-blur-[24px]">
       <div className="flex items-center" style={wrap}>
         <Link href="/" className="flex items-center gap-2 no-underline">
-          <div className="flex h-6 w-6 items-center justify-center rounded-[7px] bg-white">
-            <Sparkles size={13} color="#000" />
-          </div>
-          <span className="font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] font-bold tracking-[-0.02em] text-white">
-            NotYetLaunchedOS
-          </span>
+          <Image src="/logo.svg" alt="logo" width={100} height={100} />
         </Link>
 
         <div className="mx-auto flex items-center gap-0.5">
