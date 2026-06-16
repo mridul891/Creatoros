@@ -1,8 +1,7 @@
 "use server"
 
-import { createClient } from "@supabase/supabase-js"
-
-
+import { cookies } from "next/headers"
+import { createServerClient } from "@supabase/ssr"
 
 function getEnvironmentVariable() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -18,5 +17,21 @@ function getEnvironmentVariable() {
 export async function createSupabaseServerClient() {
   const { supabaseUrl, supabaseServiceRoleKey } = getEnvironmentVariable()
 
-  return createClient(supabaseUrl, supabaseServiceRoleKey)
+  const cookieStore = await cookies()
+  return createServerClient(supabaseUrl, supabaseServiceRoleKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll()
+      },
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options)
+          })
+        } catch (error) {
+          console.error(error)
+        }
+      },
+    },
+  })
 }

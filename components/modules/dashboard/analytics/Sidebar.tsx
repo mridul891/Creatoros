@@ -6,11 +6,14 @@ import {
   FileText,
   Handshake,
   LayoutDashboard,
+  LogOut,
   Settings,
   Sparkles,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { DashboardRoute } from "@/enums/dashboard-route";
+import { getSupabaseBrowserClient } from "@/lib/supabase/browser-client";
 import {
   Sidebar as AppSidebar,
   SidebarContent,
@@ -50,12 +53,27 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, setOpenMobile } = useSidebar();
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   const handleNavigate = (href: DashboardRoute) => {
     router.push(href);
     if (isMobile) {
       setOpenMobile(false);
     }
+  };
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    const supabase = getSupabaseBrowserClient();
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      setIsSigningOut(false);
+      return;
+    }
+
+    router.replace("/login");
+    router.refresh();
   };
 
   return (
@@ -113,6 +131,18 @@ export function Sidebar() {
           </div>
           <Settings size={13} color="rgba(255,255,255,0.4)" className="ml-auto" />
         </div>
+        <SidebarMenu className="mt-2">
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={handleSignOut}
+              disabled={isSigningOut}
+              className="h-9 cursor-pointer gap-[9px] rounded-lg px-[10px] text-[13px] font-normal text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)] hover:text-[rgba(255,255,255,0.9)] disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <LogOut size={14} />
+              <span>{isSigningOut ? "Signing out..." : "Sign out"}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </AppSidebar>
   );

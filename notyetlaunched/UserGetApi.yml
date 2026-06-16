@@ -1,0 +1,22 @@
+info:
+  name: UserGetApi
+  type: http
+
+http:
+  method: GET
+  url: "{{Base_URL}}/api/user"
+  auth: inherit
+
+runtime:
+  variables:
+    - name: Base_URl
+      value: " http://localhost:3000"
+    - name: Base_URL
+      value: " http://localhost:3000"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​

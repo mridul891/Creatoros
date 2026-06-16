@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import "../styles/index.css";
-import { Geist } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const siteUrl ="https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
@@ -205,7 +205,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(geist.variable, "font-sans")}
+      className={cn(inter.variable, "font-sans")}
     >
       <meta
         property="og:url"
