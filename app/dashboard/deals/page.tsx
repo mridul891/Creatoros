@@ -3,7 +3,7 @@ import { SponsorshipMode } from "@/enums/sponsorship";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Deals Pipeline",
+  title: "Content Pipeline",
   alternates: {
     canonical: "/dashboard/deals",
   },

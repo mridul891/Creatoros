@@ -13,6 +13,7 @@ import {
 } from "@/enums/post";
 import type { CalendarFiltersState } from "@/types/post";
 import { Calendar } from "@/components/ui/calendar";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ModalState, Platform, Post, PostStatus, PRO_FONT, MONO_FONT, STATUS_CFG } from "./calendar/shared";
 import { PostModal } from "./calendar/PostModal";
 import { PostChip } from "./calendar/PostChip";
@@ -107,6 +108,26 @@ export function CalendarPage() {
           onClose={() => setModal(null)}
         />
       )}
+      <Dialog open={!!selectedPost} onOpenChange={(open) => { if (!open) setSelectedId(null); }}>
+        <DialogContent
+          showCloseButton={false}
+          className="max-w-[340px] border-none bg-transparent p-0 ring-0"
+        >
+          {selectedPost && (
+            <>
+              <DialogTitle className="sr-only">{selectedPost.title}</DialogTitle>
+              <PostPanel
+                post={selectedPost}
+                inDialog
+                onClose={() => setSelectedId(null)}
+                onEdit={() => { setModal({ day: selectedPost.day, post: selectedPost }); setSelectedId(null); }}
+                onDelete={handleDelete}
+                onStatusChange={handleStatusChange}
+              />
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Header */}
       <div className="mb-[24px] flex items-start justify-between">
@@ -135,8 +156,7 @@ export function CalendarPage() {
         ))}
       </div>
 
-      <div className="flex gap-[16px]">
-        <div className="flex-1">
+      <div>
           {/* Month nav + filters */}
           <div className="mb-[14px] flex items-center justify-between">
             <div className="flex items-center gap-[10px]">
@@ -226,7 +246,7 @@ export function CalendarPage() {
                         </div>
                         <div>
                           {dayPosts.slice(0, 3).map(p => (
-                            <PostChip key={p.id} post={p} onClick={() => setSelectedId(p.id === selectedId ? null : p.id)} />
+                            <PostChip key={p.id} post={p} onClick={() => setSelectedId(p.id)} />
                           ))}
                           {dayPosts.length > 3 && <div className={`pl-[4px] ${MONO_FONT} text-[9px] text-[rgba(255,255,255,0.4)]`}>+{dayPosts.length - 3} more</div>}
                         </div>
@@ -258,7 +278,7 @@ export function CalendarPage() {
                   const platformPillBg = post.platform === SocialPlatform.INSTAGRAM ? "bg-[#E8402A12]" : "bg-[#11111112]";
                   return (
                     <div key={post.id} className="flex cursor-pointer items-center gap-[14px] rounded-[12px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[18px] py-[13px] transition-colors duration-150 hover:border-[rgba(232,64,42,0.3)]"
-                      onClick={() => setSelectedId(post.id === selectedId ? null : post.id)}
+                      onClick={() => setSelectedId(post.id)}
                     >
                       <div className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] ${platformPillBg}`}>
                         <PlatformIcon size={15} color={platformColor} />
@@ -279,18 +299,6 @@ export function CalendarPage() {
                 })}
             </div>
           </div>
-        </div>
-
-        {/* Detail panel */}
-        {selectedPost && (
-          <PostPanel
-            post={selectedPost}
-            onClose={() => setSelectedId(null)}
-            onEdit={() => { setModal({ day: selectedPost.day, post: selectedPost }); setSelectedId(null); }}
-            onDelete={handleDelete}
-            onStatusChange={handleStatusChange}
-          />
-        )}
       </div>
     </div>
   );

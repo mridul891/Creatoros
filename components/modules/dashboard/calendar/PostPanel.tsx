@@ -13,12 +13,14 @@ export function PostPanel({
   onEdit,
   onDelete,
   onStatusChange,
+  inDialog = false,
 }: {
   post: Post;
   onClose: () => void;
   onEdit: () => void;
   onDelete: (id: number) => void;
   onStatusChange: (id: number, s: PostStatus) => void;
+  inDialog?: boolean;
 }) {
   const S = STATUS_CFG[post.status];
   const PlatformIcon = post.platform === SocialPlatform.INSTAGRAM ? Instagram : Youtube;
@@ -32,7 +34,13 @@ export function PostPanel({
   };
 
   return (
-    <div className="sticky top-[28px] flex w-[300px] shrink-0 self-start flex-col gap-[16px] rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-[22px]">
+    <div
+      className={
+        inDialog
+          ? "flex w-full flex-col gap-[16px] rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-[22px]"
+          : "sticky top-[28px] flex w-[300px] shrink-0 self-start flex-col gap-[16px] rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-[22px]"
+      }
+    >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-[10px]">
           <div className={`flex h-[38px] w-[38px] items-center justify-center rounded-[11px] ${platformPillBg}`}>

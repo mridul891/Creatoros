@@ -3,13 +3,15 @@
 import {
   BarChart3,
   Calendar,
+  ChevronsLeft,
   FileText,
   Handshake,
   LayoutDashboard,
   LogOut,
-  Settings,
   Sparkles,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { DashboardRoute } from "@/enums/dashboard-route";
@@ -25,6 +27,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
+  SidebarSeparator,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 
@@ -32,7 +37,7 @@ const NAV_ITEMS = [
   { href: DashboardRoute.ROOT, label: "Dashboard", icon: LayoutDashboard },
   { href: DashboardRoute.CALENDAR, label: "Calendar", icon: Calendar },
   { href: DashboardRoute.ANALYTICS, label: "Analytics", icon: BarChart3 },
-  { href: DashboardRoute.DEALS, label: "Sponsorships", icon: Handshake },
+  { href: DashboardRoute.DEALS, label: "Content", icon: Handshake },
   { href: DashboardRoute.INVOICES, label: "Invoices", icon: FileText },
   { href: DashboardRoute.MEDIA_KIT, label: "Media Kit", icon: Sparkles },
 ];
@@ -52,15 +57,8 @@ function isNavItemActive(pathname: string, href: DashboardRoute) {
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile, state } = useSidebar();
   const [isSigningOut, setIsSigningOut] = useState(false);
-
-  const handleNavigate = (href: DashboardRoute) => {
-    router.push(href);
-    if (isMobile) {
-      setOpenMobile(false);
-    }
-  };
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -77,38 +75,62 @@ export function Sidebar() {
   };
 
   return (
-    <AppSidebar
-      collapsible="offcanvas"
-      className="border-r border-[rgba(255,255,255,0.07)] bg-[#080808] [--sidebar:#080808] [--sidebar-foreground:#ffffff] [--sidebar-border:rgba(255,255,255,0.07)] [--sidebar-accent:rgba(255,255,255,0.07)] [--sidebar-accent-foreground:#ffffff] [--sidebar-ring:rgba(232,64,42,0.45)]"
-    >
-      <SidebarHeader className="border-b border-[rgba(255,255,255,0.07)] px-4 py-5">
-        <div className="flex items-center gap-[9px]">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white">
-            <Sparkles size={14} color="#000" />
-          </div>
-          <span className="text-sm font-bold tracking-[-0.025em] text-white">CreatorOS</span>
+    <AppSidebar variant="inset" collapsible="icon">
+      <SidebarHeader className="px-3 py-3">
+        <div className="flex items-center gap-2">
+          <SidebarMenu className="min-w-0 flex-1">
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" className="h-11 rounded-xl px-2.5" asChild>
+                <Link
+                  href={DashboardRoute.ROOT}
+                  className="flex min-w-0 items-center gap-2"
+                  onClick={() => {
+                    if (isMobile) setOpenMobile(false);
+                  }}
+                >
+                  <span className="truncate text-[15px] font-semibold tracking-[-0.01em] text-white group-data-[collapsible=icon]:hidden text-center">
+                    !yetlaunched
+                  </span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+          <SidebarTrigger
+            className="relative z-20 size-9 shrink-0 rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
+            title={state === "collapsed" ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            <ChevronsLeft className={`size-4 transition-transform ${state === "collapsed" ? "rotate-180" : ""}`} />
+            <span className="sr-only">Toggle sidebar</span>
+          </SidebarTrigger>
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-[10px] py-3">
-        <SidebarGroup className="p-0">
-          <SidebarGroupLabel className="mb-2 px-2 font-mono text-[9px] tracking-[0.12em] text-[rgba(255,255,255,0.4)]">
-            WORKSPACE
+      <SidebarContent className="px-2">
+        <SidebarGroup className="py-2">
+          <SidebarGroupLabel className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-sidebar-foreground/55">
+            Workspace
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-1.5">
               {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
                 const active = isNavItemActive(pathname, href);
                 return (
                   <SidebarMenuItem key={href}>
                     <SidebarMenuButton
                       isActive={active}
-                      onClick={() => handleNavigate(href)}
-                      className="h-9 cursor-pointer gap-[9px] rounded-lg px-[10px] text-[13px] font-normal text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)] hover:text-[rgba(255,255,255,0.9)] data-active:bg-[rgba(255,255,255,0.07)] data-active:font-semibold data-active:text-white"
+                      asChild
+                      tooltip={label}
+                      className="h-10 rounded-xl px-3 text-[13px] font-medium"
                     >
-                      <Icon size={14} />
-                      <span>{label}</span>
-                      {active && <div className="ml-auto h-1 w-1 rounded-full bg-[#E8402A]" />}
+                      <Link
+                        href={href}
+                        onClick={() => {
+                          if (isMobile) setOpenMobile(false);
+                        }}
+                      >
+                        <Icon />
+                        <span>{label}</span>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
@@ -118,32 +140,37 @@ export function Sidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-[rgba(255,255,255,0.07)] px-[10px] py-3">
-        <div className="flex items-center gap-[9px] rounded-lg px-[10px] py-2">
-          <img
-            src="https://images.unsplash.com/photo-1531539134685-27d854339120?w=40&h=40&fit=crop&crop=face"
-            alt="Maya"
-            className="h-[30px] w-[30px] rounded-full border border-[rgba(255,255,255,0.07)] object-cover"
-          />
-          <div>
-            <div className="text-xs font-semibold text-white">Maya Chen</div>
-            <div className="font-mono text-[10px] text-[rgba(255,255,255,0.4)]">Pro Plan</div>
-          </div>
-          <Settings size={13} color="rgba(255,255,255,0.4)" className="ml-auto" />
-        </div>
-        <SidebarMenu className="mt-2">
+      <SidebarFooter className="px-2 pb-3 pt-2">
+        <SidebarSeparator className="mx-1 mb-2" />
+        <SidebarMenu className="gap-1.5">
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" className="h-11 rounded-xl px-3">
+              <Image
+                src="https://images.unsplash.com/photo-1531539134685-27d854339120?w=40&h=40&fit=crop&crop=face"
+                alt="Maya"
+                width={32}
+                height={32}
+                className="size-8 rounded-lg object-cover"
+              />
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">Maya Chen</span>
+                <span className="truncate text-xs text-muted-foreground">Pro Plan</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleSignOut}
               disabled={isSigningOut}
-              className="h-9 cursor-pointer gap-[9px] rounded-lg px-[10px] text-[13px] font-normal text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)] hover:text-[rgba(255,255,255,0.9)] disabled:cursor-not-allowed disabled:opacity-70"
+              className="h-10 rounded-xl px-3 text-[13px] font-medium"
             >
-              <LogOut size={14} />
+              <LogOut />
               <span>{isSigningOut ? "Signing out..." : "Sign out"}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+      <SidebarRail />
     </AppSidebar>
   );
 }

@@ -6,8 +6,8 @@ import {
   Tooltip, ResponsiveContainer, Cell,
 } from "recharts";
 import {
-  Plus, Search, DollarSign, TrendingUp, CheckCircle,
-  Mail, Calendar, X, Handshake, AlertCircle,
+  Plus, Search, CheckCircle, Clapperboard, Camera, MessageSquareQuote,
+  Mail, Calendar, X, AlertCircle,
   Trash2, Edit3, Zap, Target, Award, ChevronRight,
 } from "lucide-react";
 import {
@@ -45,39 +45,39 @@ const SEED_DEALS: Deal[] = [
   { id: 12, brand: "Fresh Press",     logo: "FP", logoColor: "#111111", value: 2800,  stage: SponsorshipStage.PAID,        category: "Food & Bev", contact: "Lila Moreau",  email: "lila@freshpress.co",    deadline: "Done",   notes: "2 story posts delivered",           priority: DealPriority.LOW,    added: "Feb 5",  month: 2 },
 ];
 const STAGE_TEXT_CLASS: Record<Stage, string> = {
-  Lead: "text-[#717171]",
-  Outreach: "text-[#d97706]",
-  Negotiation: "text-[#E8402A]",
-  Signed: "text-[#2563eb]",
-  Paid: "text-[#16a34a]",
+  [SponsorshipStage.LEAD]: "text-[#717171]",
+  [SponsorshipStage.OUTREACH]: "text-[#d97706]",
+  [SponsorshipStage.NEGOTIATION]: "text-[#E8402A]",
+  [SponsorshipStage.SIGNED]: "text-[#2563eb]",
+  [SponsorshipStage.PAID]: "text-[#16a34a]",
 };
 const STAGE_DOT_CLASS: Record<Stage, string> = {
-  Lead: "bg-[#717171]",
-  Outreach: "bg-[#d97706]",
-  Negotiation: "bg-[#E8402A]",
-  Signed: "bg-[#2563eb]",
-  Paid: "bg-[#16a34a]",
+  [SponsorshipStage.LEAD]: "bg-[#717171]",
+  [SponsorshipStage.OUTREACH]: "bg-[#d97706]",
+  [SponsorshipStage.NEGOTIATION]: "bg-[#E8402A]",
+  [SponsorshipStage.SIGNED]: "bg-[#2563eb]",
+  [SponsorshipStage.PAID]: "bg-[#16a34a]",
 };
 const STAGE_BG22_CLASS: Record<Stage, string> = {
-  Lead: "bg-[rgba(113,113,113,0.13)] border-r-[#717171]",
-  Outreach: "bg-[rgba(217,119,6,0.13)] border-r-[#d97706]",
-  Negotiation: "bg-[rgba(232,64,42,0.13)] border-r-[#E8402A]",
-  Signed: "bg-[rgba(37,99,235,0.13)] border-r-[#2563eb]",
-  Paid: "bg-[rgba(22,163,74,0.13)] border-r-[#16a34a]",
+  [SponsorshipStage.LEAD]: "bg-[rgba(113,113,113,0.13)] border-r-[#717171]",
+  [SponsorshipStage.OUTREACH]: "bg-[rgba(217,119,6,0.13)] border-r-[#d97706]",
+  [SponsorshipStage.NEGOTIATION]: "bg-[rgba(232,64,42,0.13)] border-r-[#E8402A]",
+  [SponsorshipStage.SIGNED]: "bg-[rgba(37,99,235,0.13)] border-r-[#2563eb]",
+  [SponsorshipStage.PAID]: "bg-[rgba(22,163,74,0.13)] border-r-[#16a34a]",
 };
 const STAGE_COLUMN_SURFACE_CLASS: Record<Stage, string> = {
-  Lead: "border-[rgba(113,113,113,0.16)] bg-[linear-gradient(180deg,rgba(113,113,113,0.06)_0%,rgba(13,13,13,0)_100%)]",
-  Outreach: "border-[rgba(217,119,6,0.16)] bg-[linear-gradient(180deg,rgba(217,119,6,0.06)_0%,rgba(13,13,13,0)_100%)]",
-  Negotiation: "border-[rgba(232,64,42,0.16)] bg-[linear-gradient(180deg,rgba(232,64,42,0.06)_0%,rgba(13,13,13,0)_100%)]",
-  Signed: "border-[rgba(37,99,235,0.16)] bg-[linear-gradient(180deg,rgba(37,99,235,0.06)_0%,rgba(13,13,13,0)_100%)]",
-  Paid: "border-[rgba(22,163,74,0.16)] bg-[linear-gradient(180deg,rgba(22,163,74,0.06)_0%,rgba(13,13,13,0)_100%)]",
+  [SponsorshipStage.LEAD]: "border-[rgba(113,113,113,0.16)] bg-[linear-gradient(180deg,rgba(113,113,113,0.06)_0%,rgba(13,13,13,0)_100%)]",
+  [SponsorshipStage.OUTREACH]: "border-[rgba(217,119,6,0.16)] bg-[linear-gradient(180deg,rgba(217,119,6,0.06)_0%,rgba(13,13,13,0)_100%)]",
+  [SponsorshipStage.NEGOTIATION]: "border-[rgba(232,64,42,0.16)] bg-[linear-gradient(180deg,rgba(232,64,42,0.06)_0%,rgba(13,13,13,0)_100%)]",
+  [SponsorshipStage.SIGNED]: "border-[rgba(37,99,235,0.16)] bg-[linear-gradient(180deg,rgba(37,99,235,0.06)_0%,rgba(13,13,13,0)_100%)]",
+  [SponsorshipStage.PAID]: "border-[rgba(22,163,74,0.16)] bg-[linear-gradient(180deg,rgba(22,163,74,0.06)_0%,rgba(13,13,13,0)_100%)]",
 };
 const STAGE_HEADER_GLOW_CLASS: Record<Stage, string> = {
-  Lead: "before:bg-[#717171]",
-  Outreach: "before:bg-[#d97706]",
-  Negotiation: "before:bg-[#E8402A]",
-  Signed: "before:bg-[#2563eb]",
-  Paid: "before:bg-[#16a34a]",
+  [SponsorshipStage.LEAD]: "before:bg-[#717171]",
+  [SponsorshipStage.OUTREACH]: "before:bg-[#d97706]",
+  [SponsorshipStage.NEGOTIATION]: "before:bg-[#E8402A]",
+  [SponsorshipStage.SIGNED]: "before:bg-[#2563eb]",
+  [SponsorshipStage.PAID]: "before:bg-[#16a34a]",
 };
 const ACCENT_KPI_CARD_CLASS: Record<string, string> = {
   "#111111": "border-t-[1.5px] border-t-[#111111]/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]",
@@ -146,7 +146,12 @@ function DealCard({ deal, isSelected, onClick, onAdvance, onDragStart, onDragEnd
         </div>
         <div className={`mt-[3px] h-[6px] w-[6px] shrink-0 rounded-full ${PRIORITY_DOT_CLASS[deal.priority]}`} />
       </div>
-      <div className="mb-2 text-[17px] font-black tracking-[-0.04em] text-white">{fmt(deal.value)}</div>
+      <div className="mb-2 flex items-center justify-between">
+        <div>
+          <div className="font-mono text-[8px] tracking-[0.08em] text-[rgba(255,255,255,0.35)]">EST. VALUE</div>
+          <div className="text-[13px] font-bold tracking-[-0.02em] text-[rgba(255,255,255,0.75)]">{fmt(deal.value)}</div>
+        </div>
+      </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-[6px]">
           <span className={`inline-flex items-center gap-[4px] rounded-[99px] border px-[6px] py-[2px] font-mono text-[8px] font-bold ${STAGE_ACTIVE_CLASS[deal.stage]}`}>
@@ -437,6 +442,7 @@ function InsightCards({ deals }: { deals: Deal[] }) {
 /* ── SponsorshipPage ────────────────────────────────────────────── */
 export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: SponsorshipMode }) {
   const [deals, setDeals] = useState(SEED_DEALS);
+  const [viewMode, setViewMode] = useState<SponsorshipMode>(mode);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [modal, setModal] = useState<ModalState | null>(null);
   const [uiState, setUiState] = useState({
@@ -450,9 +456,11 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
   const filtered = uiState.search ? deals.filter(d => d.brand.toLowerCase().includes(uiState.search.toLowerCase()) || d.category.toLowerCase().includes(uiState.search.toLowerCase())) : deals;
 
   const totalPipeline = deals.reduce((s, d) => s + d.value, 0);
-  const totalPaid     = deals.filter(d => d.stage === SponsorshipStage.PAID).reduce((s, d) => s + d.value, 0);
-  const totalSigned   = deals.filter(d => d.stage === SponsorshipStage.SIGNED).reduce((s, d) => s + d.value, 0);
-  const activeDeals   = deals.filter(d => d.stage !== SponsorshipStage.PAID).length;
+  const totalPaid = deals.filter(d => d.stage === SponsorshipStage.PAID).reduce((s, d) => s + d.value, 0);
+  const totalSigned = deals.filter(d => d.stage === SponsorshipStage.SIGNED).reduce((s, d) => s + d.value, 0);
+  const activeDeals = deals.filter(d => d.stage !== SponsorshipStage.PAID).length;
+  const plannedCount = deals.filter(d => d.stage === SponsorshipStage.LEAD).length;
+  const shootingCount = deals.filter(d => d.stage === SponsorshipStage.OUTREACH).length;
 
   function handleSave(deal: Deal) {
     if (deal.id) setDeals(prev => prev.map(d => d.id === deal.id ? deal : d));
@@ -460,6 +468,9 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
   }
   function handleDelete(id: number) { setDeals(prev => prev.filter(d => d.id !== id)); setSelectedId(null); }
   function handleStageChange(id: number, stage: Stage) { setDeals(prev => prev.map(d => d.id === id ? { ...d, stage } : d)); }
+  function handlePriorityChange(id: number, priority: DealPriority) {
+    setDeals(prev => prev.map(d => d.id === id ? { ...d, priority } : d));
+  }
   function handleAdvance(deal: Deal) {
     const idx = STAGES.indexOf(deal.stage);
     if (idx < STAGES.length - 1) handleStageChange(deal.id, STAGES[idx + 1]);
@@ -482,18 +493,37 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
       {/* Header */}
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="mb-1 text-2xl font-extrabold tracking-[-0.04em] text-white">Sponsorships</h1>
-          <div className="text-[13px] text-[rgba(255,255,255,0.4)]">Track brand deals from first contact to final payment</div>
+          <h1 className="mb-1 text-2xl font-extrabold tracking-[-0.04em] text-white">Content Pipeline</h1>
+          <div className="text-[13px] text-[rgba(255,255,255,0.4)]">Track each campaign from planning to published content</div>
+          <div className="mt-3 inline-flex rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-1">
+            {[
+              { id: SponsorshipMode.TABLE, label: "Table" },
+              { id: SponsorshipMode.KANBAN, label: "Kanban" },
+            ].map((v) => {
+              const active = viewMode === v.id;
+              return (
+                <button
+                  key={v.id}
+                  onClick={() => setViewMode(v.id)}
+                  className={`cursor-pointer rounded-[8px] px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+                    active ? "bg-[rgba(232,64,42,0.15)] text-[#E8402A]" : "text-[rgba(255,255,255,0.55)] hover:text-white"
+                  }`}
+                >
+                  {v.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
         <div className="flex items-center gap-[10px]">
           <div className="relative">
             <Search size={13} color="rgba(255,255,255,0.4)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
-            <input value={uiState.search} onChange={e => setUiState(prev => ({ ...prev, search: e.target.value }))} placeholder="Search deals…" className="h-[38px] w-[170px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] pl-[34px] pr-[14px] text-xs text-[rgba(255,255,255,0.7)] outline-none"
+            <input value={uiState.search} onChange={e => setUiState(prev => ({ ...prev, search: e.target.value }))} placeholder="Search content…" className="h-[38px] w-[170px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] pl-[34px] pr-[14px] text-xs text-[rgba(255,255,255,0.7)] outline-none"
               onFocus={e => e.currentTarget.style.borderColor = "#E8402A"}
               onBlur={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"} />
           </div>
           <button onClick={() => setModal({})} className="flex cursor-pointer items-center gap-2 rounded-[11px] bg-(--cos-primary) px-5 py-[10px] text-[13px] font-bold text-white">
-            <Plus size={15} /> Add Deal
+            <Plus size={15} /> Add Content
           </button>
         </div>
       </div>
@@ -501,10 +531,10 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
       {/* KPIs */}
       <div className="mb-5 grid grid-cols-4 gap-[14px]">
         {[
-          { label: "Total Pipeline", value: fmt(totalPipeline), sub: `${deals.length} total deals`, icon: DollarSign, accent: "#111111", trend: "+18% vs last quarter" },
-          { label: "Active Deals", value: String(activeDeals), sub: "in progress", icon: TrendingUp, accent: "#E8402A", trend: `${deals.filter(d => d.priority === DealPriority.HIGH && d.stage !== SponsorshipStage.PAID).length} high priority` },
-          { label: "Signed Value", value: fmt(totalSigned), sub: "awaiting deliverables", icon: Handshake, accent: "#2563eb", trend: `${deals.filter(d => d.stage === SponsorshipStage.SIGNED).length} contracts` },
-          { label: "Paid This Year", value: fmt(totalPaid), sub: "collected", icon: CheckCircle, accent: "#16a34a", trend: `${deals.filter(d => d.stage === SponsorshipStage.PAID).length} completed` },
+          { label: "Content Items", value: String(deals.length), sub: `${plannedCount} planned`, icon: Clapperboard, accent: "#111111", trend: `Est. value ${fmt(totalPipeline)}` },
+          { label: "In Production", value: String(activeDeals), sub: `${shootingCount} shooting now`, icon: Camera, accent: "#E8402A", trend: `${deals.filter(d => d.priority === DealPriority.HIGH && d.stage !== SponsorshipStage.PAID).length} high priority` },
+          { label: "Pending Review", value: String(deals.filter(d => d.stage === SponsorshipStage.SIGNED).length), sub: "awaiting approval", icon: MessageSquareQuote, accent: "#2563eb", trend: `Est. value ${fmt(totalSigned)}` },
+          { label: "Published", value: String(deals.filter(d => d.stage === SponsorshipStage.PAID).length), sub: "completed", icon: CheckCircle, accent: "#16a34a", trend: `Est. value ${fmt(totalPaid)}` },
         ].map(k => (
           <div key={k.label} className={`rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-5 py-[18px] ${ACCENT_KPI_CARD_CLASS[k.accent] ?? ""}`}>
             <div className="mb-[10px] flex items-start justify-between">
@@ -520,7 +550,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
         ))}
       </div>
 
-      {mode === SponsorshipMode.ANALYTICS ? (
+      {viewMode === SponsorshipMode.Analytics ? (
         /* ── Analytics view ── */
         <div className="flex flex-col gap-4">
           <InsightCards deals={deals} />
@@ -569,6 +599,86 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
             </div>
           </div>
         </div>
+      ) : viewMode === SponsorshipMode.TABLE ? (
+        /* ── Table view ── */
+        <div className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-5 py-4">
+          <div className="mb-3 text-[12px] font-semibold text-[rgba(255,255,255,0.65)]">
+            {filtered.length} items
+          </div>
+          <div className="overflow-x-auto">
+            <div className="min-w-[980px]">
+              <div className="grid grid-cols-[2.2fr_1.2fr_1.1fr_1.1fr_1.4fr_1fr] gap-3 border-b border-[rgba(255,255,255,0.07)] px-2 pb-2">
+                {["Content", "Stage", "Priority", "Deadline", "Contact", "Est. value"].map((h) => (
+                  <div key={h} className="font-mono text-[9px] tracking-[0.08em] text-[rgba(255,255,255,0.4)]">
+                    {h.toUpperCase()}
+                  </div>
+                ))}
+              </div>
+              {[...filtered]
+                .sort((a, b) => STAGES.indexOf(a.stage) - STAGES.indexOf(b.stage))
+                .map((deal, i) => {
+                  return (
+                    <div
+                      key={deal.id}
+                      onClick={() => {
+                        setSelectedId(deal.id);
+                        setModal({ deal });
+                      }}
+                      className={`grid cursor-pointer grid-cols-[2.2fr_1.2fr_1.1fr_1.1fr_1.4fr_1fr] gap-3 px-2 py-3 transition-colors ${
+                        i < filtered.length - 1 ? "border-b border-[rgba(255,255,255,0.05)]" : ""
+                      }`}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "none";
+                      }}
+                    >
+                      <div className="min-w-0">
+                        <div className="truncate text-[12px] font-bold text-white">{deal.brand}</div>
+                        <div className="truncate font-mono text-[10px] text-[rgba(255,255,255,0.42)]">{deal.category}</div>
+                      </div>
+                      <div className="flex items-center">
+                        <select
+                          value={deal.stage}
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => handleStageChange(deal.id, e.target.value as Stage)}
+                          className="w-full cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.09)] bg-[rgba(255,255,255,0.03)] px-2 py-1.5 font-mono text-[10px] text-[rgba(255,255,255,0.8)] outline-none"
+                        >
+                          {STAGES.map((stage) => (
+                            <option key={stage} value={stage}>
+                              {stage}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="flex items-center">
+                        <select
+                          value={deal.priority}
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => handlePriorityChange(deal.id, e.target.value as DealPriority)}
+                          className="w-full cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.09)] bg-[rgba(255,255,255,0.03)] px-2 py-1.5 font-mono text-[10px] capitalize text-[rgba(255,255,255,0.8)] outline-none"
+                        >
+                          {[DealPriority.HIGH, DealPriority.MEDIUM, DealPriority.LOW].map((priority) => (
+                            <option key={priority} value={priority}>
+                              {priority}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="flex items-center font-mono text-[10px] text-[rgba(255,255,255,0.55)]">
+                        {deal.deadline === "Done" ? "Done" : deal.deadline}
+                      </div>
+                      <div className="flex items-center font-mono text-[10px] text-[rgba(255,255,255,0.55)]">
+                        {deal.contact || "—"}
+                      </div>
+                      <div className="flex items-center text-[11px] font-semibold text-[rgba(255,255,255,0.72)]">{fmt(deal.value)}</div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
       ) : (
         /* ── Kanban view ── */
         <div className="flex items-start gap-4">
@@ -607,7 +717,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                         </div>
                         <div className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border font-mono text-[9px] font-extrabold ${STAGE_ACTIVE_CLASS[stage]}`}>{stageDeals.length}</div>
                       </div>
-                      <div className="text-[13px] font-extrabold tracking-[-0.03em] text-white">{fmt(stageValue)}</div>
+                      <div className="font-mono text-[9px] text-[rgba(255,255,255,0.42)]">Est. value {fmt(stageValue)}</div>
                     </div>
                     {stageDeals.map(deal => (
                       <div key={deal.id}>

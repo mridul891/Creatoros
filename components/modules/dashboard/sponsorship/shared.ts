@@ -1,9 +1,9 @@
 import {
-  AlertCircle,
+  Camera,
+  Clapperboard,
   CheckCircle,
-  Handshake,
-  Mail,
-  Tag,
+  MessageSquareQuote,
+  Scissors,
   type LucideIcon,
 } from "lucide-react";
 import { DealPriority, SponsorshipStage } from "@/enums/sponsorship";
@@ -26,11 +26,11 @@ export const STAGE_CFG: Record<
   Stage,
   { color: string; bg: string; border: string; icon: LucideIcon; label: string }
 > = {
-  [SponsorshipStage.LEAD]: { color: "#717171", bg: "rgba(113,113,113,0.07)", border: "rgba(113,113,113,0.2)", icon: Tag, label: "Lead" },
-  [SponsorshipStage.OUTREACH]: { color: "#d97706", bg: "rgba(217,119,6,0.07)", border: "rgba(217,119,6,0.25)", icon: Mail, label: "Outreach" },
-  [SponsorshipStage.NEGOTIATION]: { color: "#E8402A", bg: "rgba(232,64,42,0.07)", border: "rgba(232,64,42,0.25)", icon: AlertCircle, label: "Negotiation" },
-  [SponsorshipStage.SIGNED]: { color: "#2563eb", bg: "rgba(37,99,235,0.07)", border: "rgba(37,99,235,0.25)", icon: Handshake, label: "Signed" },
-  [SponsorshipStage.PAID]: { color: "#16a34a", bg: "rgba(22,163,74,0.07)", border: "rgba(22,163,74,0.25)", icon: CheckCircle, label: "Paid" },
+  [SponsorshipStage.LEAD]: { color: "#717171", bg: "rgba(113,113,113,0.07)", border: "rgba(113,113,113,0.2)", icon: Clapperboard, label: "Planned" },
+  [SponsorshipStage.OUTREACH]: { color: "#d97706", bg: "rgba(217,119,6,0.07)", border: "rgba(217,119,6,0.25)", icon: Camera, label: "Shooting" },
+  [SponsorshipStage.NEGOTIATION]: { color: "#E8402A", bg: "rgba(232,64,42,0.07)", border: "rgba(232,64,42,0.25)", icon: Scissors, label: "Editing" },
+  [SponsorshipStage.SIGNED]: { color: "#2563eb", bg: "rgba(37,99,235,0.07)", border: "rgba(37,99,235,0.25)", icon: MessageSquareQuote, label: "Review" },
+  [SponsorshipStage.PAID]: { color: "#16a34a", bg: "rgba(22,163,74,0.07)", border: "rgba(22,163,74,0.25)", icon: CheckCircle, label: "Published" },
 };
 
 export const STAGE_ACTIVE_CLASS: Record<Stage, string> = {

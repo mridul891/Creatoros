@@ -49,7 +49,7 @@ export function DealModal({
       return;
     }
     if (form.value <= 0) {
-      setErr("Deal value must be greater than 0.");
+      setErr("Content value must be greater than 0.");
       return;
     }
     const today = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
@@ -72,10 +72,10 @@ export function DealModal({
   }
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-[rgba(0,0,0,0.45)] backdrop-blur-[6px]" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className="fixed inset-0 z-200 flex items-center justify-center bg-[rgba(0,0,0,0.45)] backdrop-blur-[6px]" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="max-h-[90vh] w-[580px] overflow-y-auto rounded-[22px] bg-[#0D0D0D] shadow-[0_32px_80px_rgba(0,0,0,0.22)]">
         <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.07)] px-[28px] py-[22px]">
-          <div className="text-[17px] font-extrabold tracking-[-0.03em] text-white">{ex ? "Edit Deal" : "New Deal"}</div>
+          <div className="text-[17px] font-extrabold tracking-[-0.03em] text-white">{ex ? "Edit Content" : "New Content"}</div>
           <button onClick={onClose} className="cursor-pointer rounded-lg p-[6px] text-[rgba(255,255,255,0.4)]"><X size={18} /></button>
         </div>
         <div className="flex flex-col gap-4 px-[28px] py-[22px]">
@@ -97,7 +97,7 @@ export function DealModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelClassName}>Deal value (USD) *</label>
+              <label className={labelClassName}>Content value (USD) *</label>
               <input type="number" value={form.value || ""} onChange={(e) => { setForm(prev => ({ ...prev, value: parseFloat(e.target.value) || 0 })); setErr(""); }} placeholder="5000" className={inputClassName} onFocus={(e) => e.currentTarget.style.borderColor = "#E8402A"} onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"} />
             </div>
             <div>
@@ -148,7 +148,7 @@ export function DealModal({
         </div>
         <div className="flex justify-end gap-[10px] px-[28px] pb-6 pt-[14px]">
           <button onClick={onClose} className="cursor-pointer rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-transparent px-5 py-[10px] text-[13px] text-[rgba(255,255,255,0.4)]">Cancel</button>
-          <button onClick={handleSave} className="cursor-pointer rounded-[10px] bg-[var(--cos-primary)] px-6 py-[10px] text-[13px] font-bold text-white">{ex ? "Save Changes" : "Add Deal"}</button>
+          <button onClick={handleSave} className="cursor-pointer rounded-[10px] bg-(--cos-primary) px-6 py-[10px] text-[13px] font-bold text-white">{ex ? "Save Changes" : "Add Content"}</button>
         </div>
       </div>
     </div>

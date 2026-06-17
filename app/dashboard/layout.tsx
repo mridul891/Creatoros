@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Sidebar } from "@/components/modules/dashboard/analytics/Sidebar";
+import { requireUser } from "@/lib/auth/require-user";
 
 export const metadata: Metadata = {
   title: {
@@ -21,7 +22,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
+  await requireUser();
+
   return (
     <SidebarProvider className="h-screen overflow-hidden bg-[#050505] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,system-ui,sans-serif]">
       <Sidebar />

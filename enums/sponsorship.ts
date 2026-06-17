@@ -1,9 +1,9 @@
 export enum SponsorshipStage {
-  LEAD = "Lead",
-  OUTREACH = "Outreach",
-  NEGOTIATION = "Negotiation",
-  SIGNED = "Signed",
-  PAID = "Paid",
+  LEAD = "Planned",
+  OUTREACH = "Shooting",
+  NEGOTIATION = "Editing",
+  SIGNED = "Review",
+  PAID = "Published",
 }
 
 export enum DealPriority {
@@ -13,6 +13,7 @@ export enum DealPriority {
 }
 
 export enum SponsorshipMode {
+  TABLE = "table",
   KANBAN = "kanban",
-  ANALYTICS = "analytics",
+  Analytics = "analytics",
 }

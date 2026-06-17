@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardDealsAnalyticsPage() {
-  return <SponsorshipPage mode={SponsorshipMode.ANALYTICS} />;
+  return <SponsorshipPage mode={SponsorshipMode.Analytics} />;
 }
