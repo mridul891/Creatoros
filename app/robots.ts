@@ -1,8 +1,7 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from "next"
+import { getSiteUrl } from "@/lib/site-url"
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "https://www.notyetlaunched.xyz";
+const siteUrl = getSiteUrl()
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -33,5 +32,5 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
-  };
+  }
 }

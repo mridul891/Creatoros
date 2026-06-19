@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next"
+import { getSiteUrl } from "@/lib/site-url"
 
 type SitemapRoute = {
   path: `/${string}` | "/"
@@ -16,19 +17,8 @@ const routes: SitemapRoute[] = [
   { path: "/terms-and-conditions", changeFrequency: "yearly", priority: 0.5 },
 ]
 
-function getBaseUrl(): string {
-  const candidate =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    process.env.VERCEL_PROJECT_PRODUCTION_URL ??
-    "https://www.notyetlaunched.xyz"
-
-  return candidate.startsWith("http")
-    ? candidate.replace(/\/$/, "")
-    : `https://${candidate.replace(/\/$/, "")}`
-}
-
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = getBaseUrl()
+  const baseUrl = getSiteUrl()
   const lastModified = new Date()
 
   return routes.map(({ path, changeFrequency, priority }) => ({
