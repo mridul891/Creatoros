@@ -26,7 +26,7 @@ export const getCurrentUser = cache(async () => {
 
   try {
     const existingUser = await prisma.user.findUnique({
-      where: { supabaseUserId: user.id },
+      where: { id: user.id },
     })
     if (existingUser) {
       return existingUser

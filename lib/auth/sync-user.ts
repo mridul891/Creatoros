@@ -2,7 +2,6 @@
 
 import "server-only"
 
-import { Prisma } from "@prisma/client"
 import type { User as SupabaseUser } from "@supabase/supabase-js"
 
 import { prisma } from "@/lib/prisma"
@@ -29,7 +28,7 @@ export async function syncUserFromSupabaseUser(user: SupabaseUser) {
 
   try {
     return await prisma.user.upsert({
-      where: { supabaseUserId: user.id },
+      where: { id: user.id },
       update: {
         email: user.email,
         name: getDisplayName(user),
@@ -37,7 +36,7 @@ export async function syncUserFromSupabaseUser(user: SupabaseUser) {
         lastSignInAt: new Date(),
       },
       create: {
-        supabaseUserId: user.id,
+        id: user.id,
         email: user.email,
         name: getDisplayName(user),
         avatarUrl: getAvatarUrl(user),
@@ -45,21 +44,9 @@ export async function syncUserFromSupabaseUser(user: SupabaseUser) {
       },
     })
   } catch (error) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002" &&
-      Array.isArray(error.meta?.target) &&
-      error.meta.target.includes("email")
-    ) {
-      console.error("auth.email_conflict_detected", {
-        supabaseUserId: user.id,
-        email: user.email,
-      })
-      throw new Error("An account conflict was detected for this email address.")
-    }
 
     console.error("auth.user_sync_failed", {
-      supabaseUserId: user.id,
+      userId: user.id,
       email: user.email,
       error,
     })

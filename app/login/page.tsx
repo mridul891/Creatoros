@@ -1,16 +1,12 @@
 import { LoginForm } from "@/components/login-form"
-import { createSupabaseServerClient } from "@/lib/supabase/server-client"
+import { getCurrentUser } from "@/lib/auth/get-current-user"
 import { redirect } from "next/navigation"
 import { CheckCircle2 } from "lucide-react"
 
 export default async function LoginPage() {
-  const supabase = await createSupabaseServerClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+  const user = await getCurrentUser()
   if (user) {
-    redirect("/dashboard")
+    redirect(user.isOnboardingComplete ? "/dashboard" : "/onboarding")
   }
 
   return (

@@ -33,9 +33,9 @@ pnpm-debug.log*
 .env*
 !.env.example
 !.env*.example
-.env.example
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
-.pnpm-store/
+# generated artifacts
+/generated/

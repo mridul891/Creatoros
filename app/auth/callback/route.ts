@@ -5,8 +5,8 @@ import { syncUserFromSupabaseUser } from "@/lib/auth/sync-user"
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get("code")
-  const next = requestUrl.searchParams.get("next") ?? "/dashboard"
-  const safeNext = next.startsWith("/") ? next : "/dashboard"
+  const next = requestUrl.searchParams.get("next")
+  const safeNext = next?.startsWith("/") ? next : null
 
   if (!code) {
     return NextResponse.redirect(
@@ -34,11 +34,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/login?error=oauth_callback_failed", request.url))
     }
 
-    await syncUserFromSupabaseUser(user)
+    const syncedUser = await syncUserFromSupabaseUser(user)
+    const destination = syncedUser.isOnboardingComplete
+      ? safeNext ?? "/dashboard"
+      : "/onboarding"
+
+    return NextResponse.redirect(new URL(destination, request.url))
   } catch (error) {
     console.error("auth.callback_sync_failed", { error })
     return NextResponse.redirect(new URL("/login?error=oauth_sync_failed", request.url))
   }
-
-  return NextResponse.redirect(new URL(safeNext, request.url))
 }

@@ -5,21 +5,40 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  supabaseUserId       String    @unique @map("supabase_user_id") @db.Uuid
+  id                   String    @id @db.Uuid
   email                String    @unique
   name                 String?
   avatarUrl            String?   @map("avatar_url")
   lastSignInAt         DateTime? @map("last_sign_in_at")
   isOnboardingComplete Boolean   @default(false) @map("is_onboarding_complete")
+  creator              Creator?
   createdAt            DateTime  @default(now()) @map("created_at")
   updatedAt            DateTime  @updatedAt @map("updated_at")
 
   @@index([createdAt], map: "users_created_at_idx")
   @@index([lastSignInAt], map: "users_last_sign_in_at_idx")
   @@map("users")
+}
+enum CreatorType {
+  Micro
+  Mid
+  Macro
+}
+
+model Creator {
+  id              String      @id @db.Uuid
+  creatorType     CreatorType @default(Micro) @map("creator_type")
+  niche           String?     @map("niche")
+  instagramHandle String?     @map("instagram_handle")
+  youtubeHandle   String?     @map("youtube_handle")
+  bio             String?     @map("bio")
+  userId          String      @unique @db.Uuid
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  @@map("creators")
 }

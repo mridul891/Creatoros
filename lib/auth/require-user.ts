@@ -14,3 +14,13 @@ export async function requireUser() {
 
   return user
 }
+
+export async function requireOnboardedUser() {
+  const user = await requireUser()
+
+  if (!user.isOnboardingComplete) {
+    redirect("/onboarding")
+  }
+
+  return user
+}
