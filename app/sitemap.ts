@@ -6,6 +6,7 @@ type SitemapRoute = {
   changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>
   priority: number
 }
+export const dynamic = "force-static"
 
 const routes: SitemapRoute[] = [
   { path: "/", changeFrequency: "weekly", priority: 1.0 },
@@ -19,11 +20,10 @@ const routes: SitemapRoute[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getSiteUrl()
-  const lastModified = new Date().toISOString().split("T")[0]
 
   return routes.map(({ path, changeFrequency, priority }) => ({
     url: new URL(path, baseUrl).toString(),
-    lastModified,
+    lastModified: new Date(),
     changeFrequency,
     priority,
   }))
