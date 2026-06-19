@@ -8,7 +8,7 @@ type SitemapRoute = {
 }
 
 const routes: SitemapRoute[] = [
-  { path: "/", changeFrequency: "weekly", priority: 1 },
+  { path: "/", changeFrequency: "weekly", priority: 1.0 },
   { path: "/product", changeFrequency: "weekly", priority: 0.9 },
   { path: "/features", changeFrequency: "weekly", priority: 0.9 },
   { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
@@ -19,7 +19,7 @@ const routes: SitemapRoute[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getSiteUrl()
-  const lastModified = new Date()
+  const lastModified = new Date().toISOString().split("T")[0]
 
   return routes.map(({ path, changeFrequency, priority }) => ({
     url: new URL(path, baseUrl).toString(),
