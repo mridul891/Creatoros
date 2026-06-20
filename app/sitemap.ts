@@ -1,27 +1,40 @@
 import type { MetadataRoute } from "next"
+import { getSiteUrl } from "@/lib/site-url"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const siteUrl = getSiteUrl()
+  const lastModified = new Date().toISOString()
+
+  const paths = [
+    "/",
+    "/analytics",
+    "/dashboard",
+    "/dashboard/analytics",
+    "/dashboard/brands",
+    "/dashboard/calendar",
+    "/dashboard/deals",
+    "/dashboard/invoices",
+    "/dashboard/media-kit",
+    "/features",
+    "/login",
+    "/onboarding",
+    "/pricing",
+    "/privacy-policy",
+    "/product",
+    "/terms-and-conditions",
+    "/waitlist",
+  ]
+
   return [
     {
-      url: "https://www.notyetlaunched.xyz",
+      url: `${siteUrl}/`,
+      lastModified,
     },
-    {
-      url: "https://www.notyetlaunched.xyz/product",
-    },
-    {
-      url: "https://www.notyetlaunched.xyz/features",
-    },
-    {
-      url: "https://www.notyetlaunched.xyz/pricing",
-    },
-    {
-      url: "https://www.notyetlaunched.xyz/waitlist",
-    },
-    {
-      url: "https://www.notyetlaunched.xyz/privacy-policy",
-    },
-    {
-      url: "https://www.notyetlaunched.xyz/terms-and-conditions",
-    },
+    ...paths
+      .filter((path) => path !== "/")
+      .map((path) => ({
+        url: `${siteUrl}${path}`,
+        lastModified,
+      })),
   ]
 }
