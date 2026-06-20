@@ -1,14 +1,14 @@
 import type { Metadata } from "next"
 import "../styles/index.css";
-import { Geist, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
-const siteUrl ="https://www.notyetlaunched.xyz"
+const siteUrl = "https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
 
 export const metadata: Metadata = {
@@ -207,30 +207,13 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(inter.variable, "font-sans")}
     >
-      <meta
-        property="og:url"
-        content={siteUrl}
-      />
-       <meta
-        property="og:site_name"
-        content={siteName}
-      />
-      <meta
-        property="og:title"
-        content="NotYetLaunched — Brand Deal Tracker & Creator CRM for Content Creators"
-      />
-      <meta
-        property="og:description"
-        content="The brand deal tracker and creator CRM built for content creators. Manage brand deals, influencer sponsorships, invoices, payments, and deadlines from one streamlined workspace."
-      />
       <body suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <ThemeProvider>{children}</ThemeProvider>
-        <Toaster richColors/>
-
+        <Toaster richColors />
       </body>
     </html>
   )
