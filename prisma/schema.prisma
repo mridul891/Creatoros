@@ -15,6 +15,7 @@ model User {
   lastSignInAt         DateTime? @map("last_sign_in_at")
   isOnboardingComplete Boolean   @default(false) @map("is_onboarding_complete")
   creator              Creator?
+  brands               Brand[]
   createdAt            DateTime  @default(now()) @map("created_at")
   updatedAt            DateTime  @updatedAt @map("updated_at")
 
@@ -41,4 +42,24 @@ model Creator {
   updatedAt       DateTime    @updatedAt @map("updated_at")
 
   @@map("creators")
+}
+
+model Brand {
+  id                  String   @id @default(uuid()) @db.Uuid
+  userId              String   @map("user_id") @db.Uuid
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String
+  normalizedName      String   @map("normalized_name")
+  category            String?
+  website             String?
+  primaryContactName  String?  @map("primary_contact_name")
+  primaryContactEmail String?  @map("primary_contact_email")
+  notes               String?
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, normalizedName], map: "brands_user_id_normalized_name_key")
+  @@index([userId, updatedAt(sort: Desc)], map: "brands_user_id_updated_at_idx")
+  @@index([userId, category], map: "brands_user_id_category_idx")
+  @@map("brands")
 }

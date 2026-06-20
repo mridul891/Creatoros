@@ -2,6 +2,7 @@
 
 import {
   BarChart3,
+  Building2,
   Calendar,
   ChevronsLeft,
   FileText,
@@ -36,6 +37,7 @@ import {
 const NAV_ITEMS = [
   { href: DashboardRoute.ROOT, label: "Dashboard", icon: LayoutDashboard },
   { href: DashboardRoute.CALENDAR, label: "Calendar", icon: Calendar },
+  { href: DashboardRoute.BRANDS, label: "Brands", icon: Building2 },
   { href: DashboardRoute.ANALYTICS, label: "Analytics", icon: BarChart3 },
   { href: DashboardRoute.DEALS, label: "Content", icon: Handshake },
   { href: DashboardRoute.INVOICES, label: "Invoices", icon: FileText },
@@ -47,7 +49,7 @@ function isNavItemActive(pathname: string, href: DashboardRoute) {
     return pathname === href;
   }
 
-  if (href === DashboardRoute.DEALS) {
+  if (href === DashboardRoute.DEALS || href === DashboardRoute.BRANDS) {
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
