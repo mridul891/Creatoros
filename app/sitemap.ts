@@ -1,17 +1,27 @@
 import type { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://www.notyetlaunched.xyz"
-
   return [
-    "/",
-    "/product",
-    "/features",
-    "/pricing",
-    "/waitlist",
-    "/privacy-policy",
-    "/terms-and-conditions",
-  ].map((path) => ({
-    url: `${base}${path === "/" ? "" : path}`,
-  }))
+    {
+      url: "https://www.notyetlaunched.xyz",
+    },
+    {
+      url: "https://www.notyetlaunched.xyz/product",
+    },
+    {
+      url: "https://www.notyetlaunched.xyz/features",
+    },
+    {
+      url: "https://www.notyetlaunched.xyz/pricing",
+    },
+    {
+      url: "https://www.notyetlaunched.xyz/waitlist",
+    },
+    {
+      url: "https://www.notyetlaunched.xyz/privacy-policy",
+    },
+    {
+      url: "https://www.notyetlaunched.xyz/terms-and-conditions",
+    },
+  ]
 }
