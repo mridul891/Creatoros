@@ -2,31 +2,36 @@
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import type { BrandField } from "@/types/brand"
-import { BRAND_CATEGORIES } from "@/enums/brand"
-import { type BrandFormValues } from "@/lib/crm/brands/brandForm"
+import type { ContactField } from "@/types/contact"
 import { CrmFormDialog } from "../shared"
 
-export type { BrandFormValues }
+export type ContactFormValues = {
+  name: string
+  email: string
+  phoneNumber: string
+  jobTitle: string
+  notes: string
+  isPrimary: boolean
+}
 
-type BrandFormProps = {
+type ContactFormModalProps = {
   open: boolean
   title: string
   submitLabel: string
-  values: BrandFormValues
+  values: ContactFormValues
   isSubmitting: boolean
   formError?: string
-  fieldErrors?: Partial<Record<BrandField, string>>
-  onChange: (values: BrandFormValues) => void
+  fieldErrors?: Partial<Record<ContactField, string>>
+  onChange: (values: ContactFormValues) => void
   onOpenChange: (open: boolean) => void
   onSubmit: () => void
 }
 
-export function BrandForm({
+export function ContactFormModal({
   open,
   title,
   submitLabel,
@@ -37,12 +42,12 @@ export function BrandForm({
   onChange,
   onOpenChange,
   onSubmit,
-}: BrandFormProps) {
+}: ContactFormModalProps) {
   return (
     <CrmFormDialog
       open={open}
       title={title}
-      description="Keep sponsor and contact details accurate for faster outreach."
+      description="Track the right person inside this brand to speed up outreach and follow-ups."
       onOpenChange={onOpenChange}
       footer={
         <>
@@ -69,11 +74,11 @@ export function BrandForm({
       <FieldGroup className="mt-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Brand Name *</FieldLabel>
+            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Name *</FieldLabel>
             <Input
               value={values.name}
               onChange={(event) => onChange({ ...values, name: event.target.value })}
-              placeholder="Glow Republic"
+              placeholder="Sarah Kim"
               aria-invalid={Boolean(fieldErrors?.name)}
               className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
             />
@@ -81,65 +86,40 @@ export function BrandForm({
           </Field>
 
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Category</FieldLabel>
-            <Select
-              value={values.category || "__none"}
-              onValueChange={(category) =>
-                onChange({
-                  ...values,
-                  category: category === "__none" ? "" : category,
-                })
-              }
-            >
-              <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__none">Uncategorized</SelectItem>
-                {BRAND_CATEGORIES.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FieldError>{fieldErrors?.category}</FieldError>
+            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Position</FieldLabel>
+            <Input
+              value={values.jobTitle}
+              onChange={(event) => onChange({ ...values, jobTitle: event.target.value })}
+              placeholder="Partnerships Manager"
+              aria-invalid={Boolean(fieldErrors?.jobTitle)}
+              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+            />
+            <FieldError>{fieldErrors?.jobTitle}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Website</FieldLabel>
+            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Email</FieldLabel>
             <Input
-              value={values.website}
-              onChange={(event) => onChange({ ...values, website: event.target.value })}
-              placeholder="https://example.com"
-              aria-invalid={Boolean(fieldErrors?.website)}
-              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
-            />
-            <FieldError>{fieldErrors?.website}</FieldError>
-          </Field>
-
-          <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Contact Name</FieldLabel>
-            <Input
-              value={values.primaryContactName}
-              onChange={(event) => onChange({ ...values, primaryContactName: event.target.value })}
-              placeholder="Sarah Kim"
-              aria-invalid={Boolean(fieldErrors?.primaryContactName)}
-              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
-            />
-            <FieldError>{fieldErrors?.primaryContactName}</FieldError>
-          </Field>
-
-          <Field className="sm:col-span-2">
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Contact Email</FieldLabel>
-            <Input
-              value={values.primaryContactEmail}
-              onChange={(event) => onChange({ ...values, primaryContactEmail: event.target.value })}
+              type="email"
+              value={values.email}
+              onChange={(event) => onChange({ ...values, email: event.target.value })}
               placeholder="sarah@brand.com"
-              aria-invalid={Boolean(fieldErrors?.primaryContactEmail)}
+              aria-invalid={Boolean(fieldErrors?.email)}
               className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
             />
-            <FieldError>{fieldErrors?.primaryContactEmail}</FieldError>
+            <FieldError>{fieldErrors?.email}</FieldError>
+          </Field>
+
+          <Field>
+            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Phone Number</FieldLabel>
+            <Input
+              value={values.phoneNumber}
+              onChange={(event) => onChange({ ...values, phoneNumber: event.target.value })}
+              placeholder="+1 555 123 4567"
+              aria-invalid={Boolean(fieldErrors?.phoneNumber)}
+              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+            />
+            <FieldError>{fieldErrors?.phoneNumber}</FieldError>
           </Field>
         </div>
 
@@ -153,6 +133,17 @@ export function BrandForm({
             className="border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
           />
           <FieldError>{fieldErrors?.notes}</FieldError>
+        </Field>
+
+        <Field orientation="horizontal" className="items-center rounded-[10px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-2.5">
+          <Checkbox
+            checked={values.isPrimary}
+            onCheckedChange={(checked) => onChange({ ...values, isPrimary: checked === true })}
+            className="border-[rgba(255,255,255,0.2)]"
+          />
+          <FieldLabel className="text-[12px] text-[rgba(255,255,255,0.75)]">
+            Mark as primary contact for this brand
+          </FieldLabel>
         </Field>
 
         {formError ? (

@@ -1,86 +1,138 @@
 "use client"
 
-import Link from "next/link"
+import { MoreHorizontal } from "lucide-react"
+import { useRouter } from "next/navigation"
+import type { KeyboardEvent } from "react"
 
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { formatShortDate } from "@/lib/format/date"
 import type { BrandListItem } from "@/types/brand"
 
-type BrandsTableProps = {
-  items: BrandListItem[]
-  onEdit: (brand: BrandListItem) => void
-  onDelete: (brand: BrandListItem) => void
-}
-
-function formatDate(value: Date) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(value))
-}
+type BrandsTableProps = { items: BrandListItem[]; onEdit: (brand: BrandListItem) => void; onDelete: (brand: BrandListItem) => void }
 
 export function BrandsTable({ items, onEdit, onDelete }: BrandsTableProps) {
+  const router = useRouter()
+
+  function navigateToBrand(brandId: string) {
+    router.push(`/dashboard/brands/${brandId}`)
+  }
+
+  function handleRowKeyDown(event: KeyboardEvent<HTMLTableRowElement>, brandId: string) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      navigateToBrand(brandId)
+    }
+  }
+
   return (
     <div className="overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D]">
-      <div className="grid grid-cols-[2fr_1.1fr_1.5fr_1.2fr_140px] border-b border-[rgba(255,255,255,0.07)] px-6 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
-        <span>BRAND</span>
-        <span>CATEGORY</span>
-        <span>PRIMARY CONTACT</span>
-        <span>UPDATED</span>
-        <span className="text-right">ACTIONS</span>
-      </div>
-
-      {items.map((brand, index) => (
-        <div
-          key={brand.id}
-          className={`grid grid-cols-[2fr_1.1fr_1.5fr_1.2fr_140px] items-center px-6 py-4 ${
-            index < items.length - 1 ? "border-b border-[rgba(255,255,255,0.07)]" : ""
-          }`}
-        >
-          <div className="min-w-0">
-            <Link
-              href={`/dashboard/brands/${brand.id}`}
-              className="block truncate text-[13px] font-semibold text-white hover:text-[#E8402A]"
+      <Table className="table-fixed border-collapse">
+        <TableHeader className="border-b border-[rgba(255,255,255,0.07)]">
+          <TableRow className="border-0 hover:bg-transparent">
+            <TableHead className="w-[28%] px-6 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
+              BRAND
+            </TableHead>
+            <TableHead className="w-[16%] px-6 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
+              CATEGORY
+            </TableHead>
+            <TableHead className="w-[24%] px-6 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
+              PRIMARY CONTACT
+            </TableHead>
+            <TableHead className="w-[14%] px-6 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
+              UPDATED
+            </TableHead>
+            <TableHead className="w-[18%] px-6 py-3 text-right font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
+              ACTIONS
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.map((brand) => (
+            <TableRow
+              key={brand.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => navigateToBrand(brand.id)}
+              onKeyDown={(event) => handleRowKeyDown(event, brand.id)}
+              className="cursor-pointer border-b border-[rgba(255,255,255,0.07)] bg-transparent hover:bg-[rgba(255,255,255,0.02)]"
             >
-              {brand.name}
-            </Link>
-            <div className="truncate text-[11px] text-[rgba(255,255,255,0.45)]">
-              {brand.website ?? "No website"}
-            </div>
-          </div>
-
-          <div className="text-[12px] text-[rgba(255,255,255,0.6)]">{brand.category ?? "—"}</div>
-
-          <div className="min-w-0">
-            <div className="truncate text-[12px] text-[rgba(255,255,255,0.7)]">
-              {brand.primaryContactName ?? "—"}
-            </div>
-            <div className="truncate font-mono text-[10px] text-[rgba(255,255,255,0.45)]">
-              {brand.primaryContactEmail ?? "—"}
-            </div>
-          </div>
-
-          <div className="font-mono text-[11px] text-[rgba(255,255,255,0.45)]">
-            {formatDate(brand.updatedAt)}
-          </div>
-
-          <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => onEdit(brand)}
-              className="cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.1)] px-3 py-1.5 text-[11px] text-[rgba(255,255,255,0.7)] hover:border-[#E8402A] hover:text-[#E8402A]"
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              onClick={() => onDelete(brand)}
-              className="cursor-pointer rounded-[8px] border border-[rgba(232,64,42,0.3)] px-3 py-1.5 text-[11px] text-[#E8402A] hover:bg-[rgba(232,64,42,0.08)]"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
+              <TableCell className="px-6 py-4">
+                <div className="min-w-0">
+                  <div className="truncate text-[13px] font-semibold text-white">{brand.name}</div>
+                  <div className="truncate text-[11px] text-[rgba(255,255,255,0.45)]">
+                    {brand.website ?? "No website"}
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="px-6 py-4 text-[12px] text-[rgba(255,255,255,0.6)]">
+                {brand.category ?? "—"}
+              </TableCell>
+              <TableCell className="px-6 py-4">
+                <div className="min-w-0">
+                  <div className="truncate text-[12px] text-[rgba(255,255,255,0.7)]">
+                    {brand.primaryContactName ?? "—"}
+                  </div>
+                  <div className="truncate font-mono text-[10px] text-[rgba(255,255,255,0.45)]">
+                    {brand.primaryContactEmail ?? "—"}
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="px-6 py-4 font-mono text-[11px] text-[rgba(255,255,255,0.45)]">
+                {formatShortDate(brand.updatedAt)}
+              </TableCell>
+              <TableCell className="px-6 py-4">
+                <div className="flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={(event) => event.stopPropagation()}
+                        className="cursor-pointer text-[rgba(255,255,255,0.75)] hover:bg-[rgba(255,255,255,0.06)]"
+                      >
+                        <MoreHorizontal />
+                        <span className="sr-only">Open actions</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="end"
+                      className="w-32 border-[rgba(255,255,255,0.08)] bg-[#121212] text-[rgba(255,255,255,0.82)]"
+                    >
+                      <DropdownMenuItem
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          onEdit(brand)
+                        }}
+                        className="cursor-pointer"
+                      >
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        variant="destructive"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          onDelete(brand)
+                        }}
+                        className="cursor-pointer"
+                      >
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

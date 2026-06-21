@@ -16,6 +16,7 @@ model User {
   isOnboardingComplete Boolean   @default(false) @map("is_onboarding_complete")
   creator              Creator?
   brands               Brand[]
+  contacts             Contact[]
   createdAt            DateTime  @default(now()) @map("created_at")
   updatedAt            DateTime  @updatedAt @map("updated_at")
 
@@ -27,6 +28,11 @@ enum CreatorType {
   Micro
   Mid
   Macro
+}
+
+enum ContactStatus {
+  Active
+  Archived
 }
 
 model Creator {
@@ -48,6 +54,7 @@ model Brand {
   id                  String   @id @default(uuid()) @db.Uuid
   userId              String   @map("user_id") @db.Uuid
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contacts            Contact[]
   name                String
   normalizedName      String   @map("normalized_name")
   category            String?
@@ -62,4 +69,31 @@ model Brand {
   @@index([userId, updatedAt(sort: Desc)], map: "brands_user_id_updated_at_idx")
   @@index([userId, category], map: "brands_user_id_category_idx")
   @@map("brands")
+}
+
+model Contact {
+  id              String        @id @default(uuid()) @db.Uuid
+  userId          String        @map("user_id") @db.Uuid
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandId         String        @map("brand_id") @db.Uuid
+  brand           Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  name            String
+  normalizedName  String        @map("normalized_name")
+  email           String?
+  normalizedEmail String?       @map("normalized_email")
+  phoneNumber     String?       @map("phone_number")
+  jobTitle        String?       @map("job_title")
+  notes           String?
+  isPrimary       Boolean       @default(false) @map("is_primary")
+  status          ContactStatus @default(Active)
+  archivedAt      DateTime?     @map("archived_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  @@index([brandId, status, updatedAt(sort: Desc)], map: "contacts_brand_id_status_updated_at_idx")
+  @@index([brandId, isPrimary], map: "contacts_brand_id_is_primary_idx")
+  @@index([brandId, normalizedName], map: "contacts_brand_id_normalized_name_idx")
+  @@index([brandId, normalizedEmail], map: "contacts_brand_id_normalized_email_idx")
+  @@index([userId, updatedAt(sort: Desc)], map: "contacts_user_id_updated_at_idx")
+  @@map("contacts")
 }

@@ -18,6 +18,7 @@ export interface BrandListItem {
   website: string | null
   primaryContactName: string | null
   primaryContactEmail: string | null
+  notes: string | null
   updatedAt: Date
 }
 

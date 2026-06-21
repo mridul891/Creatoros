@@ -172,6 +172,7 @@ export async function listBrandsAction(input?: {
           website: true,
           primaryContactName: true,
           primaryContactEmail: true,
+          notes: true,
           updatedAt: true,
         },
       }),
