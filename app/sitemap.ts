@@ -5,22 +5,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl()
   const lastModified = new Date().toISOString()
 
+  // Keep sitemap limited to public, indexable marketing/legal pages only.
+  // Do not add auth, onboarding, dashboard, or redirect-only routes here.
   const paths = [
     "/",
-    "/analytics",
-    "/dashboard",
-    "/dashboard/analytics",
-    "/dashboard/brands",
-    "/dashboard/calendar",
-    "/dashboard/deals",
-    "/dashboard/invoices",
-    "/dashboard/media-kit",
     "/features",
-    "/login",
-    "/onboarding",
     "/pricing",
-    "/privacy-policy",
     "/product",
+    "/privacy-policy",
     "/terms-and-conditions",
     "/waitlist",
   ]

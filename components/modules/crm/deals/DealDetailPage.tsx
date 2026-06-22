@@ -1,11 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { archiveDealAction, deleteDealAction, restoreDealAction, updateDealAction } from "@/app/action/dealActions"
 import { DealActivityTimelineSection } from "@/components/modules/crm/activity/DealActivityTimelineSection"
 import {
   Breadcrumb,
@@ -18,10 +17,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { getDealFormFieldErrors } from "@/lib/crm/deals/dealValidation"
 import { dealDetailToFormValues, type DealFormValues } from "@/lib/crm/deals/dealForm"
 import type { ActivityListData } from "@/types/activity"
 import type { DealDetail, DealField } from "@/types/deal"
-import { buildDealFormData } from "@/lib/crm/deals/dealForm"
+import { useDealMutations } from "@/hooks/useDealMutations"
 import { DealArchiveDialog } from "./DealArchiveDialog"
 import { DealDeleteDialog } from "./DealDeleteDialog"
 import { DealDetailInfoCards } from "./DealDetailInfoCards"
@@ -31,31 +31,45 @@ import { DealStageBadge } from "./DealStageBadge"
 type DealDetailPageProps = {
   deal: DealDetail
   activityData: ActivityListData
+  activityError?: string
   brands: Array<{ id: string; name: string }>
   contacts: Array<{ id: string; name: string }>
 }
 
-export function DealDetailPage({ deal, activityData, brands, contacts }: DealDetailPageProps) {
+function keepUnresolvedErrors(
+  currentErrors: Partial<Record<DealField, string>>,
+  nextErrors: Partial<Record<DealField, string>>
+) {
+  const unresolved: Partial<Record<DealField, string>> = {}
+
+  for (const field of Object.keys(currentErrors) as DealField[]) {
+    const message = nextErrors[field]
+    if (message) {
+      unresolved[field] = message
+    }
+  }
+
+  return unresolved
+}
+
+export function DealDetailPage({ deal, activityData, activityError, brands, contacts }: DealDetailPageProps) {
   const router = useRouter()
   const [showEdit, setShowEdit] = useState(false)
   const [archiveMode, setArchiveMode] = useState<"archive" | "restore" | null>(null)
   const [showDelete, setShowDelete] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isMutating, setIsMutating] = useState(false)
   const [formValues, setFormValues] = useState<DealFormValues>(() => dealDetailToFormValues(deal))
   const [formError, setFormError] = useState("")
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<DealField, string>>>({})
 
-  const brandContacts = useMemo(() => {
-    return contacts
-  }, [contacts])
+  const { isSubmitting, isMutating, submitUpdate, runArchive, runRestore, runDelete } = useDealMutations({
+    onRefresh: () => router.refresh(),
+    onDeleteSuccess: () => router.replace("/dashboard/deals"),
+  })
 
   async function handleUpdate() {
-    setIsSubmitting(true)
     setFormError("")
     setFieldErrors({})
-    const result = await updateDealAction(buildDealFormData(formValues, deal.id))
-    setIsSubmitting(false)
+    const result = await submitUpdate(deal.id, formValues)
 
     if (!result.success) {
       setFormError(result.message ?? "Could not update deal.")
@@ -72,33 +86,28 @@ export function DealDetailPage({ deal, activityData, brands, contacts }: DealDet
     if (!archiveMode) {
       return
     }
-    setIsMutating(true)
-    const result =
-      archiveMode === "archive" ? await archiveDealAction(deal.id) : await restoreDealAction(deal.id)
-    setIsMutating(false)
-
-    if (!result.success) {
-      toast.error(result.message ?? "Could not update deal status.")
-      return
-    }
-
-    toast.success(result.message ?? "Deal status updated.")
+    const result = archiveMode === "archive" ? await runArchive(deal.id) : await runRestore(deal.id)
+    if (!result.success) return
     setArchiveMode(null)
-    router.refresh()
   }
 
   async function handleDelete() {
-    setIsMutating(true)
-    const result = await deleteDealAction(deal.id)
-    setIsMutating(false)
-    if (!result.success) {
-      toast.error(result.message ?? "Could not delete deal.")
+    await runDelete(deal.id)
+  }
+
+  function handleFormChange(nextValues: DealFormValues) {
+    setFormValues(nextValues)
+    if (formError) {
+      setFormError("")
+    }
+
+    if (Object.keys(fieldErrors).length === 0) {
       return
     }
 
-    toast.success(result.message ?? "Deal deleted.")
-    router.replace("/dashboard/deals")
-    router.refresh()
+    const nextAllErrors = getDealFormFieldErrors(nextValues)
+    const unresolvedErrors = keepUnresolvedErrors(fieldErrors, nextAllErrors)
+    setFieldErrors(unresolvedErrors)
   }
 
   return (
@@ -210,7 +219,7 @@ export function DealDetailPage({ deal, activityData, brands, contacts }: DealDet
           </TabsContent>
 
           <TabsContent value="timeline" className="mt-4">
-            <DealActivityTimelineSection dealId={deal.id} initialData={activityData} />
+            <DealActivityTimelineSection dealId={deal.id} initialData={activityData} initialLoadError={activityError} />
           </TabsContent>
 
           {["tasks", "deliverables", "files", "notes", "invoices", "payments"].map((key) => (
@@ -235,8 +244,8 @@ export function DealDetailPage({ deal, activityData, brands, contacts }: DealDet
         fieldErrors={fieldErrors}
         formError={formError}
         brands={brands}
-        contacts={brandContacts}
-        onChange={setFormValues}
+        contacts={contacts}
+        onChange={handleFormChange}
         onOpenChange={(open) => setShowEdit(open)}
         onSubmit={handleUpdate}
       />

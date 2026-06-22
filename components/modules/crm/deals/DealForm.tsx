@@ -6,7 +6,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { DEAL_PRIORITIES, DEAL_PRIORITY_THEME, DEAL_STAGES } from "@/enums/deal"
+import { DEAL_PRIORITIES, DEAL_PRIORITY_THEME, DEAL_STAGES, DEAL_STAGE_LABEL, type DealPriority, type DealStage } from "@/enums/deal"
 import { type DealFormValues } from "@/lib/crm/deals/dealForm"
 import type { DealField } from "@/types/deal"
 import { CrmFormDialog } from "../shared"
@@ -40,6 +40,11 @@ export function DealForm({
   onOpenChange,
   onSubmit,
 }: DealFormProps) {
+  const selectedPriority: DealPriority = DEAL_PRIORITIES.includes(values.priority as DealPriority)
+    ? (values.priority as DealPriority)
+    : "Medium"
+  const priorityTheme = DEAL_PRIORITY_THEME[selectedPriority]
+
   return (
     <CrmFormDialog
       open={open}
@@ -157,14 +162,14 @@ export function DealForm({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field>
                 <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Stage *</FieldLabel>
-                <Select value={values.stage} onValueChange={(stage) => onChange({ ...values, stage })}>
+                <Select value={values.stage} onValueChange={(stage) => onChange({ ...values, stage: stage as DealStage })}>
                   <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {DEAL_STAGES.map((stage) => (
                       <SelectItem key={stage} value={stage}>
-                        {stage}
+                        {DEAL_STAGE_LABEL[stage]}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -174,9 +179,12 @@ export function DealForm({
 
               <Field>
                 <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Priority *</FieldLabel>
-                <Select value={values.priority} onValueChange={(priority) => onChange({ ...values, priority })}>
+                <Select
+                  value={values.priority}
+                  onValueChange={(priority) => onChange({ ...values, priority: priority as DealPriority })}
+                >
                   <SelectTrigger
-                    className={`h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] ${DEAL_PRIORITY_THEME[values.priority].select}`}
+                    className={`h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] ${priorityTheme.select}`}
                   >
                     <SelectValue />
                   </SelectTrigger>
@@ -189,9 +197,9 @@ export function DealForm({
                   </SelectContent>
                 </Select>
                 <div
-                  className={`mt-2 inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-semibold tracking-wide ${DEAL_PRIORITY_THEME[values.priority].badge}`}
+                  className={`mt-2 inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-semibold tracking-wide ${priorityTheme.badge}`}
                 >
-                  Priority: {values.priority}
+                  Priority: {selectedPriority}
                 </div>
                 <FieldError>{fieldErrors?.priority}</FieldError>
               </Field>

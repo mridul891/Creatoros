@@ -11,8 +11,15 @@ type DashboardDealDetailPageProps = {
   }>
 }
 
-export const metadata: Metadata = {
-  title: "Deal Details",
+export async function generateMetadata({ params }: DashboardDealDetailPageProps): Promise<Metadata> {
+  const { id } = await params
+  const dealResult = await getDealAction(id)
+  if (!dealResult.success) {
+    return { title: "Deal Details" }
+  }
+  return {
+    title: `${dealResult.data.campaignName} · Deal Details`,
+  }
 }
 
 export default async function DashboardDealDetailPage({ params }: DashboardDealDetailPageProps) {
@@ -31,6 +38,7 @@ export default async function DashboardDealDetailPage({ params }: DashboardDealD
   return (
     <DealDetailPage
       deal={dealResult.data}
+      activityError={activitiesResult.success ? undefined : activitiesResult.message ?? "Could not load deal timeline activities."}
       activityData={
         activitiesResult.success && activitiesResult.data
           ? activitiesResult.data

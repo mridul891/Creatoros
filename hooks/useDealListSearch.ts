@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
+import { buildDealsUrl } from "@/lib/crm/deals/dealsUrl"
 
 type UseDealListSearchOptions = {
   initialSearch: string
@@ -23,37 +24,27 @@ export function useDealListSearch({ initialSearch, view, archive, stage, priorit
       hasMountedRef.current = true
       return
     }
+    if (search.trim() === initialSearch.trim()) {
+      return
+    }
 
     const timeout = setTimeout(() => {
-      const params = new URLSearchParams()
-      if (search.trim()) {
-        params.set("search", search.trim())
-      }
-      if (view) {
-        params.set("view", view)
-      }
-      if (archive) {
-        params.set("archive", archive)
-      }
-      if (stage) {
-        params.set("stage", stage)
-      }
-      if (priority) {
-        params.set("priority", priority)
-      }
-      if (brandId) {
-        params.set("brandId", brandId)
-      }
-      if (sort) {
-        params.set("sort", sort)
-      }
-      params.set("page", "1")
-
-      router.replace(`/dashboard/deals?${params.toString()}`)
+      router.replace(
+        buildDealsUrl({
+          search,
+          view,
+          archive,
+          stage,
+          priority,
+          brandId,
+          sort,
+          page: 1,
+        }),
+      )
     }, 300)
 
     return () => clearTimeout(timeout)
-  }, [archive, brandId, priority, router, search, sort, stage, view])
+  }, [archive, brandId, initialSearch, priority, router, search, sort, stage, view])
 
   return {
     search,

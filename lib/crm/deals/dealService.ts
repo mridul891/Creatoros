@@ -131,10 +131,6 @@ async function ensureNoActiveDuplicate(options: {
       userId: options.userId,
       brandId: options.brandId,
       normalizedCampaignName: options.normalizedCampaignName,
-      status: "Active",
-      stage: {
-        notIn: ["Paid", "Cancelled"],
-      },
       ...(options.excludingId ? { id: { not: options.excludingId } } : {}),
     },
     select: { id: true },
@@ -142,7 +138,7 @@ async function ensureNoActiveDuplicate(options: {
 
   if (duplicate) {
     throw new DealServiceError(
-      "An active deal with the same campaign name already exists for this brand.",
+      "A deal with the same campaign name already exists for this brand.",
       "DUPLICATE",
       "campaignName",
     )
@@ -156,6 +152,37 @@ function getStageMilestones(stage: DealCreateUpdateInput["stage"]) {
     completedAt: stage === "Completed" ? now : null,
     paidAt: stage === "Paid" ? now : null,
   }
+}
+
+function applyStageMilestones(
+  stage: DealCreateUpdateInput["stage"],
+  existing?: { deliveredAt: Date | null; completedAt: Date | null; paidAt: Date | null },
+) {
+  const now = new Date()
+  const stageIndex = ["Lead", "Contacted", "Negotiation", "ProposalSent", "ContractSigned", "Active", "Delivered", "Completed", "Paid", "Cancelled"].indexOf(stage)
+  const deliveredIndex = 6
+  const completedIndex = 7
+  const paidIndex = 8
+
+  return {
+    deliveredAt: stageIndex >= deliveredIndex ? existing?.deliveredAt ?? now : null,
+    completedAt: stageIndex >= completedIndex ? existing?.completedAt ?? now : null,
+    paidAt: stageIndex >= paidIndex ? existing?.paidAt ?? now : null,
+  }
+}
+
+function mapPrismaError(error: unknown): never {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    typeof error.code === "string" &&
+    error.code === "P2002"
+  ) {
+    throw new DealServiceError("A deal with the same campaign name already exists for this brand.", "DUPLICATE", "campaignName")
+  }
+
+  throw error
 }
 
 function buildListWhere(userId: string, input: DealListInput): Prisma.DealWhereInput {
@@ -214,13 +241,15 @@ async function buildWidgets(userId: string): Promise<DealListData["widgets"]> {
     },
   })
 
-  const dealsInProgressPromise = prisma.deal.findMany({
+  const dealsInProgressPromise = prisma.deal.aggregate({
     where: {
       userId,
       status: "Active",
       stage: { notIn: ["Paid", "Cancelled"] },
     },
-    select: { dealValue: true },
+    _sum: {
+      dealValue: true,
+    },
   })
 
   const dealsClosingSoonPromise = prisma.deal.count({
@@ -275,7 +304,7 @@ async function buildWidgets(userId: string): Promise<DealListData["widgets"]> {
 
   return {
     activeDeals,
-    revenueInProgress: inProgressDeals.reduce((sum, deal) => sum + toNumber(deal.dealValue), 0),
+    revenueInProgress: inProgressDeals._sum.dealValue ? toNumber(inProgressDeals._sum.dealValue) : 0,
     dealsClosingSoon,
     overdueDeals,
     highestValueDeals: highestValueDeals.map((item) => toListItem(item)),
@@ -283,40 +312,48 @@ async function buildWidgets(userId: string): Promise<DealListData["widgets"]> {
 }
 
 export async function listDeals(userId: string, input: DealListInput): Promise<DealListData> {
-  const page = clampPage(input.page)
-  const pageSize = clampPageSize(input.pageSize, { pageSize: PAGE_SIZE_DEFAULT, maxPageSize: PAGE_SIZE_MAX })
+  const requestedPage = clampPage(input.page)
+  const requestedPageSize = clampPageSize(input.pageSize, { pageSize: PAGE_SIZE_DEFAULT, maxPageSize: PAGE_SIZE_MAX })
+  const isKanbanView = input.view === "kanban"
+  const page = isKanbanView ? 1 : requestedPage
+  const pageSize = isKanbanView ? PAGE_SIZE_MAX : requestedPageSize
   const skip = (page - 1) * pageSize
   const where = buildListWhere(userId, input)
   const orderBy = getSortOrder(input.sort)
 
-  const [items, total, widgets] = await Promise.all([
-    prisma.deal.findMany({
-      where,
-      orderBy,
-      skip,
-      take: pageSize,
-      select: {
-        id: true,
-        brandId: true,
-        campaignName: true,
-        dealValue: true,
-        currency: true,
-        stage: true,
-        priority: true,
-        status: true,
-        contactId: true,
-        startDate: true,
-        dueDate: true,
-        expectedCloseDate: true,
-        paymentDueDate: true,
-        updatedAt: true,
-        brand: { select: { name: true } },
-        contact: { select: { name: true } },
-      },
+  const [listResult, widgets] = await Promise.all([
+    prisma.$transaction(async (tx) => {
+      const total = await tx.deal.count({ where })
+      const items = await tx.deal.findMany({
+        where,
+        orderBy,
+        skip: isKanbanView ? 0 : skip,
+        take: isKanbanView ? total || pageSize : pageSize,
+        select: {
+          id: true,
+          brandId: true,
+          campaignName: true,
+          dealValue: true,
+          currency: true,
+          stage: true,
+          priority: true,
+          status: true,
+          contactId: true,
+          startDate: true,
+          dueDate: true,
+          expectedCloseDate: true,
+          paymentDueDate: true,
+          updatedAt: true,
+          brand: { select: { name: true } },
+          contact: { select: { name: true } },
+        },
+      })
+      return { items, total }
     }),
-    prisma.deal.count({ where }),
     buildWidgets(userId),
   ])
+
+  const { items, total } = listResult
 
   return {
     items: items.map((item) => toListItem(item)),
@@ -421,38 +458,43 @@ export async function createDeal(userId: string, input: DealCreateUpdateInput) {
 
     const milestones = getStageMilestones(input.stage)
 
-    const created = await tx.deal.create({
-      data: {
-        userId,
-        brandId: input.brandId,
-        contactId: input.contactId ?? null,
-        campaignName: input.campaignName,
-        normalizedCampaignName,
-        dealValue: input.dealValue,
-        currency: normalizeCurrency(input.currency),
-        stage: input.stage,
-        priority: input.priority,
-        startDate: input.startDate ?? null,
-        dueDate: input.dueDate ?? null,
-        expectedCloseDate: input.expectedCloseDate ?? null,
-        paymentDueDate: input.paymentDueDate ?? null,
-        paymentTerms: input.paymentTerms ?? null,
-        campaignDescription: input.campaignDescription ?? null,
-        deliverablesSummary: input.deliverablesSummary ?? null,
-        notes: input.notes ?? null,
-        source: input.source ?? null,
-        probability: input.probability ?? null,
-        externalRef: input.externalRef ?? null,
-        lastStageChangedAt: new Date(),
-        deliveredAt: milestones.deliveredAt,
-        completedAt: milestones.completedAt,
-        paidAt: milestones.paidAt,
-      },
-      include: {
-        brand: { select: { name: true } },
-        contact: { select: { name: true } },
-      },
-    })
+    let created: Awaited<ReturnType<typeof tx.deal.create>>
+    try {
+      created = await tx.deal.create({
+        data: {
+          userId,
+          brandId: input.brandId,
+          contactId: input.contactId ?? null,
+          campaignName: input.campaignName,
+          normalizedCampaignName,
+          dealValue: input.dealValue,
+          currency: normalizeCurrency(input.currency),
+          stage: input.stage,
+          priority: input.priority,
+          startDate: input.startDate ?? null,
+          dueDate: input.dueDate ?? null,
+          expectedCloseDate: input.expectedCloseDate ?? null,
+          paymentDueDate: input.paymentDueDate ?? null,
+          paymentTerms: input.paymentTerms ?? null,
+          campaignDescription: input.campaignDescription ?? null,
+          deliverablesSummary: input.deliverablesSummary ?? null,
+          notes: input.notes ?? null,
+          source: input.source ?? null,
+          probability: input.probability ?? null,
+          externalRef: input.externalRef ?? null,
+          lastStageChangedAt: new Date(),
+          deliveredAt: milestones.deliveredAt,
+          completedAt: milestones.completedAt,
+          paidAt: milestones.paidAt,
+        },
+        include: {
+          brand: { select: { name: true } },
+          contact: { select: { name: true } },
+        },
+      })
+    } catch (error) {
+      mapPrismaError(error)
+    }
 
     await recordActivity(tx, {
       userId,
@@ -482,6 +524,9 @@ export async function createDeal(userId: string, input: DealCreateUpdateInput) {
 export async function updateDeal(userId: string, dealId: string, input: DealCreateUpdateInput) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeal(tx, userId, dealId)
+    if (existing.status === "Archived") {
+      throw new DealServiceError("Archived deals cannot be edited.", "INVALID_OPERATION")
+    }
 
     await assertOwnedBrand(userId, input.brandId, tx)
     if (input.contactId) {
@@ -506,35 +551,40 @@ export async function updateDeal(userId: string, dealId: string, input: DealCrea
       throw new DealServiceError("This stage transition is not allowed.", "INVALID_OPERATION", "stage")
     }
 
-    const milestones = getStageMilestones(input.stage)
-    const updated = await tx.deal.update({
-      where: { id: dealId },
-      data: {
-        brandId: input.brandId,
-        contactId: input.contactId ?? null,
-        campaignName: input.campaignName,
-        normalizedCampaignName,
-        dealValue: input.dealValue,
-        currency: normalizeCurrency(input.currency),
-        stage: input.stage,
-        priority: input.priority,
-        startDate: input.startDate ?? null,
-        dueDate: input.dueDate ?? null,
-        expectedCloseDate: input.expectedCloseDate ?? null,
-        paymentDueDate: input.paymentDueDate ?? null,
-        paymentTerms: input.paymentTerms ?? null,
-        campaignDescription: input.campaignDescription ?? null,
-        deliverablesSummary: input.deliverablesSummary ?? null,
-        notes: input.notes ?? null,
-        source: input.source ?? null,
-        probability: input.probability ?? null,
-        externalRef: input.externalRef ?? null,
-        lastStageChangedAt: existing.stage === input.stage ? existing.lastStageChangedAt : new Date(),
-        deliveredAt: milestones.deliveredAt ?? existing.deliveredAt,
-        completedAt: milestones.completedAt ?? existing.completedAt,
-        paidAt: milestones.paidAt ?? existing.paidAt,
-      },
-    })
+    const milestones = applyStageMilestones(input.stage, existing)
+    let updated: Awaited<ReturnType<typeof tx.deal.update>>
+    try {
+      updated = await tx.deal.update({
+        where: { id: dealId },
+        data: {
+          brandId: input.brandId,
+          contactId: input.contactId ?? null,
+          campaignName: input.campaignName,
+          normalizedCampaignName,
+          dealValue: input.dealValue,
+          currency: normalizeCurrency(input.currency),
+          stage: input.stage,
+          priority: input.priority,
+          startDate: input.startDate ?? null,
+          dueDate: input.dueDate ?? null,
+          expectedCloseDate: input.expectedCloseDate ?? null,
+          paymentDueDate: input.paymentDueDate ?? null,
+          paymentTerms: input.paymentTerms ?? null,
+          campaignDescription: input.campaignDescription ?? null,
+          deliverablesSummary: input.deliverablesSummary ?? null,
+          notes: input.notes ?? null,
+          source: input.source ?? null,
+          probability: input.probability ?? null,
+          externalRef: input.externalRef ?? null,
+          lastStageChangedAt: existing.stage === input.stage ? existing.lastStageChangedAt : new Date(),
+          deliveredAt: milestones.deliveredAt,
+          completedAt: milestones.completedAt,
+          paidAt: milestones.paidAt,
+        },
+      })
+    } catch (error) {
+      mapPrismaError(error)
+    }
 
     await recordActivity(tx, {
       userId,
@@ -571,14 +621,15 @@ export async function updateDealStage(userId: string, dealId: string, stage: Dea
       throw new DealServiceError("This stage transition is not allowed.", "INVALID_OPERATION", "stage")
     }
 
+    const milestones = applyStageMilestones(stage, existing)
     const updated = await tx.deal.update({
       where: { id: existing.id },
       data: {
         stage,
         lastStageChangedAt: new Date(),
-        deliveredAt: stage === "Delivered" ? new Date() : existing.deliveredAt,
-        completedAt: stage === "Completed" ? new Date() : existing.completedAt,
-        paidAt: stage === "Paid" ? new Date() : existing.paidAt,
+        deliveredAt: milestones.deliveredAt,
+        completedAt: milestones.completedAt,
+        paidAt: milestones.paidAt,
       },
     })
 

@@ -20,13 +20,17 @@ type DashboardDealsPageProps = {
     archive?: string
     sort?: string
     view?: string
+    fromDate?: string
+    toDate?: string
     page?: string
+    pageSize?: string
   }>
 }
 
 export default async function DashboardDealsPage({ searchParams }: DashboardDealsPageProps) {
   const params = await searchParams
   const page = Number(params.page ?? 1)
+  const pageSize = params.pageSize ? Number(params.pageSize) : undefined
 
   const [listResult, optionsResult] = await Promise.all([
     listDealsAction({
@@ -37,7 +41,10 @@ export default async function DashboardDealsPage({ searchParams }: DashboardDeal
       archive: params.archive,
       sort: params.sort,
       view: params.view,
+      fromDate: params.fromDate,
+      toDate: params.toDate,
       page,
+      pageSize,
     }),
     listDealFormOptionsAction(),
   ])

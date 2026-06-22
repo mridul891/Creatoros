@@ -53,10 +53,31 @@ export type DealSortOption = (typeof DEAL_SORT_OPTIONS)[number]
 export type DealViewMode = (typeof DEAL_VIEW_MODES)[number]
 export type DealArchiveFilter = (typeof DEAL_ARCHIVE_FILTERS)[number]
 
+const STAGE_INDEX: Record<DealStage, number> = DEAL_STAGES.reduce(
+  (accumulator, stage, index) => {
+    accumulator[stage] = index
+    return accumulator
+  },
+  {} as Record<DealStage, number>,
+)
+
 export function isValidStageTransition(from: DealStage, to: DealStage) {
-  void from
-  void to
-  return true
+  if (from === to) {
+    return true
+  }
+
+  if (from === "Paid" || from === "Cancelled") {
+    return false
+  }
+
+  if (to === "Cancelled") {
+    return true
+  }
+
+  const fromIndex = STAGE_INDEX[from]
+  const toIndex = STAGE_INDEX[to]
+
+  return toIndex > fromIndex
 }
 
 export const DEAL_STAGE_LABEL: Record<DealStage, string> = {

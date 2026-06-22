@@ -11,6 +11,7 @@ import {
   dealPriorityUpdateSchema,
   dealRestoreSchema,
   dealStageUpdateSchema,
+  dealUpdateSchema,
 } from "@/lib/crm/deals/dealValidation"
 import {
   archiveDeal,
@@ -45,6 +46,15 @@ export type DealListResult = {
   success: boolean
   message?: string
   data?: DealListData
+}
+
+export type DealFormOptionsResult = {
+  success: boolean
+  message?: string
+  data?: {
+    brands: Array<{ id: string; name: string }>
+    contactsByBrand: Record<string, Array<{ id: string; name: string }>>
+  }
 }
 
 type DealGetResult =
@@ -221,16 +231,28 @@ export async function createDealAction(formData: FormData): Promise<DealMutation
 
 export async function updateDealAction(formData: FormData): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
-  const dealId = formData.get("dealId")
+  const parsed = dealUpdateSchema.safeParse({
+    dealId: formData.get("dealId"),
+    brandId: formData.get("brandId"),
+    contactId: sanitizeOptionalString(formData.get("contactId")),
+    campaignName: formData.get("campaignName"),
+    dealValue: formData.get("dealValue"),
+    currency: formData.get("currency"),
+    stage: formData.get("stage"),
+    priority: formData.get("priority"),
+    startDate: sanitizeOptionalString(formData.get("startDate")),
+    dueDate: sanitizeOptionalString(formData.get("dueDate")),
+    expectedCloseDate: sanitizeOptionalString(formData.get("expectedCloseDate")),
+    paymentDueDate: sanitizeOptionalString(formData.get("paymentDueDate")),
+    paymentTerms: sanitizeOptionalString(formData.get("paymentTerms")),
+    campaignDescription: sanitizeOptionalString(formData.get("campaignDescription")),
+    deliverablesSummary: sanitizeOptionalString(formData.get("deliverablesSummary")),
+    notes: sanitizeOptionalString(formData.get("notes")),
+    source: sanitizeOptionalString(formData.get("source")),
+    probability: sanitizeOptionalString(formData.get("probability")),
+    externalRef: sanitizeOptionalString(formData.get("externalRef")),
+  })
 
-  if (typeof dealId !== "string" || dealId.length === 0) {
-    return {
-      success: false,
-      message: "Deal id is required.",
-    }
-  }
-
-  const parsed = parseDealMutationFormData(formData)
   if (!parsed.success) {
     return {
       success: false,
@@ -240,7 +262,8 @@ export async function updateDealAction(formData: FormData): Promise<DealMutation
   }
 
   try {
-    const data = await updateDeal(user.id, dealId, parsed.data)
+    const { dealId, ...payload } = parsed.data
+    const data = await updateDeal(user.id, dealId, payload)
     revalidateDealPaths(dealId)
     return {
       success: true,
@@ -248,7 +271,7 @@ export async function updateDealAction(formData: FormData): Promise<DealMutation
       data,
     }
   } catch (error) {
-    console.error("deals.update_failed", { userId: user.id, dealId, error })
+    console.error("deals.update_failed", { userId: user.id, dealId: parsed.data.dealId, error })
     return mapDealServiceError(error, "We could not update this deal. Please try again.")
   }
 }
@@ -273,6 +296,7 @@ export async function updateDealStageAction(dealId: string, stage: string): Prom
       data,
     }
   } catch (error) {
+    console.error("deals.stage_update_failed", { userId: user.id, dealId: parsed.data.dealId, stage: parsed.data.stage, error })
     return mapDealServiceError(error, "We could not update this deal stage. Please try again.")
   }
 }
@@ -297,6 +321,12 @@ export async function updateDealPriorityAction(dealId: string, priority: string)
       data,
     }
   } catch (error) {
+    console.error("deals.priority_update_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      priority: parsed.data.priority,
+      error,
+    })
     return mapDealServiceError(error, "We could not update this deal priority. Please try again.")
   }
 }
@@ -319,6 +349,7 @@ export async function archiveDealAction(dealId: string): Promise<DealMutationRes
       message: "Deal archived successfully.",
     }
   } catch (error) {
+    console.error("deals.archive_failed", { userId: user.id, dealId: parsed.data.dealId, error })
     return mapDealServiceError(error, "We could not archive this deal. Please try again.")
   }
 }
@@ -341,6 +372,7 @@ export async function restoreDealAction(dealId: string): Promise<DealMutationRes
       message: "Deal restored successfully.",
     }
   } catch (error) {
+    console.error("deals.restore_failed", { userId: user.id, dealId: parsed.data.dealId, error })
     return mapDealServiceError(error, "We could not restore this deal. Please try again.")
   }
 }
@@ -363,18 +395,12 @@ export async function deleteDealAction(dealId: string): Promise<DealMutationResu
       message: "Deal deleted successfully.",
     }
   } catch (error) {
+    console.error("deals.delete_failed", { userId: user.id, dealId: parsed.data.dealId, error })
     return mapDealServiceError(error, "We could not delete this deal. Please try again.")
   }
 }
 
-export async function listDealFormOptionsAction(): Promise<{
-  success: boolean
-  message?: string
-  data?: {
-    brands: Array<{ id: string; name: string }>
-    contactsByBrand: Record<string, Array<{ id: string; name: string }>>
-  }
-}> {
+export async function listDealFormOptionsAction(): Promise<DealFormOptionsResult> {
   const user = await requireOnboardedUser()
 
   try {

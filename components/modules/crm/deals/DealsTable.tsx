@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DEAL_PRIORITIES, DEAL_PRIORITY_THEME, DEAL_STAGES } from "@/enums/deal"
+import { DEAL_PRIORITIES, DEAL_PRIORITY_THEME, DEAL_STAGES, DEAL_STAGE_LABEL } from "@/enums/deal"
 import type { DealListItem } from "@/types/deal"
 
 type DealsTableProps = {
@@ -89,13 +89,14 @@ export function DealsTable({
                 <TableCell className="px-4">
                   <select
                     value={item.stage}
+                    aria-label={`Stage for ${item.campaignName}`}
                     disabled={isInlineUpdating || item.status !== "Active"}
                     onChange={(event) => onStageChange(item.id, event.target.value as DealListItem["stage"])}
                     className="h-8 w-full cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.1)] bg-[#111111] px-2 text-[11px] text-[rgba(255,255,255,0.85)]"
                   >
                     {DEAL_STAGES.map((stage) => (
                       <option key={stage} value={stage}>
-                        {stage}
+                        {DEAL_STAGE_LABEL[stage]}
                       </option>
                     ))}
                   </select>
@@ -103,6 +104,7 @@ export function DealsTable({
                 <TableCell className="px-4">
                   <select
                     value={item.priority}
+                    aria-label={`Priority for ${item.campaignName}`}
                     disabled={isInlineUpdating || item.status !== "Active"}
                     onChange={(event) => onPriorityChange(item.id, event.target.value as DealListItem["priority"])}
                     className={`h-8 w-full cursor-pointer rounded-[8px] border px-2 text-[11px] ${DEAL_PRIORITY_THEME[item.priority].select}`}
@@ -126,6 +128,7 @@ export function DealsTable({
                       <Button
                         type="button"
                         variant="ghost"
+                        aria-label="Row actions"
                         className="h-8 w-8 cursor-pointer p-0 text-[rgba(255,255,255,0.6)] hover:bg-[rgba(255,255,255,0.08)]"
                         onClick={(event) => event.stopPropagation()}
                       >

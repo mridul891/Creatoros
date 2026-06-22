@@ -39,7 +39,7 @@ const NAV_ITEMS = [
   { href: DashboardRoute.CALENDAR, label: "Calendar", icon: Calendar },
   { href: DashboardRoute.BRANDS, label: "Brands", icon: Building2 },
   { href: DashboardRoute.ANALYTICS, label: "Analytics", icon: BarChart3 },
-  { href: DashboardRoute.DEALS, label: "Content", icon: Handshake },
+  { href: DashboardRoute.DEALS, label: "Deal", icon: Handshake },
   { href: DashboardRoute.INVOICES, label: "Invoices", icon: FileText },
   { href: DashboardRoute.MEDIA_KIT, label: "Media Kit", icon: Sparkles },
 ];

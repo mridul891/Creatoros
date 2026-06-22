@@ -1,6 +1,9 @@
 import { z } from "zod"
 
 import { DEAL_ARCHIVE_FILTERS, DEAL_PRIORITIES, DEAL_SORT_OPTIONS, DEAL_STAGES, DEAL_VIEW_MODES } from "@/enums/deal"
+import type { DealFormValues } from "@/lib/crm/deals/dealForm"
+import { getFieldErrors } from "@/lib/crm/shared/action"
+import type { DealField } from "@/types/deal"
 
 const stringDateToDate = z.preprocess((value) => {
   if (value instanceof Date) {
@@ -95,10 +98,15 @@ export const dealRestoreSchema = z.object({
   dealId: z.uuid("Deal id is invalid."),
 })
 
+export const dealUpdateSchema = dealCreateUpdateSchema.extend({
+  dealId: z.uuid("Deal id is invalid."),
+})
+
 export type DealCreateUpdateInput = z.infer<typeof dealCreateUpdateSchema>
 export type DealListInput = z.infer<typeof dealListSchema>
 export type DealStageUpdateInput = z.infer<typeof dealStageUpdateSchema>
 export type DealPriorityUpdateInput = z.infer<typeof dealPriorityUpdateSchema>
+export type DealUpdateInput = z.infer<typeof dealUpdateSchema>
 
 export function normalizeCampaignName(name: string) {
   return name.toLowerCase().replace(/\s+/g, " ").trim()
@@ -106,4 +114,38 @@ export function normalizeCampaignName(name: string) {
 
 export function normalizeCurrency(currency: string) {
   return currency.trim().toUpperCase()
+}
+
+function toOptionalString(value: string) {
+  const trimmed = value.trim()
+  return trimmed.length > 0 ? trimmed : undefined
+}
+
+export function getDealFormFieldErrors(values: DealFormValues): Partial<Record<DealField, string>> {
+  const parsed = dealCreateUpdateSchema.safeParse({
+    brandId: values.brandId,
+    contactId: toOptionalString(values.contactId),
+    campaignName: values.campaignName,
+    dealValue: values.dealValue,
+    currency: values.currency,
+    stage: values.stage,
+    priority: values.priority,
+    startDate: toOptionalString(values.startDate),
+    dueDate: toOptionalString(values.dueDate),
+    expectedCloseDate: toOptionalString(values.expectedCloseDate),
+    paymentDueDate: toOptionalString(values.paymentDueDate),
+    paymentTerms: toOptionalString(values.paymentTerms),
+    campaignDescription: toOptionalString(values.campaignDescription),
+    deliverablesSummary: toOptionalString(values.deliverablesSummary),
+    notes: toOptionalString(values.notes),
+    source: toOptionalString(values.source),
+    probability: toOptionalString(values.probability),
+    externalRef: toOptionalString(values.externalRef),
+  })
+
+  if (parsed.success) {
+    return {}
+  }
+
+  return getFieldErrors<DealField>(parsed.error)
 }

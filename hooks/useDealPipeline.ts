@@ -4,54 +4,65 @@ import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { updateDealStageAction } from "@/app/action/dealActions"
-import { DEAL_STAGES, type DealStage } from "@/enums/deal"
+import { type DealStage } from "@/enums/deal"
 import type { DealListItem } from "@/types/deal"
 
 type UseDealPipelineOptions = {
   initialDeals: DealListItem[]
+  onMoveSuccess?: () => void
 }
 
-export function useDealPipeline({ initialDeals }: UseDealPipelineOptions) {
-  const [deals, setDeals] = useState<DealListItem[]>(initialDeals)
+export function useDealPipeline({ initialDeals, onMoveSuccess }: UseDealPipelineOptions) {
+  const [optimisticStages, setOptimisticStages] = useState<Record<string, DealStage>>({})
   const [isMutating, setIsMutating] = useState(false)
 
-  const byStage = useMemo(() => {
-    return DEAL_STAGES.reduce<Record<DealStage, DealListItem[]>>(
-      (accumulator, stage) => {
-        accumulator[stage] = deals.filter((deal) => deal.stage === stage)
-        return accumulator
-      },
-      {} as Record<DealStage, DealListItem[]>,
-    )
-  }, [deals])
+  const deals = useMemo(
+    () =>
+      initialDeals.map((deal) => {
+        const optimisticStage = optimisticStages[deal.id]
+        return optimisticStage ? { ...deal, stage: optimisticStage } : deal
+      }),
+    [initialDeals, optimisticStages],
+  )
 
   async function moveDeal(dealId: string, nextStage: DealStage) {
     const current = deals.find((deal) => deal.id === dealId)
     if (!current || current.stage === nextStage) {
       return
     }
+    if (current.status !== "Active") {
+      toast.error("Archived deals cannot change stage.")
+      return
+    }
 
-    const snapshot = deals
-    setDeals((previous) => previous.map((deal) => (deal.id === dealId ? { ...deal, stage: nextStage } : deal)))
+    setOptimisticStages((previous) => ({ ...previous, [dealId]: nextStage }))
     setIsMutating(true)
 
     const result = await updateDealStageAction(dealId, nextStage)
     setIsMutating(false)
 
     if (!result.success) {
-      setDeals(snapshot)
+      setOptimisticStages((previous) => {
+        const next = { ...previous }
+        delete next[dealId]
+        return next
+      })
       toast.error(result.message ?? "Could not move deal.")
       return
     }
 
+    setOptimisticStages((previous) => {
+      const next = { ...previous }
+      delete next[dealId]
+      return next
+    })
     toast.success(result.message ?? "Deal stage updated.")
+    onMoveSuccess?.()
   }
 
   return {
     deals,
-    byStage,
     isMutating,
-    setDeals,
     moveDeal,
   }
 }

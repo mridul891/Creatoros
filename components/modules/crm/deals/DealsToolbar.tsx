@@ -88,6 +88,7 @@ export function DealsToolbar({
           value={search}
           onChange={onSearchChange}
           placeholder="Search campaign, brand, contact..."
+          ariaLabel="Search deals"
           className="w-full sm:col-span-2 lg:col-span-3 xl:w-[320px]"
         />
 

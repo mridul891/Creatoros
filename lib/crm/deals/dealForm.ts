@@ -1,4 +1,5 @@
 import type { DealDetail, DealListItem } from "@/types/deal"
+import type { DealPriority, DealStage } from "@/enums/deal"
 
 export type DealFormValues = {
   brandId: string
@@ -6,8 +7,8 @@ export type DealFormValues = {
   campaignName: string
   dealValue: string
   currency: string
-  stage: string
-  priority: string
+  stage: DealStage
+  priority: DealPriority
   startDate: string
   dueDate: string
   expectedCloseDate: string

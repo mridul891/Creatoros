@@ -11,13 +11,16 @@ import { ActivityTimelineSkeleton } from "./ActivityTimelineSkeleton"
 type DealActivityTimelineSectionProps = {
   dealId: string
   initialData: ActivityListData
+  initialLoadError?: string
 }
 
-export function DealActivityTimelineSection({ dealId, initialData }: DealActivityTimelineSectionProps) {
+export function DealActivityTimelineSection({ dealId, initialData, initialLoadError }: DealActivityTimelineSectionProps) {
   const { activities, pagination, isLoading, loadError, setPage } = useDealActivity({
     dealId,
     initialData,
   })
+
+  const displayError = initialLoadError ?? loadError
 
   return (
     <div className="rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
@@ -30,9 +33,9 @@ export function DealActivityTimelineSection({ dealId, initialData }: DealActivit
         </div>
       </div>
 
-      {loadError ? (
+      {displayError ? (
         <Alert variant="destructive" className="mt-4 border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.1)]">
-          <AlertDescription className="text-[12px] text-[#E8402A]">{loadError}</AlertDescription>
+          <AlertDescription className="text-[12px] text-[#E8402A]">{displayError}</AlertDescription>
         </Alert>
       ) : null}
 

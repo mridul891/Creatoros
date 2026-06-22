@@ -1,27 +1,22 @@
 "use client"
 
 import { Plus } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
-import {
-  archiveDealAction,
-  createDealAction,
-  deleteDealAction,
-  restoreDealAction,
-  updateDealAction,
-  updateDealPriorityAction,
-  updateDealStageAction,
-} from "@/app/action/dealActions"
+import { getDealAction } from "@/app/action/dealActions"
 import { DealKanbanBoard } from "@/components/modules/crm/deals/DealKanbanBoard"
 import { DealArchiveDialog } from "@/components/modules/crm/deals/DealArchiveDialog"
 import { DealDeleteDialog } from "@/components/modules/crm/deals/DealDeleteDialog"
+import { DealsSummaryWidgets } from "@/components/modules/crm/deals/DealsSummaryWidgets"
 import { DealsTable } from "@/components/modules/crm/deals/DealsTable"
 import { DealsToolbar } from "@/components/modules/crm/deals/DealsToolbar"
 import { useDealListSearch } from "@/hooks/useDealListSearch"
+import { useDealMutations } from "@/hooks/useDealMutations"
 import { useDealPipeline } from "@/hooks/useDealPipeline"
-import { buildDealFormData, EMPTY_DEAL_FORM, type DealFormValues, dealToFormValues } from "@/lib/crm/deals/dealForm"
+import { useDealsNavigation } from "@/hooks/useDealsNavigation"
+import { getDealFormFieldErrors } from "@/lib/crm/deals/dealValidation"
+import { EMPTY_DEAL_FORM, type DealFormValues, dealDetailToFormValues } from "@/lib/crm/deals/dealForm"
 import type { DealField, DealListData, DealListItem } from "@/types/deal"
 import { DealForm } from "./DealForm"
 import { CrmEmptyState, CrmPageHeader, CrmPagination } from "../shared"
@@ -32,43 +27,39 @@ type DealsPageProps = {
   contactsByBrand: Record<string, Array<{ id: string; name: string }>>
 }
 
-function buildDealsUrl(filters: {
-  search?: string
-  view?: string
-  archive?: string
-  stage?: string
-  priority?: string
-  brandId?: string
-  sort?: string
-  page?: number
-}) {
-  const params = new URLSearchParams()
-  if (filters.search?.trim()) params.set("search", filters.search.trim())
-  if (filters.view) params.set("view", filters.view)
-  if (filters.archive) params.set("archive", filters.archive)
-  if (filters.stage) params.set("stage", filters.stage)
-  if (filters.priority) params.set("priority", filters.priority)
-  if (filters.brandId) params.set("brandId", filters.brandId)
-  if (filters.sort) params.set("sort", filters.sort)
-  if (filters.page) params.set("page", String(filters.page))
-  return `/dashboard/deals?${params.toString()}`
+function keepUnresolvedErrors(
+  currentErrors: Partial<Record<DealField, string>>,
+  nextErrors: Partial<Record<DealField, string>>
+) {
+  const unresolved: Partial<Record<DealField, string>> = {}
+
+  for (const field of Object.keys(currentErrors) as DealField[]) {
+    const message = nextErrors[field]
+    if (message) {
+      unresolved[field] = message
+    }
+  }
+
+  return unresolved
 }
 
 export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps) {
-  const router = useRouter()
+  const filters = listData.filters
+  const { navigateWith, navigateToPage, refresh } = useDealsNavigation(filters)
+
   const [showCreate, setShowCreate] = useState(false)
+  const [isEditLoading, setIsEditLoading] = useState(false)
   const [editing, setEditing] = useState<DealListItem | null>(null)
   const [archiving, setArchiving] = useState<DealListItem | null>(null)
   const [restoring, setRestoring] = useState<DealListItem | null>(null)
   const [deleting, setDeleting] = useState<DealListItem | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isMutating, setIsMutating] = useState(false)
-  const [isInlineUpdating, setIsInlineUpdating] = useState(false)
-  const [formValues, setFormValues] = useState<DealFormValues>(EMPTY_DEAL_FORM)
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<DealField, string>>>({})
-  const [formError, setFormError] = useState("")
+  const [createFormValues, setCreateFormValues] = useState<DealFormValues>(EMPTY_DEAL_FORM)
+  const [createFieldErrors, setCreateFieldErrors] = useState<Partial<Record<DealField, string>>>({})
+  const [createFormError, setCreateFormError] = useState("")
+  const [editFormValues, setEditFormValues] = useState<DealFormValues>(EMPTY_DEAL_FORM)
+  const [editFieldErrors, setEditFieldErrors] = useState<Partial<Record<DealField, string>>>({})
+  const [editFormError, setEditFormError] = useState("")
 
-  const filters = listData.filters
   const { search, setSearch } = useDealListSearch({
     initialSearch: filters.search,
     view: filters.view,
@@ -81,158 +72,156 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
 
   const { deals, isMutating: isPipelineMutating, moveDeal } = useDealPipeline({
     initialDeals: listData.items,
+    onMoveSuccess: refresh,
   })
 
-  const contacts = useMemo(() => {
-    return formValues.brandId ? contactsByBrand[formValues.brandId] ?? [] : []
-  }, [contactsByBrand, formValues.brandId])
+  const {
+    isSubmitting,
+    isMutating,
+    isInlineUpdating,
+    submitCreate,
+    submitUpdate,
+    runArchive,
+    runRestore,
+    runDelete,
+    runStageChange,
+    runPriorityChange,
+  } = useDealMutations({
+    onRefresh: refresh,
+  })
 
-  function resetForm() {
-    setFormValues(EMPTY_DEAL_FORM)
-    setFieldErrors({})
-    setFormError("")
+  const createContacts = useMemo(() => {
+    return createFormValues.brandId ? contactsByBrand[createFormValues.brandId] ?? [] : []
+  }, [contactsByBrand, createFormValues.brandId])
+
+  const editContacts = useMemo(() => {
+    return editFormValues.brandId ? contactsByBrand[editFormValues.brandId] ?? [] : []
+  }, [contactsByBrand, editFormValues.brandId])
+
+  function resetCreateForm() {
+    setCreateFormValues(EMPTY_DEAL_FORM)
+    setCreateFieldErrors({})
+    setCreateFormError("")
   }
 
-  function navigateWith(
-    nextFilters: Partial<{
-      search: string
-      view: string
-      archive: string
-      stage: string | undefined
-      priority: string | undefined
-      brandId: string | undefined
-      sort: string
-    }>,
-  ) {
-    router.push(
-      buildDealsUrl({
-        search: "search" in nextFilters ? nextFilters.search : filters.search,
-        view: "view" in nextFilters ? nextFilters.view : filters.view,
-        archive: "archive" in nextFilters ? nextFilters.archive : filters.archive,
-        stage: "stage" in nextFilters ? nextFilters.stage : filters.stage,
-        priority: "priority" in nextFilters ? nextFilters.priority : filters.priority,
-        brandId: "brandId" in nextFilters ? nextFilters.brandId : filters.brandId,
-        sort: "sort" in nextFilters ? nextFilters.sort : filters.sort,
-        page: 1,
-      }),
-    )
+  function resetEditForm() {
+    setEditFormValues(EMPTY_DEAL_FORM)
+    setEditFieldErrors({})
+    setEditFormError("")
+  }
+
+  function handleCreateFormChange(nextValues: DealFormValues) {
+    setCreateFormValues(nextValues)
+    if (createFormError) {
+      setCreateFormError("")
+    }
+
+    if (Object.keys(createFieldErrors).length === 0) {
+      return
+    }
+
+    const nextAllErrors = getDealFormFieldErrors(nextValues)
+    const unresolvedErrors = keepUnresolvedErrors(createFieldErrors, nextAllErrors)
+    setCreateFieldErrors(unresolvedErrors)
+  }
+
+  function handleEditFormChange(nextValues: DealFormValues) {
+    setEditFormValues(nextValues)
+    if (editFormError) {
+      setEditFormError("")
+    }
+
+    if (Object.keys(editFieldErrors).length === 0) {
+      return
+    }
+
+    const nextAllErrors = getDealFormFieldErrors(nextValues)
+    const unresolvedErrors = keepUnresolvedErrors(editFieldErrors, nextAllErrors)
+    setEditFieldErrors(unresolvedErrors)
   }
 
   async function handleCreateSubmit() {
-    setIsSubmitting(true)
-    setFormError("")
-    setFieldErrors({})
-    const result = await createDealAction(buildDealFormData(formValues))
-    setIsSubmitting(false)
+    setCreateFormError("")
+    setCreateFieldErrors({})
+    const result = await submitCreate(createFormValues)
 
     if (!result.success) {
-      setFormError(result.message ?? "Could not create deal.")
-      setFieldErrors(result.fieldErrors ?? {})
+      setCreateFormError(result.message ?? "Could not create deal.")
+      setCreateFieldErrors(result.fieldErrors ?? {})
       return
     }
 
     toast.success(result.message ?? "Deal created.")
     setShowCreate(false)
-    resetForm()
-    router.refresh()
+    resetCreateForm()
+    refresh()
   }
 
   async function handleUpdateSubmit() {
     if (!editing) {
       return
     }
-    setIsSubmitting(true)
-    setFormError("")
-    setFieldErrors({})
-    const result = await updateDealAction(buildDealFormData(formValues, editing.id))
-    setIsSubmitting(false)
+    setEditFormError("")
+    setEditFieldErrors({})
+    const result = await submitUpdate(editing.id, editFormValues)
 
     if (!result.success) {
-      setFormError(result.message ?? "Could not update deal.")
-      setFieldErrors(result.fieldErrors ?? {})
+      setEditFormError(result.message ?? "Could not update deal.")
+      setEditFieldErrors(result.fieldErrors ?? {})
       return
     }
 
     toast.success(result.message ?? "Deal updated.")
     setEditing(null)
-    resetForm()
-    router.refresh()
+    resetEditForm()
+    refresh()
   }
 
   async function handleArchive() {
     if (!archiving) {
       return
     }
-    setIsMutating(true)
-    const result = await archiveDealAction(archiving.id)
-    setIsMutating(false)
-    if (!result.success) {
-      toast.error(result.message ?? "Could not archive deal.")
-      return
-    }
-    toast.success(result.message ?? "Deal archived.")
+    await runArchive(archiving.id)
     setArchiving(null)
-    router.refresh()
   }
 
   async function handleRestore() {
     if (!restoring) {
       return
     }
-    setIsMutating(true)
-    const result = await restoreDealAction(restoring.id)
-    setIsMutating(false)
-    if (!result.success) {
-      toast.error(result.message ?? "Could not restore deal.")
-      return
-    }
-    toast.success(result.message ?? "Deal restored.")
+    await runRestore(restoring.id)
     setRestoring(null)
-    router.refresh()
   }
 
   async function handleDelete() {
     if (!deleting) {
       return
     }
-    setIsMutating(true)
-    const result = await deleteDealAction(deleting.id)
-    setIsMutating(false)
-    if (!result.success) {
-      toast.error(result.message ?? "Could not delete deal.")
-      return
-    }
-    toast.success(result.message ?? "Deal deleted.")
+    await runDelete(deleting.id)
     setDeleting(null)
-    router.refresh()
   }
 
   async function handleStageChange(dealId: string, stage: DealListItem["stage"]) {
-    setIsInlineUpdating(true)
-    const result = await updateDealStageAction(dealId, stage)
-    setIsInlineUpdating(false)
-
-    if (!result.success) {
-      toast.error(result.message ?? "Could not update stage.")
-      return
-    }
-
-    toast.success(result.message ?? "Deal stage updated.")
-    router.refresh()
+    await runStageChange(dealId, stage)
   }
 
   async function handlePriorityChange(dealId: string, priority: DealListItem["priority"]) {
-    setIsInlineUpdating(true)
-    const result = await updateDealPriorityAction(dealId, priority)
-    setIsInlineUpdating(false)
+    await runPriorityChange(dealId, priority)
+  }
 
+  async function handleEdit(deal: DealListItem) {
+    setIsEditLoading(true)
+    const result = await getDealAction(deal.id)
+    setIsEditLoading(false)
     if (!result.success) {
-      toast.error(result.message ?? "Could not update priority.")
+      toast.error(result.message ?? "Could not load full deal details.")
       return
     }
 
-    toast.success(result.message ?? "Deal priority updated.")
-    router.refresh()
+    setEditing(deal)
+    setEditFormValues(dealDetailToFormValues(result.data))
+    setEditFormError("")
+    setEditFieldErrors({})
   }
 
   return (
@@ -243,35 +232,12 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
         actionLabel="New Deal"
         actionIcon={<Plus size={15} />}
         onAction={() => {
-          resetForm()
+          resetCreateForm()
           setShowCreate(true)
         }}
       />
 
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <div className="rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-4">
-          <p className="font-mono text-[10px] text-[rgba(255,255,255,0.45)]">Active Deals</p>
-          <p className="mt-2 text-2xl font-black text-white">{listData.widgets.activeDeals}</p>
-        </div>
-        <div className="rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-4">
-          <p className="font-mono text-[10px] text-[rgba(255,255,255,0.45)]">Revenue In Progress</p>
-          <p className="mt-2 text-lg font-bold text-white">${listData.widgets.revenueInProgress.toLocaleString()}</p>
-        </div>
-        <div className="rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-4">
-          <p className="font-mono text-[10px] text-[rgba(255,255,255,0.45)]">Closing Soon</p>
-          <p className="mt-2 text-2xl font-black text-white">{listData.widgets.dealsClosingSoon}</p>
-        </div>
-        <div className="rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-4">
-          <p className="font-mono text-[10px] text-[rgba(255,255,255,0.45)]">Overdue</p>
-          <p className="mt-2 text-2xl font-black text-white">{listData.widgets.overdueDeals}</p>
-        </div>
-        <div className="rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-4">
-          <p className="font-mono text-[10px] text-[rgba(255,255,255,0.45)]">Highest Value</p>
-          <p className="mt-2 truncate text-[13px] font-semibold text-white">
-            {listData.widgets.highestValueDeals[0]?.campaignName ?? "No active deals"}
-          </p>
-        </div>
-      </div>
+      <DealsSummaryWidgets widgets={listData.widgets} />
 
       <DealsToolbar
         total={listData.pagination.total}
@@ -294,11 +260,15 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
 
       {listData.items.length === 0 ? (
         <CrmEmptyState
-          title="No deals found"
-          description="Create your first deal to start tracking your pipeline."
+          title={filters.search || filters.brandId || filters.priority || filters.stage ? "No matching deals" : "No deals found"}
+          description={
+            filters.search || filters.brandId || filters.priority || filters.stage
+              ? "Try clearing one or more filters to widen your results."
+              : "Create your first deal to start tracking your pipeline."
+          }
           actionLabel="Create Deal"
           onAction={() => {
-            resetForm()
+            resetCreateForm()
             setShowCreate(true)
           }}
         />
@@ -311,34 +281,12 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
             isInlineUpdating={isInlineUpdating}
             onStageChange={handleStageChange}
             onPriorityChange={handlePriorityChange}
-            onEdit={(deal) => {
-              setEditing(deal)
-              setFormValues(dealToFormValues(deal))
-              setFormError("")
-              setFieldErrors({})
-            }}
+            onEdit={handleEdit}
             onArchive={setArchiving}
             onRestore={setRestoring}
             onDelete={setDeleting}
           />
-          <CrmPagination
-            page={listData.pagination.page}
-            totalPages={listData.pagination.totalPages}
-            onPageChange={(page) =>
-              router.push(
-                buildDealsUrl({
-                  search: filters.search,
-                  view: filters.view,
-                  archive: filters.archive,
-                  stage: filters.stage,
-                  priority: filters.priority,
-                  brandId: filters.brandId,
-                  sort: filters.sort,
-                  page,
-                }),
-              )
-            }
-          />
+          <CrmPagination page={listData.pagination.page} totalPages={listData.pagination.totalPages} onPageChange={navigateToPage} />
         </>
       )}
 
@@ -346,17 +294,17 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
         open={showCreate}
         title="Create Deal"
         submitLabel="Create Deal"
-        values={formValues}
+        values={createFormValues}
         isSubmitting={isSubmitting}
-        fieldErrors={fieldErrors}
-        formError={formError}
+        fieldErrors={createFieldErrors}
+        formError={createFormError}
         brands={brands}
-        contacts={contacts}
-        onChange={setFormValues}
+        contacts={createContacts}
+        onChange={handleCreateFormChange}
         onOpenChange={(open) => {
           setShowCreate(open)
           if (!open) {
-            resetForm()
+            resetCreateForm()
           }
         }}
         onSubmit={handleCreateSubmit}
@@ -366,17 +314,17 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
         open={Boolean(editing)}
         title="Edit Deal"
         submitLabel="Save Changes"
-        values={formValues}
-        isSubmitting={isSubmitting}
-        fieldErrors={fieldErrors}
-        formError={formError}
+        values={editFormValues}
+        isSubmitting={isSubmitting || isEditLoading}
+        fieldErrors={editFieldErrors}
+        formError={editFormError}
         brands={brands}
-        contacts={contacts}
-        onChange={setFormValues}
+        contacts={editContacts}
+        onChange={handleEditFormChange}
         onOpenChange={(open) => {
           if (!open) {
             setEditing(null)
-            resetForm()
+            resetEditForm()
           }
         }}
         onSubmit={handleUpdateSubmit}

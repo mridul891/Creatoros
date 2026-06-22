@@ -5,6 +5,7 @@ import Link from "next/link"
 import { MoveRight } from "lucide-react"
 
 import { DEAL_STAGES, type DealStage } from "@/enums/deal"
+import { groupDealsByStage } from "@/lib/crm/deals/dealPipeline"
 import type { DealListItem } from "@/types/deal"
 import { DealStageBadge } from "./DealStageBadge"
 
@@ -19,13 +20,7 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
   const [dragOverStage, setDragOverStage] = useState<DealStage | null>(null)
 
   const grouped = useMemo(() => {
-    return DEAL_STAGES.reduce<Record<DealStage, DealListItem[]>>(
-      (accumulator, stage) => {
-        accumulator[stage] = deals.filter((deal) => deal.stage === stage)
-        return accumulator
-      },
-      {} as Record<DealStage, DealListItem[]>,
-    )
+    return groupDealsByStage(deals)
   }, [deals])
 
   async function handleDrop(stage: DealStage) {
@@ -80,7 +75,7 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
                 {items.map((deal) => (
                   <div
                     key={deal.id}
-                    draggable={!isMutating}
+                    draggable={!isMutating && deal.status === "Active"}
                     onDragStart={() => setDragDealId(deal.id)}
                     onDragEnd={() => {
                       setDragDealId(null)
@@ -103,6 +98,7 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
                     ) : null}
                     <button
                       type="button"
+                      disabled={isMutating || deal.status !== "Active"}
                       className="mt-2 flex cursor-pointer items-center gap-1 rounded-md border border-[rgba(255,255,255,0.09)] px-2 py-1 text-[10px] text-[rgba(255,255,255,0.62)]"
                       onClick={() => {
                         const currentIndex = DEAL_STAGES.indexOf(deal.stage)
