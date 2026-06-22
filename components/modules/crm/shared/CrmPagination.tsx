@@ -1,6 +1,13 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 type CrmPaginationProps = {
   page: number
@@ -9,31 +16,48 @@ type CrmPaginationProps = {
 }
 
 export function CrmPagination({ page, totalPages, onPageChange }: CrmPaginationProps) {
+  const canGoPrevious = page > 1
+  const canGoNext = page < totalPages
+
   return (
-    <div className="mt-4 flex items-center justify-end gap-2">
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={() => onPageChange(page - 1)}
-        disabled={page <= 1}
-        className="cursor-pointer border-[rgba(255,255,255,0.12)] bg-transparent text-[11px] text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.05)]"
-      >
-        Previous
-      </Button>
-      <span className="font-mono text-[11px] text-[rgba(255,255,255,0.45)]">
-        Page {page} / {totalPages}
-      </span>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={() => onPageChange(page + 1)}
-        disabled={page >= totalPages}
-        className="cursor-pointer border-[rgba(255,255,255,0.12)] bg-transparent text-[11px] text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.05)]"
-      >
-        Next
-      </Button>
-    </div>
+    <Pagination className="mt-4 justify-end">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            aria-disabled={!canGoPrevious}
+            className="cursor-pointer border border-[rgba(255,255,255,0.12)] bg-transparent text-[11px] text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.05)] aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            onClick={(event) => {
+              event.preventDefault()
+              if (canGoPrevious) {
+                onPageChange(page - 1)
+              }
+            }}
+          />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink
+            href="#"
+            isActive
+            className="pointer-events-none border border-[rgba(255,255,255,0.12)] bg-transparent font-mono text-[11px] text-[rgba(255,255,255,0.45)] hover:bg-transparent"
+          >
+            {page} / {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            aria-disabled={!canGoNext}
+            className="cursor-pointer border border-[rgba(255,255,255,0.12)] bg-transparent text-[11px] text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.05)] aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            onClick={(event) => {
+              event.preventDefault()
+              if (canGoNext) {
+                onPageChange(page + 1)
+              }
+            }}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   )
 }

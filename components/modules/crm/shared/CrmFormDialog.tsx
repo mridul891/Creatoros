@@ -47,17 +47,19 @@ export function CrmFormDialog({
         <SheetContent
           side="bottom"
           className={cn(
-            "max-h-[92vh] overflow-y-auto border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] text-[rgba(255,255,255,0.8)]"
+            "max-h-[94vh] overflow-y-auto border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-5 pb-5 text-[rgba(255,255,255,0.8)]"
           )}
         >
-          <SheetHeader className="px-0 pt-2">
+          <SheetHeader className="px-0 pt-3">
             <SheetTitle className="text-lg font-bold text-white">{title}</SheetTitle>
             <SheetDescription className="text-[12px] text-[rgba(255,255,255,0.45)]">
               {description}
             </SheetDescription>
           </SheetHeader>
-          <div className="px-0">{children}</div>
-          <SheetFooter className="px-0">{footer}</SheetFooter>
+          <div className="px-0 pb-24">{children}</div>
+          <SheetFooter className="fixed right-0 bottom-0 left-0 z-10 border-t border-[rgba(255,255,255,0.08)] bg-[rgba(13,13,13,0.95)] px-5 py-4 backdrop-blur">
+            {footer}
+          </SheetFooter>
         </SheetContent>
       </Sheet>
     )
@@ -67,16 +69,16 @@ export function CrmFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-[680px] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6 text-[rgba(255,255,255,0.8)]"
+        className="max-h-[92vh] w-[min(96vw,1120px)] max-w-[1120px] gap-0 overflow-hidden border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-0 text-[rgba(255,255,255,0.8)] sm:max-w-[1120px]"
       >
-        <DialogHeader>
+        <DialogHeader className="border-b border-[rgba(255,255,255,0.08)] px-8 py-6">
           <DialogTitle className="text-lg font-bold text-white">{title}</DialogTitle>
           <DialogDescription className="text-[12px] text-[rgba(255,255,255,0.45)]">
             {description}
           </DialogDescription>
         </DialogHeader>
-        {children}
-        <DialogFooter className="-mx-6 -mb-6 rounded-b-[20px] border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-6 py-4">
+        <div className="overflow-y-auto px-8 py-6">{children}</div>
+        <DialogFooter className="rounded-none border-t border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-8 py-4">
           {footer}
         </DialogFooter>
       </DialogContent>

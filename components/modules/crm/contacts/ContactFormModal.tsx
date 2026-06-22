@@ -6,17 +6,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import type { ContactFormValues } from "@/lib/crm/contacts/contactForm"
 import type { ContactField } from "@/types/contact"
 import { CrmFormDialog } from "../shared"
-
-export type ContactFormValues = {
-  name: string
-  email: string
-  phoneNumber: string
-  jobTitle: string
-  notes: string
-  isPrimary: boolean
-}
 
 type ContactFormModalProps = {
   open: boolean

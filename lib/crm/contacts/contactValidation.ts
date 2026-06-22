@@ -40,12 +40,3 @@ export function normalizeContactName(name: string) {
 export function normalizeEmail(email: string) {
   return email.trim().toLowerCase()
 }
-
-export function sanitizeOptionalString(value: FormDataEntryValue | null) {
-  if (typeof value !== "string") {
-    return undefined
-  }
-
-  const trimmed = value.trim()
-  return trimmed.length > 0 ? trimmed : undefined
-}

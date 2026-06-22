@@ -17,6 +17,8 @@ model User {
   creator              Creator?
   brands               Brand[]
   contacts             Contact[]
+  deals                Deal[]
+  activities           Activity[]
   createdAt            DateTime  @default(now()) @map("created_at")
   updatedAt            DateTime  @updatedAt @map("updated_at")
 
@@ -33,6 +35,57 @@ enum CreatorType {
 enum ContactStatus {
   Active
   Archived
+}
+
+enum DealStage {
+  Lead
+  Contacted
+  Negotiation
+  ProposalSent
+  ContractSigned
+  Active
+  Delivered
+  Completed
+  Paid
+  Cancelled
+}
+
+enum DealPriority {
+  High
+  Medium
+  Low
+}
+
+enum DealStatus {
+  Active
+  Archived
+}
+
+enum ActivityEntityType {
+  Brand
+  Contact
+  Deal
+  Deliverable
+  Task
+  Invoice
+  Payment
+  File
+  Note
+}
+
+enum ActivityType {
+  BrandCreated
+  BrandUpdated
+  BrandArchived
+  ContactCreated
+  ContactUpdated
+  ContactArchived
+  ContactPrimaryChanged
+  DealCreated
+  DealUpdated
+  DealStageChanged
+  DealArchived
+  DealRestored
 }
 
 model Creator {
@@ -55,6 +108,8 @@ model Brand {
   userId              String   @map("user_id") @db.Uuid
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   contacts            Contact[]
+  deals               Deal[]
+  activities          Activity[]
   name                String
   normalizedName      String   @map("normalized_name")
   category            String?
@@ -77,6 +132,8 @@ model Contact {
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   brandId         String        @map("brand_id") @db.Uuid
   brand           Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  deals           Deal[]
+  activities      Activity[]
   name            String
   normalizedName  String        @map("normalized_name")
   email           String?
@@ -96,4 +153,73 @@ model Contact {
   @@index([brandId, normalizedEmail], map: "contacts_brand_id_normalized_email_idx")
   @@index([userId, updatedAt(sort: Desc)], map: "contacts_user_id_updated_at_idx")
   @@map("contacts")
+}
+
+model Activity {
+  id          String             @id @default(uuid()) @db.Uuid
+  userId      String             @map("user_id") @db.Uuid
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        ActivityType
+  entityType  ActivityEntityType @map("entity_type")
+  entityId    String             @map("entity_id")
+  brandId     String?            @map("brand_id") @db.Uuid
+  brand       Brand?             @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  contactId   String?            @map("contact_id") @db.Uuid
+  contact     Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  dealId      String?            @map("deal_id") @db.Uuid
+  deal        Deal?              @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  title       String
+  description String?
+  metadata    Json?
+  createdAt   DateTime           @default(now()) @map("created_at")
+
+  @@index([userId, createdAt(sort: Desc)], map: "activities_user_id_created_at_idx")
+  @@index([userId, brandId, createdAt(sort: Desc)], map: "activities_user_id_brand_id_created_at_idx")
+  @@index([userId, dealId, createdAt(sort: Desc)], map: "activities_user_id_deal_id_created_at_idx")
+  @@index([userId, entityType, entityId, createdAt(sort: Desc)], map: "activities_user_entity_created_at_idx")
+  @@index([userId, type, createdAt(sort: Desc)], map: "activities_user_type_created_at_idx")
+  @@map("activities")
+}
+
+model Deal {
+  id                     String       @id @default(uuid()) @db.Uuid
+  userId                 String       @map("user_id") @db.Uuid
+  user                   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandId                String       @map("brand_id") @db.Uuid
+  brand                  Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  contactId              String?      @map("contact_id") @db.Uuid
+  contact                Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  activities             Activity[]
+  campaignName           String       @map("campaign_name")
+  normalizedCampaignName String       @map("normalized_campaign_name")
+  dealValue              Decimal      @map("deal_value") @db.Decimal(12, 2)
+  currency               String       @default("USD")
+  stage                  DealStage    @default(Lead)
+  priority               DealPriority @default(Medium)
+  status                 DealStatus   @default(Active)
+  startDate              DateTime?    @map("start_date")
+  dueDate                DateTime?    @map("due_date")
+  expectedCloseDate      DateTime?    @map("expected_close_date")
+  paymentDueDate         DateTime?    @map("payment_due_date")
+  paymentTerms           String?      @map("payment_terms")
+  campaignDescription    String?      @map("campaign_description")
+  deliverablesSummary    String?      @map("deliverables_summary")
+  notes                  String?
+  source                 String?
+  probability            Int?
+  externalRef            String?      @map("external_ref")
+  lastStageChangedAt     DateTime?    @map("last_stage_changed_at")
+  deliveredAt            DateTime?    @map("delivered_at")
+  completedAt            DateTime?    @map("completed_at")
+  paidAt                 DateTime?    @map("paid_at")
+  archivedAt             DateTime?    @map("archived_at")
+  createdAt              DateTime     @default(now()) @map("created_at")
+  updatedAt              DateTime     @updatedAt @map("updated_at")
+
+  @@unique([userId, brandId, normalizedCampaignName], map: "deals_user_brand_campaign_unique")
+  @@index([userId, status, updatedAt(sort: Desc)], map: "deals_user_status_updated_at_idx")
+  @@index([userId, stage, updatedAt(sort: Desc)], map: "deals_user_stage_updated_at_idx")
+  @@index([userId, brandId, stage], map: "deals_user_brand_stage_idx")
+  @@index([userId, dueDate], map: "deals_user_due_date_idx")
+  @@map("deals")
 }

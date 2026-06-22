@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { listBrandActivitiesAction } from "@/app/action/activityActions"
 import { getBrandAction } from "@/app/action/brandActions"
 import { listContactsByBrandAction } from "@/app/action/contactActions"
 import { BrandDetailPage } from "@/components/modules/crm/brands/BrandDetailPage"
@@ -17,11 +18,14 @@ export const metadata: Metadata = {
 
 export default async function DashboardBrandDetailPage({ params }: DashboardBrandDetailPageProps) {
   const { id } = await params
-  const [result, contactsResult] = await Promise.all([
+  const [result, contactsResult, activitiesResult] = await Promise.all([
     getBrandAction(id),
     listContactsByBrandAction({
       brandId: id,
       status: "active",
+    }),
+    listBrandActivitiesAction({
+      brandId: id,
     }),
   ])
 
@@ -41,6 +45,22 @@ export default async function DashboardBrandDetailPage({ params }: DashboardBran
               filters: {
                 search: "",
                 status: "active",
+              },
+            }
+      }
+      activityData={
+        activitiesResult.success && activitiesResult.data
+          ? activitiesResult.data
+          : {
+              items: [],
+              pagination: {
+                page: 1,
+                pageSize: 20,
+                total: 0,
+                totalPages: 1,
+              },
+              filters: {
+                brandId: id,
               },
             }
       }

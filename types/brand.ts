@@ -1,16 +1,3 @@
-export interface Brand {
-  id: string
-  userId: string
-  name: string
-  category: string | null
-  website: string | null
-  primaryContactName: string | null
-  primaryContactEmail: string | null
-  notes: string | null
-  createdAt: Date
-  updatedAt: Date
-}
-
 export interface BrandListItem {
   id: string
   name: string

@@ -10,13 +10,23 @@ import {
   updateBrandAction,
   type BrandMutationResult,
 } from "@/app/action/brandActions"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
+import { ActivityTimelineSection } from "@/components/modules/crm/activity/ActivityTimelineSection"
 import type { ContactListData } from "@/types/contact"
 import type { BrandField } from "@/types/brand"
+import type { ActivityListData } from "@/types/activity"
 import { buildBrandFormData, brandToFormValues, type BrandFormValues } from "@/lib/crm/brands/brandForm"
-import { formatShortDate } from "@/lib/format/date"
 import { BrandContactsSection } from "@/components/modules/crm/contacts/BrandContactsSection"
+import { BrandDetailInfoCards } from "./BrandDetailInfoCards"
 import { BrandDeleteDialog } from "./BrandDeleteDialog"
 import { BrandForm } from "./BrandForm"
 
@@ -33,9 +43,10 @@ type BrandDetailPageProps = {
     updatedAt: Date
   }
   contactsData: ContactListData
+  activityData: ActivityListData
 }
 
-export function BrandDetailPage({ brand, contactsData }: BrandDetailPageProps) {
+export function BrandDetailPage({ brand, contactsData, activityData }: BrandDetailPageProps) {
   const router = useRouter()
 
   const [showEdit, setShowEdit] = useState(false)
@@ -83,9 +94,19 @@ export function BrandDetailPage({ brand, contactsData }: BrandDetailPageProps) {
   return (
     <div className="w-full max-w-[1100px] px-9 py-7">
       <div className="mb-5">
-        <Link href="/dashboard/brands" className="text-[12px] text-[rgba(255,255,255,0.5)] hover:text-white">
-          ← Back to brands
-        </Link>
+        <Breadcrumb>
+          <BreadcrumbList className="text-[12px] text-[rgba(255,255,255,0.5)]">
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild className="hover:text-white">
+                <Link href="/dashboard/brands">Brands</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator className="text-[rgba(255,255,255,0.35)]" />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="text-[rgba(255,255,255,0.75)]">{brand.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
 
       <Card className="rounded-[20px] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-7 py-7">
@@ -119,77 +140,10 @@ export function BrandDetailPage({ brand, contactsData }: BrandDetailPageProps) {
           </div>
         </div>
 
-        <CardContent className="mt-6 px-0">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Card className="border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] py-4">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
-                  WEBSITE
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-[13px] text-[rgba(255,255,255,0.75)]">
-                {brand.website ? (
-                  <a href={brand.website} target="_blank" rel="noreferrer" className="hover:text-[#E8402A]">
-                    {brand.website}
-                  </a>
-                ) : (
-                  "—"
-                )}
-              </CardContent>
-            </Card>
-
-            <Card className="border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] py-4">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
-                  PRIMARY CONTACT
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-[13px] text-[rgba(255,255,255,0.75)]">{brand.primaryContactName ?? "—"}</div>
-                <div className="mt-0.5 font-mono text-[11px] text-[rgba(255,255,255,0.5)]">
-                  {brand.primaryContactEmail ?? "—"}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="mt-4 border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] py-4">
-            <CardHeader className="pb-2">
-              <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
-                NOTES
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="whitespace-pre-wrap text-[13px] leading-6 text-[rgba(255,255,255,0.75)]">
-                {brand.notes ?? "No notes added."}
-              </p>
-            </CardContent>
-          </Card>
-
-          <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Card className="rounded-[12px] border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] py-3">
-              <CardHeader className="pb-1">
-                <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
-                  CREATED
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-[12px] text-[rgba(255,255,255,0.75)]">
-                {formatShortDate(brand.createdAt)}
-              </CardContent>
-            </Card>
-            <Card className="rounded-[12px] border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] py-3">
-              <CardHeader className="pb-1">
-                <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
-                  LAST UPDATED
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-[12px] text-[rgba(255,255,255,0.75)]">
-                {formatShortDate(brand.updatedAt)}
-              </CardContent>
-            </Card>
-          </div>
-        </CardContent>
+        <BrandDetailInfoCards brand={brand} />
       </Card>
+
+      <ActivityTimelineSection brandId={brand.id} initialData={activityData} />
 
       <BrandContactsSection brandId={brand.id} initialData={contactsData} />
 

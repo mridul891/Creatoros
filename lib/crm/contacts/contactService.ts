@@ -1,6 +1,8 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
+import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
 import type { ContactFilter } from "@/enums/contact"
+import { recordActivity } from "@/lib/crm/activity/activityService"
 import { prisma } from "@/lib/prisma"
 import {
   normalizeContactName,
@@ -138,6 +140,7 @@ async function syncBrandPrimaryContact(tx: Prisma.TransactionClient, brandId: st
     },
     orderBy: { updatedAt: "desc" },
     select: {
+      id: true,
       name: true,
       email: true,
     },
@@ -148,6 +151,55 @@ async function syncBrandPrimaryContact(tx: Prisma.TransactionClient, brandId: st
     data: {
       primaryContactName: primary?.name ?? null,
       primaryContactEmail: primary?.email ?? null,
+    },
+  })
+
+  return primary
+}
+
+async function getPrimaryContactSnapshot(tx: Prisma.TransactionClient, brandId: string) {
+  return tx.contact.findFirst({
+    where: {
+      brandId,
+      status: "Active",
+      isPrimary: true,
+    },
+    orderBy: { updatedAt: "desc" },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  })
+}
+
+async function recordPrimaryContactChangedActivity(options: {
+  tx: Prisma.TransactionClient
+  userId: string
+  brandId: string
+  previousPrimary: { id: string; name: string; email: string | null } | null
+  nextPrimary: { id: string; name: string; email: string | null } | null
+}) {
+  if (options.previousPrimary?.id === options.nextPrimary?.id) {
+    return
+  }
+
+  await recordActivity(options.tx, {
+    userId: options.userId,
+    type: ACTIVITY_TYPE.CONTACT_PRIMARY_CHANGED,
+    entityType: ACTIVITY_ENTITY.CONTACT,
+    entityId: options.nextPrimary?.id ?? options.previousPrimary?.id ?? options.brandId,
+    brandId: options.brandId,
+    contactId: options.nextPrimary?.id ?? null,
+    title: "Primary contact changed",
+    description: options.nextPrimary
+      ? `${options.nextPrimary.name} is now the primary contact.`
+      : "This brand no longer has a primary contact.",
+    metadata: {
+      previousPrimaryContactId: options.previousPrimary?.id ?? null,
+      previousPrimaryContactName: options.previousPrimary?.name ?? null,
+      nextPrimaryContactId: options.nextPrimary?.id ?? null,
+      nextPrimaryContactName: options.nextPrimary?.name ?? null,
     },
   })
 }
@@ -241,6 +293,7 @@ export async function createContact(userId: string, input: CreateContactInput): 
 
   return prisma.$transaction(async (tx) => {
     await assertOwnedBrand(userId, input.brandId, tx)
+    const previousPrimary = await getPrimaryContactSnapshot(tx, input.brandId)
     await ensureNoDuplicates({
       tx,
       userId,
@@ -269,7 +322,30 @@ export async function createContact(userId: string, input: CreateContactInput): 
       },
     })
 
-    await syncBrandPrimaryContact(tx, input.brandId)
+    const nextPrimary = await syncBrandPrimaryContact(tx, input.brandId)
+
+    await recordActivity(tx, {
+      userId,
+      type: ACTIVITY_TYPE.CONTACT_CREATED,
+      entityType: ACTIVITY_ENTITY.CONTACT,
+      entityId: contact.id,
+      brandId: contact.brandId,
+      contactId: contact.id,
+      title: "Contact created",
+      description: `${contact.name} was added to this brand.`,
+      metadata: {
+        contactName: contact.name,
+        isPrimary: contact.isPrimary,
+      },
+    })
+
+    await recordPrimaryContactChangedActivity({
+      tx,
+      userId,
+      brandId: input.brandId,
+      previousPrimary,
+      nextPrimary,
+    })
 
     return {
       id: contact.id,
@@ -294,6 +370,7 @@ export async function updateContact(userId: string, input: UpdateContactInput): 
 
   return prisma.$transaction(async (tx) => {
     await assertOwnedBrand(userId, input.brandId, tx)
+    const previousPrimary = await getPrimaryContactSnapshot(tx, input.brandId)
     await getOwnedContact(userId, input.brandId, input.contactId, tx)
 
     await ensureNoDuplicates({
@@ -325,7 +402,30 @@ export async function updateContact(userId: string, input: UpdateContactInput): 
       },
     })
 
-    await syncBrandPrimaryContact(tx, input.brandId)
+    const nextPrimary = await syncBrandPrimaryContact(tx, input.brandId)
+
+    await recordActivity(tx, {
+      userId,
+      type: ACTIVITY_TYPE.CONTACT_UPDATED,
+      entityType: ACTIVITY_ENTITY.CONTACT,
+      entityId: contact.id,
+      brandId: contact.brandId,
+      contactId: contact.id,
+      title: "Contact updated",
+      description: `${contact.name} was updated.`,
+      metadata: {
+        contactName: contact.name,
+        isPrimary: contact.isPrimary,
+      },
+    })
+
+    await recordPrimaryContactChangedActivity({
+      tx,
+      userId,
+      brandId: input.brandId,
+      previousPrimary,
+      nextPrimary,
+    })
 
     return {
       id: contact.id,
@@ -347,6 +447,7 @@ export async function updateContact(userId: string, input: UpdateContactInput): 
 export async function archiveContact(userId: string, brandId: string, contactId: string) {
   return prisma.$transaction(async (tx) => {
     await assertOwnedBrand(userId, brandId, tx)
+    const previousPrimary = await getPrimaryContactSnapshot(tx, brandId)
     const contact = await getOwnedContact(userId, brandId, contactId, tx)
 
     if (contact.status === "Archived") {
@@ -362,6 +463,28 @@ export async function archiveContact(userId: string, brandId: string, contactId:
       },
     })
 
-    await syncBrandPrimaryContact(tx, brandId)
+    const nextPrimary = await syncBrandPrimaryContact(tx, brandId)
+
+    await recordActivity(tx, {
+      userId,
+      type: ACTIVITY_TYPE.CONTACT_ARCHIVED,
+      entityType: ACTIVITY_ENTITY.CONTACT,
+      entityId: contact.id,
+      brandId: contact.brandId,
+      contactId: contact.id,
+      title: "Contact archived",
+      description: `${contact.name} was archived.`,
+      metadata: {
+        contactName: contact.name,
+      },
+    })
+
+    await recordPrimaryContactChangedActivity({
+      tx,
+      userId,
+      brandId,
+      previousPrimary,
+      nextPrimary,
+    })
   })
 }

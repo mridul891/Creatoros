@@ -11,8 +11,6 @@ import { BRAND_CATEGORIES } from "@/enums/brand"
 import { type BrandFormValues } from "@/lib/crm/brands/brandForm"
 import { CrmFormDialog } from "../shared"
 
-export type { BrandFormValues }
-
 type BrandFormProps = {
   open: boolean
   title: string

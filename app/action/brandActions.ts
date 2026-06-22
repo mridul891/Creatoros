@@ -1,38 +1,20 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { z } from "zod"
 
-import { BRAND_CATEGORIES } from "@/enums/brand"
 import type { BrandField, BrandListData } from "@/types/brand"
-import { prisma } from "@/lib/prisma"
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-
-const PAGE_SIZE_DEFAULT = 20
-const PAGE_SIZE_MAX = 50
-
-const websiteSchema = z
-  .url({ error: "Please enter a valid website URL." })
-  .refine((value) => value.startsWith("http://") || value.startsWith("https://"), {
-    message: "Website must start with http:// or https://",
-  })
-
-const brandCreateUpdateSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, "Brand name must be at least 2 characters.")
-    .max(120, "Brand name cannot exceed 120 characters."),
-  category: z.enum(BRAND_CATEGORIES).optional(),
-  website: websiteSchema.optional(),
-  primaryContactName: z
-    .string()
-    .trim()
-    .max(120, "Contact name cannot exceed 120 characters.")
-    .optional(),
-  primaryContactEmail: z.email("Please enter a valid email address.").optional(),
-  notes: z.string().trim().max(5000, "Notes cannot exceed 5000 characters.").optional(),
-})
+import { brandCreateUpdateSchema } from "@/lib/crm/brands/brandValidation"
+import {
+  BrandServiceError,
+  createBrand,
+  deleteBrand,
+  getBrand,
+  listBrands,
+  updateBrand,
+} from "@/lib/crm/brands/brandService"
+import { getFieldErrors } from "@/lib/crm/shared/action"
+import { sanitizeOptionalString } from "@/lib/crm/shared/form"
 
 export type BrandMutationResult = {
   success: boolean
@@ -70,67 +52,25 @@ type BrandGetResult =
       message: string
     }
 
-function sanitizeOptionalString(value: FormDataEntryValue | null) {
-  if (typeof value !== "string") {
-    return undefined
+function mapBrandServiceError(error: unknown): BrandMutationResult | null {
+  if (!(error instanceof BrandServiceError)) {
+    return null
   }
 
-  const trimmed = value.trim()
-  return trimmed.length > 0 ? trimmed : undefined
-}
-
-function normalizeBrandName(name: string) {
-  return name.toLowerCase().replace(/\s+/g, " ").trim()
-}
-
-function getFieldErrors(error: z.ZodError): Partial<Record<BrandField, string>> {
-  const fields: Partial<Record<BrandField, string>> = {}
-  for (const issue of error.issues) {
-    const path = issue.path[0]
-    if (typeof path !== "string") {
-      continue
-    }
-
-    const field = path as BrandField
-    if (!fields[field]) {
-      fields[field] = issue.message
+  if (error.code === "DUPLICATE" && error.field) {
+    return {
+      success: false,
+      message: "A brand with this name already exists.",
+      fieldErrors: {
+        [error.field]: error.message,
+      },
     }
   }
 
-  return fields
-}
-
-function clampPage(input: number | undefined) {
-  if (!input || Number.isNaN(input)) {
-    return 1
+  return {
+    success: false,
+    message: error.message,
   }
-
-  return Math.max(1, Math.floor(input))
-}
-
-function clampPageSize(input: number | undefined) {
-  if (!input || Number.isNaN(input)) {
-    return PAGE_SIZE_DEFAULT
-  }
-
-  return Math.max(1, Math.min(PAGE_SIZE_MAX, Math.floor(input)))
-}
-
-async function ensureNoDuplicateName(options: {
-  userId: string
-  normalizedName: string
-  excludingId?: string
-}) {
-  const existing = await prisma.brand.findFirst({
-    where: {
-      userId: options.userId,
-      normalizedName: options.normalizedName,
-      ...(options.excludingId ? { id: { not: options.excludingId } } : {}),
-    },
-    select: { id: true },
-  })
-
-  return !existing
 }
 
 export async function listBrandsAction(input?: {
@@ -139,57 +79,12 @@ export async function listBrandsAction(input?: {
   pageSize?: number
 }): Promise<BrandListResult> {
   const user = await requireOnboardedUser()
-  const search = input?.search?.trim() ?? ""
-  const page = clampPage(input?.page)
-  const pageSize = clampPageSize(input?.pageSize)
-  const skip = (page - 1) * pageSize
 
   try {
-    const where = {
-      userId: user.id,
-      ...(search
-        ? {
-            OR: [
-              { name: { contains: search, mode: "insensitive" as const } },
-              { category: { contains: search, mode: "insensitive" as const } },
-              { primaryContactName: { contains: search, mode: "insensitive" as const } },
-              { primaryContactEmail: { contains: search, mode: "insensitive" as const } },
-            ],
-          }
-        : {}),
-    }
-
-    const [items, total] = await prisma.$transaction([
-      prisma.brand.findMany({
-        where,
-        orderBy: { updatedAt: "desc" },
-        skip,
-        take: pageSize,
-        select: {
-          id: true,
-          name: true,
-          category: true,
-          website: true,
-          primaryContactName: true,
-          primaryContactEmail: true,
-          notes: true,
-          updatedAt: true,
-        },
-      }),
-      prisma.brand.count({ where }),
-    ])
-
+    const data = await listBrands(user.id, input)
     return {
       success: true,
-      data: {
-        items,
-        pagination: {
-          page,
-          pageSize,
-          total,
-          totalPages: Math.max(1, Math.ceil(total / pageSize)),
-        },
-      },
+      data,
     }
   } catch (error) {
     console.error("brands.list_failed", { userId: user.id, error })
@@ -204,23 +99,7 @@ export async function getBrandAction(brandId: string): Promise<BrandGetResult> {
   const user = await requireOnboardedUser()
 
   try {
-    const brand = await prisma.brand.findFirst({
-      where: {
-        id: brandId,
-        userId: user.id,
-      },
-      select: {
-        id: true,
-        name: true,
-        category: true,
-        website: true,
-        primaryContactName: true,
-        primaryContactEmail: true,
-        notes: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
+    const brand = await getBrand(user.id, brandId)
 
     if (!brand) {
       return {
@@ -261,39 +140,8 @@ export async function createBrandAction(formData: FormData): Promise<BrandMutati
     }
   }
 
-  const normalizedName = normalizeBrandName(parsed.data.name)
-  const isUnique = await ensureNoDuplicateName({
-    userId: user.id,
-    normalizedName,
-  })
-
-  if (!isUnique) {
-    return {
-      success: false,
-      message: "A brand with this name already exists.",
-      fieldErrors: {
-        name: "Brand name already exists.",
-      },
-    }
-  }
-
   try {
-    const created = await prisma.brand.create({
-      data: {
-        userId: user.id,
-        name: parsed.data.name,
-        normalizedName,
-        category: parsed.data.category ?? null,
-        website: parsed.data.website ?? null,
-        primaryContactName: parsed.data.primaryContactName ?? null,
-        primaryContactEmail: parsed.data.primaryContactEmail ?? null,
-        notes: parsed.data.notes ?? null,
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    })
+    const created = await createBrand(user.id, parsed.data)
 
     revalidatePath("/dashboard/brands")
     revalidatePath(`/dashboard/brands/${created.id}`)
@@ -304,6 +152,11 @@ export async function createBrandAction(formData: FormData): Promise<BrandMutati
       data: created,
     }
   } catch (error) {
+    const mappedError = mapBrandServiceError(error)
+    if (mappedError) {
+      return mappedError
+    }
+
     console.error("brands.create_failed", { userId: user.id, error })
     return {
       success: false,
@@ -340,41 +193,9 @@ export async function updateBrandAction(formData: FormData): Promise<BrandMutati
     }
   }
 
-  const normalizedName = normalizeBrandName(parsed.data.name)
-  const isUnique = await ensureNoDuplicateName({
-    userId: user.id,
-    normalizedName,
-    excludingId: brandId,
-  })
-
-  if (!isUnique) {
-    return {
-      success: false,
-      message: "A brand with this name already exists.",
-      fieldErrors: {
-        name: "Brand name already exists.",
-      },
-    }
-  }
-
   try {
-    const updated = await prisma.brand.updateMany({
-      where: {
-        id: brandId,
-        userId: user.id,
-      },
-      data: {
-        name: parsed.data.name,
-        normalizedName,
-        category: parsed.data.category ?? null,
-        website: parsed.data.website ?? null,
-        primaryContactName: parsed.data.primaryContactName ?? null,
-        primaryContactEmail: parsed.data.primaryContactEmail ?? null,
-        notes: parsed.data.notes ?? null,
-      },
-    })
-
-    if (updated.count === 0) {
+    const updated = await updateBrand(user.id, brandId, parsed.data)
+    if (!updated) {
       return {
         success: false,
         message: "Brand not found.",
@@ -387,12 +208,14 @@ export async function updateBrandAction(formData: FormData): Promise<BrandMutati
     return {
       success: true,
       message: "Brand updated successfully.",
-      data: {
-        id: brandId,
-        name: parsed.data.name,
-      },
+      data: updated,
     }
   } catch (error) {
+    const mappedError = mapBrandServiceError(error)
+    if (mappedError) {
+      return mappedError
+    }
+
     console.error("brands.update_failed", { userId: user.id, brandId, error })
     return {
       success: false,
@@ -412,14 +235,8 @@ export async function deleteBrandAction(brandId: string): Promise<BrandMutationR
   }
 
   try {
-    const deleted = await prisma.brand.deleteMany({
-      where: {
-        id: brandId,
-        userId: user.id,
-      },
-    })
-
-    if (deleted.count === 0) {
+    const deleted = await deleteBrand(user.id, brandId)
+    if (!deleted) {
       return {
         success: false,
         message: "Brand not found.",

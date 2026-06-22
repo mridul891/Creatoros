@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import { listContactsByBrandAction } from "@/app/action/contactActions"
 import type { ContactFilter } from "@/enums/contact"
@@ -64,15 +64,9 @@ export function useBrandContacts({ brandId, initialData }: UseBrandContactsOptio
     }
   }, [refetch, search, status])
 
-  const activeCount = useMemo(
-    () => contacts.filter((contact) => contact.status === "Active").length,
-    [contacts],
-  )
-
   return {
     contacts,
     total,
-    activeCount,
     search,
     status,
     isLoading,

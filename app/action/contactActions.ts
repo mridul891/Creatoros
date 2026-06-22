@@ -1,13 +1,13 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { z } from "zod"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
+import { getFieldErrors } from "@/lib/crm/shared/action"
+import { sanitizeOptionalString } from "@/lib/crm/shared/form"
 import {
   contactListSchema,
   contactSchema,
-  sanitizeOptionalString,
 } from "@/lib/crm/contacts/contactValidation"
 import {
   archiveContact,
@@ -54,24 +54,6 @@ type ContactGetResult =
       success: false
       message: string
     }
-
-function getFieldErrors(error: z.ZodError): Partial<Record<ContactField, string>> {
-  const fields: Partial<Record<ContactField, string>> = {}
-
-  for (const issue of error.issues) {
-    const path = issue.path[0]
-    if (typeof path !== "string") {
-      continue
-    }
-
-    const field = path as ContactField
-    if (!fields[field]) {
-      fields[field] = issue.message
-    }
-  }
-
-  return fields
-}
 
 function parseContactFormData(formData: FormData) {
   return contactSchema.safeParse({

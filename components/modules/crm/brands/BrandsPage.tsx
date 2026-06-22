@@ -2,7 +2,7 @@
 
 import { Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import {
@@ -10,6 +10,7 @@ import {
   deleteBrandAction,
   updateBrandAction,
 } from "@/app/action/brandActions"
+import { useBrandListSearch } from "@/hooks/useBrandListSearch"
 import { buildBrandFormData, brandToFormValues, EMPTY_BRAND_FORM, type BrandFormValues } from "@/lib/crm/brands/brandForm"
 import type { BrandField, BrandListData, BrandListItem } from "@/types/brand"
 import { BrandDeleteDialog } from "./BrandDeleteDialog"
@@ -23,7 +24,7 @@ type BrandsPageProps = { listData: BrandListData; initialSearch: string }
 export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
   const router = useRouter()
 
-  const [search, setSearch] = useState(initialSearch)
+  const { search, setSearch } = useBrandListSearch(initialSearch)
   const [showCreate, setShowCreate] = useState(false)
   const [editing, setEditing] = useState<BrandListItem | null>(null)
   const [deleting, setDeleting] = useState<BrandListItem | null>(null)
@@ -32,27 +33,6 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
   const [formError, setFormError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const hasMountedRef = useRef(false)
-
-  useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true
-      return
-    }
-
-    const timeout = setTimeout(() => {
-      const params = new URLSearchParams()
-      if (search.trim()) {
-        params.set("search", search.trim())
-      }
-      params.set("page", "1")
-
-      const query = params.toString()
-      router.replace(query ? `/dashboard/brands?${query}` : "/dashboard/brands")
-    }, 300)
-
-    return () => clearTimeout(timeout)
-  }, [router, search])
 
   const isSearchMode = useMemo(() => initialSearch.trim().length > 0, [initialSearch])
 
