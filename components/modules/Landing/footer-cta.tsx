@@ -1,7 +1,7 @@
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { wrap } from "./constants";
+import { WRAP_CLASS } from "./constants";
 
 export function FooterCTA() {
   const footerLinks = [
@@ -14,7 +14,7 @@ export function FooterCTA() {
 
   return (
     <>
-      <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] px-7 py-[120px] text-center">
+      <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] px-4 py-20 text-center sm:px-6 sm:py-24 lg:px-7 lg:py-[120px]">
         <div className="mx-auto max-w-[640px]">
           <h2 className="mb-5 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(36px,5.5vw,60px)] font-semibold leading-[1.05] tracking-[-0.045em] text-white">
             Plan the present.
@@ -25,21 +25,21 @@ export function FooterCTA() {
             Join 10,000+ creators who use NotYetLaunchedOS to grow their audience,
             close more brand deals, and build a real business.
           </p>
-          <div className="mb-6 flex items-center justify-center gap-3">
+          <div className="mb-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               href="#"
-              className="flex items-center gap-[7px] rounded-lg bg-white px-7 py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] font-semibold tracking-[-0.02em] text-black no-underline"
+              className="flex w-full items-center justify-center gap-[7px] rounded-lg bg-white px-6 py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-semibold tracking-[-0.02em] text-black no-underline sm:w-auto sm:px-7 sm:text-[15px]"
             >
               Start for free — no credit card <ArrowRight size={15} />
             </a>
             <a
               href="#"
-              className="rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-[22px] py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] font-medium text-[rgba(255,255,255,0.84)] no-underline"
+              className="w-full rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-[22px] py-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-medium text-[rgba(255,255,255,0.84)] no-underline sm:w-auto sm:text-[15px]"
             >
               Free forever. Upgrade anytime.
             </a>
           </div>
-          <div className="flex items-center justify-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {[
               "No credit card required",
               "Cancel anytime",
@@ -56,9 +56,9 @@ export function FooterCTA() {
         </div>
       </section>
 
-      <footer className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] pb-10 pt-16">
-        <div style={wrap}>
-          <div className="mb-14 flex items-start justify-between gap-8">
+      <footer className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] pb-10 pt-12 sm:pt-16">
+        <div className={WRAP_CLASS}>
+          <div className="mb-12 flex flex-col items-start justify-between gap-8 sm:mb-14 md:flex-row">
             <div>
               <div className="mb-3 flex items-center gap-2">
                 <Image src="/logo.svg" alt="logo" width={100} height={100} />
@@ -67,7 +67,7 @@ export function FooterCTA() {
                 The operating system for professional content creators.
               </p>
             </div>
-            <div className="flex flex-wrap justify-end gap-5">
+            <div className="flex flex-wrap justify-start gap-4 sm:gap-5 md:justify-end">
               {footerLinks.map((link) => (
                 <Link
                   key={link.label}
@@ -84,11 +84,11 @@ export function FooterCTA() {
               NOTYETLAUNCHED
             </p>
 
-          <div className="flex items-center justify-between border-t border-[rgba(255,255,255,0.07)] pt-6">
+          <div className="flex flex-col gap-3 border-t border-[rgba(255,255,255,0.07)] pt-6 sm:flex-row sm:items-center sm:justify-between">
             <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.72)]">
               © 2026 NotYetLaunchedOS. All rights reserved.
             </span>
-            <div className="flex gap-5">
+            <div className="flex flex-wrap gap-4 sm:gap-5">
               <Link
                 href="/privacy-policy"
                 className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-xs text-[rgba(255,255,255,0.78)] no-underline transition-colors duration-150 hover:text-white"

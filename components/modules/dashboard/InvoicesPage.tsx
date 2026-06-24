@@ -12,20 +12,12 @@ import type {
   Invoice,
   InvoiceFiltersState,
   InvoiceFormState,
+  InvoiceListData,
+  InvoiceListItem,
   InvoiceModalState,
 } from "@/types/invoice";
 
 /* ── Types & data ──────────────────────────────────────────── */
-const SEED: Invoice[] = [
-  { id: "INV-2024", client: "Glow Republic",    logo: "GR", color: "#E8402A", amount: 8500,  issued: "Jun 1, 2026",  due: "Jun 15, 2026", status: InvoiceStatus.PAID,    desc: "Brand partnership — June campaign" },
-  { id: "INV-2023", client: "Nomad Gear Co.",   logo: "NG", color: "#111111", amount: 4200,  issued: "May 25, 2026", due: "Jun 8, 2026",  status: InvoiceStatus.PENDING, desc: "Instagram Reel × 3 posts" },
-  { id: "INV-2022", client: "ByteBrews",        logo: "BB", color: "#E8402A", amount: 6750,  issued: "May 18, 2026", due: "Jun 1, 2026",  status: InvoiceStatus.OVERDUE, desc: "YouTube integration + story set" },
-  { id: "INV-2021", client: "Vibe Studio",      logo: "VS", color: "#111111", amount: 3100,  issued: "May 10, 2026", due: "May 24, 2026", status: InvoiceStatus.PAID,    desc: "Lifestyle shoot × 4 deliverables" },
-  { id: "INV-2020", client: "Meridian Health",  logo: "MH", color: "#E8402A", amount: 9200,  issued: "Apr 28, 2026", due: "May 12, 2026", status: InvoiceStatus.PAID,    desc: "Spring wellness campaign" },
-  { id: "INV-2019", client: "TrekLight",        logo: "TL", color: "#111111", amount: 2800,  issued: "Apr 15, 2026", due: "Apr 29, 2026", status: InvoiceStatus.DRAFT,   desc: "Adventure series — 2 Reels" },
-  { id: "INV-2018", client: "Pulse Tech",       logo: "PT", color: "#E8402A", amount: 5400,  issued: "Apr 5, 2026",  due: "Apr 19, 2026", status: InvoiceStatus.PAID,    desc: "Product launch campaign" },
-];
-
 const STATUS_CFG: Record<InvoiceStatus, {
   label: string;
   icon: LucideIcon;
@@ -33,30 +25,34 @@ const STATUS_CFG: Record<InvoiceStatus, {
   toneBg: string;
   toneBorder: string;
 }> = {
-  [InvoiceStatus.PAID]:    { label: "Paid", icon: CheckCircle, toneText: "text-[#16a34a]", toneBg: "bg-[rgba(22,163,74,0.08)]", toneBorder: "border-[rgba(22,163,74,0.2)]" },
-  [InvoiceStatus.PENDING]: { label: "Pending", icon: Clock, toneText: "text-[#d97706]", toneBg: "bg-[rgba(217,119,6,0.08)]", toneBorder: "border-[rgba(217,119,6,0.2)]" },
-  [InvoiceStatus.OVERDUE]: { label: "Overdue", icon: AlertTriangle, toneText: "text-[#E8402A]", toneBg: "bg-[rgba(232,64,42,0.08)]", toneBorder: "border-[rgba(232,64,42,0.2)]" },
   [InvoiceStatus.DRAFT]:   { label: "Draft", icon: FileText, toneText: "text-[#717171]", toneBg: "bg-[rgba(113,113,113,0.08)]", toneBorder: "border-[rgba(113,113,113,0.2)]" },
+  [InvoiceStatus.SENT]:    { label: "Sent", icon: Clock, toneText: "text-[#d97706]", toneBg: "bg-[rgba(217,119,6,0.08)]", toneBorder: "border-[rgba(217,119,6,0.2)]" },
+  [InvoiceStatus.PAID]:    { label: "Paid", icon: CheckCircle, toneText: "text-[#16a34a]", toneBg: "bg-[rgba(22,163,74,0.08)]", toneBorder: "border-[rgba(22,163,74,0.2)]" },
+  [InvoiceStatus.OVERDUE]: { label: "Overdue", icon: AlertTriangle, toneText: "text-[#E8402A]", toneBg: "bg-[rgba(232,64,42,0.08)]", toneBorder: "border-[rgba(232,64,42,0.2)]" },
+  [InvoiceStatus.ARCHIVED]: { label: "Archived", icon: FileText, toneText: "text-[#717171]", toneBg: "bg-[rgba(113,113,113,0.08)]", toneBorder: "border-[rgba(113,113,113,0.2)]" },
 };
 
 const TABS: InvoiceTab[] = [
   InvoiceTab.ALL,
+  InvoiceTab.SENT,
   InvoiceTab.PAID,
-  InvoiceTab.PENDING,
   InvoiceTab.OVERDUE,
   InvoiceTab.DRAFT,
+  InvoiceTab.ARCHIVED,
 ];
 const INVOICE_STATUS_OPTIONS: InvoiceStatus[] = [
   InvoiceStatus.DRAFT,
-  InvoiceStatus.PENDING,
-  InvoiceStatus.OVERDUE,
+  InvoiceStatus.SENT,
   InvoiceStatus.PAID,
+  InvoiceStatus.OVERDUE,
+  InvoiceStatus.ARCHIVED,
 ];
 const INVOICE_TAB_TO_STATUS: Partial<Record<InvoiceTab, InvoiceStatus>> = {
+  [InvoiceTab.SENT]: InvoiceStatus.SENT,
   [InvoiceTab.PAID]: InvoiceStatus.PAID,
-  [InvoiceTab.PENDING]: InvoiceStatus.PENDING,
   [InvoiceTab.OVERDUE]: InvoiceStatus.OVERDUE,
   [InvoiceTab.DRAFT]: InvoiceStatus.DRAFT,
+  [InvoiceTab.ARCHIVED]: InvoiceStatus.ARCHIVED,
 };
 function fmt(n: number) { return `$${n.toLocaleString()}`; }
 function nextId(invoices: Invoice[]) {
@@ -79,6 +75,39 @@ const LOGO_TONE: Record<string, string> = {
   "#111111": "bg-[#11111118] text-[#111111]",
 };
 
+function formatInvoiceDate(value: Date | null) {
+  if (!value) return "TBD"
+  return value.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+}
+
+function getInitials(value: string) {
+  return value
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("")
+    .padEnd(2, value[1]?.toUpperCase() ?? "X")
+}
+
+function toInvoice(item: InvoiceListItem): Invoice {
+  return {
+    id: item.invoiceNumber,
+    invoiceId: item.id,
+    client: item.client,
+    logo: getInitials(item.client),
+    color: "#E8402A",
+    amount: item.amount,
+    currency: item.currency,
+    issued: formatInvoiceDate(item.issuedAt),
+    due: formatInvoiceDate(item.dueDate),
+    status: item.status,
+    desc: item.description,
+    dealId: item.dealId,
+    metadata: item.metadata,
+  }
+}
+
 /* ── Invoice modal (create / edit) ─────────────────────────── */
 function InvoiceModal({ state, onSave, onClose }: {
   state: InvoiceModalState; onSave: (inv: Invoice) => void; onClose: () => void;
@@ -100,14 +129,18 @@ function InvoiceModal({ state, onSave, onClose }: {
     const today = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     onSave({
       id: ex?.id ?? "",
+      invoiceId: ex?.invoiceId ?? "",
       client: form.client.trim(),
       logo: form.logo.trim() || form.client.slice(0, 2).toUpperCase(),
       color: "#E8402A",
       amount: form.amount,
+      currency: ex?.currency ?? "USD",
       desc: form.desc.trim(),
       issued: ex?.issued ?? today,
       due: form.due || "TBD",
       status: form.status,
+      dealId: ex?.dealId ?? null,
+      metadata: ex?.metadata ?? null,
     });
     onClose();
   }
@@ -221,7 +254,7 @@ function RowMenu({ onEdit, onDelete, onStatusChange }: {
           {[
             { label: "Edit invoice", icon: Edit3, action: onEdit, colorClass: "text-[rgba(255,255,255,0.65)]" },
             { label: "Mark as Paid", icon: CheckCircle, action: () => onStatusChange(InvoiceStatus.PAID), colorClass: "text-[#16a34a]" },
-            { label: "Mark as Pending", icon: Clock, action: () => onStatusChange(InvoiceStatus.PENDING), colorClass: "text-[#d97706]" },
+            { label: "Mark as Sent", icon: Clock, action: () => onStatusChange(InvoiceStatus.SENT), colorClass: "text-[#d97706]" },
             { label: "Mark as Overdue", icon: AlertTriangle, action: () => onStatusChange(InvoiceStatus.OVERDUE), colorClass: "text-[#E8402A]" },
             { label: "Delete", icon: Trash2, action: onDelete, colorClass: "text-[#E8402A]" },
           ].map(item => (
@@ -240,18 +273,26 @@ function RowMenu({ onEdit, onDelete, onStatusChange }: {
 }
 
 /* ── InvoicesPage ───────────────────────────────────────────── */
-export function InvoicesPage() {
-  const [invoices, setInvoices] = useState(SEED);
+type InvoicesPageProps = {
+  initialData: InvoiceListData
+  selectedInvoiceId?: string
+}
+
+export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPageProps) {
+  const [invoices, setInvoices] = useState(() => initialData.items.map((item) => toInvoice(item)));
   const [filters, setFilters] = useState<InvoiceFiltersState>({
     tab: InvoiceTab.ALL,
     search: "",
   });
   const [modal, setModal] = useState<InvoiceModalState | null>(null);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(() => {
+    const selectedItem = selectedInvoiceId ? initialData.items.find((item) => item.id === selectedInvoiceId) : null
+    return selectedItem?.invoiceNumber ?? null
+  });
   const [copied, setCopied] = useState(false);
 
   const totalRevenue = invoices.filter(i => i.status === InvoiceStatus.PAID).reduce((s, i) => s + i.amount, 0);
-  const totalPending = invoices.filter(i => i.status === InvoiceStatus.PENDING).reduce((s, i) => s + i.amount, 0);
+  const totalPending = invoices.filter(i => i.status === InvoiceStatus.SENT).reduce((s, i) => s + i.amount, 0);
   const totalOverdue = invoices.filter(i => i.status === InvoiceStatus.OVERDUE).reduce((s, i) => s + i.amount, 0);
 
   const filtered = invoices
@@ -301,7 +342,7 @@ export function InvoicesPage() {
       <div className="mb-7 grid grid-cols-[repeat(4,1fr)] gap-4">
         {[
           { label: "Total Earned",       value: fmt(totalRevenue), sub: `${invoices.filter(i => i.status === InvoiceStatus.PAID).length} paid invoices`,    icon: DollarSign,  accent: "#111111" },
-          { label: "Awaiting Payment",   value: fmt(totalPending), sub: `${invoices.filter(i => i.status === InvoiceStatus.PENDING).length} pending`,        icon: Clock,       accent: "#d97706" },
+          { label: "Awaiting Payment",   value: fmt(totalPending), sub: `${invoices.filter(i => i.status === InvoiceStatus.SENT).length} sent`,        icon: Clock,       accent: "#d97706" },
           { label: "Overdue",            value: fmt(totalOverdue), sub: `${invoices.filter(i => i.status === InvoiceStatus.OVERDUE).length} overdue`,        icon: AlertTriangle,accent:"#E8402A" },
           { label: "Total Invoices",     value: String(invoices.length), sub: "all time",                                                        icon: TrendingUp,  accent: "#16a34a" },
         ].map(k => (

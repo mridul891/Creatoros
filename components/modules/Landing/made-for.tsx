@@ -2,7 +2,7 @@ import * as React from "react";
 import { BarChart3, Calendar, Sparkles } from "lucide-react";
 
 import { ImageWithFallback } from "@/components/modules/figma/ImageWithFallback";
-import { DIM } from "./constants";
+import { DIM, WRAP_CLASS } from "./constants";
 import {
   IMG_FEATURE_ANALYTICS,
   IMG_FEATURE_CALENDAR,
@@ -35,9 +35,9 @@ export function MadeFor() {
   ];
 
   return (
-    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-24">
-      <div className="mx-auto w-full max-w-[1100px] px-7">
-        <div className="mb-12">
+    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-16 sm:py-20 lg:py-24">
+      <div className={WRAP_CLASS}>
+        <div className="mb-10 sm:mb-12">
           <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.72)]">
             One connected platform
           </p>
@@ -50,9 +50,9 @@ export function MadeFor() {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.07)]">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.07)] md:grid-cols-3">
           {cards.map((card, index) => (
-            <div key={index} className="flex h-full flex-col bg-[#080808] px-7 pb-6 pt-8">
+            <div key={index} className="flex h-full flex-col bg-[#080808] px-5 pb-5 pt-6 sm:px-7 sm:pb-6 sm:pt-8">
               <div>
                 <div className="mb-4 flex items-center gap-2">
                   <div className="flex h-7 w-7 items-center justify-center rounded-[7px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)]">
@@ -62,14 +62,14 @@ export function MadeFor() {
                     {card.eyebrow}
                   </span>
                 </div>
-                <h3 className="mb-2.5 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[17px] font-semibold tracking-tight text-white">
+                <h3 className="mb-2.5 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[16px] font-semibold tracking-tight text-white sm:text-[17px]">
                   {card.title}
                 </h3>
-                <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] leading-[1.65] text-[rgba(255,255,255,0.84)]">
+                <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-[1.65] text-[rgba(255,255,255,0.84)] sm:text-[14px]">
                   {card.desc}
                 </p>
               </div>
-              <div className="mt-7">
+              <div className="mt-6 sm:mt-7">
                 <ImageWithFallback
                   src={card.img}
                   alt={card.eyebrow}

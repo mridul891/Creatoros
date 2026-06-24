@@ -1,0 +1,157 @@
+"use client"
+
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { TASK_PRIORITIES, TASK_STATUS_LABEL, TASK_STATUSES, type TaskStatus } from "@/enums/task"
+import type { TaskField } from "@/types/task"
+import { CrmFormDialog } from "../shared"
+import type { TaskFormValues } from "@/lib/crm/tasks/taskForm"
+
+type TaskFormProps = {
+  open: boolean
+  title: string
+  submitLabel: string
+  values: TaskFormValues
+  isSubmitting: boolean
+  fieldErrors: Partial<Record<TaskField, string>>
+  formError: string
+  onChange: (nextValues: TaskFormValues) => void
+  onOpenChange: (open: boolean) => void
+  onSubmit: () => void
+  statusOptions?: readonly TaskStatus[]
+  statusDisabled?: boolean
+}
+
+function ErrorText({ message }: { message?: string }) {
+  if (!message) return null
+  return <p className="mt-1 text-[11px] text-[#E8402A]">{message}</p>
+}
+
+export function TaskForm({
+  open,
+  title,
+  submitLabel,
+  values,
+  isSubmitting,
+  fieldErrors,
+  formError,
+  onChange,
+  onOpenChange,
+  onSubmit,
+  statusOptions = TASK_STATUSES,
+  statusDisabled = false,
+}: TaskFormProps) {
+  return (
+    <CrmFormDialog
+      open={open}
+      title={title}
+      description="Capture internal execution work for this deal."
+      onOpenChange={onOpenChange}
+      footer={
+        <div className="flex w-full justify-end gap-2">
+          <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="cursor-pointer" disabled={isSubmitting}>
+            Cancel
+          </Button>
+          <Button type="button" onClick={onSubmit} className="cursor-pointer" disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : submitLabel}
+          </Button>
+        </div>
+      }
+    >
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="task-title" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+            Title
+          </Label>
+          <Input
+            id="task-title"
+            value={values.title}
+            onChange={(event) => onChange({ ...values, title: event.target.value })}
+            placeholder="Write script"
+            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+          />
+          <ErrorText message={fieldErrors.title} />
+        </div>
+
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="task-description" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+            Description
+          </Label>
+          <Textarea
+            id="task-description"
+            value={values.description}
+            onChange={(event) => onChange({ ...values, description: event.target.value })}
+            placeholder="Describe execution notes or acceptance for this task."
+            rows={4}
+            className="border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+          />
+          <ErrorText message={fieldErrors.description} />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Status</Label>
+          <Select
+            value={values.status}
+            onValueChange={(next) => onChange({ ...values, status: next as TaskFormValues["status"] })}
+            disabled={statusDisabled}
+          >
+            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              {statusOptions.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {TASK_STATUS_LABEL[status]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <ErrorText message={fieldErrors.status} />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Priority</Label>
+          <Select value={values.priority} onValueChange={(next) => onChange({ ...values, priority: next as TaskFormValues["priority"] })}>
+            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+              <SelectValue placeholder="Priority" />
+            </SelectTrigger>
+            <SelectContent>
+              {TASK_PRIORITIES.map((priority) => (
+                <SelectItem key={priority} value={priority}>
+                  {priority}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <ErrorText message={fieldErrors.priority} />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="task-due-date" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+            Due Date
+          </Label>
+          <Input
+            id="task-due-date"
+            type="date"
+            value={values.dueDate}
+            onChange={(event) => onChange({ ...values, dueDate: event.target.value })}
+            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+          />
+          <ErrorText message={fieldErrors.dueDate} />
+        </div>
+
+      
+      </div>
+
+      {formError ? (
+        <Alert variant="destructive" className="mt-4 border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.1)]">
+          <AlertDescription className="text-[12px] text-[#E8402A]">{formError}</AlertDescription>
+        </Alert>
+      ) : null}
+    </CrmFormDialog>
+  )
+}

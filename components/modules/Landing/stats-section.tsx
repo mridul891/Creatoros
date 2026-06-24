@@ -2,7 +2,7 @@ import * as React from "react";
 import { Clock, TrendingUp, Users } from "lucide-react";
 
 
-import { DIM, wrap } from "./constants";
+import { DIM, WRAP_CLASS } from "./constants";
 
 
 export function StatsSection() {
@@ -25,10 +25,10 @@ export function StatsSection() {
   ];
 
   return (
-    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#080808] py-24">
-      <div style={wrap}>
-        <div className="mb-[72px] flex flex-wrap items-start gap-16">
-          <div className="max-w-[280px]">
+    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#080808] py-16 sm:py-20 lg:py-24">
+      <div className={WRAP_CLASS}>
+        <div className="mb-10 flex flex-col items-start gap-8 md:mb-[72px] md:flex-row md:gap-16">
+          <div className="max-w-[340px]">
             <p className="mb-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(235,80,80,0.85)]">
               Business Impact
             </p>
@@ -37,7 +37,7 @@ export function StatsSection() {
             </h2>
           </div>
 
-          <div className="grid flex-1 grid-cols-2 gap-y-7 gap-x-12">
+          <div className="grid w-full flex-1 grid-cols-1 gap-x-12 gap-y-6 sm:grid-cols-2 sm:gap-y-7 lg:grid-cols-3">
             {stats.map((stat, index) => (
               <div key={index} className="border-t border-[rgba(255,255,255,0.07)] pt-5">
                 <p className="mb-2 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(36px,4.5vw,48px)] font-semibold tracking-[-0.045em] text-white">

@@ -9,6 +9,8 @@ export const ACCENT = "rgba(235,80,80,0.85)";
 export const FONT =
   "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif";
 
+export const WRAP_CLASS = "mx-auto w-full max-w-[1100px] px-4 sm:px-6 lg:px-7";
+
 export const wrap: CSSProperties = {
   maxWidth: 1100,
   margin: "0 auto",

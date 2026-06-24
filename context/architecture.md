@@ -263,3 +263,15 @@ No server round-trip needed for PDF generation.
 - [ ] Supabase service role key never exposed to client
 - [ ] PDF files in Supabase Storage have private bucket policies (signed URLs only)
 - [ ] GDPR: data export + account deletion endpoint built from day one
+
+---
+
+## 2026-06 Campaign Workspace Architecture Reality
+
+The implementation now uses Prisma-first CRM entities centered on `Deal`:
+
+- Existing: `users`, `brands`, `contacts`, `deals`, `tasks`, `activities`
+- Added: `deliverables`, `deal_notes`, `deal_files`, `campaign_templates`, `campaign_template_tasks`, `campaign_template_deliverables`
+- Future-ready foundations added: `invoices`, `payments`, `notifications`, `integration_accounts`
+
+The dashboard root route (`/dashboard`) has been redesigned as a Today command center with server-side aggregate metrics and recent activity.

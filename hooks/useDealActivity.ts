@@ -17,6 +17,14 @@ export function useDealActivity({ dealId, initialData }: UseDealActivityOptions)
   const [loadError, setLoadError] = useState("")
   const hasHydratedRef = useRef(false)
 
+  useEffect(() => {
+    setActivities(initialData.items)
+    setPagination(initialData.pagination)
+    setLoadError("")
+    setIsLoading(false)
+    hasHydratedRef.current = false
+  }, [dealId, initialData])
+
   const refetch = useCallback(
     async (nextPage: number) => {
       setIsLoading(true)

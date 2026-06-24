@@ -208,3 +208,10 @@ Designed extension points:
 3. **Server-side stage validation** to preserve business integrity.
 4. **Shared CRM UI primitives** to keep consistency with brands/contacts.
 5. **Progressive detail placeholders** for sprinted rollout without schema churn.
+
+## 2026-06 Campaign Workspace Update
+
+- Deal detail now uses a modular workspace shell with URL-backed tab state.
+- Workspace tabs are domain modules: Overview, Tasks, Deliverables, Notes, Files, Activity, Invoices (placeholder), Payments (placeholder).
+- Deliverables, Notes, and Files now have first-class service/action/hook/component stacks tied to `dealId`.
+- Campaign templates can be applied from deal overview to seed tasks, deliverables, and kickoff notes.

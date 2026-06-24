@@ -1,5 +1,6 @@
 import type { DealDetail, DealListItem } from "@/types/deal"
 import type { DealPriority, DealStage } from "@/enums/deal"
+import { formatDateOnlyInput } from "@/lib/crm/shared/date"
 
 export type DealFormValues = {
   brandId: string
@@ -44,11 +45,7 @@ export const EMPTY_DEAL_FORM: DealFormValues = {
 }
 
 function toDateInput(value: Date | null) {
-  if (!value) {
-    return ""
-  }
-
-  return value.toISOString().slice(0, 10)
+  return formatDateOnlyInput(value)
 }
 
 export function dealToFormValues(deal: Pick<DealListItem, "brandId" | "contactId" | "campaignName" | "dealValue" | "currency" | "stage" | "priority" | "startDate" | "dueDate" | "expectedCloseDate" | "paymentDueDate"> & {

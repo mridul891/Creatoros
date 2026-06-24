@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 
-import { wrap } from "./constants";
+import { WRAP_CLASS } from "./constants";
 
 export function Pricing() {
   const plans = [
@@ -79,9 +79,9 @@ export function Pricing() {
   ];
 
   return (
-    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-24">
-      <div style={wrap}>
-        <div className="mb-14 text-center">
+    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-16 sm:py-20 lg:py-24">
+      <div className={WRAP_CLASS}>
+        <div className="mb-10 text-center sm:mb-14">
           <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.72)]">
             Pricing
           </p>
@@ -98,13 +98,13 @@ export function Pricing() {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={"relative flex h-full flex-col rounded-[12px] border px-6 py-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(255,255,255,0.2)] bg-[#080808] border-[rgba(255,255,255,0.08)]"}
+              className="relative flex h-full flex-col rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[#080808] px-5 py-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(255,255,255,0.2)] sm:px-6 sm:py-7"
             >
               {plan.primary && (
                 <div className="pointer-events-none absolute -inset-px -z-10 rounded-[14px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.2),rgba(255,255,255,0.04)_45%,transparent_70%)] blur-sm" />
               )}
               {plan.badge && (
-                <div className="absolute right-4 top-4 rounded-full border border-[rgba(255,255,255,0.24)] bg-[rgba(255,255,255,0.14)] px-2.5 py-[4px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[10px] font-semibold tracking-[0.045em] text-white">
+                <div className="absolute right-3 top-3 rounded-full border border-[rgba(255,255,255,0.24)] bg-[rgba(255,255,255,0.14)] px-2.5 py-[4px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[10px] font-semibold tracking-[0.045em] text-white sm:right-4 sm:top-4">
                   {plan.badge}
                 </div>
               )}
@@ -119,12 +119,12 @@ export function Pricing() {
                   </span>
                 )}
               </p>
-              <p className="mb-6 mt-0 min-h-[72px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-relaxed text-[rgba(255,255,255,0.78)]">
+              <p className="mb-6 mt-0 min-h-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-relaxed text-[rgba(255,255,255,0.78)] sm:min-h-[72px]">
                 {plan.desc}
               </p>
               <a
                 href="#"
-                className={"mb-6 block rounded-[8px] px-0 py-[10px] text-center font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] font-semibold tracking-[-0.01em] no-underline transition-all duration-200 bg-white text-black hover:bg-[rgba(255,255,255,0.92)]"}
+                className="mb-6 block rounded-[8px] px-0 py-[10px] text-center font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] font-semibold tracking-[-0.01em] text-black no-underline transition-all duration-200 bg-white hover:bg-[rgba(255,255,255,0.92)]"
               >
                 {plan.cta}
               </a>
@@ -146,7 +146,7 @@ export function Pricing() {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#080808] px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+        <div className="mt-8 flex flex-col gap-4 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#080808] px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
           <div>
             <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-semibold text-white">
               Need an Enterprise Solution?

@@ -62,6 +62,15 @@ Planned integrations:
 - Invoices
 - Payments
 
+## 2026-06 Activity Integration Update
+
+Activity is now emitted for:
+
+- DeliverableCreated / DeliverableUpdated / DeliverableSubmitted / DeliverableApproved / DeliverablePublished / DeliverableNeedsRevision
+- NoteAdded / NotePinned
+- FileUploaded / FileRenamed / FileArchived
+- InvoiceGenerated / PaymentReceived (schema-level readiness)
+
 ## Performance Considerations
 
 1. Queries use descending `createdAt` ordering with dedicated composite indexes.

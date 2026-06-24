@@ -7,8 +7,24 @@ type DealDetailInfoCardsProps = {
   deal: DealDetail
 }
 
+const DATE_FORMATTER = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  timeZone: "UTC",
+})
+
+const VALUE_FORMATTER = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
 function formatDate(value: Date | null) {
-  return value ? value.toLocaleDateString() : "—"
+  return value ? DATE_FORMATTER.format(value) : "—"
+}
+
+function formatDealValue(value: number) {
+  return VALUE_FORMATTER.format(value)
 }
 
 export function DealDetailInfoCards({ deal }: DealDetailInfoCardsProps) {
@@ -18,7 +34,7 @@ export function DealDetailInfoCards({ deal }: DealDetailInfoCardsProps) {
         <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Deal Value</p>
         <p className="mt-2 flex items-center gap-1 text-[18px] font-bold text-white">
           <DollarSign size={15} />
-          {deal.currency} {deal.dealValue.toLocaleString()}
+          {deal.currency} {formatDealValue(deal.dealValue)}
         </p>
       </Card>
       <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">

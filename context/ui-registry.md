@@ -139,6 +139,22 @@ These are the raw design system primitives. Use these to build feature component
 
 ---
 
+## CRM Workspace Components (`components/modules/crm/`)
+
+| Component | Path | Description | Status |
+|---|---|---|---|
+| `DealWorkspaceHeader` | `components/modules/crm/deals/workspace/DealWorkspaceHeader.tsx` | Deal workspace header with actions and summary cards | ✅ Done |
+| `DealWorkspaceTabs` | `components/modules/crm/deals/workspace/DealWorkspaceTabs.tsx` | URL-backed modular tab shell for deal workspace | ✅ Done |
+| `DealOverviewSection` | `components/modules/crm/deals/workspace/DealOverviewSection.tsx` | Workspace overview panel with template quick-apply | ✅ Done |
+| `DealTemplateQuickApply` | `components/modules/crm/deals/workspace/DealTemplateQuickApply.tsx` | Apply campaign templates to active deal | ✅ Done |
+| `DealDeliverablesSection` | `components/modules/crm/deliverables/DealDeliverablesSection.tsx` | Deliverables list/filter/create/edit/archive UI | ✅ Done |
+| `DeliverableForm` | `components/modules/crm/deliverables/DeliverableForm.tsx` | Deliverable create/edit form dialog | ✅ Done |
+| `DeliverablesTable` | `components/modules/crm/deliverables/DeliverablesTable.tsx` | Deliverables table with workflow actions | ✅ Done |
+| `DealNotesSection` | `components/modules/crm/notes/DealNotesSection.tsx` | Notes workspace with autosave, search, and pinning | ✅ Done |
+| `DealFilesSection` | `components/modules/crm/files/DealFilesSection.tsx` | Deal file metadata workspace (upload/rename/archive) | ✅ Done |
+
+---
+
 ## Adding a New Component
 
 When you create a new component, add a row to the appropriate section above with:

@@ -2,6 +2,7 @@ import { z } from "zod"
 
 import { DEAL_ARCHIVE_FILTERS, DEAL_PRIORITIES, DEAL_SORT_OPTIONS, DEAL_STAGES, DEAL_VIEW_MODES } from "@/enums/deal"
 import type { DealFormValues } from "@/lib/crm/deals/dealForm"
+import { parseDateOnlyInput } from "@/lib/crm/shared/date"
 import { getFieldErrors } from "@/lib/crm/shared/action"
 import type { DealField } from "@/types/deal"
 
@@ -14,8 +15,8 @@ const stringDateToDate = z.preprocess((value) => {
     return undefined
   }
 
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) {
+  const date = parseDateOnlyInput(value)
+  if (!date || Number.isNaN(date.getTime())) {
     return undefined
   }
   return date
