@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import "../styles/index.css";
 import { Inter } from "next/font/google";
 import "./globals.css"
+import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils";
@@ -10,6 +11,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const siteUrl = "https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
+const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -215,6 +217,7 @@ export default function RootLayout({
         <ThemeProvider>{children}</ThemeProvider>
         <Toaster richColors />
       </body>
+      {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
     </html>
   )
 }
