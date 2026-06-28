@@ -17,7 +17,7 @@ import { BrandDeleteDialog } from "./BrandDeleteDialog"
 import { BrandEmptyState } from "./BrandEmptyState"
 import { BrandForm } from "./BrandForm"
 import { BrandsTable } from "./BrandsTable"
-import { CrmPageHeader, CrmPagination, CrmSearchField } from "../shared"
+import { CrmPageHeaderClient, CrmPagination, CrmSearchField } from "../shared"
 
 type BrandsPageProps = { listData: BrandListData; initialSearch: string }
 
@@ -128,7 +128,7 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
 
   return (
     <div className="w-full max-w-[1280px] px-9 py-7">
-      <CrmPageHeader
+      <CrmPageHeaderClient
         title="Brands CRM"
         description="Manage sponsor relationships and keep outreach details organized."
         actionLabel="New Brand"

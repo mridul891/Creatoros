@@ -10,25 +10,6 @@ export type TaskSortOption = (typeof TASK_SORT_OPTIONS)[number]
 export type TaskArchiveFilter = (typeof TASK_ARCHIVE_FILTERS)[number]
 export type TaskDueDateFilter = (typeof TASK_DUE_DATE_FILTERS)[number]
 
-const ALLOWED_TRANSITIONS: Record<TaskStatus, TaskStatus[]> = {
-  Todo: ["InProgress", "Blocked"],
-  InProgress: ["Blocked", "InReview"],
-  Blocked: ["Todo", "InProgress"],
-  InReview: ["InProgress", "Done"],
-  Done: ["InProgress"],
-}
-
-export function isValidTaskStatusTransition(from: TaskStatus, to: TaskStatus) {
-  if (from === to) {
-    return true
-  }
-  return ALLOWED_TRANSITIONS[from].includes(to)
-}
-
-export function getAllowedNextStatuses(from: TaskStatus) {
-  return [from, ...ALLOWED_TRANSITIONS[from]]
-}
-
 export const TASK_STATUS_LABEL: Record<TaskStatus, string> = {
   Todo: "Todo",
   InProgress: "In Progress",

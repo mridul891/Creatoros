@@ -19,12 +19,13 @@ import { getDealFormFieldErrors } from "@/lib/crm/deals/dealValidation"
 import { EMPTY_DEAL_FORM, type DealFormValues, dealDetailToFormValues } from "@/lib/crm/deals/dealForm"
 import type { DealField, DealListData, DealListItem } from "@/types/deal"
 import { DealForm } from "./DealForm"
-import { CrmEmptyState, CrmPageHeader, CrmPagination } from "../shared"
+import { CrmEmptyStateClient, CrmPageHeaderClient, CrmPagination } from "../shared"
 
 type DealsPageProps = {
   listData: DealListData
   brands: Array<{ id: string; name: string }>
   contactsByBrand: Record<string, Array<{ id: string; name: string }>>
+  templates: Array<{ id: string; name: string }>
 }
 
 function keepUnresolvedErrors(
@@ -43,7 +44,7 @@ function keepUnresolvedErrors(
   return unresolved
 }
 
-export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps) {
+export function DealsPage({ listData, brands, contactsByBrand, templates }: DealsPageProps) {
   const filters = listData.filters
   const { navigateWith, navigateToPage, refresh } = useDealsNavigation(filters)
 
@@ -226,7 +227,7 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
 
   return (
     <div className="w-full max-w-[1280px] px-4 py-6 sm:px-6 lg:px-9 lg:py-7">
-      <CrmPageHeader
+      <CrmPageHeaderClient
         title="Deals CRM"
         description="Track sponsorship opportunities from first outreach to final payment."
         actionLabel="New Deal"
@@ -259,7 +260,7 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
       />
 
       {listData.items.length === 0 ? (
-        <CrmEmptyState
+        <CrmEmptyStateClient
           title={filters.search || filters.brandId || filters.priority || filters.stage ? "No matching deals" : "No deals found"}
           description={
             filters.search || filters.brandId || filters.priority || filters.stage
@@ -300,6 +301,8 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
         formError={createFormError}
         brands={brands}
         contacts={createContacts}
+        templates={templates}
+        showTemplateSelect
         onChange={handleCreateFormChange}
         onOpenChange={(open) => {
           setShowCreate(open)

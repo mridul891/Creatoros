@@ -16,6 +16,7 @@ import {
 import {
   archiveDeal,
   createDeal,
+  createDealWithTemplate,
   DealServiceError,
   deleteDeal,
   getDeal,
@@ -129,6 +130,7 @@ function parseDealMutationFormData(formData: FormData) {
     source: sanitizeOptionalString(formData.get("source")),
     probability: sanitizeOptionalString(formData.get("probability")),
     externalRef: sanitizeOptionalString(formData.get("externalRef")),
+    templateId: sanitizeOptionalString(formData.get("templateId")),
   })
 }
 
@@ -216,7 +218,10 @@ export async function createDealAction(formData: FormData): Promise<DealMutation
   }
 
   try {
-    const data = await createDeal(user.id, parsed.data)
+    const { templateId, ...payload } = parsed.data
+    const data = templateId
+      ? await createDealWithTemplate(user.id, payload, templateId)
+      : await createDeal(user.id, payload)
     revalidateDealPaths(data.id)
     return {
       success: true,

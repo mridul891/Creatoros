@@ -25,9 +25,7 @@ export function Hero() {
         </h1>
 
         <p className="mx-auto mb-8 max-w-[560px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[16px] leading-[1.65] tracking-[-0.015em] text-[rgba(255,255,255,0.84)] sm:mb-10 sm:text-[18px]">
-          NotYetLaunchedOS eliminates the tool-switching chaos.
-          Analytics, deals, invoicing, calendar, and AI media
-          kits — all in one beautiful workspace.
+        Track every sponsorship from the first DM to the final payment.
         </p>
 
         <div className="mb-12 flex items-center justify-center gap-3 sm:mb-14">

@@ -100,4 +100,5 @@ export type DealField =
   | "source"
   | "probability"
   | "externalRef"
+  | "templateId"
   | "status"

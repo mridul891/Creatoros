@@ -202,9 +202,7 @@ try {
 
 ## Testing (Pragmatic for MVP)
 
-No unit test framework for MVP — manual testing only. But:
+Manual testing only for MVP. But:
 - Every new feature must have a **manual smoke test checklist** added to `context/progress-tracker.md`
 - Stripe webhooks must be tested with the Stripe CLI: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
 - Reminder cron must be tested manually by setting a deal date to "tomorrow" and checking email delivery
-
-Post-MVP (V2): Add Vitest for utility functions and Playwright for critical user flows.

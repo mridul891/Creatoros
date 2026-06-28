@@ -8,6 +8,7 @@ import {
   FileText,
   Handshake,
   LayoutDashboard,
+  LayoutTemplate,
   LogOut,
   Sparkles,
 } from "lucide-react";
@@ -40,6 +41,7 @@ const NAV_ITEMS = [
   { href: DashboardRoute.BRANDS, label: "Brands", icon: Building2 },
   { href: DashboardRoute.ANALYTICS, label: "Analytics", icon: BarChart3 },
   { href: DashboardRoute.DEALS, label: "Deal", icon: Handshake },
+  { href: DashboardRoute.TEMPLATES, label: "Templates", icon: LayoutTemplate },
   { href: DashboardRoute.INVOICES, label: "Invoices", icon: FileText },
   { href: DashboardRoute.MEDIA_KIT, label: "Media Kit", icon: Sparkles },
 ];
@@ -49,7 +51,7 @@ function isNavItemActive(pathname: string, href: DashboardRoute) {
     return pathname === href;
   }
 
-  if (href === DashboardRoute.DEALS || href === DashboardRoute.BRANDS) {
+  if (href === DashboardRoute.DEALS || href === DashboardRoute.BRANDS || href === DashboardRoute.TEMPLATES) {
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 

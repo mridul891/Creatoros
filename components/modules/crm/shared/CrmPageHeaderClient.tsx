@@ -1,44 +1,41 @@
+"use client"
+
 import type { ReactNode } from "react"
-import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type CrmPageHeaderProps = {
+type CrmPageHeaderClientProps = {
   title: string
   description: string
   actionLabel?: string
   actionIcon?: ReactNode
-  actionHref?: string
-  action?: ReactNode
+  onAction?: () => void
   className?: string
 }
 
-export function CrmPageHeader({
+export function CrmPageHeaderClient({
   title,
   description,
   actionLabel,
   actionIcon,
-  actionHref,
-  action,
+  onAction,
   className,
-}: CrmPageHeaderProps) {
+}: CrmPageHeaderClientProps) {
   return (
     <div className={cn("mb-7 flex flex-wrap items-start justify-between gap-4", className)}>
       <div>
         <h1 className="text-2xl font-extrabold tracking-[-0.04em] text-white">{title}</h1>
         <p className="mt-1 text-[13px] text-[rgba(255,255,255,0.45)]">{description}</p>
       </div>
-      {action ? action : null}
-      {!action && actionLabel && actionHref ? (
+      {actionLabel && onAction ? (
         <Button
-          asChild
+          type="button"
+          onClick={onAction}
           className="h-10 cursor-pointer gap-2 bg-(--cos-primary) px-4 text-[13px] font-semibold text-white hover:bg-(--cos-primary)"
         >
-          <Link href={actionHref}>
-            {actionIcon}
-            {actionLabel}
-          </Link>
+          {actionIcon}
+          {actionLabel}
         </Button>
       ) : null}
     </div>

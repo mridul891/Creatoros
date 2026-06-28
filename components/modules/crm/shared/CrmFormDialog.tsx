@@ -57,7 +57,7 @@ export function CrmFormDialog({
             </SheetDescription>
           </SheetHeader>
           <div className="px-0 pb-24">{children}</div>
-          <SheetFooter className="fixed right-0 bottom-0 left-0 z-10 border-t border-[rgba(255,255,255,0.08)] bg-[rgba(13,13,13,0.95)] px-5 py-4 backdrop-blur">
+          <SheetFooter className="fixed right-0 bottom-0 left-0 z-10 flex flex-col-reverse gap-2 border-t border-[rgba(255,255,255,0.08)] bg-[rgba(13,13,13,0.95)] px-5 py-4 backdrop-blur sm:flex-row sm:justify-end">
             {footer}
           </SheetFooter>
         </SheetContent>
@@ -78,7 +78,7 @@ export function CrmFormDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="overflow-y-auto px-8 py-6">{children}</div>
-        <DialogFooter className="rounded-none border-t border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-8 py-4">
+        <DialogFooter className="rounded-none border-t border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-8 py-4 sm:justify-end">
           {footer}
         </DialogFooter>
       </DialogContent>

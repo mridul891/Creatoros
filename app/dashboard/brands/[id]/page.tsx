@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import { listBrandActivitiesAction } from "@/app/action/activityActions"
 import { getBrandAction } from "@/app/action/brandActions"
 import { listContactsByBrandAction } from "@/app/action/contactActions"
-import { BrandDetailPage } from "@/components/modules/crm/brands/BrandDetailPage"
+import { BrandDetailPageServer } from "@/components/modules/crm/brands/BrandDetailPageServer"
 
 type DashboardBrandDetailPageProps = {
   params: Promise<{
@@ -34,7 +34,7 @@ export default async function DashboardBrandDetailPage({ params }: DashboardBran
   }
 
   return (
-    <BrandDetailPage
+    <BrandDetailPageServer
       brand={result.data}
       contactsData={
         contactsResult.success && contactsResult.data

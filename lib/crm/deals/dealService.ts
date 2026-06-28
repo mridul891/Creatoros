@@ -4,6 +4,7 @@ import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
 import { isValidStageTransition } from "@/enums/deal"
 import { recordActivity } from "@/lib/crm/activity/activityService"
 import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
+import { applyCampaignTemplateInTransaction } from "@/lib/crm/templates/templateService"
 import { prisma } from "@/lib/prisma"
 import type { DealDetail, DealListData, DealListItem } from "@/types/deal"
 import { normalizeCampaignName, normalizeCurrency, type DealCreateUpdateInput, type DealListInput } from "./dealValidation"
@@ -437,87 +438,97 @@ export async function getDeal(userId: string, dealId: string): Promise<DealDetai
 }
 
 export async function createDeal(userId: string, input: DealCreateUpdateInput) {
-  return prisma.$transaction(async (tx) => {
-    await assertOwnedBrand(userId, input.brandId, tx)
-    if (input.contactId) {
-      await assertOwnedContact({
-        tx,
-        userId,
-        brandId: input.brandId,
-        contactId: input.contactId,
-      })
-    }
+  return prisma.$transaction(async (tx) => createDealInTransaction(tx, userId, input))
+}
 
-    const normalizedCampaignName = normalizeCampaignName(input.campaignName)
-    await ensureNoActiveDuplicate({
+async function createDealInTransaction(tx: PrismaTx, userId: string, input: DealCreateUpdateInput) {
+  await assertOwnedBrand(userId, input.brandId, tx)
+  if (input.contactId) {
+    await assertOwnedContact({
       tx,
       userId,
       brandId: input.brandId,
-      normalizedCampaignName,
+      contactId: input.contactId,
     })
+  }
 
-    const milestones = getStageMilestones(input.stage)
+  const normalizedCampaignName = normalizeCampaignName(input.campaignName)
+  await ensureNoActiveDuplicate({
+    tx,
+    userId,
+    brandId: input.brandId,
+    normalizedCampaignName,
+  })
 
-    let created: Awaited<ReturnType<typeof tx.deal.create>>
-    try {
-      created = await tx.deal.create({
-        data: {
-          userId,
-          brandId: input.brandId,
-          contactId: input.contactId ?? null,
-          campaignName: input.campaignName,
-          normalizedCampaignName,
-          dealValue: input.dealValue,
-          currency: normalizeCurrency(input.currency),
-          stage: input.stage,
-          priority: input.priority,
-          startDate: input.startDate ?? null,
-          dueDate: input.dueDate ?? null,
-          expectedCloseDate: input.expectedCloseDate ?? null,
-          paymentDueDate: input.paymentDueDate ?? null,
-          paymentTerms: input.paymentTerms ?? null,
-          campaignDescription: input.campaignDescription ?? null,
-          deliverablesSummary: input.deliverablesSummary ?? null,
-          notes: input.notes ?? null,
-          source: input.source ?? null,
-          probability: input.probability ?? null,
-          externalRef: input.externalRef ?? null,
-          lastStageChangedAt: new Date(),
-          deliveredAt: milestones.deliveredAt,
-          completedAt: milestones.completedAt,
-          paidAt: milestones.paidAt,
-        },
-        include: {
-          brand: { select: { name: true } },
-          contact: { select: { name: true } },
-        },
-      })
-    } catch (error) {
-      mapPrismaError(error)
-    }
+  const milestones = getStageMilestones(input.stage)
 
-    await recordActivity(tx, {
-      userId,
-      type: ACTIVITY_TYPE.DEAL_CREATED,
-      entityType: ACTIVITY_ENTITY.DEAL,
-      entityId: created.id,
-      brandId: created.brandId,
-      contactId: created.contactId,
-      dealId: created.id,
-      title: "Deal created",
-      description: `${created.campaignName} was created.`,
-      metadata: {
-        campaignName: created.campaignName,
-        stage: created.stage,
-        value: toNumber(created.dealValue),
-        currency: created.currency,
+  let created: Awaited<ReturnType<typeof tx.deal.create>>
+  try {
+    created = await tx.deal.create({
+      data: {
+        userId,
+        brandId: input.brandId,
+        contactId: input.contactId ?? null,
+        campaignName: input.campaignName,
+        normalizedCampaignName,
+        dealValue: input.dealValue,
+        currency: normalizeCurrency(input.currency),
+        stage: input.stage,
+        priority: input.priority,
+        startDate: input.startDate ?? null,
+        dueDate: input.dueDate ?? null,
+        expectedCloseDate: input.expectedCloseDate ?? null,
+        paymentDueDate: input.paymentDueDate ?? null,
+        paymentTerms: input.paymentTerms ?? null,
+        campaignDescription: input.campaignDescription ?? null,
+        deliverablesSummary: input.deliverablesSummary ?? null,
+        notes: input.notes ?? null,
+        source: input.source ?? null,
+        probability: input.probability ?? null,
+        externalRef: input.externalRef ?? null,
+        lastStageChangedAt: new Date(),
+        deliveredAt: milestones.deliveredAt,
+        completedAt: milestones.completedAt,
+        paidAt: milestones.paidAt,
+      },
+      include: {
+        brand: { select: { name: true } },
+        contact: { select: { name: true } },
       },
     })
+  } catch (error) {
+    mapPrismaError(error)
+  }
 
-    return {
-      id: created.id,
+  await recordActivity(tx, {
+    userId,
+    type: ACTIVITY_TYPE.DEAL_CREATED,
+    entityType: ACTIVITY_ENTITY.DEAL,
+    entityId: created.id,
+    brandId: created.brandId,
+    contactId: created.contactId,
+    dealId: created.id,
+    title: "Deal created",
+    description: `${created.campaignName} was created.`,
+    metadata: {
       campaignName: created.campaignName,
-    }
+      stage: created.stage,
+      value: toNumber(created.dealValue),
+      currency: created.currency,
+    },
+  })
+
+  return {
+    id: created.id,
+    campaignName: created.campaignName,
+  }
+}
+
+export async function createDealWithTemplate(userId: string, input: DealCreateUpdateInput, templateId: string) {
+  return prisma.$transaction(async (tx) => {
+    const created = await createDealInTransaction(tx, userId, input)
+    await applyCampaignTemplateInTransaction(tx, userId, created.id, templateId)
+    return created
   })
 }
 

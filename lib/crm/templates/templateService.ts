@@ -3,6 +3,7 @@ import type { Prisma, PrismaClient } from "@prisma/client"
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
 import { normalizeTaskTitle } from "@/lib/crm/tasks/taskValidation"
 import { normalizeDeliverableType } from "@/lib/crm/deliverables/deliverableValidation"
+import { normalizeTemplateName, type CampaignTemplateCreateUpdateInput } from "@/lib/crm/templates/templateValidation"
 import { recordActivity } from "@/lib/crm/activity/activityService"
 import { prisma } from "@/lib/prisma"
 import type { CampaignTemplateItem } from "@/types/campaignTemplate"
@@ -19,12 +20,14 @@ type OwnedDeal = {
 }
 
 export class TemplateServiceError extends Error {
-  code: "NOT_FOUND" | "INVALID_OPERATION" | "UNKNOWN"
+  code: "NOT_FOUND" | "DUPLICATE" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
+  field?: "name"
 
-  constructor(message: string, code: TemplateServiceError["code"]) {
+  constructor(message: string, code: TemplateServiceError["code"], field?: TemplateServiceError["field"]) {
     super(message)
     this.name = "TemplateServiceError"
     this.code = code
+    this.field = field
   }
 }
 
@@ -48,6 +51,26 @@ async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promi
   }
 
   return deal
+}
+
+async function getOwnedTemplate(tx: PrismaTx, userId: string, templateId: string) {
+  const template = await tx.campaignTemplate.findFirst({
+    where: { id: templateId, userId },
+    include: {
+      tasks: {
+        orderBy: { orderIndex: "asc" },
+      },
+      deliverables: {
+        orderBy: { orderIndex: "asc" },
+      },
+    },
+  })
+
+  if (!template) {
+    throw new TemplateServiceError("Template not found.", "NOT_FOUND")
+  }
+
+  return template
 }
 
 function toTemplateItem(template: {
@@ -143,23 +166,52 @@ export async function listCampaignTemplates(userId: string): Promise<CampaignTem
   return templates.map((item) => toTemplateItem(item))
 }
 
-function addDays(date: Date, offsetDays: number) {
-  const result = new Date(date)
-  result.setDate(result.getDate() + offsetDays)
-  return result
+function mapPrismaError(error: unknown): never {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    typeof error.code === "string" &&
+    error.code === "P2002"
+  ) {
+    throw new TemplateServiceError("A template with this name already exists.", "DUPLICATE", "name")
+  }
+
+  throw error
 }
 
-export async function applyCampaignTemplate(userId: string, dealId: string, templateId: string) {
-  return prisma.$transaction(async (tx) => {
-    const deal = await getOwnedDeal(tx, userId, dealId)
-    if (deal.status === "Archived") {
-      throw new TemplateServiceError("Templates cannot be applied to archived deals.", "INVALID_OPERATION")
-    }
+function buildTemplateWriteData(input: CampaignTemplateCreateUpdateInput) {
+  return {
+    name: input.name,
+    normalizedName: normalizeTemplateName(input.name),
+    description: input.description ?? null,
+    tasks: {
+      create: input.tasks.map((task, index) => ({
+        title: task.title,
+        description: task.description ?? null,
+        priority: task.priority,
+        dueOffsetDays: task.dueOffsetDays,
+        orderIndex: index,
+      })),
+    },
+    deliverables: {
+      create: input.deliverables.map((deliverable, index) => ({
+        platform: deliverable.platform,
+        deliverableType: deliverable.deliverableType,
+        dueOffsetDays: deliverable.dueOffsetDays,
+        orderIndex: index,
+      })),
+    },
+  }
+}
 
-    const template = await tx.campaignTemplate.findFirst({
-      where: {
-        id: templateId,
+export async function createCampaignTemplate(userId: string, input: CampaignTemplateCreateUpdateInput): Promise<CampaignTemplateItem> {
+  try {
+    const created = await prisma.campaignTemplate.create({
+      data: {
         userId,
+        isSystem: false,
+        ...buildTemplateWriteData(input),
       },
       include: {
         tasks: {
@@ -171,80 +223,174 @@ export async function applyCampaignTemplate(userId: string, dealId: string, temp
       },
     })
 
-    if (!template) {
-      throw new TemplateServiceError("Template not found.", "NOT_FOUND")
+    return toTemplateItem(created)
+  } catch (error) {
+    mapPrismaError(error)
+  }
+}
+
+export async function updateCampaignTemplate(
+  userId: string,
+  templateId: string,
+  input: CampaignTemplateCreateUpdateInput
+): Promise<CampaignTemplateItem> {
+  return prisma.$transaction(async (tx) => {
+    const existing = await getOwnedTemplate(tx, userId, templateId)
+    if (existing.isSystem) {
+      throw new TemplateServiceError("System templates cannot be edited.", "FORBIDDEN")
     }
 
-    const baseDate = new Date()
-
-    for (const [index, task] of template.tasks.entries()) {
-      const taskDue = addDays(baseDate, task.dueOffsetDays)
-      await tx.task.create({
+    let updated: Awaited<ReturnType<typeof getOwnedTemplate>>
+    try {
+      updated = await tx.campaignTemplate.update({
+        where: { id: existing.id },
         data: {
-          userId,
-          dealId: deal.id,
-          title: task.title,
-          normalizedTitle: normalizeTaskTitle(task.title),
-          description: task.description ?? null,
-          status: "Todo",
-          priority: task.priority,
-          dueDate: taskDue,
-          orderIndex: index,
-          createdBy: userId,
-          updatedBy: userId,
+          name: input.name,
+          normalizedName: normalizeTemplateName(input.name),
+          description: input.description ?? null,
+          tasks: {
+            deleteMany: {},
+            create: input.tasks.map((task, index) => ({
+              title: task.title,
+              description: task.description ?? null,
+              priority: task.priority,
+              dueOffsetDays: task.dueOffsetDays,
+              orderIndex: index,
+            })),
+          },
+          deliverables: {
+            deleteMany: {},
+            create: input.deliverables.map((deliverable, index) => ({
+              platform: deliverable.platform,
+              deliverableType: deliverable.deliverableType,
+              dueOffsetDays: deliverable.dueOffsetDays,
+              orderIndex: index,
+            })),
+          },
+        },
+        include: {
+          tasks: {
+            orderBy: { orderIndex: "asc" },
+          },
+          deliverables: {
+            orderBy: { orderIndex: "asc" },
+          },
         },
       })
+    } catch (error) {
+      mapPrismaError(error)
     }
 
-    for (const [index, deliverable] of template.deliverables.entries()) {
-      const dueDate = addDays(baseDate, deliverable.dueOffsetDays)
-      await tx.deliverable.create({
-        data: {
-          userId,
-          dealId: deal.id,
-          platform: deliverable.platform,
-          deliverableType: deliverable.deliverableType,
-          normalizedDeliverableType: normalizeDeliverableType(deliverable.deliverableType),
-          dueDate,
-          status: "Draft",
-          approvalStatus: "NotSubmitted",
-          revisionCount: 0,
-          orderIndex: index,
-          createdBy: userId,
-          updatedBy: userId,
-        },
-      })
+    return toTemplateItem(updated)
+  })
+}
+
+export async function deleteCampaignTemplate(userId: string, templateId: string) {
+  return prisma.$transaction(async (tx) => {
+    const template = await getOwnedTemplate(tx, userId, templateId)
+    if (template.isSystem) {
+      throw new TemplateServiceError("System templates cannot be deleted.", "FORBIDDEN")
     }
 
-    await tx.dealNote.create({
+    await tx.campaignTemplate.delete({
+      where: { id: template.id },
+    })
+
+    return {
+      id: template.id,
+      name: template.name,
+    }
+  })
+}
+
+function addDays(date: Date, offsetDays: number) {
+  const result = new Date(date)
+  result.setDate(result.getDate() + offsetDays)
+  return result
+}
+
+export async function applyCampaignTemplateInTransaction(tx: PrismaTx, userId: string, dealId: string, templateId: string) {
+  const deal = await getOwnedDeal(tx, userId, dealId)
+  if (deal.status === "Archived") {
+    throw new TemplateServiceError("Templates cannot be applied to archived deals.", "INVALID_OPERATION")
+  }
+
+  const template = await getOwnedTemplate(tx, userId, templateId)
+  const baseDate = new Date()
+
+  for (const [index, task] of template.tasks.entries()) {
+    const taskDue = addDays(baseDate, task.dueOffsetDays)
+    await tx.task.create({
       data: {
         userId,
         dealId: deal.id,
-        title: `${template.name} checklist`,
-        content: `Template applied: ${template.name}\n\n- Review campaign brief\n- Confirm approval checkpoints\n- Track deliverable submission timeline`,
-        isPinned: true,
-        status: "Active",
+        title: task.title,
+        normalizedTitle: normalizeTaskTitle(task.title),
+        description: task.description ?? null,
+        status: "Todo",
+        priority: task.priority,
+        dueDate: taskDue,
+        orderIndex: index,
         createdBy: userId,
         updatedBy: userId,
       },
     })
+  }
 
-    await recordActivity(tx, {
-      userId,
-      type: ACTIVITY_TYPE.DEAL_UPDATED,
-      entityType: ACTIVITY_ENTITY.DEAL,
-      entityId: deal.id,
-      dealId: deal.id,
-      brandId: deal.brandId,
-      contactId: deal.contactId,
-      title: "Campaign template applied",
-      description: `${template.name} template was applied to ${deal.campaignName}.`,
-      metadata: {
-        templateId: template.id,
-        templateName: template.name,
-        tasksCreated: template.tasks.length,
-        deliverablesCreated: template.deliverables.length,
+  for (const [index, deliverable] of template.deliverables.entries()) {
+    const dueDate = addDays(baseDate, deliverable.dueOffsetDays)
+    await tx.deliverable.create({
+      data: {
+        userId,
+        dealId: deal.id,
+        platform: deliverable.platform,
+        deliverableType: deliverable.deliverableType,
+        normalizedDeliverableType: normalizeDeliverableType(deliverable.deliverableType),
+        dueDate,
+        status: "Draft",
+        approvalStatus: "NotSubmitted",
+        revisionCount: 0,
+        orderIndex: index,
+        createdBy: userId,
+        updatedBy: userId,
       },
     })
+  }
+
+  await tx.dealNote.create({
+    data: {
+      userId,
+      dealId: deal.id,
+      title: `${template.name} checklist`,
+      content: `Template applied: ${template.name}\n\n- Review campaign brief\n- Confirm approval checkpoints\n- Track deliverable submission timeline`,
+      isPinned: true,
+      status: "Active",
+      createdBy: userId,
+      updatedBy: userId,
+    },
+  })
+
+  await recordActivity(tx, {
+    userId,
+    type: ACTIVITY_TYPE.DEAL_UPDATED,
+    entityType: ACTIVITY_ENTITY.DEAL,
+    entityId: deal.id,
+    dealId: deal.id,
+    brandId: deal.brandId,
+    contactId: deal.contactId,
+    title: "Campaign template applied",
+    description: `${template.name} template was applied to ${deal.campaignName}.`,
+    metadata: {
+      templateId: template.id,
+      templateName: template.name,
+      tasksCreated: template.tasks.length,
+      deliverablesCreated: template.deliverables.length,
+    },
+  })
+}
+
+export async function applyCampaignTemplate(userId: string, dealId: string, templateId: string) {
+  return prisma.$transaction(async (tx) => {
+    await applyCampaignTemplateInTransaction(tx, userId, dealId, templateId)
   })
 }

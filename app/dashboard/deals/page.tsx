@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
 
 import { listDealsAction, listDealFormOptionsAction } from "@/app/action/dealActions"
+import { listCampaignTemplatesAction } from "@/app/action/templateActions"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { DealsPage } from "@/components/modules/crm/deals/DealsPage"
+import { DealsPageServer } from "@/components/modules/crm/deals/DealsPageServer"
 
 export const metadata: Metadata = {
   title: "Deals",
@@ -32,7 +33,7 @@ export default async function DashboardDealsPage({ searchParams }: DashboardDeal
   const page = Number(params.page ?? 1)
   const pageSize = params.pageSize ? Number(params.pageSize) : undefined
 
-  const [listResult, optionsResult] = await Promise.all([
+  const [listResult, optionsResult, templatesResult] = await Promise.all([
     listDealsAction({
       search: params.search,
       stage: params.stage,
@@ -47,6 +48,7 @@ export default async function DashboardDealsPage({ searchParams }: DashboardDeal
       pageSize,
     }),
     listDealFormOptionsAction(),
+    listCampaignTemplatesAction(),
   ])
 
   if (!listResult.success || !listResult.data || !optionsResult.success || !optionsResult.data) {
@@ -62,5 +64,12 @@ export default async function DashboardDealsPage({ searchParams }: DashboardDeal
     )
   }
 
-  return <DealsPage listData={listResult.data} brands={optionsResult.data.brands} contactsByBrand={optionsResult.data.contactsByBrand} />
+  return (
+    <DealsPageServer
+      listData={listResult.data}
+      brands={optionsResult.data.brands}
+      contactsByBrand={optionsResult.data.contactsByBrand}
+      templates={templatesResult.success ? templatesResult.data.map((item) => ({ id: item.id, name: item.name })) : []}
+    />
+  )
 }

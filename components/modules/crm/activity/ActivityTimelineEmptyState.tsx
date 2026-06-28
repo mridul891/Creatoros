@@ -1,5 +1,3 @@
-"use client"
-
 import { History } from "lucide-react"
 
 import { CrmEmptyState } from "@/components/modules/crm/shared"

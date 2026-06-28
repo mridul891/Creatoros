@@ -1,7 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
-import { isValidTaskStatusTransition, TASK_PRIORITIES, type TaskPriority } from "@/enums/task"
+import { TASK_PRIORITIES, type TaskPriority } from "@/enums/task"
 import { recordActivity } from "@/lib/crm/activity/activityService"
 import { endOfLocalDay, startOfLocalDay } from "@/lib/crm/shared/date"
 import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
@@ -456,10 +456,6 @@ export async function updateTask(userId: string, taskId: string, input: TaskCrea
     const deal = await getOwnedDeal(tx, userId, input.dealId)
     ensureDealIsActive(deal)
 
-    if (!isValidTaskStatusTransition(existing.status as TaskListItem["status"], input.status)) {
-      throw new TaskServiceError("This task status transition is not allowed.", "INVALID_OPERATION", "status")
-    }
-
     const normalizedTitle = normalizeTaskTitle(input.title)
 
     let updated: Awaited<ReturnType<typeof tx.task.update>>
@@ -510,10 +506,6 @@ export async function updateTaskStatus(userId: string, input: TaskStatusUpdateIn
     const existing = await getOwnedTask(tx, userId, input.taskId)
     ensureTaskIsMutable(existing)
     ensureDealIsActive(existing.deal)
-
-    if (!isValidTaskStatusTransition(existing.status as TaskListItem["status"], input.status)) {
-      throw new TaskServiceError("This task status transition is not allowed.", "INVALID_OPERATION", "status")
-    }
 
     const updated = await tx.task.update({
       where: { id: existing.id },

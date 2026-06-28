@@ -1,6 +1,6 @@
 "use client"
 
-import { getAllowedNextStatuses, TASK_STATUS_LABEL } from "@/enums/task"
+import { TASK_STATUSES, TASK_STATUS_LABEL } from "@/enums/task"
 import type { TaskListItem } from "@/types/task"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { TaskRowActions } from "./TaskRowActions"
@@ -57,8 +57,6 @@ export function TasksTable({
           </TableHeader>
           <TableBody>
             {items.map((item) => {
-              const allowedStatuses = getAllowedNextStatuses(item.status)
-
               return (
                 <TableRow key={item.id} className="border-b border-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.06)]">
                 <TableCell className="px-4 py-3">
@@ -80,7 +78,7 @@ export function TasksTable({
                     onChange={(event) => onStatusChange(item.id, event.target.value as TaskListItem["status"])}
                     className="h-8 w-full cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.1)] bg-[#111111] px-2 text-[11px] text-[rgba(255,255,255,0.85)]"
                   >
-                    {allowedStatuses.map((status) => (
+                    {TASK_STATUSES.map((status) => (
                       <option key={status} value={status}>
                         {TASK_STATUS_LABEL[status]}
                       </option>

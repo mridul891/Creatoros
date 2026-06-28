@@ -48,6 +48,7 @@ export const dealCreateUpdateSchema = z
     source: z.string().trim().max(120, "Source cannot exceed 120 characters.").optional(),
     probability: z.coerce.number().int().min(0).max(100).optional(),
     externalRef: z.string().trim().max(255).optional(),
+    templateId: z.uuid("Template id is invalid.").optional(),
   })
   .superRefine((value, ctx) => {
     if (value.startDate && value.dueDate && value.startDate > value.dueDate) {
@@ -142,6 +143,7 @@ export function getDealFormFieldErrors(values: DealFormValues): Partial<Record<D
     source: toOptionalString(values.source),
     probability: toOptionalString(values.probability),
     externalRef: toOptionalString(values.externalRef),
+    templateId: toOptionalString(values.templateId),
   })
 
   if (parsed.success) {

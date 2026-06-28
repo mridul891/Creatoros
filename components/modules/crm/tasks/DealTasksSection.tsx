@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import { getTaskAction } from "@/app/action/taskActions"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Card } from "@/components/ui/card"
-import { getAllowedNextStatuses, TASK_DUE_DATE_FILTERS, TASK_PRIORITIES, TASK_SORT_OPTIONS, TASK_STATUSES } from "@/enums/task"
+import { TASK_DUE_DATE_FILTERS, TASK_PRIORITIES, TASK_SORT_OPTIONS, TASK_STATUSES } from "@/enums/task"
 import { useDealTasks } from "@/hooks/useDealTasks"
 import { useTaskMutations } from "@/hooks/useTaskMutations"
 import { EMPTY_TASK_FORM, taskDetailToFormValues, taskToFormValues, type TaskFormValues } from "@/lib/crm/tasks/taskForm"
@@ -358,7 +358,7 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
           }
         }}
         onSubmit={handleEditSubmit}
-        statusOptions={editing ? getAllowedNextStatuses(editing.status) : TASK_STATUSES}
+        statusOptions={TASK_STATUSES}
         statusDisabled={isReadOnly}
       />
 

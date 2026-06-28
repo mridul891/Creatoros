@@ -1,4 +1,6 @@
-import { CrmEmptyState } from "../shared"
+"use client"
+
+import { CrmEmptyStateClient } from "../shared"
 
 type DeliverablesEmptyStateProps = {
   onCreate: () => void
@@ -6,7 +8,7 @@ type DeliverablesEmptyStateProps = {
 
 export function DeliverablesEmptyState({ onCreate }: DeliverablesEmptyStateProps) {
   return (
-    <CrmEmptyState
+    <CrmEmptyStateClient
       title="No deliverables yet"
       description="Track brand-facing campaign outputs and approvals from this workspace."
       actionLabel="Add Deliverable"

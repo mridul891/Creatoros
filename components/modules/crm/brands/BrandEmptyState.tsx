@@ -1,6 +1,6 @@
 "use client"
 
-import { CrmEmptyState } from "../shared"
+import { CrmEmptyStateClient } from "../shared"
 
 type BrandEmptyStateProps = {
   isSearch: boolean
@@ -9,7 +9,7 @@ type BrandEmptyStateProps = {
 
 export function BrandEmptyState({ isSearch, onCreate }: BrandEmptyStateProps) {
   return (
-    <CrmEmptyState
+    <CrmEmptyStateClient
       title={isSearch ? "No brands match this search" : "No brands yet"}
       description={
         isSearch

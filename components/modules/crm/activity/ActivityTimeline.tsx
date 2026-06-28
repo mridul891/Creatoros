@@ -1,5 +1,3 @@
-"use client"
-
 import type { ActivityListItem } from "@/types/activity"
 import { ActivityTimelineItem } from "./ActivityTimelineItem"
 

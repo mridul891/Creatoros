@@ -27,3 +27,29 @@ export interface CampaignTemplateItem {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface CampaignTemplateTaskInput {
+  title: string
+  description?: string
+  priority: TaskPriority
+  dueOffsetDays: number
+}
+
+export interface CampaignTemplateDeliverableInput {
+  platform: string
+  deliverableType: string
+  dueOffsetDays: number
+}
+
+export interface CampaignTemplateInput {
+  name: string
+  description?: string
+  tasks: CampaignTemplateTaskInput[]
+  deliverables: CampaignTemplateDeliverableInput[]
+}
+
+export type CampaignTemplateField =
+  | "name"
+  | "description"
+  | "tasks"
+  | "deliverables"

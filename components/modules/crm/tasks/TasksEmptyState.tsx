@@ -2,7 +2,7 @@
 
 import { ClipboardCheck } from "lucide-react"
 
-import { CrmEmptyState } from "../shared"
+import { CrmEmptyStateClient } from "../shared"
 
 type TasksEmptyStateProps = {
   hasFilters: boolean
@@ -14,7 +14,7 @@ export function TasksEmptyState({ hasFilters, isReadOnly = false, onCreate }: Ta
   const canCreate = !hasFilters && !isReadOnly
 
   return (
-    <CrmEmptyState
+    <CrmEmptyStateClient
       icon={<ClipboardCheck size={18} />}
       title={hasFilters ? "No matching tasks" : "No tasks yet"}
       description={

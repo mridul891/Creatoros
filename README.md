@@ -169,7 +169,6 @@ DealFlow is a modern web application built with:
 - **Stripe** for subscriptions and billing
 - **Resend** and React Email for transactional email
 - **Recharts** for dashboard visualizations
-- **Vitest** for tests
 
 ## Local Development
 
@@ -195,12 +194,6 @@ Run database migrations:
 
 ```bash
 pnpm prisma:migrate
-```
-
-Run tests:
-
-```bash
-pnpm test
 ```
 
 Run type checks:

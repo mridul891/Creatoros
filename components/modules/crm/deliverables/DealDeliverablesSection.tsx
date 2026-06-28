@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { getDeliverableAction } from "@/app/action/deliverableActions"
-import { CrmConfirmDialog, CrmPageHeader, CrmPagination, CrmSearchField } from "@/components/modules/crm/shared"
+import { CrmConfirmDialog, CrmPageHeaderClient, CrmPagination, CrmSearchField } from "@/components/modules/crm/shared"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DELIVERABLE_STATUSES } from "@/enums/deliverable"
@@ -169,7 +169,7 @@ export function DealDeliverablesSection({
 
   return (
     <div className="rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
-      <CrmPageHeader
+      <CrmPageHeaderClient
         title="Deliverables"
         description="Brand-facing campaign outcomes and approval lifecycle."
         actionLabel="Add Deliverable"

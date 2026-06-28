@@ -1,6 +1,6 @@
 "use client"
 
-import { CrmEmptyState } from "../shared"
+import { CrmEmptyStateClient } from "../shared"
 
 type ContactsEmptyStateProps = {
   isSearch: boolean
@@ -10,7 +10,7 @@ type ContactsEmptyStateProps = {
 
 export function ContactsEmptyState({ isSearch, status, onCreate }: ContactsEmptyStateProps) {
   return (
-    <CrmEmptyState
+    <CrmEmptyStateClient
       title={
         isSearch ? "No contacts match your filters" : status === "archived" ? "No archived contacts" : "No contacts yet"
       }

@@ -1,5 +1,3 @@
-"use client"
-
 import { Archive, BadgeDollarSign, Building2, PencilLine, PlusCircle, Star, UserRound } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"

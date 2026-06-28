@@ -4,7 +4,7 @@ import { Pin, Plus, Search } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
-import { CrmConfirmDialog, CrmPageHeader, CrmPagination } from "@/components/modules/crm/shared"
+import { CrmConfirmDialog, CrmPageHeaderClient, CrmPagination } from "@/components/modules/crm/shared"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -124,7 +124,7 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
 
   return (
     <div className="rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
-      <CrmPageHeader
+      <CrmPageHeaderClient
         title="Notes"
         description="Rich text notes with auto-save, pinning, and search."
         actionLabel="Add Note"

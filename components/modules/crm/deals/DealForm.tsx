@@ -21,6 +21,8 @@ type DealFormProps = {
   formError?: string
   brands: Array<{ id: string; name: string }>
   contacts: Array<{ id: string; name: string }>
+  templates?: Array<{ id: string; name: string }>
+  showTemplateSelect?: boolean
   onChange: (values: DealFormValues) => void
   onOpenChange: (open: boolean) => void
   onSubmit: () => void
@@ -36,6 +38,8 @@ export function DealForm({
   formError,
   brands,
   contacts,
+  templates = [],
+  showTemplateSelect = false,
   onChange,
   onOpenChange,
   onSubmit,
@@ -151,6 +155,29 @@ export function DealForm({
                 </Select>
                 <FieldError>{fieldErrors?.contactId}</FieldError>
               </Field>
+
+              {showTemplateSelect ? (
+                <Field className="sm:col-span-2">
+                  <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Use Existing Template</FieldLabel>
+                  <Select
+                    value={values.templateId || "__none"}
+                    onValueChange={(value) => onChange({ ...values, templateId: value === "__none" ? "" : value })}
+                  >
+                    <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]">
+                      <SelectValue placeholder={templates.length ? "Choose a template (optional)" : "No templates available"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__none">No template</SelectItem>
+                      {templates.map((template) => (
+                        <SelectItem key={template.id} value={template.id}>
+                          {template.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FieldError>{fieldErrors?.templateId}</FieldError>
+                </Field>
+              ) : null}
             </div>
           </div>
 

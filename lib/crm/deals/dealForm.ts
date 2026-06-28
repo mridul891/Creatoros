@@ -21,6 +21,7 @@ export type DealFormValues = {
   source: string
   probability: string
   externalRef: string
+  templateId: string
 }
 
 export const EMPTY_DEAL_FORM: DealFormValues = {
@@ -42,6 +43,7 @@ export const EMPTY_DEAL_FORM: DealFormValues = {
   source: "",
   probability: "",
   externalRef: "",
+  templateId: "",
 }
 
 function toDateInput(value: Date | null) {
@@ -76,6 +78,7 @@ export function dealToFormValues(deal: Pick<DealListItem, "brandId" | "contactId
     source: deal.source ?? "",
     probability: deal.probability == null ? "" : String(deal.probability),
     externalRef: deal.externalRef ?? "",
+    templateId: "",
   }
 }
 
@@ -107,6 +110,7 @@ export function buildDealFormData(values: DealFormValues, dealId?: string) {
   formData.set("source", values.source)
   formData.set("probability", values.probability)
   formData.set("externalRef", values.externalRef)
+  formData.set("templateId", values.templateId)
 
   return formData
 }

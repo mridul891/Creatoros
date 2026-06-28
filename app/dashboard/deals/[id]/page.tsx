@@ -7,7 +7,7 @@ import { listDealDeliverablesAction } from "@/app/action/deliverableActions"
 import { listDealFilesAction } from "@/app/action/fileActions"
 import { listDealNotesAction } from "@/app/action/noteActions"
 import { listDealTasksAction } from "@/app/action/taskActions"
-import { DealDetailPage } from "@/components/modules/crm/deals/DealDetailPage"
+import { DealDetailPageServer } from "@/components/modules/crm/deals/DealDetailPageServer"
 import { isDealWorkspaceTab, type DealWorkspaceTab } from "@/lib/crm/deals/dealWorkspaceTabs"
 
 type DashboardDealDetailPageProps = {
@@ -50,7 +50,7 @@ export default async function DashboardDealDetailPage({ params, searchParams }: 
   }
 
   return (
-    <DealDetailPage
+    <DealDetailPageServer
       deal={dealResult.data}
       initialTab={initialTab}
       activityError={

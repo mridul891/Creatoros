@@ -1,28 +1,27 @@
+"use client"
+
 import type { ReactNode } from "react"
-import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type CrmEmptyStateProps = {
+type CrmEmptyStateClientProps = {
   title: string
   description: string
   actionLabel?: string
-  actionHref?: string
-  action?: ReactNode
+  onAction?: () => void
   icon?: ReactNode
   className?: string
 }
 
-export function CrmEmptyState({
+export function CrmEmptyStateClient({
   title,
   description,
   actionLabel,
-  actionHref,
-  action,
+  onAction,
   icon,
   className,
-}: CrmEmptyStateProps) {
+}: CrmEmptyStateClientProps) {
   return (
     <div
       className={cn(
@@ -33,13 +32,13 @@ export function CrmEmptyState({
       {icon ? <div className="mx-auto mb-3 flex w-fit text-[rgba(255,255,255,0.5)]">{icon}</div> : null}
       <h3 className="text-[18px] font-bold text-white">{title}</h3>
       <p className="mx-auto mt-2 max-w-[460px] text-[13px] text-[rgba(255,255,255,0.55)]">{description}</p>
-      {action ? action : null}
-      {!action && actionLabel && actionHref ? (
+      {actionLabel && onAction ? (
         <Button
-          asChild
+          type="button"
+          onClick={onAction}
           className="mt-6 h-10 cursor-pointer bg-(--cos-primary) px-5 text-[13px] font-semibold text-white hover:bg-(--cos-primary)"
         >
-          <Link href={actionHref}>{actionLabel}</Link>
+          {actionLabel}
         </Button>
       ) : null}
     </div>
