@@ -1,13 +1,14 @@
 import type { Metadata } from "next"
-import "../styles/index.css";
-import { Inter } from "next/font/google";
+import "../styles/index.css"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import MsClarity from "../lib/ms-clarity"
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
 const siteUrl = "https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
@@ -216,6 +217,7 @@ export default function RootLayout({
         />
         <ThemeProvider>{children}</ThemeProvider>
         <Toaster richColors />
+        <MsClarity />
       </body>
       {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
     </html>

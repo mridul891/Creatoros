@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card"
 import type { DealDetail } from "@/types/deal"
-import { DealTemplateQuickApply } from "./DealTemplateQuickApply"
 
 type DealOverviewSectionProps = {
   deal: DealDetail
@@ -19,7 +18,6 @@ export function DealOverviewSection({ deal }: DealOverviewSectionProps) {
       <p className="mt-3 text-[13px] text-[rgba(255,255,255,0.65)]">
         <span className="font-semibold text-white">Notes:</span> {deal.notes ?? "No notes yet."}
       </p>
-      <DealTemplateQuickApply dealId={deal.id} />
     </Card>
   )
 }

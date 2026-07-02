@@ -25,7 +25,6 @@ type DealsPageProps = {
   listData: DealListData
   brands: Array<{ id: string; name: string }>
   contactsByBrand: Record<string, Array<{ id: string; name: string }>>
-  templates: Array<{ id: string; name: string }>
 }
 
 function keepUnresolvedErrors(
@@ -44,7 +43,7 @@ function keepUnresolvedErrors(
   return unresolved
 }
 
-export function DealsPage({ listData, brands, contactsByBrand, templates }: DealsPageProps) {
+export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps) {
   const filters = listData.filters
   const { navigateWith, navigateToPage, refresh } = useDealsNavigation(filters)
 
@@ -301,8 +300,6 @@ export function DealsPage({ listData, brands, contactsByBrand, templates }: Deal
         formError={createFormError}
         brands={brands}
         contacts={createContacts}
-        templates={templates}
-        showTemplateSelect
         onChange={handleCreateFormChange}
         onOpenChange={(open) => {
           setShowCreate(open)
