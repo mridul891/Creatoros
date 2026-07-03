@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function WaitlistPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center overflow-x-clip">
+    <main className="flex min-h-screen flex-col items-center justify-center overflow-x-clip bg-black text-white">
       <section className="flex flex-col items-center px-4 sm:px-6 lg:px-8">
         <HeroSection />
 
