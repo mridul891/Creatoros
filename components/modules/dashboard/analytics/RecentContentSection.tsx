@@ -1,11 +1,11 @@
 import {
   ArrowUpRight,
-  Camera as Instagram,
-  CirclePlay as Youtube,
+  InstagramLogo as Instagram,
+  YoutubeLogo as Youtube,
   Eye,
   Image as ImageIcon,
   Play,
-} from "lucide-react";
+} from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import {
   PlatformFilter as PlatformFilterEnum,

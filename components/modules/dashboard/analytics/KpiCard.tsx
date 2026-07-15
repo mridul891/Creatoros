@@ -1,5 +1,5 @@
-import { TrendingDown, TrendingUp } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { TrendDown, TrendUp } from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import { Skeleton } from "./Skeleton";
 
 export function KpiCard({
@@ -10,7 +10,7 @@ export function KpiCard({
   deltaLabel,
   loading,
 }: {
-  icon: LucideIcon;
+  icon: Icon;
   label: string;
   value: string;
   delta: number;
@@ -36,7 +36,7 @@ export function KpiCard({
           </div>
           <div className="text-[30px] font-bold leading-none tracking-[-0.04em] text-white">{value}</div>
           <div className="flex items-center gap-[5px]">
-            {up ? <TrendingUp size={12} color="#22c55e" /> : <TrendingDown size={12} color="#E8402A" />}
+            {up ? <TrendUp size={12} color="#22c55e" /> : <TrendDown size={12} color="#E8402A" />}
             <span className={`font-mono text-xs font-semibold ${up ? "text-[#22c55e]" : "text-[#E8402A]"}`}>
               {up ? "+" : ""}
               {delta}%

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import {
-  ChevronLeft, ChevronRight, Plus, Calendar as CalendarIcon,
-  Clock, CheckCircle, Edit3, Camera as Instagram, CirclePlay as Youtube,
-} from "lucide-react";
+  CaretLeft, CaretRight, Plus, Calendar as CalendarIcon,
+  Clock, CheckCircle, PencilSimple, InstagramLogo as Instagram, YoutubeLogo as Youtube,
+} from "@phosphor-icons/react/dist/ssr";
 import {
   PlatformFilter,
   PostStatus as PostStatusEnum,
@@ -145,7 +145,7 @@ export function CalendarPage() {
         {[
           { label: "Published", count: published, color: "#16a34a", icon: CheckCircle },
           { label: "Scheduled", count: scheduled, color: "#E8402A", icon: Clock },
-          { label: "Drafts",    count: drafts,    color: "#717171", icon: Edit3 },
+          { label: "Drafts",    count: drafts,    color: "#717171", icon: PencilSimple },
             { label: "Total",     count: posts.length, color: "#111111", icon: CalendarIcon },
         ].map(s => (
           <div key={s.label} className="flex items-center gap-[8px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[16px] py-[8px]">
@@ -169,7 +169,7 @@ export function CalendarPage() {
                 }
                 className="flex cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.07)] px-[10px] py-[6px] text-[rgba(255,255,255,0.4)]"
               >
-                <ChevronLeft size={14} />
+                <CaretLeft size={14} />
               </button>
               <span className={`${PRO_FONT} text-[16px] font-extrabold tracking-[-0.03em] text-white`}>{monthLabel}</span>
               <button
@@ -181,7 +181,7 @@ export function CalendarPage() {
                 }
                 className="flex cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.07)] px-[10px] py-[6px] text-[rgba(255,255,255,0.4)]"
               >
-                <ChevronRight size={14} />
+                <CaretRight size={14} />
               </button>
             </div>
             <div className="flex gap-[8px]">
@@ -292,7 +292,7 @@ export function CalendarPage() {
                         <span className={`${MONO_FONT} ${S.textClass} text-[10px] font-semibold`}>{S.label}</span>
                       </div>
                       <button onClick={e => { e.stopPropagation(); setModal({ day: post.day, post }); }} className="flex cursor-pointer items-center rounded-[7px] border border-[rgba(255,255,255,0.07)] px-[8px] py-[5px] text-[rgba(255,255,255,0.4)]">
-                        <Edit3 size={12} />
+                        <PencilSimple size={12} />
                       </button>
                     </div>
                   );

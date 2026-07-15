@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus } from "lucide-react"
+import { Plus } from "@phosphor-icons/react/dist/ssr"
 import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -181,7 +181,7 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
       <BrandForm
         open={Boolean(editing)}
         title="Edit Brand"
-        submitLabel="Save Changes"
+        submitLabel="FloppyDisk Changes"
         values={formValues}
         fieldErrors={fieldErrors}
         formError={formError}

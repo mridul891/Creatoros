@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import {
-  Plus, Search, Download, Send, MoreHorizontal,
-  CheckCircle, Clock, AlertTriangle, FileText, DollarSign,
-  TrendingUp, X, Copy, Trash2, Edit3,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+  Plus, MagnifyingGlass, Download, PaperPlaneRight, DotsThree,
+  CheckCircle, Clock, Warning, FileText, CurrencyDollar,
+  TrendUp, X, Copy, Trash, PencilSimple,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import { InvoiceStatus, InvoiceTab } from "@/enums/invoice";
 import type {
   Invoice,
@@ -20,7 +20,7 @@ import type {
 /* ── Types & data ──────────────────────────────────────────── */
 const STATUS_CFG: Record<InvoiceStatus, {
   label: string;
-  icon: LucideIcon;
+  icon: Icon;
   toneText: string;
   toneBg: string;
   toneBorder: string;
@@ -28,7 +28,7 @@ const STATUS_CFG: Record<InvoiceStatus, {
   [InvoiceStatus.DRAFT]:   { label: "Draft", icon: FileText, toneText: "text-[#717171]", toneBg: "bg-[rgba(113,113,113,0.08)]", toneBorder: "border-[rgba(113,113,113,0.2)]" },
   [InvoiceStatus.SENT]:    { label: "Sent", icon: Clock, toneText: "text-[#d97706]", toneBg: "bg-[rgba(217,119,6,0.08)]", toneBorder: "border-[rgba(217,119,6,0.2)]" },
   [InvoiceStatus.PAID]:    { label: "Paid", icon: CheckCircle, toneText: "text-[#16a34a]", toneBg: "bg-[rgba(22,163,74,0.08)]", toneBorder: "border-[rgba(22,163,74,0.2)]" },
-  [InvoiceStatus.OVERDUE]: { label: "Overdue", icon: AlertTriangle, toneText: "text-[#E8402A]", toneBg: "bg-[rgba(232,64,42,0.08)]", toneBorder: "border-[rgba(232,64,42,0.2)]" },
+  [InvoiceStatus.OVERDUE]: { label: "Overdue", icon: Warning, toneText: "text-[#E8402A]", toneBg: "bg-[rgba(232,64,42,0.08)]", toneBorder: "border-[rgba(232,64,42,0.2)]" },
   [InvoiceStatus.ARCHIVED]: { label: "Archived", icon: FileText, toneText: "text-[#717171]", toneBg: "bg-[rgba(113,113,113,0.08)]", toneBorder: "border-[rgba(113,113,113,0.2)]" },
 };
 
@@ -224,7 +224,7 @@ function InvoiceModal({ state, onSave, onClose }: {
         <div className="flex justify-end gap-2.5 px-7 pb-6 pt-[14px]">
           <button onClick={onClose} className={`cursor-pointer rounded-[10px] border border-[rgba(255,255,255,0.07)] px-5 py-2.5 text-[13px] text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>Cancel</button>
           <button onClick={handleSave} className={`flex cursor-pointer items-center gap-2 rounded-[10px] bg-(--cos-primary) px-[22px] py-2.5 text-[13px] font-bold text-white ${PRO_FONT}`}>
-            <Send size={13} /> {ex ? "Save Changes" : "Create Invoice"}
+            <PaperPlaneRight size={13} /> {ex ? "FloppyDisk Changes" : "Create Invoice"}
           </button>
         </div>
       </div>
@@ -244,7 +244,7 @@ function RowMenu({ onEdit, onDelete, onStatusChange }: {
         onClick={e => { e.stopPropagation(); setOpen(o => !o); }}
         className="flex cursor-pointer rounded-[7px] p-1.5 text-[rgba(255,255,255,0.4)] transition-colors duration-150 hover:bg-[rgba(255,255,255,0.05)]"
       >
-        <MoreHorizontal size={15} />
+        <DotsThree size={15} />
       </button>
       {open && (
         <div
@@ -252,11 +252,11 @@ function RowMenu({ onEdit, onDelete, onStatusChange }: {
           onMouseLeave={() => setOpen(false)}
         >
           {[
-            { label: "Edit invoice", icon: Edit3, action: onEdit, colorClass: "text-[rgba(255,255,255,0.65)]" },
+            { label: "Edit invoice", icon: PencilSimple, action: onEdit, colorClass: "text-[rgba(255,255,255,0.65)]" },
             { label: "Mark as Paid", icon: CheckCircle, action: () => onStatusChange(InvoiceStatus.PAID), colorClass: "text-[#16a34a]" },
             { label: "Mark as Sent", icon: Clock, action: () => onStatusChange(InvoiceStatus.SENT), colorClass: "text-[#d97706]" },
-            { label: "Mark as Overdue", icon: AlertTriangle, action: () => onStatusChange(InvoiceStatus.OVERDUE), colorClass: "text-[#E8402A]" },
-            { label: "Delete", icon: Trash2, action: onDelete, colorClass: "text-[#E8402A]" },
+            { label: "Mark as Overdue", icon: Warning, action: () => onStatusChange(InvoiceStatus.OVERDUE), colorClass: "text-[#E8402A]" },
+            { label: "Delete", icon: Trash, action: onDelete, colorClass: "text-[#E8402A]" },
           ].map(item => (
             <button
               key={item.label}
@@ -341,10 +341,10 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
       {/* KPIs */}
       <div className="mb-7 grid grid-cols-[repeat(4,1fr)] gap-4">
         {[
-          { label: "Total Earned",       value: fmt(totalRevenue), sub: `${invoices.filter(i => i.status === InvoiceStatus.PAID).length} paid invoices`,    icon: DollarSign,  accent: "#111111" },
+          { label: "Total Earned",       value: fmt(totalRevenue), sub: `${invoices.filter(i => i.status === InvoiceStatus.PAID).length} paid invoices`,    icon: CurrencyDollar,  accent: "#111111" },
           { label: "Awaiting Payment",   value: fmt(totalPending), sub: `${invoices.filter(i => i.status === InvoiceStatus.SENT).length} sent`,        icon: Clock,       accent: "#d97706" },
-          { label: "Overdue",            value: fmt(totalOverdue), sub: `${invoices.filter(i => i.status === InvoiceStatus.OVERDUE).length} overdue`,        icon: AlertTriangle,accent:"#E8402A" },
-          { label: "Total Invoices",     value: String(invoices.length), sub: "all time",                                                        icon: TrendingUp,  accent: "#16a34a" },
+          { label: "Overdue",            value: fmt(totalOverdue), sub: `${invoices.filter(i => i.status === InvoiceStatus.OVERDUE).length} overdue`,        icon: Warning,accent:"#E8402A" },
+          { label: "Total Invoices",     value: String(invoices.length), sub: "all time",                                                        icon: TrendUp,  accent: "#16a34a" },
         ].map(k => (
           <div key={k.label} className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[22px] py-5">
             <div className="mb-3 flex items-start justify-between">
@@ -378,11 +378,11 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search size={13} color="rgba(255,255,255,0.4)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
+            <MagnifyingGlass size={13} color="rgba(255,255,255,0.4)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               value={filters.search}
               onChange={e => setFilters(prev => ({ ...prev, search: e.target.value }))}
-              placeholder="Search…"
+              placeholder="Search..."
               className={`h-9 w-[180px] rounded-[9px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] pl-[34px] pr-[14px] text-xs text-[rgba(255,255,255,0.7)] outline-none transition-colors duration-150 focus:border-[#E8402A] ${PRO_FONT}`}
             />
           </div>
@@ -494,7 +494,7 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
 
               <div className="flex flex-col gap-2">
                 <button onClick={() => setModal({ invoice: selectedInv })} className={`flex cursor-pointer items-center justify-center gap-2 rounded-[11px] border-none bg-(--cos-primary) p-[11px] text-[13px] font-bold text-white ${PRO_FONT}`}>
-                  <Edit3 size={13} /> Edit Invoice
+                  <PencilSimple size={13} /> Edit Invoice
                 </button>
                 <div className="grid grid-cols-2 gap-2">
                   <button className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-2.5 text-xs text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>
@@ -509,7 +509,7 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
                   </button>
                 </div>
                 <button onClick={() => { handleDelete(selectedInv.id); }} className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-[rgba(232,64,42,0.2)] bg-[rgba(232,64,42,0.05)] p-2.5 text-xs text-[#E8402A] ${PRO_FONT}`}>
-                  <Trash2 size={12} /> Delete invoice
+                  <Trash size={12} /> Delete invoice
                 </button>
               </div>
             </div>

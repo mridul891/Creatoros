@@ -1,4 +1,4 @@
-import { Bell, RefreshCw } from "lucide-react";
+import { Bell, ArrowClockwise } from "@phosphor-icons/react/dist/ssr";
 import { AnalyticsViewMode } from "@/enums/analytics";
 
 import { PLATFORMS, ViewMode } from "./data";
@@ -24,7 +24,7 @@ export function DashboardHeader({
           Good afternoon, Maya 👋
         </h1>
         <div className="flex items-center gap-1.5 font-mono text-xs text-[rgba(255,255,255,0.4)]">
-          <RefreshCw size={10} />
+          <ArrowClockwise size={10} />
           Last synced 2h ago
         </div>
       </div>

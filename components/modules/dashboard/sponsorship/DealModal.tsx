@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X } from "@phosphor-icons/react/dist/ssr";
 import { DealPriority, SponsorshipStage } from "@/enums/sponsorship";
 import type { DealFormState } from "@/types/sponsorship";
 import {
@@ -148,7 +148,7 @@ export function DealModal({
         </div>
         <div className="flex justify-end gap-[10px] px-[28px] pb-6 pt-[14px]">
           <button onClick={onClose} className="cursor-pointer rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-transparent px-5 py-[10px] text-[13px] text-[rgba(255,255,255,0.4)]">Cancel</button>
-          <button onClick={handleSave} className="cursor-pointer rounded-[10px] bg-(--cos-primary) px-6 py-[10px] text-[13px] font-bold text-white">{ex ? "Save Changes" : "Add Content"}</button>
+          <button onClick={handleSave} className="cursor-pointer rounded-[10px] bg-(--cos-primary) px-6 py-[10px] text-[13px] font-bold text-white">{ex ? "FloppyDisk Changes" : "Add Content"}</button>
         </div>
       </div>
     </div>

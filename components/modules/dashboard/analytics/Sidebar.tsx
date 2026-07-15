@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  BarChart3,
-  Building2,
+  ChartBar,
+  BuildingOffice,
   Calendar,
-  ChevronsLeft,
+  CaretDoubleLeft,
   FileText,
   Handshake,
-  LayoutDashboard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+  SquaresFour,
+  SignOut,
+  Sparkle,
+} from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -35,13 +35,13 @@ import {
 } from "@/components/ui/sidebar";
 
 const NAV_ITEMS = [
-  { href: DashboardRoute.ROOT, label: "Dashboard", icon: LayoutDashboard },
+  { href: DashboardRoute.ROOT, label: "Dashboard", icon: SquaresFour },
   { href: DashboardRoute.CALENDAR, label: "Calendar", icon: Calendar },
-  { href: DashboardRoute.BRANDS, label: "Brands", icon: Building2 },
-  { href: DashboardRoute.ANALYTICS, label: "Analytics", icon: BarChart3 },
+  { href: DashboardRoute.BRANDS, label: "Brands", icon: BuildingOffice },
+  { href: DashboardRoute.ANALYTICS, label: "Analytics", icon: ChartBar },
   { href: DashboardRoute.DEALS, label: "Deal", icon: Handshake },
   { href: DashboardRoute.INVOICES, label: "Invoices", icon: FileText },
-  { href: DashboardRoute.MEDIA_KIT, label: "Media Kit", icon: Sparkles },
+  { href: DashboardRoute.MEDIA_KIT, label: "Media Kit", icon: Sparkle },
 ];
 
 function isNavItemActive(pathname: string, href: DashboardRoute) {
@@ -101,7 +101,7 @@ export function Sidebar() {
             className="relative z-20 size-9 shrink-0 rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
             title={state === "collapsed" ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <ChevronsLeft className={`size-4 transition-transform ${state === "collapsed" ? "rotate-180" : ""}`} />
+            <CaretDoubleLeft className={`size-4 transition-transform ${state === "collapsed" ? "rotate-180" : ""}`} />
             <span className="sr-only">Toggle sidebar</span>
           </SidebarTrigger>
         </div>
@@ -166,7 +166,7 @@ export function Sidebar() {
               disabled={isSigningOut}
               className="h-10 rounded-xl px-3 text-[13px] font-medium"
             >
-              <LogOut />
+              <SignOut />
               <span>{isSigningOut ? "Signing out..." : "Sign out"}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

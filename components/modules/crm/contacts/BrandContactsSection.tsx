@@ -210,7 +210,7 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
       <ContactFormModal
         open={Boolean(editing)}
         title="Edit Contact"
-        submitLabel="Save Changes"
+        submitLabel="FloppyDisk Changes"
         values={formValues}
         isSubmitting={isSubmitting || isFetchingEdit}
         fieldErrors={fieldErrors}

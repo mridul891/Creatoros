@@ -1,4 +1,5 @@
-import { CheckCircle, Clock, Edit3, type LucideIcon } from "lucide-react";
+import {CheckCircle, Clock, PencilSimple} from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import {
   PostStatus as PostStatusEnum,
   PostType as PostTypeEnum,
@@ -27,7 +28,7 @@ export const STATUS_CFG: Record<
     bgClass: string;
     borderClass: string;
     label: string;
-    icon: LucideIcon;
+    icon: Icon;
   }
 > = {
   [PostStatusEnum.PUBLISHED]: {
@@ -52,6 +53,6 @@ export const STATUS_CFG: Record<
     bgClass: "bg-[rgba(113,113,113,0.08)]",
     borderClass: "border-[rgba(113,113,113,0.2)]",
     label: "Draft",
-    icon: Edit3,
+    icon: PencilSimple,
   },
 };

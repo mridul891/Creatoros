@@ -1,6 +1,6 @@
 "use client"
 
-import { MoreHorizontal } from "lucide-react"
+import { DotsThree } from "@phosphor-icons/react/dist/ssr"
 import { useRouter } from "next/navigation"
 import type { KeyboardEvent } from "react"
 
@@ -98,7 +98,7 @@ export function BrandsTable({ items, onEdit, onDelete }: BrandsTableProps) {
                         onClick={(event) => event.stopPropagation()}
                         className="cursor-pointer text-[rgba(255,255,255,0.75)] hover:bg-[rgba(255,255,255,0.06)]"
                       >
-                        <MoreHorizontal />
+                        <DotsThree />
                         <span className="sr-only">Open actions</span>
                       </Button>
                     </DropdownMenuTrigger>

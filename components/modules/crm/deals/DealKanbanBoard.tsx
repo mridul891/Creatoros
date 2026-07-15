@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { MoveRight } from "lucide-react"
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr"
 
 import { DEAL_STAGES, type DealStage } from "@/enums/deal"
 import { groupDealsByStage } from "@/lib/crm/deals/dealPipeline"
@@ -108,7 +108,7 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
                         }
                       }}
                     >
-                      Advance <MoveRight size={11} />
+                      Advance <ArrowRight size={11} />
                     </button>
                   </div>
                 ))}

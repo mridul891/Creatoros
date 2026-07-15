@@ -1,6 +1,6 @@
 "use client"
 
-import { AlertTriangle } from "lucide-react"
+import { Warning } from "@phosphor-icons/react/dist/ssr"
 
 import {
   AlertDialog,
@@ -38,7 +38,7 @@ export function CrmConfirmDialog({
       <AlertDialogContent className="border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[rgba(255,255,255,0.8)]">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-[rgba(232,64,42,0.14)] text-[#E8402A]">
-            <AlertTriangle />
+            <Warning />
           </AlertDialogMedia>
           <AlertDialogTitle className="text-white">{title}</AlertDialogTitle>
           <AlertDialogDescription className="text-[rgba(255,255,255,0.55)]">

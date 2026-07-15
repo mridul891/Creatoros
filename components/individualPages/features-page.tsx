@@ -1,4 +1,4 @@
-import { Bot, Calendar, Handshake } from "lucide-react";
+import { Robot, Calendar, Handshake } from "@phosphor-icons/react/dist/ssr";
 
 import { MarketingPageShell } from "./marketing-page-shell";
 import { SplitSection } from "../modules/Landing/split-section";
@@ -39,7 +39,7 @@ export function FeaturesPage() {
             body: "Manage partnership conversations, approvals, deliverables, and payout readiness in one pipeline.",
           },
           {
-            icon: <Bot size={15} color={DIM} />,
+            icon: <Robot size={15} color={DIM} />,
             title: "AI assistance",
             body: "Use automated insights and recommendations to improve performance without heavy manual analysis.",
           },

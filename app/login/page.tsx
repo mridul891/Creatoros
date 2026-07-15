@@ -1,7 +1,8 @@
 import { LoginForm } from "@/components/login-form"
 import { getCurrentUser } from "@/lib/auth/get-current-user"
 import { redirect } from "next/navigation"
-import { CheckCircle2 } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 
 export default async function LoginPage() {
   const user = await getCurrentUser()
@@ -10,41 +11,40 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-[#050505] px-6 py-10 text-white md:px-10">
-      <div className="pointer-events-none absolute -left-48 -top-40 size-96 rounded-full bg-[#E8402A]/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-32 -bottom-48 size-96 rounded-full bg-red-500/10 blur-3xl" />
-
-      <div className="relative z-10 grid w-full max-w-6xl items-center gap-10 lg:grid-cols-2">
-        <section className="hidden space-y-8 lg:block">
-          <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
-            NotYetLaunchedOS
+    <div className="min-h-svh bg-white text-black">
+      <div className="pointer-events-none absolute inset-0" />
+      <div className="grid min-h-svh lg:grid-cols-2">
+        <section className="relative flex flex-col p-6 md:p-10">
+          <div className="flex items-center justify-center md:justify-start">
+            <Link
+              href="/"
+              prefetch={false}
+              className="inline-flex items-center gap-2 px-1 py-1 font-medium"
+            >
+              <span className="text-sm font-semibold tracking-wide text-black">
+                !notyetlaunched
+              </span>
+            </Link>
           </div>
-          <div className="space-y-4">
-            <h1 className="max-w-lg text-4xl font-bold leading-tight tracking-tight">
-              The creator CRM to run your brand deal business.
-            </h1>
-            <p className="max-w-xl text-base text-white/65">
-              NotYetLaunched helps content creators track sponsorships, invoices,
-              payments, and deliverables in one beautifully organized workspace.
-            </p>
-          </div>
-          <div className="grid gap-3">
-            {[
-              "Track every deal from outreach to payout",
-              "Never miss a sponsorship deadline again",
-              "See pipeline, payments, and tasks in one place",
-            ].map((item) => (
-              <div key={item} className="flex items-center gap-2 text-sm text-white/75">
-                <CheckCircle2 className="size-4 text-[#E8402A]" />
-                <span>{item}</span>
-              </div>
-            ))}
+          <div className="relative flex flex-1 items-center justify-center py-8 md:py-0">
+            <div className="w-full max-w-sm">
+              <LoginForm />
+            </div>
           </div>
         </section>
-
-        <div className="w-full max-w-md justify-self-center lg:justify-self-end">
-          <LoginForm />
-        </div>
+        <section className="relative hidden p-4 lg:block">
+          <div className="relative h-full w-full overflow-hidden rounded-3xl shadow-[0_24px_90px_-45px_rgba(0,0,0,0.8)]">
+            <Image
+              src="/signup.png"
+              alt="Blooming tree on a sunny hill"
+              fill
+              sizes="100vw 100vh"
+              priority
+              className="object-cover brightness-[0.92] saturate-[1.06]"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-white/25 via-transparent to-white/10" />
+          </div>
+        </section>
       </div>
     </div>
   )

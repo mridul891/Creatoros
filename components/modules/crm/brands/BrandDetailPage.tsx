@@ -150,7 +150,7 @@ export function BrandDetailPage({ brand, contactsData, activityData }: BrandDeta
       <BrandForm
         open={showEdit}
         title="Edit Brand"
-        submitLabel="Save Changes"
+        submitLabel="FloppyDisk Changes"
         values={formValues}
         isSubmitting={isSubmitting}
         fieldErrors={fieldErrors}

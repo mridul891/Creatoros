@@ -1,6 +1,6 @@
 "use client"
 
-import { MoreHorizontal } from "lucide-react"
+import { DotsThree } from "@phosphor-icons/react/dist/ssr"
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -27,7 +27,7 @@ export function TaskRowActions({ task, isReadOnly, onView, onEdit, onArchive, on
           className="h-8 w-8 cursor-pointer p-0 text-[rgba(255,255,255,0.6)] hover:bg-[rgba(255,255,255,0.08)]"
           onClick={(event) => event.stopPropagation()}
         >
-          <MoreHorizontal size={14} />
+          <DotsThree size={14} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="border-[rgba(255,255,255,0.08)] bg-[#121212] text-[rgba(255,255,255,0.8)]">

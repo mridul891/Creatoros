@@ -1,4 +1,4 @@
-import { RotateCcw } from "lucide-react";
+import { ArrowCounterClockwise } from "@phosphor-icons/react/dist/ssr";
 
 export function InsightCard({
   insight,
@@ -30,7 +30,7 @@ export function InsightCard({
           className="flex cursor-pointer items-center justify-center rounded-[7px] border-none bg-transparent p-1.5 text-[rgba(255,255,255,0.4)] transition-colors duration-150 hover:bg-[rgba(255,255,255,0.05)]"
           title="Regenerate insight"
         >
-          <RotateCcw size={12} />
+          <ArrowCounterClockwise size={12} />
         </button>
       </div>
       <p className="m-0 text-[13px] leading-[1.65] text-[rgba(255,255,255,0.65)]">{insight.body}</p>

@@ -39,3 +39,9 @@ next-env.d.ts
 
 # generated artifacts
 /generated/
+
+# local AI tooling metadata
+.cursor/
+.claude/
+.gemini/
+CLAUDE.md

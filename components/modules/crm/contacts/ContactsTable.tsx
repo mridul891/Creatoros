@@ -1,6 +1,6 @@
 "use client"
 
-import { MoreHorizontal } from "lucide-react"
+import { DotsThree } from "@phosphor-icons/react/dist/ssr"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -99,7 +99,7 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
                         size="icon-sm"
                         className="cursor-pointer text-[rgba(255,255,255,0.75)] hover:bg-[rgba(255,255,255,0.06)]"
                       >
-                        <MoreHorizontal />
+                        <DotsThree />
                         <span className="sr-only">Open actions</span>
                       </Button>
                     </DropdownMenuTrigger>

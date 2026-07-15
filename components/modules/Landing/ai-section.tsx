@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { Sparkle } from "@phosphor-icons/react/dist/ssr";
 
 import { ImageWithFallback } from "@/components/modules/figma/ImageWithFallback";
 import { IMG_AI_1, IMG_AI_2, IMG_AI_3, IMG_AI_4 } from "./image-urls";
@@ -40,7 +40,7 @@ export function AISection() {
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-[680px] text-center sm:mb-14">
           <div className="mb-5 inline-flex items-center gap-[7px] rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1.5">
-            <Sparkles size={12} color="rgba(255,255,255,0.4)" />
+            <Sparkle size={12} color="rgba(255,255,255,0.4)" />
             <span className="font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[11px] text-[rgba(255,255,255,0.4)]">
               Powered by Claude AI
             </span>

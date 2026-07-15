@@ -1,4 +1,4 @@
-import { RotateCcw, Zap } from "lucide-react";
+import { ArrowCounterClockwise, Lightning } from "@phosphor-icons/react/dist/ssr";
 
 import { ACCENT, AI_INSIGHTS } from "./data";
 import { InsightCard } from "./InsightCard";
@@ -26,7 +26,7 @@ export function InsightsSection({
           </div>
         </div>
         <button className="flex cursor-pointer items-center gap-[7px] rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[13px] py-[7px] font-mono text-[11px] text-[rgba(255,255,255,0.4)]">
-          <Zap size={11} color={ACCENT} />
+          <Lightning size={11} color={ACCENT} />
           Regenerate all
         </button>
       </div>
@@ -35,7 +35,7 @@ export function InsightsSection({
           <div key={insight.id} className="relative">
             {regenerating === insight.id && (
               <div className="absolute inset-0 z-[2] flex items-center justify-center gap-2 rounded-xl bg-[rgba(0,0,0,0.7)] font-mono text-xs text-[rgba(255,255,255,0.4)] backdrop-blur-[4px]">
-                <RotateCcw size={13} className="animate-[spin_0.8s_linear_infinite]" />
+                <ArrowCounterClockwise size={13} className="animate-[spin_0.8s_linear_infinite]" />
                 Generating…
               </div>
             )}

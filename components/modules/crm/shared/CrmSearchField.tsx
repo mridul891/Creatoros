@@ -1,6 +1,6 @@
 "use client"
 
-import { Search } from "lucide-react"
+import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr"
 
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -16,7 +16,7 @@ type CrmSearchFieldProps = {
 export function CrmSearchField({ value, placeholder, ariaLabel, onChange, className }: CrmSearchFieldProps) {
   return (
     <div className={cn("relative", className)}>
-      <Search
+      <MagnifyingGlass
         size={13}
         color="rgba(255,255,255,0.4)"
         className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"

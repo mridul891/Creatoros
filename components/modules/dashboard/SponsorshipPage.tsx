@@ -6,10 +6,10 @@ import {
   Tooltip, ResponsiveContainer, Cell,
 } from "recharts";
 import {
-  Plus, Search, CheckCircle, Clapperboard, Camera, MessageSquareQuote,
-  Mail, Calendar, X, AlertCircle,
-  Trash2, Edit3, Zap, Target, Award, ChevronRight,
-} from "lucide-react";
+  Plus, MagnifyingGlass, CheckCircle, FilmSlate, InstagramLogo, Quotes,
+  EnvelopeSimple, Calendar, X, WarningCircle,
+  Trash, PencilSimple, Lightning, Target, Trophy, CaretRight,
+} from "@phosphor-icons/react/dist/ssr";
 import {
   DealPriority,
   SponsorshipMode,
@@ -230,7 +230,7 @@ function DealPanel({ deal, onClose, onEdit, onDelete, onStageChange }: {
       <div className="mt-4 border-t border-[rgba(255,255,255,0.07)] pt-[14px]">
         <div className="mb-[9px] font-mono text-[9px] tracking-[0.07em] text-[rgba(255,255,255,0.4)]">CONTACT</div>
         {deal.contact && <div className="mb-[5px] text-xs font-semibold text-white">{deal.contact}</div>}
-        {deal.email && <div className="mb-[3px] flex items-center gap-[5px] font-mono text-[10px] text-[rgba(255,255,255,0.4)]"><Mail size={10} /> {deal.email}</div>}
+        {deal.email && <div className="mb-[3px] flex items-center gap-[5px] font-mono text-[10px] text-[rgba(255,255,255,0.4)]"><EnvelopeSimple size={10} /> {deal.email}</div>}
         {deal.deadline && <div className="flex items-center gap-[5px] font-mono text-[10px] text-[rgba(255,255,255,0.4)]"><Calendar size={10} /> Due {deal.deadline}</div>}
       </div>
 
@@ -243,10 +243,10 @@ function DealPanel({ deal, onClose, onEdit, onDelete, onStageChange }: {
 
       <div className="mt-4 grid grid-cols-2 gap-2">
         <button onClick={onEdit} className="flex cursor-pointer items-center justify-center gap-[5px] rounded-[9px] bg-(--cos-primary) p-[9px] text-[11px] font-semibold text-white">
-          <Edit3 size={11} /> Edit
+          <PencilSimple size={11} /> Edit
         </button>
         <button onClick={() => { onDelete(deal.id); onClose(); }} className="flex cursor-pointer items-center justify-center gap-[5px] rounded-[9px] border border-[rgba(232,64,42,0.2)] bg-[rgba(232,64,42,0.05)] p-[9px] text-[11px] text-[#E8402A]">
-          <Trash2 size={11} /> Delete
+          <Trash size={11} /> Delete
         </button>
       </div>
     </div>
@@ -415,10 +415,10 @@ function InsightCards({ deals }: { deals: Deal[] }) {
   const signedPct = deals.length > 0 ? Math.round(deals.filter(d => d.stage === SponsorshipStage.SIGNED || d.stage === SponsorshipStage.PAID).length / deals.length * 100) : 0;
 
   const insights = [
-    { icon: AlertCircle, color: "#E8402A", bgClass: "bg-[rgba(232,64,42,0.08)]", label: "Action needed", value: `${overdue} high-priority deals`, sub: "still in active stages" },
+    { icon: WarningCircle, color: "#E8402A", bgClass: "bg-[rgba(232,64,42,0.08)]", label: "Action needed", value: `${overdue} high-priority deals`, sub: "still in active stages" },
     { icon: Target, color: "#d97706", bgClass: "bg-[rgba(217,119,6,0.08)]", label: "Negotiation at risk", value: fmt(negotiationVal), sub: "pending closure this month" },
-    { icon: Award, color: "#16a34a", bgClass: "bg-[rgba(22,163,74,0.08)]", label: "Top category", value: topCat, sub: "highest pipeline value" },
-    { icon: Zap, color: "#2563eb", bgClass: "bg-[rgba(37,99,235,0.08)]", label: "Close rate", value: `${signedPct}%`, sub: "leads converted to signed/paid" },
+    { icon: Trophy, color: "#16a34a", bgClass: "bg-[rgba(22,163,74,0.08)]", label: "Top category", value: topCat, sub: "highest pipeline value" },
+    { icon: Lightning, color: "#2563eb", bgClass: "bg-[rgba(37,99,235,0.08)]", label: "Close rate", value: `${signedPct}%`, sub: "leads converted to signed/paid" },
   ];
 
   return (
@@ -517,7 +517,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
         </div>
         <div className="flex items-center gap-[10px]">
           <div className="relative">
-            <Search size={13} color="rgba(255,255,255,0.4)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
+            <MagnifyingGlass size={13} color="rgba(255,255,255,0.4)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
             <input value={uiState.search} onChange={e => setUiState(prev => ({ ...prev, search: e.target.value }))} placeholder="Search content…" className="h-[38px] w-[170px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] pl-[34px] pr-[14px] text-xs text-[rgba(255,255,255,0.7)] outline-none"
               onFocus={e => e.currentTarget.style.borderColor = "#E8402A"}
               onBlur={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"} />
@@ -531,9 +531,9 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
       {/* KPIs */}
       <div className="mb-5 grid grid-cols-4 gap-[14px]">
         {[
-          { label: "Content Items", value: String(deals.length), sub: `${plannedCount} planned`, icon: Clapperboard, accent: "#111111", trend: `Est. value ${fmt(totalPipeline)}` },
-          { label: "In Production", value: String(activeDeals), sub: `${shootingCount} shooting now`, icon: Camera, accent: "#E8402A", trend: `${deals.filter(d => d.priority === DealPriority.HIGH && d.stage !== SponsorshipStage.PAID).length} high priority` },
-          { label: "Pending Review", value: String(deals.filter(d => d.stage === SponsorshipStage.SIGNED).length), sub: "awaiting approval", icon: MessageSquareQuote, accent: "#2563eb", trend: `Est. value ${fmt(totalSigned)}` },
+          { label: "Content Items", value: String(deals.length), sub: `${plannedCount} planned`, icon: FilmSlate, accent: "#111111", trend: `Est. value ${fmt(totalPipeline)}` },
+          { label: "In Production", value: String(activeDeals), sub: `${shootingCount} shooting now`, icon: InstagramLogo, accent: "#E8402A", trend: `${deals.filter(d => d.priority === DealPriority.HIGH && d.stage !== SponsorshipStage.PAID).length} high priority` },
+          { label: "Pending Review", value: String(deals.filter(d => d.stage === SponsorshipStage.SIGNED).length), sub: "awaiting approval", icon: Quotes, accent: "#2563eb", trend: `Est. value ${fmt(totalSigned)}` },
           { label: "Published", value: String(deals.filter(d => d.stage === SponsorshipStage.PAID).length), sub: "completed", icon: CheckCircle, accent: "#16a34a", trend: `Est. value ${fmt(totalPaid)}` },
         ].map(k => (
           <div key={k.label} className={`rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-5 py-[18px] ${ACCENT_KPI_CARD_CLASS[k.accent] ?? ""}`}>
@@ -591,7 +591,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                     <div className="flex items-center gap-[6px]">
                       <div className={`h-[6px] w-[6px] rounded-full ${PRIORITY_DOT_CLASS[deal.priority]}`} />
                       <span className="font-mono text-[11px] capitalize text-[rgba(255,255,255,0.4)]">{deal.priority}</span>
-                      <ChevronRight size={12} color="rgba(255,255,255,0.4)" className="ml-auto" />
+                      <CaretRight size={12} color="rgba(255,255,255,0.4)" className="ml-auto" />
                     </div>
                   </div>
                 );

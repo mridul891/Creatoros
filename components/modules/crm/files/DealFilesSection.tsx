@@ -1,6 +1,6 @@
 "use client"
 
-import { Download, Eye, FileUp, FolderArchive, Pencil } from "lucide-react"
+import { Download, Eye, UploadSimple, Archive, Pencil } from "@phosphor-icons/react/dist/ssr"
 import { useMemo, useState } from "react"
 import type { ChangeEvent } from "react"
 import { toast } from "sonner"
@@ -146,7 +146,7 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
           <p className="text-[12px] text-[rgba(255,255,255,0.5)]">Contracts, briefs, assets, media, invoices, and references.</p>
         </div>
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-(--cos-primary) px-3 py-2 text-[12px] font-semibold text-white">
-          <FileUp size={14} />
+          <UploadSimple size={14} />
           Upload
           <input type="file" className="hidden" onChange={handleUploadFromInput} />
         </label>
@@ -201,7 +201,7 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
           </div>
           <div className="mt-2 flex gap-2">
             <Button type="button" size="sm" onClick={handleRename} disabled={isSubmitting}>
-              Save
+              FloppyDisk
             </Button>
             <Button
               type="button"
@@ -276,7 +276,7 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
                         <Download size={12} />
                       </Button>
                       <Button type="button" size="sm" variant="outline" className="h-8" onClick={() => setPendingArchiveId(file.id)}>
-                        <FolderArchive size={12} />
+                        <Archive size={12} />
                       </Button>
                       <Button type="button" size="sm" variant="destructive" className="h-8" onClick={() => setPendingDeleteId(file.id)}>
                         Delete

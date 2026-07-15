@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, Eye, Heart, TrendingUp, Users, X } from "lucide-react";
+import { WarningCircle, Eye, Heart, TrendUp, Users, X } from "@phosphor-icons/react/dist/ssr";
 import {
   AnalyticsRange,
   AnalyticsSortBy,
@@ -47,7 +47,7 @@ export function AnalyticsDashboard() {
     <div className="[font-family:'SF_Pro_Display',-apple-system,BlinkMacSystemFont,system-ui,sans-serif]">
       {uiState.viewMode === AnalyticsViewMode.SYNC_FAILED && (
         <div className="flex items-center gap-[10px] border-b border-b-[rgba(232,64,42,0.18)] bg-[rgba(232,64,42,0.08)] px-8 py-[10px]">
-          <AlertCircle size={13} color={ACCENT} />
+          <WarningCircle size={13} color={ACCENT} />
           <span className="text-[13px] font-medium text-[#E8402A]">
             Couldn&apos;t sync data — showing last good snapshot from 6h ago.
           </span>
@@ -106,7 +106,7 @@ export function AnalyticsDashboard() {
                 loading={loading}
               />
               <KpiCard
-                icon={TrendingUp}
+                icon={TrendUp}
                 label="Follower Growth"
                 value={loading ? "—" : "+12.4K"}
                 delta={-2.1}

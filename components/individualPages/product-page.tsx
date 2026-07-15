@@ -1,4 +1,4 @@
-import { BarChart3, Link2, ShieldCheck } from "lucide-react";
+import { ChartBar, LinkSimple, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 
 import { MarketingPageShell } from "./marketing-page-shell";
 import { MadeFor } from "../modules/Landing/made-for";
@@ -32,12 +32,12 @@ export function ProductPage() {
         body="Everything in CreatorOS is designed to help creators spend less time on operations and more time on growth. Teams get a clear source of truth across every stage of the revenue cycle."
         pillars={[
           {
-            icon: <Link2 size={15} color={DIM} />,
+            icon: <LinkSimple size={15} color={DIM} />,
             title: "Connected workflow",
             body: "Move from planning to publishing to invoicing without context switching across disconnected tools.",
           },
           {
-            icon: <BarChart3 size={15} color={DIM} />,
+            icon: <ChartBar size={15} color={DIM} />,
             title: "Decision-grade visibility",
             body: "Track performance, conversion, and payout signals in one place to prioritize what moves revenue.",
           },

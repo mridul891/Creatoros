@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import {
-  Download, Share2, RefreshCw, Copy, Check, Edit3, Save,
-  Camera as Instagram, CirclePlay as Youtube, MapPin, Zap, Star, Users, Eye,
-  TrendingUp, ExternalLink, ChevronRight, BarChart2,
-  Heart, Play, Globe, Mail,
-} from "lucide-react";
+  Download, ShareNetwork, ArrowClockwise, Copy, Check, PencilSimple, FloppyDisk,
+  InstagramLogo as Instagram, YoutubeLogo as Youtube, MapPin, Lightning, Star, Users, Eye,
+  TrendUp, ArrowSquareOut, CaretRight, ChartBar,
+  Heart, Play, Globe, EnvelopeSimple,
+} from "@phosphor-icons/react/dist/ssr";
 import { MediaKitTab } from "@/enums/media-kit";
 import { SocialPlatform } from "@/enums/post";
 import type {
@@ -50,7 +50,7 @@ const PLATFORM_STATS = [
 const METRICS_SPOTLIGHT = [
   { label: "Combined Reach", value: "1.1M+", icon: Users,     color: "#111111" },
   { label: "Avg Engagement", value: "6.4%",  icon: Heart,     color: "#E8402A" },
-  { label: "Avg CPM",        value: "$14.20", icon: TrendingUp, color: "#111111" },
+  { label: "Avg CPM",        value: "$14.20", icon: TrendUp, color: "#111111" },
   { label: "Creator Rating", value: "4.9★",  icon: Star,      color: "#E8402A" },
 ];
 
@@ -144,7 +144,7 @@ function EditableField({ value, onSave, multiline = false, large = false }: {
         className={`${sharedInputClasses} resize-y`}
       />
       <span className="mt-[6px] flex gap-[8px]">
-        <button onClick={() => { onSave(draft); setEditing(false); }} className="cursor-pointer rounded-[6px] border-0 bg-(--cos-primary) px-[12px] py-[4px] text-[11px] font-semibold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Save</button>
+        <button onClick={() => { onSave(draft); setEditing(false); }} className="cursor-pointer rounded-[6px] border-0 bg-(--cos-primary) px-[12px] py-[4px] text-[11px] font-semibold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">FloppyDisk</button>
         <button onClick={() => setEditing(false)} className="cursor-pointer rounded-[6px] border border-[rgba(255,255,255,0.07)] bg-transparent px-[12px] py-[4px] text-[11px] text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">Cancel</button>
       </span>
     </span>
@@ -213,7 +213,7 @@ export function MediaKitPage() {
               : "border-[1.5px] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] font-normal text-[rgba(255,255,255,0.4)]"
               }`}
           >
-            {uiState.editMode ? <><Save size={13} /> Save Changes</> : <><Edit3 size={13} /> Edit Kit</>}
+            {uiState.editMode ? <><FloppyDisk size={13} /> FloppyDisk Changes</> : <><PencilSimple size={13} /> Edit Kit</>}
           </button>
           <button
             onClick={handleRegenerate}
@@ -221,7 +221,7 @@ export function MediaKitPage() {
             onMouseEnter={e => e.currentTarget.style.opacity = "0.7"}
             onMouseLeave={e => e.currentTarget.style.opacity = "1"}
           >
-            <RefreshCw size={13} className={uiState.regenerating ? "animate-spin" : ""} />
+            <ArrowClockwise size={13} className={uiState.regenerating ? "animate-spin" : ""} />
             {uiState.regenerating ? "Regenerating…" : "Regenerate"}
           </button>
           <button onClick={handleCopy} className="flex cursor-pointer items-center gap-[7px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[14px] py-[9px] text-[12px] text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">
@@ -244,7 +244,7 @@ export function MediaKitPage() {
 
           {/* Floating brand badge */}
           <div className="absolute right-[24px] top-[20px] flex items-center gap-[7px] rounded-[99px] border border-[rgba(255,255,255,0.18)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[7px] backdrop-blur-[14px]">
-            <Zap size={11} color="#E8402A" />
+            <Lightning size={11} color="#E8402A" />
             <span className="text-[10px] font-semibold tracking-widest text-white font-mono">CREATOROS · VERIFIED</span>
           </div>
 
@@ -290,7 +290,7 @@ export function MediaKitPage() {
                 {[
                   { icon: MapPin, text: creator.location, key: "location" as const },
                   { icon: Globe, text: creator.website, key: "website" as const },
-                  { icon: Mail, text: creator.email, key: "email" as const },
+                  { icon: EnvelopeSimple, text: creator.email, key: "email" as const },
                 ].map(({ icon: Icon, text, key }) => (
                   <div key={key} className="flex items-center gap-[6px] text-[12px] text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">
                     <Icon size={12} />
@@ -388,8 +388,8 @@ export function MediaKitPage() {
                           { label: "Avg ER", value: p.er, icon: Heart },
                           { label: "Avg Views", value: p.avgViews, icon: Eye },
                           { label: "Avg Reach", value: p.avgReach, icon: Globe },
-                          { label: "Total Posts", value: p.posts, icon: BarChart2 },
-                          { label: "Avg CPM", value: p.cpm, icon: TrendingUp },
+                          { label: "Total Posts", value: p.posts, icon: ChartBar },
+                          { label: "Avg CPM", value: p.cpm, icon: TrendUp },
                         ].map(s => (
                           <div key={s.label}>
                             <div className="mb-[4px] flex items-center gap-[4px]">
@@ -577,10 +577,10 @@ export function MediaKitPage() {
                   <div className="mb-[16px] text-[12px] text-[rgba(255,255,255,0.6)] font-mono">{creator.email}</div>
                   <div className="flex gap-[8px]">
                     <button className="flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border-0 bg-[#E8402A] px-[10px] py-[10px] text-[12px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
-                      <Mail size={12} /> Email Me
+                      <EnvelopeSimple size={12} /> Email Me
                     </button>
                     <button className="flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border border-[rgba(255,255,255,0.15)] bg-transparent px-[10px] py-[10px] text-[12px] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
-                      <Share2 size={12} /> Share Kit
+                      <ShareNetwork size={12} /> Share Kit
                     </button>
                   </div>
                 </div>
@@ -597,7 +597,7 @@ export function MediaKitPage() {
                   <div className="text-[11px] text-[rgba(255,255,255,0.4)] font-mono">Top performing posts across all platforms</div>
                 </div>
                 <div className="flex items-center gap-[8px] rounded-[9px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[12px] py-[6px] text-[11px] text-[rgba(255,255,255,0.4)] font-mono">
-                  Sorted by views <ChevronRight size={12} />
+                  Sorted by views <CaretRight size={12} />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-[14px]">
@@ -633,7 +633,7 @@ export function MediaKitPage() {
                           {p.er} engagement
                         </div>
                         <button className="ml-auto flex cursor-pointer items-center gap-[4px] border-0 bg-transparent p-0 text-[10px] text-[rgba(255,255,255,0.4)] font-mono">
-                          <ExternalLink size={10} /> View
+                          <ArrowSquareOut size={10} /> View
                         </button>
                       </div>
                     </div>

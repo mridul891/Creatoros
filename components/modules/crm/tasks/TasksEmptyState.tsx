@@ -1,6 +1,6 @@
 "use client"
 
-import { ClipboardCheck } from "lucide-react"
+import { ClipboardText } from "@phosphor-icons/react/dist/ssr"
 
 import { CrmEmptyStateClient } from "../shared"
 
@@ -15,7 +15,7 @@ export function TasksEmptyState({ hasFilters, isReadOnly = false, onCreate }: Ta
 
   return (
     <CrmEmptyStateClient
-      icon={<ClipboardCheck size={18} />}
+      icon={<ClipboardText size={18} />}
       title={hasFilters ? "No matching tasks" : "No tasks yet"}
       description={
         hasFilters

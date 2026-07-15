@@ -345,7 +345,7 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
       <TaskForm
         open={Boolean(editing)}
         title="Edit Task"
-        submitLabel="Save Changes"
+        submitLabel="FloppyDisk Changes"
         values={editFormValues}
         isSubmitting={isSubmitting || isFetchingDetail}
         fieldErrors={editFieldErrors}

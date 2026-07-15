@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BarChart3, Calendar, Sparkles } from "lucide-react";
+import { ChartBar, Calendar, Sparkle } from "@phosphor-icons/react/dist/ssr";
 
 import { ImageWithFallback } from "@/components/modules/figma/ImageWithFallback";
 import { DIM, WRAP_CLASS } from "./constants";
@@ -12,7 +12,7 @@ import {
 export function MadeFor() {
   const cards = [
     {
-      icon: <BarChart3 size={15} color={DIM} />,
+      icon: <ChartBar size={15} color={DIM} />,
       eyebrow: "Analytics",
       title: "Track every metric that matters",
       desc: "Connect Instagram and YouTube and get AI-powered insights on every post. Stop guessing — start optimizing.",
@@ -26,7 +26,7 @@ export function MadeFor() {
       img: IMG_FEATURE_CALENDAR,
     },
     {
-      icon: <Sparkles size={15} color={DIM} />,
+      icon: <Sparkle size={15} color={DIM} />,
       eyebrow: "AI Media Kit",
       title: "Your media kit, always up to date",
       desc: "Live stats from all connected platforms — AI-generated bio, shareable link, PDF export. All in one place.",

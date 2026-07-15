@@ -2,7 +2,7 @@ import { requireUser } from "@/lib/auth/require-user"
 import { prisma } from "@/lib/prisma"
 import { CreatorOnboardingForm } from "@/components/onboarding/creator-onboarding-form"
 import { redirect } from "next/navigation"
-import { CheckCircle2, Sparkles } from "lucide-react"
+import { CheckCircle, Sparkle } from "@phosphor-icons/react/dist/ssr"
 
 export default async function OnboardingPage() {
   const user = await requireUser()
@@ -23,7 +23,7 @@ export default async function OnboardingPage() {
       <div className="relative z-10 grid w-full max-w-6xl items-start gap-10 lg:grid-cols-2">
         <section className="hidden space-y-8 pt-6 lg:block">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
-            <Sparkles className="size-3.5 text-[#E8402A]" />
+            <Sparkle className="size-3.5 text-[#E8402A]" />
             Creator setup
           </div>
 
@@ -44,7 +44,7 @@ export default async function OnboardingPage() {
               "A dashboard customized to your growth stage",
             ].map((item) => (
               <div key={item} className="flex items-center gap-2 text-sm text-white/75">
-                <CheckCircle2 className="size-4 text-[#E8402A]" />
+                <CheckCircle className="size-4 text-[#E8402A]" />
                 <span>{item}</span>
               </div>
             ))}

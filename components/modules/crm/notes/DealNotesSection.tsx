@@ -1,6 +1,6 @@
 "use client"
 
-import { Pin, Plus, Search } from "lucide-react"
+import { PushPin, Plus, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
@@ -135,7 +135,7 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <div className="relative w-[260px]">
-          <Search size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.4)]" />
+          <MagnifyingGlass size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.4)]" />
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
@@ -172,7 +172,7 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
               >
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <p className="truncate text-[12px] font-semibold text-white">{note.title}</p>
-                  <Pin size={12} className={note.isPinned ? "text-[#E8402A]" : "text-[rgba(255,255,255,0.35)]"} />
+                  <PushPin size={12} className={note.isPinned ? "text-[#E8402A]" : "text-[rgba(255,255,255,0.35)]"} />
                 </div>
                 <p className="line-clamp-2 text-[11px] text-[rgba(255,255,255,0.55)]">{note.content}</p>
                 <p className="mt-2 text-[10px] text-[rgba(255,255,255,0.45)]">{new Date(note.updatedAt).toLocaleString()}</p>
@@ -198,7 +198,7 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
                   <Button type="button" size="sm" variant="outline" onClick={() => handleTogglePin(selectedNote)} disabled={isSubmitting}>
-                    {selectedNote.isPinned ? "Unpin" : "Pin"}
+                    {selectedNote.isPinned ? "Unpin" : "PushPin"}
                   </Button>
                   {selectedNote.status === "Archived" ? (
                     <Button type="button" size="sm" variant="outline" onClick={() => setPendingArchiveId(selectedNote.id)} disabled={isMutating}>

@@ -1,4 +1,4 @@
-import { CalendarClock, DollarSign, FileText, UserRound } from "lucide-react"
+import { Calendar, CurrencyDollar, FileText, UserCircle } from "@phosphor-icons/react/dist/ssr"
 
 import { Card } from "@/components/ui/card"
 import type { DealDetail } from "@/types/deal"
@@ -33,21 +33,21 @@ export function DealDetailInfoCards({ deal }: DealDetailInfoCardsProps) {
       <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">
         <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Deal Value</p>
         <p className="mt-2 flex items-center gap-1 text-[18px] font-bold text-white">
-          <DollarSign size={15} />
+          <CurrencyDollar size={15} />
           {deal.currency} {formatDealValue(deal.dealValue)}
         </p>
       </Card>
       <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">
         <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Primary Contact</p>
         <p className="mt-2 flex items-center gap-1 text-[14px] font-semibold text-white">
-          <UserRound size={14} />
+          <UserCircle size={14} />
           {deal.contactName ?? "No contact linked"}
         </p>
       </Card>
       <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">
         <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Timeline</p>
         <p className="mt-2 flex items-center gap-1 text-[13px] text-[rgba(255,255,255,0.78)]">
-          <CalendarClock size={14} />
+          <Calendar size={14} />
           {formatDate(deal.startDate)} - {formatDate(deal.dueDate)}
         </p>
       </Card>

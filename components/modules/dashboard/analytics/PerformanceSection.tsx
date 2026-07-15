@@ -1,4 +1,4 @@
-import { ChevronDown, SortAsc } from "lucide-react";
+import { CaretDown, SortAscending } from "@phosphor-icons/react/dist/ssr";
 import { AnalyticsSortBy } from "@/enums/analytics";
 import {
   Bar,
@@ -49,11 +49,11 @@ export function PerformanceSection({
             className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[10px] py-[5px]"
             onClick={onToggleSort}
           >
-            <SortAsc size={12} color={DIM} />
+            <SortAscending size={12} color={DIM} />
             <span className="font-mono text-[11px] text-[rgba(255,255,255,0.4)]">
               {sortBy === AnalyticsSortBy.VIEWS ? "Views" : "ER"}
             </span>
-            <ChevronDown size={10} color={DIM} />
+            <CaretDown size={10} color={DIM} />
           </button>
         </div>
         {loading ? (

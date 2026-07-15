@@ -187,7 +187,7 @@ export function DealDetailPage({
       <DealForm
         open={showEdit}
         title="Edit Deal"
-        submitLabel="Save Changes"
+        submitLabel="FloppyDisk Changes"
         values={formValues}
         isSubmitting={isSubmitting}
         fieldErrors={fieldErrors}

@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus } from "lucide-react"
+import { Plus } from "@phosphor-icons/react/dist/ssr"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
@@ -313,7 +313,7 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
       <DealForm
         open={Boolean(editing)}
         title="Edit Deal"
-        submitLabel="Save Changes"
+        submitLabel="FloppyDisk Changes"
         values={editFormValues}
         isSubmitting={isSubmitting || isEditLoading}
         fieldErrors={editFieldErrors}

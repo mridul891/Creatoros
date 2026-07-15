@@ -1,4 +1,4 @@
-import { Archive, BadgeDollarSign, Building2, PencilLine, PlusCircle, Star, UserRound } from "lucide-react"
+import { Archive, CurrencyDollar, BuildingOffice, PencilSimpleLine, PlusCircle, Star, UserCircle } from "@phosphor-icons/react/dist/ssr"
 
 import { Badge } from "@/components/ui/badge"
 import { formatRelativeTime } from "@/lib/format/date"
@@ -16,7 +16,7 @@ function getActivityIcon(type: ActivityListItem["type"]) {
       return <PlusCircle size={14} />
     case "BrandUpdated":
     case "ContactUpdated":
-      return <PencilLine size={14} />
+      return <PencilSimpleLine size={14} />
     case "BrandArchived":
     case "ContactArchived":
       return <Archive size={14} />
@@ -25,15 +25,15 @@ function getActivityIcon(type: ActivityListItem["type"]) {
     case "DealCreated":
       return <PlusCircle size={14} />
     case "DealUpdated":
-      return <PencilLine size={14} />
+      return <PencilSimpleLine size={14} />
     case "DealStageChanged":
-      return <BadgeDollarSign size={14} />
+      return <CurrencyDollar size={14} />
     case "DealArchived":
       return <Archive size={14} />
     case "DealRestored":
       return <Star size={14} />
     default:
-      return <UserRound size={14} />
+      return <UserCircle size={14} />
   }
 }
 
@@ -64,7 +64,7 @@ export function ActivityTimelineItem({ item, isLast }: ActivityTimelineItemProps
     <li className="relative pl-12">
       <div className="absolute top-1 left-0 flex w-8 justify-center">
         <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] text-[rgba(255,255,255,0.72)]">
-          {item.entityType === "Brand" ? <Building2 size={14} /> : getActivityIcon(item.type)}
+          {item.entityType === "Brand" ? <BuildingOffice size={14} /> : getActivityIcon(item.type)}
         </span>
       </div>
 

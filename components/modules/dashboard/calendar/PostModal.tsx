@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Camera as Instagram, CirclePlay as Youtube, X } from "lucide-react";
+import { InstagramLogo as Instagram, YoutubeLogo as Youtube, X } from "@phosphor-icons/react/dist/ssr";
 import {
   PostStatus as PostStatusEnum,
   PostType as PostTypeEnum,
@@ -174,7 +174,7 @@ export function PostModal({
             Cancel
           </button>
           <button onClick={handleSave} className={`cursor-pointer rounded-[10px] border-none bg-(--cos-primary) px-[24px] py-[10px] ${PRO_FONT} text-[13px] font-bold text-white`}>
-            {existing ? "Save Changes" : "Add Post"}
+            {existing ? "FloppyDisk Changes" : "Add Post"}
           </button>
         </div>
       </div>

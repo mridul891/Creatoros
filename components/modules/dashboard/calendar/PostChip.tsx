@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera as Instagram, CirclePlay as Youtube } from "lucide-react";
+import { InstagramLogo as Instagram, YoutubeLogo as Youtube } from "@phosphor-icons/react/dist/ssr";
 import { SocialPlatform } from "@/enums/post";
 import { Post, PRO_FONT, STATUS_CFG } from "./shared";
 

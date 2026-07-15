@@ -1,11 +1,10 @@
-import {
-  Camera,
-  Clapperboard,
+import {InstagramLogo,
+  FilmSlate,
   CheckCircle,
-  MessageSquareQuote,
+  Quotes,
   Scissors,
-  type LucideIcon,
-} from "lucide-react";
+  } from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import { DealPriority, SponsorshipStage } from "@/enums/sponsorship";
 import type { Deal, DealModalState } from "@/types/sponsorship";
 
@@ -24,12 +23,12 @@ export const STAGES: Stage[] = [
 
 export const STAGE_CFG: Record<
   Stage,
-  { color: string; bg: string; border: string; icon: LucideIcon; label: string }
+  { color: string; bg: string; border: string; icon: Icon; label: string }
 > = {
-  [SponsorshipStage.LEAD]: { color: "#717171", bg: "rgba(113,113,113,0.07)", border: "rgba(113,113,113,0.2)", icon: Clapperboard, label: "Planned" },
-  [SponsorshipStage.OUTREACH]: { color: "#d97706", bg: "rgba(217,119,6,0.07)", border: "rgba(217,119,6,0.25)", icon: Camera, label: "Shooting" },
+  [SponsorshipStage.LEAD]: { color: "#717171", bg: "rgba(113,113,113,0.07)", border: "rgba(113,113,113,0.2)", icon: FilmSlate, label: "Planned" },
+  [SponsorshipStage.OUTREACH]: { color: "#d97706", bg: "rgba(217,119,6,0.07)", border: "rgba(217,119,6,0.25)", icon: InstagramLogo, label: "Shooting" },
   [SponsorshipStage.NEGOTIATION]: { color: "#E8402A", bg: "rgba(232,64,42,0.07)", border: "rgba(232,64,42,0.25)", icon: Scissors, label: "Editing" },
-  [SponsorshipStage.SIGNED]: { color: "#2563eb", bg: "rgba(37,99,235,0.07)", border: "rgba(37,99,235,0.25)", icon: MessageSquareQuote, label: "Review" },
+  [SponsorshipStage.SIGNED]: { color: "#2563eb", bg: "rgba(37,99,235,0.07)", border: "rgba(37,99,235,0.25)", icon: Quotes, label: "Review" },
   [SponsorshipStage.PAID]: { color: "#16a34a", bg: "rgba(22,163,74,0.07)", border: "rgba(22,163,74,0.25)", icon: CheckCircle, label: "Published" },
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera as Instagram, CirclePlay as Youtube, Clock, Edit3, Trash2, X } from "lucide-react";
+import { InstagramLogo as Instagram, YoutubeLogo as Youtube, Clock, PencilSimple, Trash, X } from "@phosphor-icons/react/dist/ssr";
 import {
   PostStatus as PostStatusEnum,
   SocialPlatform,
@@ -95,10 +95,10 @@ export function PostPanel({
 
       <div className="grid grid-cols-2 gap-[8px]">
         <button onClick={onEdit} className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-[10px] ${PRO_FONT} text-[12px] text-[rgba(255,255,255,0.4)]`}>
-          <Edit3 size={12} /> Edit
+          <PencilSimple size={12} /> Edit
         </button>
         <button onClick={() => { onDelete(post.id); onClose(); }} className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border border-[rgba(232,64,42,0.2)] bg-[rgba(232,64,42,0.05)] p-[10px] ${PRO_FONT} text-[12px] text-[#E8402A]`}>
-          <Trash2 size={12} /> Delete
+          <Trash size={12} /> Delete
         </button>
       </div>
     </div>

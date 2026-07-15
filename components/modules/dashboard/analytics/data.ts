@@ -1,4 +1,5 @@
-import { Camera as Instagram, CirclePlay as Youtube, type LucideIcon } from "lucide-react";
+import {InstagramLogo as Instagram, YoutubeLogo as Youtube} from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import {
   AnalyticsRange,
   AnalyticsSortBy,
@@ -18,7 +19,7 @@ export type SortBy = AnalyticsSortBy;
 type PlatformMeta = {
   id: SocialPlatform;
   label: string;
-  icon: LucideIcon;
+  icon: Icon;
   connected: boolean;
   color: string;
 };

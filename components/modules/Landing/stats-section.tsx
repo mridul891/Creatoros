@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Clock, TrendingUp, Users } from "lucide-react";
+import { Clock, TrendUp, Users } from "@phosphor-icons/react/dist/ssr";
 
 
 import { DIM, WRAP_CLASS } from "./constants";
@@ -10,7 +10,7 @@ export function StatsSection() {
     {
       n: "3.2×",
       label: "Average revenue growth in first 6 months",
-      icon: <TrendingUp size={14} color={DIM} />,
+      icon: <TrendUp size={14} color={DIM} />,
     },
     {
       n: "95%",

@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus } from "lucide-react"
+import { Plus } from "@phosphor-icons/react/dist/ssr"
 import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -266,7 +266,7 @@ export function DealDeliverablesSection({
       <DeliverableForm
         open={showForm}
         title={editingId ? "Edit Deliverable" : "Add Deliverable"}
-        submitLabel={editingId ? "Save Changes" : "Create Deliverable"}
+        submitLabel={editingId ? "FloppyDisk Changes" : "Create Deliverable"}
         values={formValues}
         isSubmitting={isSubmitting}
         fieldErrors={fieldErrors}

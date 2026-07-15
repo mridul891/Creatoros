@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { AtSign, Check, Play, Sparkles, User } from "lucide-react"
+import { At, Check, Play, Sparkle, User } from "@phosphor-icons/react/dist/ssr"
 
 import {
   CREATOR_TYPE_OPTIONS,
@@ -85,7 +85,7 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
       <FieldGroup>
         <div className="space-y-4">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75">
-            <Sparkles className="size-3.5 text-[#E8402A]" />
+            <Sparkle className="size-3.5 text-[#E8402A]" />
             Step 1 of 1
           </div>
 
@@ -164,7 +164,7 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
               Instagram handle <span className="text-white/50">(optional)</span>
             </FieldLabel>
             <div className="relative">
-              <AtSign className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <At className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
               <Input
                 id="instagramHandle"
                 name="instagramHandle"
