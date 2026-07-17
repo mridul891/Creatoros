@@ -14,7 +14,7 @@ import {
 import type { CalendarFiltersState } from "@/types/post";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { ModalState, Platform, Post, PostStatus, PRO_FONT, MONO_FONT, STATUS_CFG } from "./calendar/shared";
+import { ModalState, Platform, Post, PostStatus, MONO_FONT, STATUS_CFG } from "./calendar/shared";
 import { PostModal } from "./calendar/PostModal";
 import { PostChip } from "./calendar/PostChip";
 import { PostPanel } from "./calendar/PostPanel";
@@ -132,10 +132,10 @@ export function CalendarPage() {
       {/* Header */}
       <div className="mb-[24px] flex items-start justify-between">
         <div>
-          <h1 className={`mb-[4px] ${PRO_FONT} text-[24px] font-extrabold tracking-[-0.04em] text-white`}>Content Calendar</h1>
-          <div className={`${PRO_FONT} text-[13px] text-[rgba(255,255,255,0.4)]`}>Plan and track every post across all platforms</div>
+          <h1 className={`mb-[4px]  text-[24px] font-extrabold tracking-[-0.04em] text-foreground`}>Content Calendar</h1>
+          <div className={` text-[13px] text-muted-foreground`}>Plan and track every post across all platforms</div>
         </div>
-        <button onClick={() => setModal({ day: today + 1 })} className={`flex cursor-pointer items-center gap-[8px] rounded-[11px] border-none bg-(--cos-primary) px-[20px] py-[10px] ${PRO_FONT} text-[13px] font-bold text-white`}>
+        <button onClick={() => setModal({ day: today + 1 })} className={`flex cursor-pointer items-center gap-[8px] rounded-[11px] border-none bg-primary px-[20px] py-[10px]  text-[13px] font-bold text-primary-foreground`}>
           <Plus size={15} /> New Post
         </button>
       </div>
@@ -148,10 +148,10 @@ export function CalendarPage() {
           { label: "Drafts",    count: drafts,    color: "#717171", icon: PencilSimple },
             { label: "Total",     count: posts.length, color: "#111111", icon: CalendarIcon },
         ].map(s => (
-          <div key={s.label} className="flex items-center gap-[8px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[16px] py-[8px]">
+          <div key={s.label} className="flex items-center gap-[8px] rounded-[10px] border border-border bg-card px-[16px] py-[8px]">
             <s.icon size={13} color={s.color} />
-            <span className={`${PRO_FONT} text-[14px] font-extrabold tracking-[-0.03em] text-white`}>{s.count}</span>
-            <span className={`${PRO_FONT} text-[12px] text-[rgba(255,255,255,0.4)]`}>{s.label}</span>
+            <span className={` text-[14px] font-extrabold tracking-[-0.03em] text-foreground`}>{s.count}</span>
+            <span className={` text-[12px] text-muted-foreground`}>{s.label}</span>
           </div>
         ))}
       </div>
@@ -167,11 +167,11 @@ export function CalendarPage() {
                     currentMonth: new Date(prev.currentMonth.getFullYear(), prev.currentMonth.getMonth() - 1, 1),
                   }))
                 }
-                className="flex cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.07)] px-[10px] py-[6px] text-[rgba(255,255,255,0.4)]"
+                className="flex cursor-pointer rounded-[8px] border border-border px-[10px] py-[6px] text-muted-foreground"
               >
                 <CaretLeft size={14} />
               </button>
-              <span className={`${PRO_FONT} text-[16px] font-extrabold tracking-[-0.03em] text-white`}>{monthLabel}</span>
+              <span className={` text-[16px] font-extrabold tracking-[-0.03em] text-foreground`}>{monthLabel}</span>
               <button
                 onClick={() =>
                   setCalendarState(prev => ({
@@ -179,29 +179,29 @@ export function CalendarPage() {
                     currentMonth: new Date(prev.currentMonth.getFullYear(), prev.currentMonth.getMonth() + 1, 1),
                   }))
                 }
-                className="flex cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.07)] px-[10px] py-[6px] text-[rgba(255,255,255,0.4)]"
+                className="flex cursor-pointer rounded-[8px] border border-border px-[10px] py-[6px] text-muted-foreground"
               >
                 <CaretRight size={14} />
               </button>
             </div>
             <div className="flex gap-[8px]">
-              <div className="flex rounded-[9px] bg-[rgba(255,255,255,0.05)] p-[3px]">
+              <div className="flex rounded-[9px] bg-muted p-[3px]">
                 {[PlatformFilter.ALL, PlatformFilter.INSTAGRAM, PlatformFilter.YOUTUBE].map(p => (
                   <button
                     key={p}
                     onClick={() => setFilters(prev => ({ ...prev, platform: p }))}
-                    className={`cursor-pointer rounded-[6px] px-[12px] py-[5px] ${MONO_FONT} text-[10px] transition-all duration-150 ${filters.platform === p ? "bg-[#0D0D0D] font-bold text-white shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-[rgba(255,255,255,0.4)]"}`}
+                    className={`cursor-pointer rounded-[6px] px-[12px] py-[5px] ${MONO_FONT} text-[10px] transition-all duration-150 ${filters.platform === p ? "bg-card font-bold text-foreground shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-muted-foreground"}`}
                   >
                     {p === PlatformFilter.ALL ? "All" : p === PlatformFilter.INSTAGRAM ? "IG" : "YT"}
                   </button>
                 ))}
               </div>
-              <div className="flex rounded-[9px] bg-[rgba(255,255,255,0.05)] p-[3px]">
+              <div className="flex rounded-[9px] bg-muted p-[3px]">
                 {[PlatformFilter.ALL, PostStatusEnum.PUBLISHED, PostStatusEnum.SCHEDULED, PostStatusEnum.DRAFT].map(s => (
                   <button
                     key={s}
                     onClick={() => setFilters(prev => ({ ...prev, status: s }))}
-                    className={`cursor-pointer rounded-[6px] px-[10px] py-[5px] ${MONO_FONT} text-[10px] capitalize transition-all duration-150 ${filters.status === s ? "bg-[#0D0D0D] font-bold text-white shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-[rgba(255,255,255,0.4)]"}`}
+                    className={`cursor-pointer rounded-[6px] px-[10px] py-[5px] ${MONO_FONT} text-[10px] capitalize transition-all duration-150 ${filters.status === s ? "bg-card font-bold text-foreground shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-muted-foreground"}`}
                   >
                     {s}
                   </button>
@@ -211,7 +211,7 @@ export function CalendarPage() {
           </div>
 
           {/* Grid */}
-          <div className="overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D]">
+          <div className="overflow-hidden rounded-[18px] border border-border bg-card">
             <Calendar
               month={calendarMonth}
               disableNavigation
@@ -220,7 +220,7 @@ export function CalendarPage() {
                 month_grid: "w-full border-collapse",
                 week: "",
                 day: "relative p-0 align-top",
-                weekdays: "border-b border-[rgba(255,255,255,0.07)]",
+                weekdays: "border-b border-border",
               }}
               components={{
                 Day: ({ day, modifiers }: CalendarDayProps) => {
@@ -238,24 +238,24 @@ export function CalendarPage() {
 
                   return (
                     <td
-                      className={`align-top ${(colIndex < 6) ? "border-r border-[rgba(255,255,255,0.07)]" : ""} ${rowIndex < lastRowIndex ? "border-b border-[rgba(255,255,255,0.07)]" : ""} ${isWeekend ? "bg-[rgba(255,255,255,0.015)]" : "bg-transparent"}`}
+                      className={`align-top ${(colIndex < 6) ? "border-r border-border" : ""} ${rowIndex < lastRowIndex ? "border-b border-border" : ""} ${isWeekend ? "bg-muted" : "bg-transparent"}`}
                     >
                       <div className="group relative min-h-[110px] px-[8px] pb-[6px] pt-[8px]">
-                        <div className={`mb-[4px] flex h-[24px] w-[24px] items-center justify-center rounded-full ${MONO_FONT} text-[12px] ${isToday ? "bg-[#E8402A] font-extrabold text-white" : "bg-transparent font-medium text-[rgba(255,255,255,0.65)]"}`}>
+                        <div className={`mb-[4px] flex h-[24px] w-[24px] items-center justify-center rounded-full ${MONO_FONT} text-[12px] ${isToday ? "bg-[#E8402A] font-extrabold text-foreground" : "bg-transparent font-medium text-muted-foreground"}`}>
                           {dayNumber}
                         </div>
                         <div>
                           {dayPosts.slice(0, 3).map(p => (
                             <PostChip key={p.id} post={p} onClick={() => setSelectedId(p.id)} />
                           ))}
-                          {dayPosts.length > 3 && <div className={`pl-[4px] ${MONO_FONT} text-[9px] text-[rgba(255,255,255,0.4)]`}>+{dayPosts.length - 3} more</div>}
+                          {dayPosts.length > 3 && <div className={`pl-[4px] ${MONO_FONT} text-[9px] text-muted-foreground`}>+{dayPosts.length - 3} more</div>}
                         </div>
                         {/* Add button on hover */}
                         <button
                           onClick={() => setModal({ day: dayNumber })}
-                          className="absolute bottom-[6px] right-[6px] flex h-[18px] w-[18px] cursor-pointer items-center justify-center rounded-full border border-dashed border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                          className="absolute bottom-[6px] right-[6px] flex h-[18px] w-[18px] cursor-pointer items-center justify-center rounded-full border border-dashed border-border bg-card p-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
                         >
-                          <Plus size={10} color="rgba(255,255,255,0.4)" />
+                          <Plus size={10} color="var(--muted-foreground)" />
                         </button>
                       </div>
                     </td>
@@ -267,7 +267,7 @@ export function CalendarPage() {
 
           {/* Upcoming */}
           <div className="mt-[24px]">
-            <div className={`mb-[12px] ${PRO_FONT} text-[13px] font-bold tracking-[-0.02em] text-white`}>Upcoming this week</div>
+            <div className={`mb-[12px]  text-[13px] font-bold tracking-[-0.02em] text-foreground`}>Upcoming this week</div>
             <div className="flex flex-col gap-[8px]">
               {posts.filter(p => p.status !== PostStatusEnum.DRAFT && p.day >= today && p.day <= today + 7)
                 .sort((a, b) => a.day - b.day || a.time.localeCompare(b.time))
@@ -277,21 +277,21 @@ export function CalendarPage() {
                   const platformColor = post.platform === SocialPlatform.INSTAGRAM ? "#E8402A" : "#111111";
                   const platformPillBg = post.platform === SocialPlatform.INSTAGRAM ? "bg-[#E8402A12]" : "bg-[#11111112]";
                   return (
-                    <div key={post.id} className="flex cursor-pointer items-center gap-[14px] rounded-[12px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[18px] py-[13px] transition-colors duration-150 hover:border-[rgba(232,64,42,0.3)]"
+                    <div key={post.id} className="flex cursor-pointer items-center gap-[14px] rounded-[12px] border border-border bg-card px-[18px] py-[13px] transition-colors duration-150 hover:border-[rgba(232,64,42,0.3)]"
                       onClick={() => setSelectedId(post.id)}
                     >
                       <div className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] ${platformPillBg}`}>
                         <PlatformIcon size={15} color={platformColor} />
                       </div>
                       <div className="flex-1">
-                        <div className={`${PRO_FONT} text-[13px] font-semibold text-white`}>{post.title}</div>
-                        <div className={`mt-[2px] ${MONO_FONT} text-[11px] text-[rgba(255,255,255,0.4)]`}>June {post.day} · {post.time || "—"}</div>
+                        <div className={` text-[13px] font-semibold text-foreground`}>{post.title}</div>
+                        <div className={`mt-[2px] ${MONO_FONT} text-[11px] text-muted-foreground`}>June {post.day} · {post.time || "—"}</div>
                       </div>
                       <div className={`inline-flex items-center gap-[5px] rounded-[99px] px-[10px] py-[4px] ${S.bgClass}`}>
                         <S.icon size={10} color={S.color} />
                         <span className={`${MONO_FONT} ${S.textClass} text-[10px] font-semibold`}>{S.label}</span>
                       </div>
-                      <button onClick={e => { e.stopPropagation(); setModal({ day: post.day, post }); }} className="flex cursor-pointer items-center rounded-[7px] border border-[rgba(255,255,255,0.07)] px-[8px] py-[5px] text-[rgba(255,255,255,0.4)]">
+                      <button onClick={e => { e.stopPropagation(); setModal({ day: post.day, post }); }} className="flex cursor-pointer items-center rounded-[7px] border border-border px-[8px] py-[5px] text-muted-foreground">
                         <PencilSimple size={12} />
                       </button>
                     </div>

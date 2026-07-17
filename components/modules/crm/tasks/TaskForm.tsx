@@ -64,7 +64,7 @@ export function TaskForm({
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="task-title" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="task-title" className="text-[12px] text-muted-foreground">
             Title
           </Label>
           <Input
@@ -72,13 +72,13 @@ export function TaskForm({
             value={values.title}
             onChange={(event) => onChange({ ...values, title: event.target.value })}
             placeholder="Write script"
-            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="h-10 border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.title} />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="task-description" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="task-description" className="text-[12px] text-muted-foreground">
             Description
           </Label>
           <Textarea
@@ -87,19 +87,19 @@ export function TaskForm({
             onChange={(event) => onChange({ ...values, description: event.target.value })}
             placeholder="Describe execution notes or acceptance for this task."
             rows={4}
-            className="border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.description} />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Status</Label>
+          <Label className="text-[12px] text-muted-foreground">Status</Label>
           <Select
             value={values.status}
             onValueChange={(next) => onChange({ ...values, status: next as TaskFormValues["status"] })}
             disabled={statusDisabled}
           >
-            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+            <SelectTrigger className="h-10 border-border bg-card text-xs text-muted-foreground">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -114,9 +114,9 @@ export function TaskForm({
         </div>
 
         <div className="space-y-2">
-          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Priority</Label>
+          <Label className="text-[12px] text-muted-foreground">Priority</Label>
           <Select value={values.priority} onValueChange={(next) => onChange({ ...values, priority: next as TaskFormValues["priority"] })}>
-            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+            <SelectTrigger className="h-10 border-border bg-card text-xs text-muted-foreground">
               <SelectValue placeholder="Priority" />
             </SelectTrigger>
             <SelectContent>
@@ -131,7 +131,7 @@ export function TaskForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="task-due-date" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="task-due-date" className="text-[12px] text-muted-foreground">
             Due Date
           </Label>
           <Input
@@ -139,7 +139,7 @@ export function TaskForm({
             type="date"
             value={values.dueDate}
             onChange={(event) => onChange({ ...values, dueDate: event.target.value })}
-            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="h-10 border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.dueDate} />
         </div>

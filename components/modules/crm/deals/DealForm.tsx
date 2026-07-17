@@ -58,7 +58,7 @@ export function DealForm({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isSubmitting}
-            className="h-10 cursor-pointer border-[rgba(255,255,255,0.14)] bg-transparent px-4 text-[rgba(255,255,255,0.78)] hover:bg-[rgba(255,255,255,0.04)]"
+            className="h-10 cursor-pointer border-border bg-transparent px-4 text-muted-foreground hover:bg-muted"
           >
             Cancel
           </Button>
@@ -66,7 +66,7 @@ export function DealForm({
             type="button"
             onClick={onSubmit}
             disabled={isSubmitting}
-            className="h-10 cursor-pointer bg-(--cos-primary) px-5 text-white shadow-[0_8px_24px_rgba(232,64,42,0.25)] hover:bg-(--cos-primary)"
+            className="h-10 cursor-pointer bg-primary px-5 text-primary-foreground shadow-[0_8px_24px_rgba(232,64,42,0.25)] hover:bg-primary"
           >
             {isSubmitting ? "Saving..." : submitLabel}
           </Button>
@@ -75,49 +75,49 @@ export function DealForm({
     >
       <FieldGroup className="mt-2 gap-6">
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="space-y-4 rounded-[14px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 sm:p-5">
+          <div className="space-y-4 rounded-[14px] border border-border bg-muted p-4 sm:p-5">
             <div className="space-y-1">
-              <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Deal Basics</p>
-              <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Campaign, value, and account context.</p>
+              <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Deal Basics</p>
+              <p className="text-[11px] text-muted-foreground">Campaign, value, and account context.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field className="sm:col-span-2">
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Campaign Name *</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Campaign Name *</FieldLabel>
                 <Input
                   value={values.campaignName}
                   onChange={(event) => onChange({ ...values, campaignName: event.target.value })}
                   aria-invalid={Boolean(fieldErrors?.campaignName)}
-                  className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
                 />
                 <FieldError>{fieldErrors?.campaignName}</FieldError>
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Deal Value *</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Deal Value *</FieldLabel>
                 <Input
                   value={values.dealValue}
                   onChange={(event) => onChange({ ...values, dealValue: event.target.value })}
                   aria-invalid={Boolean(fieldErrors?.dealValue)}
-                  className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
                 />
                 <FieldError>{fieldErrors?.dealValue}</FieldError>
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Currency *</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Currency *</FieldLabel>
                 <Input
                   value={values.currency}
                   onChange={(event) => onChange({ ...values, currency: event.target.value.toUpperCase() })}
                   aria-invalid={Boolean(fieldErrors?.currency)}
-                  className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
                 />
                 <FieldError>{fieldErrors?.currency}</FieldError>
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Brand *</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Brand *</FieldLabel>
                 <Select value={values.brandId} onValueChange={(brandId) => onChange({ ...values, brandId, contactId: "" })}>
-                  <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]">
+                  <SelectTrigger className="h-10 w-full border-border bg-muted text-[13px] text-muted-foreground">
                     <SelectValue placeholder="Select a brand" />
                   </SelectTrigger>
                   <SelectContent>
@@ -132,12 +132,12 @@ export function DealForm({
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Contact</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Contact</FieldLabel>
                 <Select
                   value={values.contactId || "__none"}
                   onValueChange={(value) => onChange({ ...values, contactId: value === "__none" ? "" : value })}
                 >
-                  <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]">
+                  <SelectTrigger className="h-10 w-full border-border bg-muted text-[13px] text-muted-foreground">
                     <SelectValue placeholder="Select a contact" />
                   </SelectTrigger>
                   <SelectContent>
@@ -155,16 +155,16 @@ export function DealForm({
             </div>
           </div>
 
-          <div className="space-y-4 rounded-[14px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 sm:p-5">
+          <div className="space-y-4 rounded-[14px] border border-border bg-muted p-4 sm:p-5">
             <div className="space-y-1">
-              <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Pipeline And Dates</p>
-              <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Track movement and deadlines at a glance.</p>
+              <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Pipeline And Dates</p>
+              <p className="text-[11px] text-muted-foreground">Track movement and deadlines at a glance.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Stage *</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Stage *</FieldLabel>
                 <Select value={values.stage} onValueChange={(stage) => onChange({ ...values, stage: stage as DealStage })}>
-                  <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]">
+                  <SelectTrigger className="h-10 w-full border-border bg-muted text-[13px] text-muted-foreground">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -179,13 +179,13 @@ export function DealForm({
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Priority *</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Priority *</FieldLabel>
                 <Select
                   value={values.priority}
                   onValueChange={(priority) => onChange({ ...values, priority: priority as DealPriority })}
                 >
                   <SelectTrigger
-                    className={`h-10 w-full border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] ${priorityTheme.select}`}
+                    className={`h-10 w-full border-border bg-muted text-[13px] text-muted-foreground ${priorityTheme.select}`}
                   >
                     <SelectValue />
                   </SelectTrigger>
@@ -206,37 +206,37 @@ export function DealForm({
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Start Date</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Start Date</FieldLabel>
                 <Input
                   type="date"
                   value={values.startDate}
                   onChange={(event) => onChange({ ...values, startDate: event.target.value })}
                   aria-invalid={Boolean(fieldErrors?.startDate)}
-                  className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
                 />
                 <FieldError>{fieldErrors?.startDate}</FieldError>
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Due Date</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Due Date</FieldLabel>
                 <Input
                   type="date"
                   value={values.dueDate}
                   onChange={(event) => onChange({ ...values, dueDate: event.target.value })}
                   aria-invalid={Boolean(fieldErrors?.dueDate)}
-                  className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
                 />
                 <FieldError>{fieldErrors?.dueDate}</FieldError>
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Payment Due Date</FieldLabel>
+                <FieldLabel className="text-[11px] text-muted-foreground">Payment Due Date</FieldLabel>
                 <Input
                   type="date"
                   value={values.paymentDueDate}
                   onChange={(event) => onChange({ ...values, paymentDueDate: event.target.value })}
                   aria-invalid={Boolean(fieldErrors?.paymentDueDate)}
-                  className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
                 />
                 <FieldError>{fieldErrors?.paymentDueDate}</FieldError>
               </Field>
@@ -246,38 +246,38 @@ export function DealForm({
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Payment Terms</FieldLabel>
+            <FieldLabel className="text-[11px] text-muted-foreground">Payment Terms</FieldLabel>
             <Textarea
               rows={4}
               value={values.paymentTerms}
               onChange={(event) => onChange({ ...values, paymentTerms: event.target.value })}
               aria-invalid={Boolean(fieldErrors?.paymentTerms)}
-              className="border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+              className="border-border bg-muted text-[13px] text-muted-foreground"
             />
             <FieldError>{fieldErrors?.paymentTerms}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Campaign Description</FieldLabel>
+            <FieldLabel className="text-[11px] text-muted-foreground">Campaign Description</FieldLabel>
             <Textarea
               rows={4}
               value={values.campaignDescription}
               onChange={(event) => onChange({ ...values, campaignDescription: event.target.value })}
               aria-invalid={Boolean(fieldErrors?.campaignDescription)}
-              className="border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+              className="border-border bg-muted text-[13px] text-muted-foreground"
             />
             <FieldError>{fieldErrors?.campaignDescription}</FieldError>
           </Field>
         </div>
 
         <Field>
-          <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Notes</FieldLabel>
+          <FieldLabel className="text-[11px] text-muted-foreground">Notes</FieldLabel>
           <Textarea
             rows={4}
             value={values.notes}
             onChange={(event) => onChange({ ...values, notes: event.target.value })}
             aria-invalid={Boolean(fieldErrors?.notes)}
-            className="border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)]"
+            className="border-border bg-muted text-[13px] text-muted-foreground"
           />
           <FieldError>{fieldErrors?.notes}</FieldError>
         </Field>

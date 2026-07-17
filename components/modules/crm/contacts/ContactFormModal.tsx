@@ -48,7 +48,7 @@ export function ContactFormModal({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isSubmitting}
-            className="cursor-pointer border-[rgba(255,255,255,0.1)] bg-transparent text-[rgba(255,255,255,0.75)]"
+            className="cursor-pointer border-border bg-transparent text-muted-foreground"
           >
             Cancel
           </Button>
@@ -56,7 +56,7 @@ export function ContactFormModal({
             type="button"
             onClick={onSubmit}
             disabled={isSubmitting}
-            className="cursor-pointer bg-(--cos-primary) text-white hover:bg-(--cos-primary)"
+            className="cursor-pointer bg-primary text-primary-foreground hover:bg-primary"
           >
             {isSubmitting ? "Saving..." : submitLabel}
           </Button>
@@ -66,74 +66,74 @@ export function ContactFormModal({
       <FieldGroup className="mt-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Name *</FieldLabel>
+            <FieldLabel className="text-[11px] text-muted-foreground">Name *</FieldLabel>
             <Input
               value={values.name}
               onChange={(event) => onChange({ ...values, name: event.target.value })}
               placeholder="Sarah Kim"
               aria-invalid={Boolean(fieldErrors?.name)}
-              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+              className="h-10 border-border bg-muted text-[13px] text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
             />
             <FieldError>{fieldErrors?.name}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Position</FieldLabel>
+            <FieldLabel className="text-[11px] text-muted-foreground">Position</FieldLabel>
             <Input
               value={values.jobTitle}
               onChange={(event) => onChange({ ...values, jobTitle: event.target.value })}
               placeholder="Partnerships Manager"
               aria-invalid={Boolean(fieldErrors?.jobTitle)}
-              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+              className="h-10 border-border bg-muted text-[13px] text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
             />
             <FieldError>{fieldErrors?.jobTitle}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Email</FieldLabel>
+            <FieldLabel className="text-[11px] text-muted-foreground">Email</FieldLabel>
             <Input
               type="email"
               value={values.email}
               onChange={(event) => onChange({ ...values, email: event.target.value })}
               placeholder="sarah@brand.com"
               aria-invalid={Boolean(fieldErrors?.email)}
-              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+              className="h-10 border-border bg-muted text-[13px] text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
             />
             <FieldError>{fieldErrors?.email}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Phone Number</FieldLabel>
+            <FieldLabel className="text-[11px] text-muted-foreground">Phone Number</FieldLabel>
             <Input
               value={values.phoneNumber}
               onChange={(event) => onChange({ ...values, phoneNumber: event.target.value })}
               placeholder="+1 555 123 4567"
               aria-invalid={Boolean(fieldErrors?.phoneNumber)}
-              className="h-10 border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+              className="h-10 border-border bg-muted text-[13px] text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
             />
             <FieldError>{fieldErrors?.phoneNumber}</FieldError>
           </Field>
         </div>
 
         <Field>
-          <FieldLabel className="text-[11px] text-[rgba(255,255,255,0.55)]">Notes</FieldLabel>
+          <FieldLabel className="text-[11px] text-muted-foreground">Notes</FieldLabel>
           <Textarea
             value={values.notes}
             onChange={(event) => onChange({ ...values, notes: event.target.value })}
             rows={4}
             aria-invalid={Boolean(fieldErrors?.notes)}
-            className="border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.8)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+            className="border-border bg-muted text-[13px] text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
           />
           <FieldError>{fieldErrors?.notes}</FieldError>
         </Field>
 
-        <Field orientation="horizontal" className="items-center rounded-[10px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-2.5">
+        <Field orientation="horizontal" className="items-center rounded-[10px] border border-border bg-muted px-3 py-2.5">
           <Checkbox
             checked={values.isPrimary}
             onCheckedChange={(checked) => onChange({ ...values, isPrimary: checked === true })}
-            className="border-[rgba(255,255,255,0.2)]"
+            className="border-border"
           />
-          <FieldLabel className="text-[12px] text-[rgba(255,255,255,0.75)]">
+          <FieldLabel className="text-[12px] text-muted-foreground">
             Mark as primary contact for this brand
           </FieldLabel>
         </Field>

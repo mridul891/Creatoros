@@ -16,7 +16,6 @@ import {
   Post,
   PostStatus,
   PostType,
-  PRO_FONT,
   STATUS_CFG,
 } from "./shared";
 
@@ -57,25 +56,25 @@ export function PostModal({
 
   return (
     <div
-      className="fixed inset-0 z-200 flex items-center justify-center bg-[rgba(0,0,0,0.45)] backdrop-blur-[6px]"
+      className="fixed inset-0 z-200 flex items-center justify-center bg-muted backdrop-blur-[6px]"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="max-h-[90vh] w-[560px] overflow-y-auto rounded-[22px] bg-[#0D0D0D] shadow-[0_32px_80px_rgba(0,0,0,0.22)]">
-        <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.07)] px-[28px] py-[22px]">
+      <div className="max-h-[90vh] w-[560px] overflow-y-auto rounded-[22px] bg-card shadow-[0_32px_80px_rgba(0,0,0,0.22)]">
+        <div className="flex items-center justify-between border-b border-border px-[28px] py-[22px]">
           <div>
-            <div className={`${PRO_FONT} text-[17px] font-extrabold tracking-[-0.03em] text-white`}>{existing ? "Edit Post" : "New Post"}</div>
-            <div className={`mt-[2px] ${MONO_FONT} text-[11px] text-[rgba(255,255,255,0.4)]`}>June {form.day}, 2026</div>
+            <div className={` text-[17px] font-extrabold tracking-[-0.03em] text-foreground`}>{existing ? "Edit Post" : "New Post"}</div>
+            <div className={`mt-[2px] ${MONO_FONT} text-[11px] text-muted-foreground`}>June {form.day}, 2026</div>
           </div>
-          <button onClick={onClose} className="cursor-pointer rounded-[8px] p-[6px] text-[rgba(255,255,255,0.4)]">
+          <button onClick={onClose} className="cursor-pointer rounded-[8px] p-[6px] text-muted-foreground">
             <X size={18} />
           </button>
         </div>
 
         <div className="flex flex-col gap-[18px] px-[28px] py-[24px]">
           <div>
-            <label className={`mb-[6px] block ${PRO_FONT} text-[12px] font-semibold text-[rgba(255,255,255,0.65)]`}>Post title *</label>
+            <label className={`mb-[6px] block  text-[12px] font-semibold text-muted-foreground`}>Post title *</label>
             <input
               value={form.title}
               onChange={(e) => {
@@ -89,14 +88,14 @@ export function PostModal({
           </div>
 
           <div>
-            <label className={`mb-[6px] block ${PRO_FONT} text-[12px] font-semibold text-[rgba(255,255,255,0.65)]`}>Caption / description</label>
+            <label className={`mb-[6px] block  text-[12px] font-semibold text-muted-foreground`}>Caption / description</label>
             <textarea value={form.caption} onChange={(e) => setForm((prev) => ({ ...prev, caption: e.target.value }))} placeholder="Write your caption here…" rows={3} className={`${INPUT_CLASS} resize-y`} />
           </div>
 
           <div className="grid grid-cols-2 gap-[14px]">
             <div>
-              <label className={`mb-[6px] block ${PRO_FONT} text-[12px] font-semibold text-[rgba(255,255,255,0.65)]`}>Platform</label>
-              <div className="flex rounded-[11px] bg-[rgba(255,255,255,0.05)] p-[3px]">
+              <label className={`mb-[6px] block  text-[12px] font-semibold text-muted-foreground`}>Platform</label>
+              <div className="flex rounded-[11px] bg-muted p-[3px]">
                 {[SocialPlatform.INSTAGRAM, SocialPlatform.YOUTUBE].map((p) => (
                   <button
                     key={p}
@@ -107,22 +106,22 @@ export function PostModal({
                         type: typesByPlatform[p][0],
                       }));
                     }}
-                    className={`flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[8px] px-[10px] py-[8px] text-[12px] transition-all duration-150 ${PRO_FONT} ${form.platform === p ? "bg-[#0D0D0D] font-semibold text-white shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-[rgba(255,255,255,0.4)]"}`}
+                    className={`flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[8px] px-[10px] py-[8px] text-[12px] transition-all duration-150  ${form.platform === p ? "bg-card font-semibold text-foreground shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-muted-foreground"}`}
                   >
-                    {p === SocialPlatform.INSTAGRAM ? <Instagram size={13} color={form.platform === p ? "#E8402A" : "rgba(255,255,255,0.4)"} /> : <Youtube size={13} color={form.platform === p ? "#111111" : "rgba(255,255,255,0.4)"} />}
+                    {p === SocialPlatform.INSTAGRAM ? <Instagram size={13} color={form.platform === p ? "#E8402A" : "var(--muted-foreground)"} /> : <Youtube size={13} color={form.platform === p ? "#111111" : "var(--muted-foreground)"} />}
                     {p === SocialPlatform.INSTAGRAM ? "Instagram" : "YouTube"}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <label className={`mb-[6px] block ${PRO_FONT} text-[12px] font-semibold text-[rgba(255,255,255,0.65)]`}>Content type</label>
-              <div className="flex gap-[2px] rounded-[11px] bg-[rgba(255,255,255,0.05)] p-[3px]">
+              <label className={`mb-[6px] block  text-[12px] font-semibold text-muted-foreground`}>Content type</label>
+              <div className="flex gap-[2px] rounded-[11px] bg-muted p-[3px]">
                 {typesByPlatform[form.platform].map((t) => (
                   <button
                     key={t}
                     onClick={() => setForm((prev) => ({ ...prev, type: t }))}
-                    className={`flex-1 cursor-pointer rounded-[8px] px-[6px] py-[8px] text-[11px] capitalize transition-all duration-150 ${PRO_FONT} ${form.type === t ? "bg-[#0D0D0D] font-semibold text-white shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-[rgba(255,255,255,0.4)]"}`}
+                    className={`flex-1 cursor-pointer rounded-[8px] px-[6px] py-[8px] text-[11px] capitalize transition-all duration-150  ${form.type === t ? "bg-card font-semibold text-foreground shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-muted-foreground"}`}
                   >
                     {t}
                   </button>
@@ -133,7 +132,7 @@ export function PostModal({
 
           <div className="grid grid-cols-2 gap-[14px]">
             <div>
-              <label className={`mb-[6px] block ${PRO_FONT} text-[12px] font-semibold text-[rgba(255,255,255,0.65)]`}>Day in June</label>
+              <label className={`mb-[6px] block  text-[12px] font-semibold text-muted-foreground`}>Day in June</label>
               <input
                 type="number"
                 min={1}
@@ -144,13 +143,13 @@ export function PostModal({
               />
             </div>
             <div>
-              <label className={`mb-[6px] block ${PRO_FONT} text-[12px] font-semibold text-[rgba(255,255,255,0.65)]`}>Time</label>
+              <label className={`mb-[6px] block  text-[12px] font-semibold text-muted-foreground`}>Time</label>
               <input type="time" value={form.time} onChange={(e) => setForm((prev) => ({ ...prev, time: e.target.value }))} className={INPUT_CLASS} />
             </div>
           </div>
 
           <div>
-            <label className={`mb-[6px] block ${PRO_FONT} text-[12px] font-semibold text-[rgba(255,255,255,0.65)]`}>Status</label>
+            <label className={`mb-[6px] block  text-[12px] font-semibold text-muted-foreground`}>Status</label>
             <div className="flex gap-[8px]">
               {[PostStatusEnum.DRAFT, PostStatusEnum.SCHEDULED, PostStatusEnum.PUBLISHED].map((s) => {
                 const C = STATUS_CFG[s];
@@ -158,7 +157,7 @@ export function PostModal({
                   <button
                     key={s}
                     onClick={() => setForm((prev) => ({ ...prev, status: s }))}
-                    className={`flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border-[1.5px] px-[9px] py-[9px] text-[12px] capitalize transition-all duration-150 ${PRO_FONT} ${form.status === s ? `${C.bgClass} ${C.borderClass} ${C.textClass} font-bold` : "border-[rgba(255,255,255,0.07)] bg-transparent font-normal text-[rgba(255,255,255,0.4)]"}`}
+                    className={`flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border-[1.5px] px-[9px] py-[9px] text-[12px] capitalize transition-all duration-150  ${form.status === s ? `${C.bgClass} ${C.borderClass} ${C.textClass} font-bold` : "border-border bg-transparent font-normal text-muted-foreground"}`}
                   >
                     <C.icon size={12} />
                     {s}
@@ -170,10 +169,10 @@ export function PostModal({
         </div>
 
         <div className="flex justify-end gap-[10px] px-[28px] pb-[24px] pt-[16px]">
-          <button onClick={onClose} className={`cursor-pointer rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-transparent px-[20px] py-[10px] ${PRO_FONT} text-[13px] text-[rgba(255,255,255,0.4)]`}>
+          <button onClick={onClose} className={`cursor-pointer rounded-[10px] border border-border bg-transparent px-[20px] py-[10px]  text-[13px] text-muted-foreground`}>
             Cancel
           </button>
-          <button onClick={handleSave} className={`cursor-pointer rounded-[10px] border-none bg-(--cos-primary) px-[24px] py-[10px] ${PRO_FONT} text-[13px] font-bold text-white`}>
+          <button onClick={handleSave} className={`cursor-pointer rounded-[10px] border-none bg-primary px-[24px] py-[10px]  text-[13px] font-bold text-primary-foreground`}>
             {existing ? "FloppyDisk Changes" : "Add Post"}
           </button>
         </div>

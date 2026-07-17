@@ -18,14 +18,14 @@ export function InsightsSection({
     <div className="mb-5">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <div className="text-sm font-semibold tracking-[-0.02em] text-white">
+          <div className="text-sm font-semibold tracking-[-0.02em] text-foreground">
             AI Insights
           </div>
-          <div className="mt-0.5 font-mono text-xs text-[rgba(255,255,255,0.4)]">
+          <div className="mt-0.5 font-mono text-xs text-muted-foreground">
             Powered by CreatorOS AI · Refreshes daily
           </div>
         </div>
-        <button className="flex cursor-pointer items-center gap-[7px] rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[13px] py-[7px] font-mono text-[11px] text-[rgba(255,255,255,0.4)]">
+        <button className="flex cursor-pointer items-center gap-[7px] rounded-lg border border-border bg-muted px-[13px] py-[7px] font-mono text-[11px] text-muted-foreground">
           <Lightning size={11} color={ACCENT} />
           Regenerate all
         </button>
@@ -34,7 +34,7 @@ export function InsightsSection({
         {insights.map((insight) => (
           <div key={insight.id} className="relative">
             {regenerating === insight.id && (
-              <div className="absolute inset-0 z-[2] flex items-center justify-center gap-2 rounded-xl bg-[rgba(0,0,0,0.7)] font-mono text-xs text-[rgba(255,255,255,0.4)] backdrop-blur-[4px]">
+              <div className="absolute inset-0 z-[2] flex items-center justify-center gap-2 rounded-xl bg-muted font-mono text-xs text-muted-foreground backdrop-blur-[4px]">
                 <ArrowCounterClockwise size={13} className="animate-[spin_0.8s_linear_infinite]" />
                 Generating…
               </div>

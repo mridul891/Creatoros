@@ -123,7 +123,7 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
   }
 
   return (
-    <div className="rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
+    <div className="rounded-[20px] border border-border bg-card p-6">
       <CrmPageHeaderClient
         title="Notes"
         description="Rich text notes with auto-save, pinning, and search."
@@ -135,12 +135,12 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <div className="relative w-[260px]">
-          <MagnifyingGlass size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.4)]" />
+          <MagnifyingGlass size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search notes"
-            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] pl-[34px] text-xs text-[rgba(255,255,255,0.7)]"
+            className="h-10 border-border bg-card pl-[34px] text-xs text-muted-foreground"
           />
         </div>
         <Button type="button" size="sm" variant={archive === "active" ? "default" : "outline"} className="h-9" onClick={() => setArchive("active")}>
@@ -149,15 +149,15 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
         <Button type="button" size="sm" variant={archive === "archived" ? "default" : "outline"} className="h-9" onClick={() => setArchive("archived")}>
           Archived
         </Button>
-        <p className="text-[11px] text-[rgba(255,255,255,0.55)]">{isAutoSaving ? "Auto-saving..." : "All changes saved"}</p>
+        <p className="text-[11px] text-muted-foreground">{isAutoSaving ? "Auto-saving..." : "All changes saved"}</p>
       </div>
 
       {displayError ? <p className="mb-4 text-[12px] text-[#E8402A]">{displayError}</p> : null}
 
       <div className="grid gap-4 md:grid-cols-[280px_1fr]">
-        <div className="rounded-[14px] border border-[rgba(255,255,255,0.07)] p-3">
-          {isLoading ? <p className="text-[12px] text-[rgba(255,255,255,0.55)]">Loading notes...</p> : null}
-          {notes.length === 0 ? <p className="text-[12px] text-[rgba(255,255,255,0.55)]">No notes yet.</p> : null}
+        <div className="rounded-[14px] border border-border p-3">
+          {isLoading ? <p className="text-[12px] text-muted-foreground">Loading notes...</p> : null}
+          {notes.length === 0 ? <p className="text-[12px] text-muted-foreground">No notes yet.</p> : null}
           <div className="space-y-2">
             {notes.map((note) => (
               <button
@@ -167,33 +167,33 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
                 className={`w-full rounded-[10px] border px-3 py-2 text-left ${
                   selectedNoteId === note.id
                     ? "border-[#E8402A] bg-[rgba(232,64,42,0.12)]"
-                    : "border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)]"
+                    : "border-border bg-muted"
                 }`}
               >
                 <div className="mb-1 flex items-center justify-between gap-2">
-                  <p className="truncate text-[12px] font-semibold text-white">{note.title}</p>
-                  <PushPin size={12} className={note.isPinned ? "text-[#E8402A]" : "text-[rgba(255,255,255,0.35)]"} />
+                  <p className="truncate text-[12px] font-semibold text-foreground">{note.title}</p>
+                  <PushPin size={12} className={note.isPinned ? "text-[#E8402A]" : "text-muted-foreground"} />
                 </div>
-                <p className="line-clamp-2 text-[11px] text-[rgba(255,255,255,0.55)]">{note.content}</p>
-                <p className="mt-2 text-[10px] text-[rgba(255,255,255,0.45)]">{new Date(note.updatedAt).toLocaleString()}</p>
+                <p className="line-clamp-2 text-[11px] text-muted-foreground">{note.content}</p>
+                <p className="mt-2 text-[10px] text-muted-foreground">{new Date(note.updatedAt).toLocaleString()}</p>
               </button>
             ))}
           </div>
         </div>
 
-        <div className="rounded-[14px] border border-[rgba(255,255,255,0.07)] p-4">
+        <div className="rounded-[14px] border border-border p-4">
           {selectedNote ? (
             <div className="space-y-3">
               <Input
                 value={titleDraft}
                 onChange={(event) => setTitleDraft(event.target.value)}
-                className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+                className="h-10 border-border bg-card text-[13px]"
               />
               <Textarea
                 value={contentDraft}
                 onChange={(event) => setContentDraft(event.target.value)}
                 rows={14}
-                className="min-h-[300px] border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+                className="min-h-[300px] border-border bg-card text-[13px]"
               />
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
@@ -222,7 +222,7 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
               </div>
             </div>
           ) : (
-            <p className="text-[12px] text-[rgba(255,255,255,0.55)]">Select a note to start editing.</p>
+            <p className="text-[12px] text-muted-foreground">Select a note to start editing.</p>
           )}
         </div>
       </div>

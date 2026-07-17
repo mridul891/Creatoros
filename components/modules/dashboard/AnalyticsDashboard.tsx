@@ -44,7 +44,7 @@ export function AnalyticsDashboard() {
   }
 
   return (
-    <div className="[font-family:'SF_Pro_Display',-apple-system,BlinkMacSystemFont,system-ui,sans-serif]">
+    <div className="">
       {uiState.viewMode === AnalyticsViewMode.SYNC_FAILED && (
         <div className="flex items-center gap-[10px] border-b border-b-[rgba(232,64,42,0.18)] bg-[rgba(232,64,42,0.08)] px-8 py-[10px]">
           <WarningCircle size={13} color={ACCENT} />

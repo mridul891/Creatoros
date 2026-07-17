@@ -137,7 +137,7 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
       />
 
       <div className="mb-4 flex items-center justify-between gap-3">
-        <div className="font-mono text-[11px] text-[rgba(255,255,255,0.42)]">
+        <div className="font-mono text-[11px] text-muted-foreground">
           {listData.pagination.total} total brands
         </div>
         <CrmSearchField

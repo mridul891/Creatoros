@@ -36,50 +36,50 @@ export function AISection() {
   ];
 
   return (
-    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-20 sm:py-24">
+    <section className="border-t border-border bg-background py-20 sm:py-24">
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-[680px] text-center sm:mb-14">
-          <div className="mb-5 inline-flex items-center gap-[7px] rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1.5">
-            <Sparkle size={12} color="rgba(255,255,255,0.4)" />
-            <span className="font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[11px] text-[rgba(255,255,255,0.4)]">
+          <div className="mb-5 inline-flex items-center gap-[7px] rounded-full border border-border bg-muted px-3 py-1.5">
+            <Sparkle size={12} color="var(--muted-foreground)" />
+            <span className=" text-[11px] text-muted-foreground">
               Powered by Claude AI
             </span>
           </div>
-          <h2 className="mx-auto mb-4 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[30px] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[36px] lg:text-[40px]">
+          <h2 className="mx-auto mb-4  text-[30px] font-semibold leading-[1.1] tracking-[-0.03em] text-foreground sm:text-[36px] lg:text-[40px]">
             Intelligence that works
             <br />
             while you create
           </h2>
-          <p className="mx-auto max-w-[56ch] font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.68)] sm:text-base">
+          <p className="mx-auto max-w-[56ch]  text-[15px] leading-[1.7] text-muted-foreground sm:text-base">
             CreatorOS AI monitors your data around the clock, surfacing the
             insights that grow your audience and revenue.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.1)] bg-[#060606] lg:grid-cols-2">
+        <div className="grid grid-cols-1 overflow-hidden rounded-2xl border border-border bg-[#060606] lg:grid-cols-2">
           {capabilities.map((capability, index) => (
             <div
               key={index}
               className={[
                 "relative flex min-h-[280px] flex-col justify-between gap-8 bg-[#060606] p-6 sm:p-8",
-                "border-b border-[rgba(255,255,255,0.08)] lg:border-b-0",
-                index === 0 || index === 2 ? "lg:border-r lg:border-[rgba(255,255,255,0.08)]" : "",
-                index >= 2 ? "lg:border-t lg:border-[rgba(255,255,255,0.08)]" : "",
+                "border-b border-border lg:border-b-0",
+                index === 0 || index === 2 ? "lg:border-r lg:border-border" : "",
+                index >= 2 ? "lg:border-t lg:border-border" : "",
                 capability.cardClass,
               ].join(" ")}
             >
               <div className="relative z-10 flex-1">
-                <span className="mb-5 inline-flex items-center rounded-full border border-[rgba(255,255,255,0.1)] px-2.5 py-1 font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[10px] uppercase tracking-[0.06em] text-[rgba(255,255,255,0.5)]">
+                <span className="mb-5 inline-flex items-center rounded-full border border-border px-2.5 py-1  text-[10px] uppercase tracking-[0.06em] text-muted-foreground">
                   {capability.pill}
                 </span>
-                <h3 className="mb-3 max-w-[24ch] font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[24px] font-medium leading-[1.2] tracking-[-0.02em] text-white">
+                <h3 className="mb-3 max-w-[24ch]  text-[24px] font-medium leading-[1.2] tracking-[-0.02em] text-foreground">
                   {capability.title}
                 </h3>
-                <p className="m-0 max-w-[52ch] font-['SF_Pro_Display',_-apple-system,_BlinkMacSystemFont,_'Helvetica_Neue',_system-ui,_sans-serif] text-[14px] leading-[1.7] text-[rgba(255,255,255,0.62)]">
+                <p className="m-0 max-w-[52ch]  text-[14px] leading-[1.7] text-muted-foreground">
                   {capability.desc}
                 </p>
               </div>
-              <div className="relative z-10 h-[156px] w-full overflow-hidden rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0a0a0a] p-2 sm:h-[180px]">
+              <div className="relative z-10 h-[156px] w-full overflow-hidden rounded-xl border border-border bg-[#0a0a0a] p-2 sm:h-[180px]">
                 <ImageWithFallback
                   src={capability.img}
                   alt={capability.title}

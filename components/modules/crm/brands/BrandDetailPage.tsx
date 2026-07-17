@@ -95,25 +95,25 @@ export function BrandDetailPage({ brand, contactsData, activityData }: BrandDeta
     <div className="w-full max-w-[1100px] px-9 py-7">
       <div className="mb-5">
         <Breadcrumb>
-          <BreadcrumbList className="text-[12px] text-[rgba(255,255,255,0.5)]">
+          <BreadcrumbList className="text-[12px] text-muted-foreground">
             <BreadcrumbItem>
-              <BreadcrumbLink asChild className="hover:text-white">
+              <BreadcrumbLink asChild className="hover:text-foreground">
                 <Link href="/dashboard/brands">Brands</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-[rgba(255,255,255,0.35)]" />
+            <BreadcrumbSeparator className="text-muted-foreground" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-[rgba(255,255,255,0.75)]">{brand.name}</BreadcrumbPage>
+              <BreadcrumbPage className="text-muted-foreground">{brand.name}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
 
-      <Card className="rounded-[20px] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-7 py-7">
+      <Card className="rounded-[20px] border-border bg-card px-7 py-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-white">{brand.name}</h1>
-            <p className="mt-1 text-[13px] text-[rgba(255,255,255,0.45)]">{brand.category ?? "Uncategorized"}</p>
+            <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-foreground">{brand.name}</h1>
+            <p className="mt-1 text-[13px] text-muted-foreground">{brand.category ?? "Uncategorized"}</p>
           </div>
           <div className="flex gap-2">
             <Button
@@ -125,7 +125,7 @@ export function BrandDetailPage({ brand, contactsData, activityData }: BrandDeta
                 setFieldErrors({})
                 setShowEdit(true)
               }}
-              className="cursor-pointer border-[rgba(255,255,255,0.1)] bg-transparent text-[13px] text-[rgba(255,255,255,0.75)]"
+              className="cursor-pointer border-border bg-transparent text-[13px] text-muted-foreground"
             >
               Edit
             </Button>

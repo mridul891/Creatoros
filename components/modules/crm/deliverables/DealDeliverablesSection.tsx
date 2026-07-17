@@ -168,7 +168,7 @@ export function DealDeliverablesSection({
   }
 
   return (
-    <div className="rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
+    <div className="rounded-[20px] border border-border bg-card p-6">
       <CrmPageHeaderClient
         title="Deliverables"
         description="Brand-facing campaign outcomes and approval lifecycle."
@@ -181,7 +181,7 @@ export function DealDeliverablesSection({
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <CrmSearchField value={search} placeholder="Search deliverables" onChange={setSearch} className="w-[260px]" />
         <Select value={status} onValueChange={(next) => setStatus(next as typeof status)}>
-          <SelectTrigger className="h-10 w-[170px] border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+          <SelectTrigger className="h-10 w-[170px] border-border bg-card text-xs text-muted-foreground">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -194,7 +194,7 @@ export function DealDeliverablesSection({
           </SelectContent>
         </Select>
         <Select value={platform} onValueChange={setPlatform}>
-          <SelectTrigger className="h-10 w-[170px] border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+          <SelectTrigger className="h-10 w-[170px] border-border bg-card text-xs text-muted-foreground">
             <SelectValue placeholder="Platform" />
           </SelectTrigger>
           <SelectContent>
@@ -207,7 +207,7 @@ export function DealDeliverablesSection({
           </SelectContent>
         </Select>
         <Select value={archive} onValueChange={(next) => setArchive(next as typeof archive)}>
-          <SelectTrigger className="h-10 w-[140px] border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+          <SelectTrigger className="h-10 w-[140px] border-border bg-card text-xs text-muted-foreground">
             <SelectValue placeholder="Visibility" />
           </SelectTrigger>
           <SelectContent>
@@ -216,7 +216,7 @@ export function DealDeliverablesSection({
           </SelectContent>
         </Select>
         <Select value={sort} onValueChange={(next) => setSort(next as typeof sort)}>
-          <SelectTrigger className="h-10 w-[160px] border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+          <SelectTrigger className="h-10 w-[160px] border-border bg-card text-xs text-muted-foreground">
             <SelectValue placeholder="Sort" />
           </SelectTrigger>
           <SelectContent>
@@ -246,7 +246,7 @@ export function DealDeliverablesSection({
       {displayError ? <p className="mb-4 text-[12px] text-[#E8402A]">{displayError}</p> : null}
 
       {isLoading ? (
-        <p className="text-[12px] text-[rgba(255,255,255,0.5)]">Loading deliverables...</p>
+        <p className="text-[12px] text-muted-foreground">Loading deliverables...</p>
       ) : deliverables.length === 0 ? (
         <DeliverablesEmptyState onCreate={openCreate} />
       ) : (

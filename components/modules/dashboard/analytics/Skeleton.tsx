@@ -9,7 +9,7 @@ export function Skeleton({
 }) {
   return (
     <div
-      className="bg-[linear-gradient(90deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.1)_50%,rgba(255,255,255,0.05)_100%)] bg-[length:200%_100%] animate-[shimmer_1.5s_infinite]"
+      className="bg-[linear-gradient(90deg,var(--muted-foreground)_0%,var(--muted-foreground)_50%,var(--muted-foreground)_100%)] bg-[length:200%_100%] animate-[shimmer_1.5s_infinite]"
       style={{
         width: typeof w === "number" ? `${w}px` : w,
         height: `${h}px`,

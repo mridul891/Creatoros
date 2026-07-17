@@ -80,26 +80,26 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-3xl border border-white/10 bg-black/55 p-6 shadow-[0_30px_80px_-40px_rgba(232,64,42,0.6)] backdrop-blur-xl sm:p-8"
+      className="rounded-3xl border border-border bg-card p-6 shadow-[0_30px_80px_-40px_rgba(232,64,42,0.6)] backdrop-blur-xl sm:p-8"
     >
       <FieldGroup>
         <div className="space-y-4">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs text-foreground">
             <Sparkle className="size-3.5 text-[#E8402A]" />
             Step 1 of 1
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
               Finish your onboarding
             </h1>
-            <FieldDescription className="mt-2 text-white/70">
+            <FieldDescription className="mt-2 text-foreground">
               Add a few details so we can personalize your creator workspace.
             </FieldDescription>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/3 p-3">
-            <div className="flex items-start gap-2 text-xs text-white/70">
+          <div className="rounded-2xl border border-border bg-muted p-3">
+            <div className="flex items-start gap-2 text-xs text-foreground">
               <Check className="mt-0.5 size-4 shrink-0 text-[#E8402A]" />
               <p>
                 Your profile helps us prioritize the deals and insights that are
@@ -110,7 +110,7 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
         </div>
 
         <Field>
-          <FieldLabel className="text-white">
+          <FieldLabel className="text-foreground">
             Creator type
           </FieldLabel>
           <div className="grid gap-2 sm:grid-cols-3">
@@ -122,11 +122,11 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
                 onClick={() => setCreatorType(option.value)}
                 aria-pressed={creatorType === option.value}
                 className={cn(
-                  "group flex h-11 items-center justify-center rounded-xl border bg-black/45 px-3 text-sm font-medium transition-all",
+                  "group flex h-11 items-center justify-center rounded-xl border bg-card px-3 text-sm font-medium transition-all",
                   "disabled:cursor-not-allowed disabled:opacity-50",
                   creatorType === option.value
-                    ? "border-[#E8402A]/55 bg-[#E8402A]/15 text-white shadow-[0_0_0_1px_rgba(232,64,42,0.3)]"
-                    : "border-white/15 text-white/80 hover:border-white/30 hover:bg-white/6"
+                    ? "border-[#E8402A]/55 bg-[#E8402A]/15 text-foreground shadow-[0_0_0_1px_rgba(232,64,42,0.3)]"
+                    : "border-border text-foreground hover:border-border hover:bg-muted"
                 )}
               >
                 {option.label}
@@ -139,11 +139,11 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field className="sm:col-span-2">
-            <FieldLabel htmlFor="niche" className="text-white">
+            <FieldLabel htmlFor="niche" className="text-foreground">
               Niche
             </FieldLabel>
             <div className="relative">
-              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground" />
               <Input
                 id="niche"
                 name="niche"
@@ -153,18 +153,18 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
                 maxLength={80}
                 disabled={isSubmitting}
                 aria-invalid={Boolean(fieldErrors.niche)}
-                className="h-11 border-white/15 bg-black/50 pl-9 text-white placeholder:text-white/45"
+                className="h-11 border-border bg-card pl-9 text-foreground placeholder:text-foreground"
               />
             </div>
             <FieldError>{fieldErrors.niche}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="instagramHandle" className="text-white">
-              Instagram handle <span className="text-white/50">(optional)</span>
+            <FieldLabel htmlFor="instagramHandle" className="text-foreground">
+              Instagram handle <span className="text-foreground">(optional)</span>
             </FieldLabel>
             <div className="relative">
-              <At className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <At className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground" />
               <Input
                 id="instagramHandle"
                 name="instagramHandle"
@@ -174,18 +174,18 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
                 maxLength={30}
                 disabled={isSubmitting}
                 aria-invalid={Boolean(fieldErrors.instagramHandle)}
-                className="h-11 border-white/15 bg-black/50 pl-9 text-white placeholder:text-white/45"
+                className="h-11 border-border bg-card pl-9 text-foreground placeholder:text-foreground"
               />
             </div>
             <FieldError>{fieldErrors.instagramHandle}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="youtubeHandle" className="text-white">
-              YouTube handle <span className="text-white/50">(optional)</span>
+            <FieldLabel htmlFor="youtubeHandle" className="text-foreground">
+              YouTube handle <span className="text-foreground">(optional)</span>
             </FieldLabel>
             <div className="relative">
-              <Play className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <Play className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground" />
               <Input
                 id="youtubeHandle"
                 name="youtubeHandle"
@@ -195,7 +195,7 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
                 maxLength={30}
                 disabled={isSubmitting}
                 aria-invalid={Boolean(fieldErrors.youtubeHandle)}
-                className="h-11 border-white/15 bg-black/50 pl-9 text-white placeholder:text-white/45"
+                className="h-11 border-border bg-card pl-9 text-foreground placeholder:text-foreground"
               />
             </div>
             <FieldError>{fieldErrors.youtubeHandle}</FieldError>
@@ -203,8 +203,8 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
         </div>
 
         <Field>
-          <FieldLabel htmlFor="bio" className="text-white">
-            Bio <span className="text-white/50">(optional)</span>
+          <FieldLabel htmlFor="bio" className="text-foreground">
+            Bio <span className="text-foreground">(optional)</span>
           </FieldLabel>
           <textarea
             id="bio"
@@ -215,9 +215,9 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
             maxLength={280}
             disabled={isSubmitting}
             aria-invalid={Boolean(fieldErrors.bio)}
-            className="min-h-28 w-full rounded-lg border border-white/15 bg-black/50 px-3 py-2 text-sm text-white outline-none transition-colors placeholder:text-white/45 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
+            className="min-h-28 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
           />
-          <FieldDescription className="flex items-center justify-between text-white/55">
+          <FieldDescription className="flex items-center justify-between text-foreground">
             <span>Keep it short (max 280 characters).</span>
             <span>{bioCharactersLeft} left</span>
           </FieldDescription>
@@ -230,7 +230,7 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
           type="submit"
           size="lg"
           disabled={isSubmitting}
-          className="h-11 w-full rounded-xl bg-white text-black hover:bg-white/90"
+          className="h-11 w-full rounded-xl bg-white text-black hover:bg-muted"
         >
           {isSubmitting ? "Saving..." : "Complete onboarding"}
         </Button>

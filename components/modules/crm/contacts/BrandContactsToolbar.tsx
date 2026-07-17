@@ -28,15 +28,15 @@ export function BrandContactsToolbar({
     <>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-white">Contacts</h2>
-          <p className="mt-1 text-[12px] text-[rgba(255,255,255,0.5)]">
+          <h2 className="text-lg font-bold text-foreground">Contacts</h2>
+          <p className="mt-1 text-[12px] text-muted-foreground">
             {total} {total === 1 ? "contact" : "contacts"} in this brand
           </p>
         </div>
         <Button
           type="button"
           onClick={onCreate}
-          className="h-9 cursor-pointer gap-2 bg-(--cos-primary) px-4 text-[12px] font-semibold text-white hover:bg-(--cos-primary)"
+          className="h-9 cursor-pointer gap-2 bg-primary px-4 text-[12px] font-semibold text-primary-foreground hover:bg-primary"
         >
           <Plus size={14} />
           Add Contact
@@ -52,16 +52,16 @@ export function BrandContactsToolbar({
         />
 
         <Tabs value={status} onValueChange={(value) => onStatusChange(value as ContactFilter)}>
-          <TabsList className="h-10 border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] p-1">
+          <TabsList className="h-10 border border-border bg-muted p-1">
             <TabsTrigger
               value="active"
-              className="h-8 cursor-pointer px-3 text-xs text-[rgba(255,255,255,0.7)] data-active:bg-[rgba(255,255,255,0.08)] data-active:text-white"
+              className="h-8 cursor-pointer px-3 text-xs text-muted-foreground data-active:bg-muted data-active:text-foreground"
             >
               Active
             </TabsTrigger>
             <TabsTrigger
               value="archived"
-              className="h-8 cursor-pointer px-3 text-xs text-[rgba(255,255,255,0.7)] data-active:bg-[rgba(255,255,255,0.08)] data-active:text-white"
+              className="h-8 cursor-pointer px-3 text-xs text-muted-foreground data-active:bg-muted data-active:text-foreground"
             >
               Archived
             </TabsTrigger>

@@ -27,7 +27,7 @@ function StatusBadge({ status }: { status: ContactListItem["status"] }) {
       className={
         isActive
           ? "border-[rgba(123,227,170,0.35)] bg-[rgba(43,181,102,0.16)] text-[#7BE3AA]"
-          : "border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.65)]"
+          : "border-border bg-muted text-muted-foreground"
       }
     >
       {status}
@@ -37,26 +37,26 @@ function StatusBadge({ status }: { status: ContactListItem["status"] }) {
 
 export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) {
   return (
-    <div className="overflow-hidden rounded-[16px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)]">
+    <div className="overflow-hidden rounded-[16px] border border-border bg-muted">
       <Table className="table-fixed border-collapse">
-        <TableHeader className="border-b border-[rgba(255,255,255,0.07)]">
+        <TableHeader className="border-b border-border">
           <TableRow className="border-0 hover:bg-transparent">
-            <TableHead className="w-[26%] px-4 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.42)]">
+            <TableHead className="w-[26%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
               NAME
             </TableHead>
-            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.42)]">
+            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
               POSITION
             </TableHead>
-            <TableHead className="w-[20%] px-4 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.42)]">
+            <TableHead className="w-[20%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
               EMAIL
             </TableHead>
-            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.42)]">
+            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
               PHONE
             </TableHead>
-            <TableHead className="w-[10%] px-4 py-3 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.42)]">
+            <TableHead className="w-[10%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
               STATUS
             </TableHead>
-            <TableHead className="w-[8%] px-4 py-3 text-right font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.42)]">
+            <TableHead className="w-[8%] px-4 py-3 text-right font-mono text-[10px] tracking-wider text-muted-foreground">
               ACTIONS
             </TableHead>
           </TableRow>
@@ -65,11 +65,11 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
           {items.map((contact) => (
             <TableRow
               key={contact.id}
-              className="border-b border-[rgba(255,255,255,0.07)] bg-transparent hover:bg-[rgba(255,255,255,0.02)]"
+              className="border-b border-border bg-transparent hover:bg-muted"
             >
               <TableCell className="px-4 py-4">
                 <div className="min-w-0">
-                  <div className="truncate text-[13px] font-semibold text-white">{contact.name}</div>
+                  <div className="truncate text-[13px] font-semibold text-foreground">{contact.name}</div>
                   {contact.isPrimary ? (
                     <Badge className="mt-1 border-[rgba(232,64,42,0.28)] bg-[rgba(232,64,42,0.14)] text-[#E8402A]">
                       Primary
@@ -77,13 +77,13 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
                   ) : null}
                 </div>
               </TableCell>
-              <TableCell className="px-4 py-4 text-[12px] text-[rgba(255,255,255,0.65)]">
+              <TableCell className="px-4 py-4 text-[12px] text-muted-foreground">
                 {contact.jobTitle ?? "—"}
               </TableCell>
-              <TableCell className="truncate px-4 py-4 text-[12px] text-[rgba(255,255,255,0.65)]">
+              <TableCell className="truncate px-4 py-4 text-[12px] text-muted-foreground">
                 {contact.email ?? "—"}
               </TableCell>
-              <TableCell className="truncate px-4 py-4 text-[12px] text-[rgba(255,255,255,0.65)]">
+              <TableCell className="truncate px-4 py-4 text-[12px] text-muted-foreground">
                 {contact.phoneNumber ?? "—"}
               </TableCell>
               <TableCell className="px-4 py-4">
@@ -97,7 +97,7 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
                         type="button"
                         variant="ghost"
                         size="icon-sm"
-                        className="cursor-pointer text-[rgba(255,255,255,0.75)] hover:bg-[rgba(255,255,255,0.06)]"
+                        className="cursor-pointer text-muted-foreground hover:bg-muted"
                       >
                         <DotsThree />
                         <span className="sr-only">Open actions</span>
@@ -105,7 +105,7 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                       align="end"
-                      className="w-32 border-[rgba(255,255,255,0.08)] bg-[#121212] text-[rgba(255,255,255,0.82)]"
+                      className="w-32 border-border bg-[#121212] text-muted-foreground"
                     >
                       <DropdownMenuItem onClick={() => onEdit(contact)} className="cursor-pointer">
                         Edit

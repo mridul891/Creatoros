@@ -90,7 +90,7 @@ export function Sidebar() {
                     if (isMobile) setOpenMobile(false);
                   }}
                 >
-                  <span className="truncate text-[15px] font-semibold tracking-[-0.01em] text-white group-data-[collapsible=icon]:hidden text-center">
+                  <span className="truncate text-[15px] font-semibold tracking-[-0.01em] text-foreground group-data-[collapsible=icon]:hidden text-center">
                     !yetlaunched
                   </span>
                 </Link>
@@ -98,7 +98,7 @@ export function Sidebar() {
             </SidebarMenuItem>
           </SidebarMenu>
           <SidebarTrigger
-            className="relative z-20 size-9 shrink-0 rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
+            className="relative z-20 size-9 shrink-0 rounded-lg text-foreground hover:bg-muted hover:text-foreground"
             title={state === "collapsed" ? "Expand sidebar" : "Collapse sidebar"}
           >
             <CaretDoubleLeft className={`size-4 transition-transform ${state === "collapsed" ? "rotate-180" : ""}`} />
@@ -122,7 +122,7 @@ export function Sidebar() {
                       isActive={active}
                       asChild
                       tooltip={label}
-                      className="h-10 rounded-xl px-3 text-[13px] font-medium"
+                      className="h-10 rounded-xl px-3 text-[13px] font-medium  data-[active=true]:bg-black data-[active=true]:text-white"
                     >
                       <Link
                         href={href}

@@ -26,7 +26,7 @@ export function CrmPagination({ page, totalPages, onPageChange }: CrmPaginationP
           <PaginationPrevious
             href="#"
             aria-disabled={!canGoPrevious}
-            className="cursor-pointer border border-[rgba(255,255,255,0.12)] bg-transparent text-[11px] text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.05)] aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            className="cursor-pointer border border-border bg-transparent text-[11px] text-muted-foreground hover:bg-muted aria-disabled:pointer-events-none aria-disabled:opacity-50"
             onClick={(event) => {
               event.preventDefault()
               if (canGoPrevious) {
@@ -39,7 +39,7 @@ export function CrmPagination({ page, totalPages, onPageChange }: CrmPaginationP
           <PaginationLink
             href="#"
             isActive
-            className="pointer-events-none border border-[rgba(255,255,255,0.12)] bg-transparent font-mono text-[11px] text-[rgba(255,255,255,0.45)] hover:bg-transparent"
+            className="pointer-events-none border border-border bg-transparent font-mono text-[11px] text-muted-foreground hover:bg-transparent"
           >
             {page} / {totalPages}
           </PaginationLink>
@@ -48,7 +48,7 @@ export function CrmPagination({ page, totalPages, onPageChange }: CrmPaginationP
           <PaginationNext
             href="#"
             aria-disabled={!canGoNext}
-            className="cursor-pointer border border-[rgba(255,255,255,0.12)] bg-transparent text-[11px] text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.05)] aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            className="cursor-pointer border border-border bg-transparent text-[11px] text-muted-foreground hover:bg-muted aria-disabled:pointer-events-none aria-disabled:opacity-50"
             onClick={(event) => {
               event.preventDefault()
               if (canGoNext) {

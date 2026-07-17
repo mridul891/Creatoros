@@ -63,28 +63,28 @@ export function ActivityTimelineItem({ item, isLast }: ActivityTimelineItemProps
   return (
     <li className="relative pl-12">
       <div className="absolute top-1 left-0 flex w-8 justify-center">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] text-[rgba(255,255,255,0.72)]">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
           {item.entityType === "Brand" ? <BuildingOffice size={14} /> : getActivityIcon(item.type)}
         </span>
       </div>
 
       {!isLast ? (
-        <span className="absolute top-9 left-[15px] h-[calc(100%-6px)] w-px bg-[rgba(255,255,255,0.08)]" />
+        <span className="absolute top-9 left-[15px] h-[calc(100%-6px)] w-px bg-muted" />
       ) : null}
 
-      <div className="rounded-[14px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4">
+      <div className="rounded-[14px] border border-border bg-muted p-4">
         <div className="flex flex-wrap items-center gap-2">
           <Badge
             variant="outline"
-            className="border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.03)] px-2 py-0.5 text-[10px] tracking-wide text-[rgba(255,255,255,0.72)]"
+            className="border-border bg-muted px-2 py-0.5 text-[10px] tracking-wide text-muted-foreground"
           >
             {getActivityBadge(item.type)}
           </Badge>
-          <p className="font-mono text-[11px] text-[rgba(255,255,255,0.45)]">{formatRelativeTime(item.createdAt)}</p>
+          <p className="font-mono text-[11px] text-muted-foreground">{formatRelativeTime(item.createdAt)}</p>
         </div>
 
-        <p className="mt-2 text-[14px] font-semibold text-white">{item.title}</p>
-        {item.description ? <p className="mt-1 text-[13px] text-[rgba(255,255,255,0.65)]">{item.description}</p> : null}
+        <p className="mt-2 text-[14px] font-semibold text-foreground">{item.title}</p>
+        {item.description ? <p className="mt-1 text-[13px] text-muted-foreground">{item.description}</p> : null}
       </div>
     </li>
   )

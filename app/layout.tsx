@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
-import "../styles/index.css"
-import { Inter } from "next/font/google"
+import { Space_Grotesk, DM_Sans } from "next/font/google"
 import "./globals.css"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -8,7 +7,17 @@ import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 import MsClarity from "../lib/ms-clarity"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+})
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+})
 
 const siteUrl = "https://www.notyetlaunched.xyz"
 const siteName = "NotYetLaunched"
@@ -208,7 +217,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(inter.variable, "font-sans")}
+      className={cn(spaceGrotesk.variable, dmSans.variable, "font-sans")}
     >
       <body suppressHydrationWarning>
         <script

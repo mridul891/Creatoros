@@ -80,7 +80,7 @@ const STAGE_HEADER_GLOW_CLASS: Record<Stage, string> = {
   [SponsorshipStage.PAID]: "before:bg-[#16a34a]",
 };
 const ACCENT_KPI_CARD_CLASS: Record<string, string> = {
-  "#111111": "border-t-[1.5px] border-t-[#111111]/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]",
+  "#111111": "border-t-[1.5px] border-t-[#111111]/70 shadow-[inset_0_1px_0_var(--muted-foreground)]",
   "#E8402A": "border-t-[1.5px] border-t-[#E8402A]/70 shadow-[0_10px_28px_rgba(232,64,42,0.08)]",
   "#2563eb": "border-t-[1.5px] border-t-[#2563eb]/70 shadow-[0_10px_28px_rgba(37,99,235,0.08)]",
   "#16a34a": "border-t-[1.5px] border-t-[#16a34a]/70 shadow-[0_10px_28px_rgba(22,163,74,0.08)]",
@@ -92,7 +92,7 @@ const ACCENT_SOFT_BG_CLASS: Record<string, string> = {
   "#16a34a": "bg-[#16a34a12]",
 };
 const ACCENT_TEXT_CLASS: Record<string, string> = {
-  "#111111": "text-[#111111]",
+  "#111111": "text-foreground",
   "#E8402A": "text-[#E8402A]",
   "#2563eb": "text-[#2563eb]",
   "#16a34a": "text-[#16a34a]",
@@ -132,24 +132,24 @@ function DealCard({ deal, isSelected, onClick, onAdvance, onDragStart, onDragEnd
         onDragStart(deal.id);
       }}
       onDragEnd={onDragEnd}
-      className={`group relative mb-2 cursor-pointer overflow-hidden rounded-[14px] border-[1.5px] bg-[#0D0D0D] px-[15px] py-[14px] transition-all duration-150 ${isSelected ? "border-[#E8402A] shadow-[0_0_0_3px_rgba(232,64,42,0.1)]" : "border-[rgba(255,255,255,0.07)] shadow-[0_1px_4px_rgba(0,0,0,0.04)]"}`}
+      className={`group relative mb-2 cursor-pointer overflow-hidden rounded-[14px] border-[1.5px] bg-card px-[15px] py-[14px] transition-all duration-150 ${isSelected ? "border-[#E8402A] shadow-[0_0_0_3px_rgba(232,64,42,0.1)]" : "border-border shadow-[0_1px_4px_rgba(0,0,0,0.04)]"}`}
       onMouseEnter={e => { if (!isSelected) e.currentTarget.style.borderColor = "rgba(232,64,42,0.3)"; }}
-      onMouseLeave={e => { if (!isSelected) e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; }}>
+      onMouseLeave={e => { if (!isSelected) e.currentTarget.style.borderColor = "var(--muted-foreground)"; }}>
       <div className="absolute inset-x-0 top-0 h-[2px] opacity-70" style={{ backgroundColor: stageAccent.color }} />
       <div className="mb-[9px] flex items-start justify-between">
         <div className="flex items-center gap-[9px]">
           <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-mono text-[9px] font-extrabold ${logoClass}`}>{deal.logo}</div>
           <div>
-            <div className="text-xs font-bold leading-[1.2] text-white">{deal.brand}</div>
-            <div className="font-mono text-[10px] text-[rgba(255,255,255,0.4)]">{deal.category}</div>
+            <div className="text-xs font-bold leading-[1.2] text-foreground">{deal.brand}</div>
+            <div className="font-mono text-[10px] text-muted-foreground">{deal.category}</div>
           </div>
         </div>
         <div className={`mt-[3px] h-[6px] w-[6px] shrink-0 rounded-full ${PRIORITY_DOT_CLASS[deal.priority]}`} />
       </div>
       <div className="mb-2 flex items-center justify-between">
         <div>
-          <div className="font-mono text-[8px] tracking-[0.08em] text-[rgba(255,255,255,0.35)]">EST. VALUE</div>
-          <div className="text-[13px] font-bold tracking-[-0.02em] text-[rgba(255,255,255,0.75)]">{fmt(deal.value)}</div>
+          <div className="font-mono text-[8px] tracking-[0.08em] text-muted-foreground">EST. VALUE</div>
+          <div className="text-[13px] font-bold tracking-[-0.02em] text-muted-foreground">{fmt(deal.value)}</div>
         </div>
       </div>
       <div className="flex items-center justify-between">
@@ -158,14 +158,14 @@ function DealCard({ deal, isSelected, onClick, onAdvance, onDragStart, onDragEnd
             <StageAccentIcon size={8} />
             {deal.stage}
           </span>
-          <div className="font-mono text-[9px] text-[rgba(255,255,255,0.4)]">
+          <div className="font-mono text-[9px] text-muted-foreground">
             {deal.deadline === "Done" ? "✓ Done" : `Due ${deal.deadline}`}
           </div>
         </div>
         {nextStage && (
-          <button onClick={e => { e.stopPropagation(); onAdvance(); }} className="flex cursor-pointer items-center gap-[3px] rounded-[99px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[7px] py-[3px] font-mono text-[9px] text-[rgba(255,255,255,0.4)] transition-all duration-150"
+          <button onClick={e => { e.stopPropagation(); onAdvance(); }} className="flex cursor-pointer items-center gap-[3px] rounded-[99px] border border-border bg-card px-[7px] py-[3px] font-mono text-[9px] text-muted-foreground transition-all duration-150"
             onMouseEnter={e => { e.currentTarget.style.borderColor = "#E8402A"; e.currentTarget.style.color = "#E8402A"; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; e.currentTarget.style.color = "rgba(255,255,255,0.4)"; }}>
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--muted-foreground)"; e.currentTarget.style.color = "var(--muted-foreground)"; }}>
             → {nextStage}
           </button>
         )}
@@ -182,21 +182,21 @@ function DealPanel({ deal, onClose, onEdit, onDelete, onStageChange }: {
   const S = STAGE_CFG[deal.stage];
   const logoClass = LOGO_ACCENT_CLASS[deal.logoColor] ?? "bg-[#E8402A15] text-[#E8402A]";
   return (
-    <div className="sticky top-7 w-[300px] shrink-0 self-start rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-[22px]">
+    <div className="sticky top-7 w-[300px] shrink-0 self-start rounded-[18px] border border-border bg-card p-[22px]">
       <div className="flex justify-between">
         <div className="flex items-center gap-[11px]">
           <div className={`flex h-10 w-10 items-center justify-center rounded-[11px] font-mono text-[11px] font-extrabold ${logoClass}`}>{deal.logo}</div>
           <div>
-            <div className="text-[15px] font-extrabold tracking-[-0.03em] text-white">{deal.brand}</div>
-            <div className="font-mono text-[10px] text-[rgba(255,255,255,0.4)]">{deal.category}</div>
+            <div className="text-[15px] font-extrabold tracking-[-0.03em] text-foreground">{deal.brand}</div>
+            <div className="font-mono text-[10px] text-muted-foreground">{deal.category}</div>
           </div>
         </div>
-        <button onClick={onClose} className="cursor-pointer p-1 text-[rgba(255,255,255,0.4)]"><X size={15} /></button>
+        <button onClick={onClose} className="cursor-pointer p-1 text-muted-foreground"><X size={15} /></button>
       </div>
 
-      <div className="mt-4 rounded-xl bg-[rgba(255,255,255,0.05)] p-4">
-        <div className="mb-1 font-mono text-[9px] tracking-[0.07em] text-[rgba(255,255,255,0.4)]">DEAL VALUE</div>
-        <div className="text-[30px] font-black tracking-tighter text-white">{fmt(deal.value)}</div>
+      <div className="mt-4 rounded-xl bg-muted p-4">
+        <div className="mb-1 font-mono text-[9px] tracking-[0.07em] text-muted-foreground">DEAL VALUE</div>
+        <div className="text-[30px] font-black tracking-tighter text-foreground">{fmt(deal.value)}</div>
         <div className="mt-[9px] flex gap-[6px]">
           <div className={`inline-flex items-center gap-[5px] rounded-[99px] border px-[9px] py-1 ${STAGE_ACTIVE_CLASS[deal.stage]}`}>
             <S.icon size={9} color={S.color} />
@@ -210,16 +210,16 @@ function DealPanel({ deal, onClose, onEdit, onDelete, onStageChange }: {
       </div>
 
       <div className="mt-4">
-        <div className="mb-2 font-mono text-[9px] tracking-[0.07em] text-[rgba(255,255,255,0.4)]">MOVE TO STAGE</div>
+        <div className="mb-2 font-mono text-[9px] tracking-[0.07em] text-muted-foreground">MOVE TO STAGE</div>
         <div className="flex flex-col gap-1">
           {STAGES.map(stage => {
             const C = STAGE_CFG[stage]; const active = deal.stage === stage;
             return (
               <button key={stage} onClick={() => onStageChange(deal.id, stage)} className={`flex cursor-pointer items-center gap-[9px] rounded-[9px] px-[11px] py-2 text-left transition-all duration-150 ${active ? `border ${STAGE_ACTIVE_CLASS[stage]}` : "border border-transparent"}`}
-                onMouseEnter={e => { if (!active) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+                onMouseEnter={e => { if (!active) e.currentTarget.style.background = "var(--muted-foreground)"; }}
                 onMouseLeave={e => { if (!active) e.currentTarget.style.background = "none"; }}>
-                <C.icon size={12} color={active ? C.color : "rgba(255,255,255,0.4)"} />
-                <span className={`text-[11px] ${active ? `font-bold ${STAGE_TEXT_CLASS[stage]}` : "font-normal text-[rgba(255,255,255,0.4)]"}`}>{stage}</span>
+                <C.icon size={12} color={active ? C.color : "var(--muted-foreground)"} />
+                <span className={`text-[11px] ${active ? `font-bold ${STAGE_TEXT_CLASS[stage]}` : "font-normal text-muted-foreground"}`}>{stage}</span>
                 {active && <div className={`ml-auto h-[5px] w-[5px] rounded-full ${STAGE_DOT_CLASS[stage]}`} />}
               </button>
             );
@@ -227,22 +227,22 @@ function DealPanel({ deal, onClose, onEdit, onDelete, onStageChange }: {
         </div>
       </div>
 
-      <div className="mt-4 border-t border-[rgba(255,255,255,0.07)] pt-[14px]">
-        <div className="mb-[9px] font-mono text-[9px] tracking-[0.07em] text-[rgba(255,255,255,0.4)]">CONTACT</div>
-        {deal.contact && <div className="mb-[5px] text-xs font-semibold text-white">{deal.contact}</div>}
-        {deal.email && <div className="mb-[3px] flex items-center gap-[5px] font-mono text-[10px] text-[rgba(255,255,255,0.4)]"><EnvelopeSimple size={10} /> {deal.email}</div>}
-        {deal.deadline && <div className="flex items-center gap-[5px] font-mono text-[10px] text-[rgba(255,255,255,0.4)]"><Calendar size={10} /> Due {deal.deadline}</div>}
+      <div className="mt-4 border-t border-border pt-[14px]">
+        <div className="mb-[9px] font-mono text-[9px] tracking-[0.07em] text-muted-foreground">CONTACT</div>
+        {deal.contact && <div className="mb-[5px] text-xs font-semibold text-foreground">{deal.contact}</div>}
+        {deal.email && <div className="mb-[3px] flex items-center gap-[5px] font-mono text-[10px] text-muted-foreground"><EnvelopeSimple size={10} /> {deal.email}</div>}
+        {deal.deadline && <div className="flex items-center gap-[5px] font-mono text-[10px] text-muted-foreground"><Calendar size={10} /> Due {deal.deadline}</div>}
       </div>
 
       {deal.notes && (
         <div className="mt-4">
-          <div className="mb-[6px] font-mono text-[9px] tracking-[0.07em] text-[rgba(255,255,255,0.4)]">NOTES</div>
-          <div className="rounded-[9px] bg-[rgba(255,255,255,0.05)] px-3 py-[11px] text-[11px] leading-[1.65] text-[rgba(255,255,255,0.65)]">{deal.notes}</div>
+          <div className="mb-[6px] font-mono text-[9px] tracking-[0.07em] text-muted-foreground">NOTES</div>
+          <div className="rounded-[9px] bg-muted px-3 py-[11px] text-[11px] leading-[1.65] text-muted-foreground">{deal.notes}</div>
         </div>
       )}
 
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <button onClick={onEdit} className="flex cursor-pointer items-center justify-center gap-[5px] rounded-[9px] bg-(--cos-primary) p-[9px] text-[11px] font-semibold text-white">
+        <button onClick={onEdit} className="flex cursor-pointer items-center justify-center gap-[5px] rounded-[9px] bg-primary p-[9px] text-[11px] font-semibold text-primary-foreground">
           <PencilSimple size={11} /> Edit
         </button>
         <button onClick={() => { onDelete(deal.id); onClose(); }} className="flex cursor-pointer items-center justify-center gap-[5px] rounded-[9px] border border-[rgba(232,64,42,0.2)] bg-[rgba(232,64,42,0.05)] p-[9px] text-[11px] text-[#E8402A]">
@@ -265,10 +265,10 @@ function PipelineFunnel({ deals }: { deals: Deal[] }) {
   const maxCount = Math.max(...totals.map(t => t.count), 1);
 
   return (
-    <div className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[22px] py-5">
+    <div className="rounded-2xl border border-border bg-card px-[22px] py-5">
       <div className="mb-4">
-        <div className="mb-[3px] text-[13px] font-bold tracking-[-0.02em] text-white">Pipeline Funnel</div>
-        <div className="text-[11px] text-[rgba(255,255,255,0.4)]">Deal counts by stage</div>
+        <div className="mb-[3px] text-[13px] font-bold tracking-[-0.02em] text-foreground">Pipeline Funnel</div>
+        <div className="text-[11px] text-muted-foreground">Deal counts by stage</div>
       </div>
       <div className="flex flex-col gap-[6px]">
         {totals.map((t, i) => {
@@ -280,7 +280,7 @@ function PipelineFunnel({ deals }: { deals: Deal[] }) {
             <div key={t.stage}>
               {convRate !== null && (
                 <div className="mb-[3px] flex items-center gap-[6px] pl-2">
-                  <div className="h-[10px] w-px bg-[rgba(255,255,255,0.07)]" />
+                  <div className="h-[10px] w-px bg-muted" />
                   <span className={`font-mono text-[9px] font-bold ${convRate >= 70 ? "text-[#16a34a]" : convRate >= 40 ? "text-[#d97706]" : "text-[#E8402A]"}`}>
                     {convRate}% conversion
                   </span>
@@ -291,12 +291,12 @@ function PipelineFunnel({ deals }: { deals: Deal[] }) {
                   <t.cfg.icon size={11} color={t.cfg.color} />
                   <span className={`font-mono text-[10px] font-semibold ${STAGE_TEXT_CLASS[t.stage]}`}>{t.stage}</span>
                 </div>
-                <div className="h-[22px] flex-1 overflow-hidden rounded-[5px] bg-[rgba(255,255,255,0.05)]">
+                <div className="h-[22px] flex-1 overflow-hidden rounded-[5px] bg-muted">
                   <div className={`flex h-full items-center rounded-[5px] border-r-2 pl-2 transition-[width] duration-400 ease-in-out ${STAGE_BG22_CLASS[t.stage]} ${barPct <= 5 ? "w-[5%]" : barPct <= 10 ? "w-[10%]" : barPct <= 15 ? "w-[15%]" : barPct <= 20 ? "w-[20%]" : barPct <= 25 ? "w-[25%]" : barPct <= 30 ? "w-[30%]" : barPct <= 35 ? "w-[35%]" : barPct <= 40 ? "w-[40%]" : barPct <= 45 ? "w-[45%]" : barPct <= 50 ? "w-[50%]" : barPct <= 55 ? "w-[55%]" : barPct <= 60 ? "w-[60%]" : barPct <= 65 ? "w-[65%]" : barPct <= 70 ? "w-[70%]" : barPct <= 75 ? "w-[75%]" : barPct <= 80 ? "w-[80%]" : barPct <= 85 ? "w-[85%]" : barPct <= 90 ? "w-[90%]" : barPct <= 95 ? "w-[95%]" : "w-full"}`}>
                     <span className={`whitespace-nowrap font-mono text-[9px] font-bold ${STAGE_TEXT_CLASS[t.stage]}`}>{t.count}</span>
                   </div>
                 </div>
-                <div className="w-14 shrink-0 text-right font-mono text-[10px] font-bold text-[rgba(255,255,255,0.4)]">{fmt(t.value)}</div>
+                <div className="w-14 shrink-0 text-right font-mono text-[10px] font-bold text-muted-foreground">{fmt(t.value)}</div>
               </div>
             </div>
           );
@@ -317,21 +317,21 @@ function CategoryBreakdown({ deals }: { deals: Deal[] }) {
   const total = data.reduce((s, d) => s + d.val, 0);
 
   const COLORS = ["#111111", "#E8402A", "#2563eb", "#16a34a", "#d97706", "#7c3aed"];
-  const COLOR_CLASSES = ["bg-[#111111]", "bg-[#E8402A]", "bg-[#2563eb]", "bg-[#16a34a]", "bg-[#d97706]", "bg-[#7c3aed]"];
+  const COLOR_CLASSES = ["bg-secondary", "bg-[#E8402A]", "bg-[#2563eb]", "bg-[#16a34a]", "bg-[#d97706]", "bg-[#7c3aed]"];
 
   return (
-    <div className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[22px] py-5">
+    <div className="rounded-2xl border border-border bg-card px-[22px] py-5">
       <div className="mb-[14px]">
-        <div className="mb-[3px] text-[13px] font-bold tracking-[-0.02em] text-white">Revenue by Category</div>
-        <div className="text-[11px] text-[rgba(255,255,255,0.4)]">Total pipeline value distribution</div>
+        <div className="mb-[3px] text-[13px] font-bold tracking-[-0.02em] text-foreground">Revenue by Category</div>
+        <div className="text-[11px] text-muted-foreground">Total pipeline value distribution</div>
       </div>
       <ResponsiveContainer width="100%" height={130}>
         <BarChart data={data} margin={{ top: 0, right: 0, left: -30, bottom: 0 }} barCategoryGap="30%">
-          <XAxis dataKey="cat" tick={{ fontSize: 9, fontFamily: "'SF Mono', 'Menlo', monospace", fill: "rgba(255,255,255,0.35)" }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="cat" tick={{ fontSize: 9, fontFamily: "'SF Mono', 'Menlo', monospace", fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fontSize: 9 }} axisLine={false} tickLine={false} tickFormatter={v => `$${(v/1000).toFixed(0)}k`} />
           <Tooltip
             formatter={(value) => [fmt(Number(value ?? 0)), "Value"]}
-            contentStyle={{ fontSize: 11, fontFamily: "'SF Pro Display', -apple-system, sans-serif", borderRadius: 8, border: "1px solid rgba(255,255,255,0.07)", background: "#0D0D0D", color: "rgba(255,255,255,0.65)", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
+            contentStyle={{ fontSize: 11, fontFamily: "var(--font-sans)", borderRadius: 8, border: "1px solid var(--muted-foreground)", background: "var(--card)", color: "var(--muted-foreground)", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
             cursor={{ fill: "rgba(232,64,42,0.04)" }}
           />
           <Bar dataKey="val" radius={[4, 4, 0, 0]}>
@@ -343,7 +343,7 @@ function CategoryBreakdown({ deals }: { deals: Deal[] }) {
         {data.map((d, i) => (
           <div key={d.cat} className="flex items-center gap-[5px]">
             <div className={`h-[7px] w-[7px] shrink-0 rounded-[2px] ${COLOR_CLASSES[i % COLOR_CLASSES.length]}`} />
-            <span className="font-mono text-[9px] text-[rgba(255,255,255,0.4)]">{d.cat} {Math.round(d.val / total * 100)}%</span>
+            <span className="font-mono text-[9px] text-muted-foreground">{d.cat} {Math.round(d.val / total * 100)}%</span>
           </div>
         ))}
       </div>
@@ -357,14 +357,14 @@ function RevenueTrend() {
   const avgDeal = Math.round(ytd / MONTHLY_DATA.filter(d => d.deals > 0).reduce((s, d) => s + d.deals, 0));
 
   return (
-    <div className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[22px] py-5">
+    <div className="rounded-2xl border border-border bg-card px-[22px] py-5">
       <div className="mb-[14px] flex items-start justify-between">
         <div>
-          <div className="mb-[3px] text-[13px] font-bold tracking-[-0.02em] text-white">Monthly Revenue</div>
-          <div className="text-[11px] text-[rgba(255,255,255,0.4)]">Paid deals YTD</div>
+          <div className="mb-[3px] text-[13px] font-bold tracking-[-0.02em] text-foreground">Monthly Revenue</div>
+          <div className="text-[11px] text-muted-foreground">Paid deals YTD</div>
         </div>
         <div className="text-right">
-          <div className="text-[18px] font-black tracking-[-0.04em] text-white">{fmt(ytd)}</div>
+          <div className="text-[18px] font-black tracking-[-0.04em] text-foreground">{fmt(ytd)}</div>
           <div className="font-mono text-[9px] font-bold text-[#16a34a]">YTD 2026</div>
         </div>
       </div>
@@ -376,26 +376,26 @@ function RevenueTrend() {
               <stop offset="100%" stopColor="#E8402A" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="month" tick={{ fontSize: 9, fontFamily: "'SF Mono', 'Menlo', monospace", fill: "rgba(255,255,255,0.35)" }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="month" tick={{ fontSize: 9, fontFamily: "'SF Mono', 'Menlo', monospace", fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fontSize: 9 }} axisLine={false} tickLine={false} tickFormatter={v => v === 0 ? "" : `$${(v/1000).toFixed(0)}k`} />
           <Tooltip
             formatter={(value) => [fmt(Number(value ?? 0)), "Revenue"]}
-            contentStyle={{ fontSize: 11, fontFamily: "'SF Pro Display', -apple-system, sans-serif", borderRadius: 8, border: "1px solid rgba(255,255,255,0.07)", background: "#0D0D0D", color: "rgba(255,255,255,0.65)", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
+            contentStyle={{ fontSize: 11, fontFamily: "var(--font-sans)", borderRadius: 8, border: "1px solid var(--muted-foreground)", background: "var(--card)", color: "var(--muted-foreground)", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
           />
           <Area type="monotone" dataKey="revenue" stroke="#E8402A" strokeWidth={2} fill="url(#revGrad)" dot={{ fill: "#E8402A", r: 3, strokeWidth: 0 }} activeDot={{ r: 5, fill: "#E8402A" }} />
         </AreaChart>
       </ResponsiveContainer>
-      <div className="mt-[10px] flex gap-4 border-t border-[rgba(255,255,255,0.07)] pt-[10px]">
+      <div className="mt-[10px] flex gap-4 border-t border-border pt-[10px]">
         <div>
-          <div className="mb-[2px] font-mono text-[9px] text-[rgba(255,255,255,0.4)]">AVG DEAL</div>
-          <div className="text-[13px] font-extrabold tracking-[-0.03em] text-white">{fmt(avgDeal)}</div>
+          <div className="mb-[2px] font-mono text-[9px] text-muted-foreground">AVG DEAL</div>
+          <div className="text-[13px] font-extrabold tracking-[-0.03em] text-foreground">{fmt(avgDeal)}</div>
         </div>
         <div>
-          <div className="mb-[2px] font-mono text-[9px] text-[rgba(255,255,255,0.4)]">BEST MONTH</div>
-          <div className="text-[13px] font-extrabold tracking-[-0.03em] text-white">April</div>
+          <div className="mb-[2px] font-mono text-[9px] text-muted-foreground">BEST MONTH</div>
+          <div className="text-[13px] font-extrabold tracking-[-0.03em] text-foreground">April</div>
         </div>
         <div>
-          <div className="mb-[2px] font-mono text-[9px] text-[rgba(255,255,255,0.4)]">WIN RATE</div>
+          <div className="mb-[2px] font-mono text-[9px] text-muted-foreground">WIN RATE</div>
           <div className="text-[13px] font-extrabold tracking-[-0.03em] text-[#16a34a]">62%</div>
         </div>
       </div>
@@ -424,14 +424,14 @@ function InsightCards({ deals }: { deals: Deal[] }) {
   return (
     <div className="mb-6 grid grid-cols-4 gap-[10px]">
       {insights.map(ins => (
-        <div key={ins.label} className="flex items-start gap-3 rounded-[13px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-4 py-[14px]">
+        <div key={ins.label} className="flex items-start gap-3 rounded-[13px] border border-border bg-card px-4 py-[14px]">
           <div className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] ${ins.bgClass}`}>
             <ins.icon size={15} color={ins.color} />
           </div>
           <div className="min-w-0">
-            <div className="mb-[3px] font-mono text-[9px] tracking-[0.04em] text-[rgba(255,255,255,0.4)]">{ins.label.toUpperCase()}</div>
-            <div className="mb-[3px] text-[14px] font-extrabold leading-[1.1] tracking-[-0.03em] text-white">{ins.value}</div>
-            <div className="text-[10px] leading-[1.3] text-[rgba(255,255,255,0.4)]">{ins.sub}</div>
+            <div className="mb-[3px] font-mono text-[9px] tracking-[0.04em] text-muted-foreground">{ins.label.toUpperCase()}</div>
+            <div className="mb-[3px] text-[14px] font-extrabold leading-[1.1] tracking-[-0.03em] text-foreground">{ins.value}</div>
+            <div className="text-[10px] leading-[1.3] text-muted-foreground">{ins.sub}</div>
           </div>
         </div>
       ))}
@@ -493,9 +493,9 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
       {/* Header */}
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="mb-1 text-2xl font-extrabold tracking-[-0.04em] text-white">Content Pipeline</h1>
-          <div className="text-[13px] text-[rgba(255,255,255,0.4)]">Track each campaign from planning to published content</div>
-          <div className="mt-3 inline-flex rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-1">
+          <h1 className="mb-1 text-2xl font-extrabold tracking-[-0.04em] text-foreground">Content Pipeline</h1>
+          <div className="text-[13px] text-muted-foreground">Track each campaign from planning to published content</div>
+          <div className="mt-3 inline-flex rounded-[10px] border border-border bg-card p-1">
             {[
               { id: SponsorshipMode.TABLE, label: "Table" },
               { id: SponsorshipMode.KANBAN, label: "Kanban" },
@@ -506,7 +506,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                   key={v.id}
                   onClick={() => setViewMode(v.id)}
                   className={`cursor-pointer rounded-[8px] px-3 py-1.5 text-[11px] font-semibold transition-colors ${
-                    active ? "bg-[rgba(232,64,42,0.15)] text-[#E8402A]" : "text-[rgba(255,255,255,0.55)] hover:text-white"
+                    active ? "bg-[rgba(232,64,42,0.15)] text-[#E8402A]" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {v.label}
@@ -517,12 +517,12 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
         </div>
         <div className="flex items-center gap-[10px]">
           <div className="relative">
-            <MagnifyingGlass size={13} color="rgba(255,255,255,0.4)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
-            <input value={uiState.search} onChange={e => setUiState(prev => ({ ...prev, search: e.target.value }))} placeholder="Search content…" className="h-[38px] w-[170px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] pl-[34px] pr-[14px] text-xs text-[rgba(255,255,255,0.7)] outline-none"
+            <MagnifyingGlass size={13} color="var(--muted-foreground)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
+            <input value={uiState.search} onChange={e => setUiState(prev => ({ ...prev, search: e.target.value }))} placeholder="Search content…" className="h-[38px] w-[170px] rounded-[10px] border border-border bg-card pl-[34px] pr-[14px] text-xs text-muted-foreground outline-none"
               onFocus={e => e.currentTarget.style.borderColor = "#E8402A"}
-              onBlur={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"} />
+              onBlur={e => e.currentTarget.style.borderColor = "var(--muted-foreground)"} />
           </div>
-          <button onClick={() => setModal({})} className="flex cursor-pointer items-center gap-2 rounded-[11px] bg-(--cos-primary) px-5 py-[10px] text-[13px] font-bold text-white">
+          <button onClick={() => setModal({})} className="flex cursor-pointer items-center gap-2 rounded-[11px] bg-primary px-5 py-[10px] text-[13px] font-bold text-primary-foreground">
             <Plus size={15} /> Add Content
           </button>
         </div>
@@ -536,16 +536,16 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
           { label: "Pending Review", value: String(deals.filter(d => d.stage === SponsorshipStage.SIGNED).length), sub: "awaiting approval", icon: Quotes, accent: "#2563eb", trend: `Est. value ${fmt(totalSigned)}` },
           { label: "Published", value: String(deals.filter(d => d.stage === SponsorshipStage.PAID).length), sub: "completed", icon: CheckCircle, accent: "#16a34a", trend: `Est. value ${fmt(totalPaid)}` },
         ].map(k => (
-          <div key={k.label} className={`rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-5 py-[18px] ${ACCENT_KPI_CARD_CLASS[k.accent] ?? ""}`}>
+          <div key={k.label} className={`rounded-2xl border border-border bg-card px-5 py-[18px] ${ACCENT_KPI_CARD_CLASS[k.accent] ?? ""}`}>
             <div className="mb-[10px] flex items-start justify-between">
-              <span className="text-[11px] font-medium text-[rgba(255,255,255,0.4)]">{k.label}</span>
-              <div className={`flex h-[30px] w-[30px] items-center justify-center rounded-lg ${ACCENT_SOFT_BG_CLASS[k.accent] ?? "bg-[rgba(255,255,255,0.08)]"}`}>
+              <span className="text-[11px] font-medium text-muted-foreground">{k.label}</span>
+              <div className={`flex h-[30px] w-[30px] items-center justify-center rounded-lg ${ACCENT_SOFT_BG_CLASS[k.accent] ?? "bg-muted"}`}>
                 <k.icon size={14} color={k.accent} />
               </div>
             </div>
-            <div className="mb-1 text-[26px] font-black leading-none tracking-[-0.04em] text-white">{k.value}</div>
-            <div className="mb-[3px] font-mono text-[10px] text-[rgba(255,255,255,0.4)]">{k.sub}</div>
-            <div className={`font-mono text-[9px] font-semibold ${ACCENT_TEXT_CLASS[k.accent] ?? "text-white"}`}>{k.trend}</div>
+            <div className="mb-1 text-[26px] font-black leading-none tracking-[-0.04em] text-foreground">{k.value}</div>
+            <div className="mb-[3px] font-mono text-[10px] text-muted-foreground">{k.sub}</div>
+            <div className={`font-mono text-[9px] font-semibold ${ACCENT_TEXT_CLASS[k.accent] ?? "text-foreground"}`}>{k.trend}</div>
           </div>
         ))}
       </div>
@@ -561,27 +561,27 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
           </div>
 
           {/* Top deals table */}
-          <div className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[22px] py-5">
-            <div className="mb-4 text-[13px] font-bold tracking-[-0.02em] text-white">All Deals — Value Ranked</div>
+          <div className="rounded-2xl border border-border bg-card px-[22px] py-5">
+            <div className="mb-4 text-[13px] font-bold tracking-[-0.02em] text-foreground">All Deals — Value Ranked</div>
             <div className="flex flex-col">
-              <div className="mb-1 grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr] gap-3 border-b border-[rgba(255,255,255,0.07)] pb-[10px]">
+              <div className="mb-1 grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr] gap-3 border-b border-border pb-[10px]">
                 {["Brand", "Value", "Category", "Stage", "Priority"].map(h => (
-                  <div key={h} className="font-mono text-[9px] font-bold tracking-[0.07em] text-[rgba(255,255,255,0.4)]">{h.toUpperCase()}</div>
+                  <div key={h} className="font-mono text-[9px] font-bold tracking-[0.07em] text-muted-foreground">{h.toUpperCase()}</div>
                 ))}
               </div>
               {[...deals].sort((a, b) => b.value - a.value).map((deal, i) => {
                 const S = STAGE_CFG[deal.stage];
                 const logoClass = LOGO_ACCENT_CLASS[deal.logoColor] ?? "bg-[#E8402A15] text-[#E8402A]";
                 return (
-                  <div key={deal.id} onClick={() => { setSelectedId(deal.id); }} className={`grid cursor-pointer grid-cols-[2fr_1fr_1fr_1fr_1.5fr] gap-3 rounded-lg py-[10px] transition-colors duration-100 ${i < deals.length - 1 ? "border-b border-[rgba(255,255,255,0.07)]" : ""}`}
-                    onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                  <div key={deal.id} onClick={() => { setSelectedId(deal.id); }} className={`grid cursor-pointer grid-cols-[2fr_1fr_1fr_1fr_1.5fr] gap-3 rounded-lg py-[10px] transition-colors duration-100 ${i < deals.length - 1 ? "border-b border-border" : ""}`}
+                    onMouseEnter={e => e.currentTarget.style.background = "var(--muted-foreground)"}
                     onMouseLeave={e => e.currentTarget.style.background = "none"}>
                     <div className="flex items-center gap-[9px]">
                       <div className={`flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-md font-mono text-[8px] font-extrabold ${logoClass}`}>{deal.logo}</div>
-                      <span className="text-xs font-semibold text-white">{deal.brand}</span>
+                      <span className="text-xs font-semibold text-foreground">{deal.brand}</span>
                     </div>
-                    <div className="flex items-center text-xs font-extrabold tracking-[-0.03em] text-white">{fmt(deal.value)}</div>
-                    <div className="flex items-center font-mono text-[11px] text-[rgba(255,255,255,0.4)]">{deal.category}</div>
+                    <div className="flex items-center text-xs font-extrabold tracking-[-0.03em] text-foreground">{fmt(deal.value)}</div>
+                    <div className="flex items-center font-mono text-[11px] text-muted-foreground">{deal.category}</div>
                     <div className="flex items-center">
                       <div className={`inline-flex items-center gap-1 rounded-[99px] border px-2 py-[3px] ${STAGE_ACTIVE_CLASS[deal.stage]}`}>
                         <S.icon size={9} color={S.color} />
@@ -590,8 +590,8 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                     </div>
                     <div className="flex items-center gap-[6px]">
                       <div className={`h-[6px] w-[6px] rounded-full ${PRIORITY_DOT_CLASS[deal.priority]}`} />
-                      <span className="font-mono text-[11px] capitalize text-[rgba(255,255,255,0.4)]">{deal.priority}</span>
-                      <CaretRight size={12} color="rgba(255,255,255,0.4)" className="ml-auto" />
+                      <span className="font-mono text-[11px] capitalize text-muted-foreground">{deal.priority}</span>
+                      <CaretRight size={12} color="var(--muted-foreground)" className="ml-auto" />
                     </div>
                   </div>
                 );
@@ -601,15 +601,15 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
         </div>
       ) : viewMode === SponsorshipMode.TABLE ? (
         /* ── Table view ── */
-        <div className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-5 py-4">
-          <div className="mb-3 text-[12px] font-semibold text-[rgba(255,255,255,0.65)]">
+        <div className="rounded-2xl border border-border bg-card px-5 py-4">
+          <div className="mb-3 text-[12px] font-semibold text-muted-foreground">
             {filtered.length} items
           </div>
           <div className="overflow-x-auto">
             <div className="min-w-[980px]">
-              <div className="grid grid-cols-[2.2fr_1.2fr_1.1fr_1.1fr_1.4fr_1fr] gap-3 border-b border-[rgba(255,255,255,0.07)] px-2 pb-2">
+              <div className="grid grid-cols-[2.2fr_1.2fr_1.1fr_1.1fr_1.4fr_1fr] gap-3 border-b border-border px-2 pb-2">
                 {["Content", "Stage", "Priority", "Deadline", "Contact", "Est. value"].map((h) => (
-                  <div key={h} className="font-mono text-[9px] tracking-[0.08em] text-[rgba(255,255,255,0.4)]">
+                  <div key={h} className="font-mono text-[9px] tracking-[0.08em] text-muted-foreground">
                     {h.toUpperCase()}
                   </div>
                 ))}
@@ -625,25 +625,25 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                         setModal({ deal });
                       }}
                       className={`grid cursor-pointer grid-cols-[2.2fr_1.2fr_1.1fr_1.1fr_1.4fr_1fr] gap-3 px-2 py-3 transition-colors ${
-                        i < filtered.length - 1 ? "border-b border-[rgba(255,255,255,0.05)]" : ""
+                        i < filtered.length - 1 ? "border-b border-border" : ""
                       }`}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                        e.currentTarget.style.background = "var(--muted-foreground)";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = "none";
                       }}
                     >
                       <div className="min-w-0">
-                        <div className="truncate text-[12px] font-bold text-white">{deal.brand}</div>
-                        <div className="truncate font-mono text-[10px] text-[rgba(255,255,255,0.42)]">{deal.category}</div>
+                        <div className="truncate text-[12px] font-bold text-foreground">{deal.brand}</div>
+                        <div className="truncate font-mono text-[10px] text-muted-foreground">{deal.category}</div>
                       </div>
                       <div className="flex items-center">
                         <select
                           value={deal.stage}
                           onClick={(e) => e.stopPropagation()}
                           onChange={(e) => handleStageChange(deal.id, e.target.value as Stage)}
-                          className="w-full cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.09)] bg-[rgba(255,255,255,0.03)] px-2 py-1.5 font-mono text-[10px] text-[rgba(255,255,255,0.8)] outline-none"
+                          className="w-full cursor-pointer rounded-[8px] border border-border bg-muted px-2 py-1.5 font-mono text-[10px] text-muted-foreground outline-none"
                         >
                           {STAGES.map((stage) => (
                             <option key={stage} value={stage}>
@@ -657,7 +657,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                           value={deal.priority}
                           onClick={(e) => e.stopPropagation()}
                           onChange={(e) => handlePriorityChange(deal.id, e.target.value as DealPriority)}
-                          className="w-full cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.09)] bg-[rgba(255,255,255,0.03)] px-2 py-1.5 font-mono text-[10px] capitalize text-[rgba(255,255,255,0.8)] outline-none"
+                          className="w-full cursor-pointer rounded-[8px] border border-border bg-muted px-2 py-1.5 font-mono text-[10px] capitalize text-muted-foreground outline-none"
                         >
                           {[DealPriority.HIGH, DealPriority.MEDIUM, DealPriority.LOW].map((priority) => (
                             <option key={priority} value={priority}>
@@ -666,13 +666,13 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                           ))}
                         </select>
                       </div>
-                      <div className="flex items-center font-mono text-[10px] text-[rgba(255,255,255,0.55)]">
+                      <div className="flex items-center font-mono text-[10px] text-muted-foreground">
                         {deal.deadline === "Done" ? "Done" : deal.deadline}
                       </div>
-                      <div className="flex items-center font-mono text-[10px] text-[rgba(255,255,255,0.55)]">
+                      <div className="flex items-center font-mono text-[10px] text-muted-foreground">
                         {deal.contact || "—"}
                       </div>
-                      <div className="flex items-center text-[11px] font-semibold text-[rgba(255,255,255,0.72)]">{fmt(deal.value)}</div>
+                      <div className="flex items-center text-[11px] font-semibold text-muted-foreground">{fmt(deal.value)}</div>
                     </div>
                   );
                 })}
@@ -709,7 +709,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                     }}
                     className={`rounded-[14px] border px-[6px] pb-[7px] pt-[6px] transition-colors duration-150 ${STAGE_COLUMN_SURFACE_CLASS[stage]} ${uiState.dragOverStage === stage ? "ring-1 ring-[#E8402A]/50" : ""}`}
                   >
-                    <div className={`relative mb-[9px] rounded-xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[13px] py-[10px] before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:rounded-t-xl ${STAGE_HEADER_GLOW_CLASS[stage]}`}>
+                    <div className={`relative mb-[9px] rounded-xl border border-border bg-card px-[13px] py-[10px] before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:rounded-t-xl ${STAGE_HEADER_GLOW_CLASS[stage]}`}>
                       <div className="mb-[3px] flex items-center justify-between">
                         <div className="flex items-center gap-[5px]">
                           <CIcon size={11} color={C.color} />
@@ -717,7 +717,7 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                         </div>
                         <div className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border font-mono text-[9px] font-extrabold ${STAGE_ACTIVE_CLASS[stage]}`}>{stageDeals.length}</div>
                       </div>
-                      <div className="font-mono text-[9px] text-[rgba(255,255,255,0.42)]">Est. value {fmt(stageValue)}</div>
+                      <div className="font-mono text-[9px] text-muted-foreground">Est. value {fmt(stageValue)}</div>
                     </div>
                     {stageDeals.map(deal => (
                       <div key={deal.id}>
@@ -729,9 +729,9 @@ export function SponsorshipPage({ mode = SponsorshipMode.KANBAN }: { mode?: Spon
                         />
                       </div>
                     ))}
-                    <button onClick={() => setModal({ defaultStage: stage })} className="flex w-full cursor-pointer items-center justify-center gap-[5px] rounded-[10px] border border-dashed border-[rgba(255,255,255,0.07)] bg-transparent p-2 text-[10px] text-[rgba(255,255,255,0.4)] transition-colors duration-150"
+                    <button onClick={() => setModal({ defaultStage: stage })} className="flex w-full cursor-pointer items-center justify-center gap-[5px] rounded-[10px] border border-dashed border-border bg-transparent p-2 text-[10px] text-muted-foreground transition-colors duration-150"
                       onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(232,64,42,0.4)"}
-                      onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"}>
+                      onMouseLeave={e => e.currentTarget.style.borderColor = "var(--muted-foreground)"}>
                       <Plus size={10} /> Add
                     </button>
                   </div>

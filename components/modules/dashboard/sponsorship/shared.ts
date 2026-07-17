@@ -54,7 +54,7 @@ export const PRIORITY_DOT_CLASS: Record<Priority, string> = {
 
 export const LOGO_ACCENT_CLASS: Record<string, string> = {
   "#E8402A": "bg-[#E8402A15] text-[#E8402A]",
-  "#111111": "bg-[#11111115] text-[#111111]",
+  "#111111": "bg-[#11111115] text-foreground",
 };
 
 export const CATEGORIES = [

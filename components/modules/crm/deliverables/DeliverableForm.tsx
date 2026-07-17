@@ -64,9 +64,9 @@ export function DeliverableForm({
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Platform</Label>
+          <Label className="text-[12px] text-muted-foreground">Platform</Label>
           <Select value={values.platform} onValueChange={(next) => onChange({ ...values, platform: next })}>
-            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+            <SelectTrigger className="h-10 border-border bg-card text-xs text-muted-foreground">
               <SelectValue placeholder="Platform" />
             </SelectTrigger>
             <SelectContent>
@@ -81,9 +81,9 @@ export function DeliverableForm({
         </div>
 
         <div className="space-y-2">
-          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Deliverable Type</Label>
+          <Label className="text-[12px] text-muted-foreground">Deliverable Type</Label>
           <Select value={values.deliverableType} onValueChange={(next) => onChange({ ...values, deliverableType: next })}>
-            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+            <SelectTrigger className="h-10 border-border bg-card text-xs text-muted-foreground">
               <SelectValue placeholder="Deliverable type" />
             </SelectTrigger>
             <SelectContent>
@@ -98,7 +98,7 @@ export function DeliverableForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="deliverable-due-date" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="deliverable-due-date" className="text-[12px] text-muted-foreground">
             Due Date
           </Label>
           <Input
@@ -106,15 +106,15 @@ export function DeliverableForm({
             type="date"
             value={values.dueDate}
             onChange={(event) => onChange({ ...values, dueDate: event.target.value })}
-            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="h-10 border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.dueDate} />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Status</Label>
+          <Label className="text-[12px] text-muted-foreground">Status</Label>
           <Select value={values.status} onValueChange={(next) => onChange({ ...values, status: next as DeliverableFormValues["status"] })}>
-            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+            <SelectTrigger className="h-10 border-border bg-card text-xs text-muted-foreground">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -129,12 +129,12 @@ export function DeliverableForm({
         </div>
 
         <div className="space-y-2">
-          <Label className="text-[12px] text-[rgba(255,255,255,0.72)]">Approval Status</Label>
+          <Label className="text-[12px] text-muted-foreground">Approval Status</Label>
           <Select
             value={values.approvalStatus}
             onValueChange={(next) => onChange({ ...values, approvalStatus: next as DeliverableFormValues["approvalStatus"] })}
           >
-            <SelectTrigger className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+            <SelectTrigger className="h-10 border-border bg-card text-xs text-muted-foreground">
               <SelectValue placeholder="Approval status" />
             </SelectTrigger>
             <SelectContent>
@@ -149,7 +149,7 @@ export function DeliverableForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="deliverable-revision-count" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="deliverable-revision-count" className="text-[12px] text-muted-foreground">
             Revision Count
           </Label>
           <Input
@@ -158,13 +158,13 @@ export function DeliverableForm({
             min={0}
             value={values.revisionCount}
             onChange={(event) => onChange({ ...values, revisionCount: event.target.value })}
-            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="h-10 border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.revisionCount} />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="deliverable-submission-url" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="deliverable-submission-url" className="text-[12px] text-muted-foreground">
             Submission URL
           </Label>
           <Input
@@ -172,13 +172,13 @@ export function DeliverableForm({
             value={values.submissionUrl}
             onChange={(event) => onChange({ ...values, submissionUrl: event.target.value })}
             placeholder="https://"
-            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="h-10 border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.submissionUrl} />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="deliverable-published-url" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="deliverable-published-url" className="text-[12px] text-muted-foreground">
             Published URL
           </Label>
           <Input
@@ -186,13 +186,13 @@ export function DeliverableForm({
             value={values.publishedUrl}
             onChange={(event) => onChange({ ...values, publishedUrl: event.target.value })}
             placeholder="https://"
-            className="h-10 border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="h-10 border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.publishedUrl} />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="deliverable-brand-notes" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="deliverable-brand-notes" className="text-[12px] text-muted-foreground">
             Brand Notes
           </Label>
           <Textarea
@@ -200,13 +200,13 @@ export function DeliverableForm({
             value={values.brandNotes}
             onChange={(event) => onChange({ ...values, brandNotes: event.target.value })}
             rows={3}
-            className="border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.brandNotes} />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="deliverable-internal-notes" className="text-[12px] text-[rgba(255,255,255,0.72)]">
+          <Label htmlFor="deliverable-internal-notes" className="text-[12px] text-muted-foreground">
             Internal Notes
           </Label>
           <Textarea
@@ -214,7 +214,7 @@ export function DeliverableForm({
             value={values.internalNotes}
             onChange={(event) => onChange({ ...values, internalNotes: event.target.value })}
             rows={3}
-            className="border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[13px]"
+            className="border-border bg-card text-[13px]"
           />
           <ErrorText message={fieldErrors.internalNotes} />
         </div>

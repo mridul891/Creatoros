@@ -42,23 +42,23 @@ export function TasksTable({
   onDelete,
 }: TasksTableProps) {
   return (
-    <div className="overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D]">
+    <div className="overflow-hidden rounded-[18px] border border-border bg-card">
       <div className="overflow-x-auto">
         <Table className="min-w-[860px]">
           <TableHeader>
-            <TableRow className="border-b border-[rgba(255,255,255,0.08)] hover:bg-transparent">
-              <TableHead className="min-w-[220px] px-4 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.45)]">Task</TableHead>
-              <TableHead className="min-w-[170px] px-4 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.45)]">Status</TableHead>
-              <TableHead className="min-w-[120px] px-4 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.45)]">Priority</TableHead>
-              <TableHead className="min-w-[120px] px-4 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.45)]">Due Date</TableHead>
-              <TableHead className="hidden min-w-[90px] px-4 font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.45)] lg:table-cell">Order</TableHead>
+            <TableRow className="border-b border-border hover:bg-transparent">
+              <TableHead className="min-w-[220px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">Task</TableHead>
+              <TableHead className="min-w-[170px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">Status</TableHead>
+              <TableHead className="min-w-[120px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">Priority</TableHead>
+              <TableHead className="min-w-[120px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">Due Date</TableHead>
+              <TableHead className="hidden min-w-[90px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground lg:table-cell">Order</TableHead>
               <TableHead className="w-[44px] px-2" />
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map((item) => {
               return (
-                <TableRow key={item.id} className="border-b border-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.06)]">
+                <TableRow key={item.id} className="border-b border-border hover:bg-muted">
                 <TableCell className="px-4 py-3">
                   <button
                     type="button"
@@ -66,9 +66,9 @@ export function TasksTable({
                     className="cursor-pointer text-left"
                     aria-label={`View task ${item.title}`}
                   >
-                    <p className="truncate text-[13px] font-semibold text-white">{item.title}</p>
+                    <p className="truncate text-[13px] font-semibold text-foreground">{item.title}</p>
                   </button>
-                  <p className="mt-1 truncate text-[11px] text-[rgba(255,255,255,0.55)]">{item.description ?? "No description provided."}</p>
+                  <p className="mt-1 truncate text-[11px] text-muted-foreground">{item.description ?? "No description provided."}</p>
                 </TableCell>
                 <TableCell className="px-4">
                   <select
@@ -76,7 +76,7 @@ export function TasksTable({
                     aria-label={`Status for ${item.title}`}
                     disabled={updatingTaskId === item.id || item.isArchived || isReadOnly}
                     onChange={(event) => onStatusChange(item.id, event.target.value as TaskListItem["status"])}
-                    className="h-8 w-full cursor-pointer rounded-[8px] border border-[rgba(255,255,255,0.1)] bg-[#111111] px-2 text-[11px] text-[rgba(255,255,255,0.85)]"
+                    className="h-8 w-full cursor-pointer rounded-[8px] border border-border bg-secondary px-2 text-[11px] text-muted-foreground"
                   >
                     {TASK_STATUSES.map((status) => (
                       <option key={status} value={status}>
@@ -90,10 +90,10 @@ export function TasksTable({
                     {item.priority}
                   </span>
                 </TableCell>
-                <TableCell className="px-4 text-[12px] text-[rgba(255,255,255,0.7)]">
+                <TableCell className="px-4 text-[12px] text-muted-foreground">
                   {item.dueDate ? item.dueDate.toLocaleDateString() : "—"}
                 </TableCell>
-                <TableCell className="hidden px-4 text-[12px] text-[rgba(255,255,255,0.6)] lg:table-cell">{item.orderIndex}</TableCell>
+                <TableCell className="hidden px-4 text-[12px] text-muted-foreground lg:table-cell">{item.orderIndex}</TableCell>
                 <TableCell className="text-right">
                   <TaskRowActions
                     task={item}

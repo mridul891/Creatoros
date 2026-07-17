@@ -35,17 +35,17 @@ export function CrmConfirmDialog({
 }: CrmConfirmDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-[rgba(255,255,255,0.8)]">
+      <AlertDialogContent className="border-border bg-card text-muted-foreground">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-[rgba(232,64,42,0.14)] text-[#E8402A]">
             <Warning />
           </AlertDialogMedia>
-          <AlertDialogTitle className="text-white">{title}</AlertDialogTitle>
-          <AlertDialogDescription className="text-[rgba(255,255,255,0.55)]">
+          <AlertDialogTitle className="text-foreground">{title}</AlertDialogTitle>
+          <AlertDialogDescription className="text-muted-foreground">
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className="border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)]">
+        <AlertDialogFooter className="border-border bg-muted">
           <AlertDialogCancel disabled={isLoading} className="cursor-pointer">
             Cancel
           </AlertDialogCancel>

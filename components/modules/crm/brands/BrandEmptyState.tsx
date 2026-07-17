@@ -18,7 +18,7 @@ export function BrandEmptyState({ isSearch, onCreate }: BrandEmptyStateProps) {
       }
       actionLabel={isSearch ? undefined : "Create Brand"}
       onAction={isSearch ? undefined : onCreate}
-      className="border-[rgba(255,255,255,0.07)] bg-[#0D0D0D]"
+      className="border-border bg-card"
     />
   )
 }

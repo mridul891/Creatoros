@@ -40,15 +40,15 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
   }
 
   return (
-    <div className="overflow-x-auto rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-3">
+    <div className="overflow-x-auto rounded-[18px] border border-border bg-card p-3">
       <div className="grid min-w-[980px] grid-cols-[repeat(10,minmax(210px,1fr))] gap-3">
         {DEAL_STAGES.map((stage) => {
           const items = grouped[stage]
           return (
             <div
               key={stage}
-              className={`rounded-[14px] border bg-[rgba(255,255,255,0.02)] p-2 transition ${
-                dragOverStage === stage ? "border-[#E8402A]/60 ring-1 ring-[#E8402A]/40" : "border-[rgba(255,255,255,0.06)]"
+              className={`rounded-[14px] border bg-muted p-2 transition ${
+                dragOverStage === stage ? "border-[#E8402A]/60 ring-1 ring-[#E8402A]/40" : "border-border"
               }`}
               onDragOver={(event) => {
                 event.preventDefault()
@@ -68,7 +68,7 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
             >
               <div className="mb-2 flex items-center justify-between px-1">
                 <DealStageBadge stage={stage} />
-                <span className="font-mono text-[10px] text-[rgba(255,255,255,0.45)]">{items.length}</span>
+                <span className="font-mono text-[10px] text-muted-foreground">{items.length}</span>
               </div>
 
               <div className="space-y-2">
@@ -81,25 +81,25 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
                       setDragDealId(null)
                       setDragOverStage(null)
                     }}
-                    className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[#101010] p-3"
+                    className="rounded-[12px] border border-border bg-[#101010] p-3"
                   >
                     <Link href={`/dashboard/deals/${deal.id}`} className="block">
-                      <p className="text-[12px] font-semibold text-white">{deal.campaignName}</p>
-                      <p className="mt-1 text-[11px] text-[rgba(255,255,255,0.58)]">{deal.brandName}</p>
+                      <p className="text-[12px] font-semibold text-foreground">{deal.campaignName}</p>
+                      <p className="mt-1 text-[11px] text-muted-foreground">{deal.brandName}</p>
                     </Link>
-                    <div className="mt-2 flex items-center justify-between text-[11px] text-[rgba(255,255,255,0.62)]">
+                    <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
                       <span>
                         {deal.currency} {deal.dealValue.toLocaleString()}
                       </span>
                       <span>{deal.priority}</span>
                     </div>
                     {deal.dueDate ? (
-                      <p className="mt-1 text-[10px] text-[rgba(255,255,255,0.45)]">Due {deal.dueDate.toLocaleDateString()}</p>
+                      <p className="mt-1 text-[10px] text-muted-foreground">Due {deal.dueDate.toLocaleDateString()}</p>
                     ) : null}
                     <button
                       type="button"
                       disabled={isMutating || deal.status !== "Active"}
-                      className="mt-2 flex cursor-pointer items-center gap-1 rounded-md border border-[rgba(255,255,255,0.09)] px-2 py-1 text-[10px] text-[rgba(255,255,255,0.62)]"
+                      className="mt-2 flex cursor-pointer items-center gap-1 rounded-md border border-border px-2 py-1 text-[10px] text-muted-foreground"
                       onClick={() => {
                         const currentIndex = DEAL_STAGES.indexOf(deal.stage)
                         const next = DEAL_STAGES[currentIndex + 1]

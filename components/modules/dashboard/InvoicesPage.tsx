@@ -60,19 +60,18 @@ function nextId(invoices: Invoice[]) {
   return `INV-${Math.max(...nums, 2024) + 1}`;
 }
 
-const PRO_FONT = "font-['SF_Pro_Display',_-apple-system,_sans-serif]";
 const MONO_FONT = "font-mono";
-const LABEL_CLASS = `mb-[6px] block text-xs font-semibold text-[rgba(255,255,255,0.65)] ${PRO_FONT}`;
-const INPUT_BASE_CLASS = `box-border w-full rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[14px] py-[10px] text-[13px] text-[rgba(255,255,255,0.7)] outline-none transition-colors duration-150 focus:border-[#E8402A] ${PRO_FONT}`;
+const LABEL_CLASS = `mb-[6px] block text-xs font-semibold text-muted-foreground `;
+const INPUT_BASE_CLASS = `box-border w-full rounded-[10px] border border-border bg-muted px-[14px] py-[10px] text-[13px] text-muted-foreground outline-none transition-colors duration-150 focus:border-[#E8402A] `;
 const ICON_ACCENT: Record<string, string> = {
-  "#111111": "text-[#111111] bg-[#11111112]",
+  "#111111": "text-foreground bg-[#11111112]",
   "#d97706": "text-[#d97706] bg-[#d9770612]",
   "#E8402A": "text-[#E8402A] bg-[#E8402A12]",
   "#16a34a": "text-[#16a34a] bg-[#16a34a12]",
 };
 const LOGO_TONE: Record<string, string> = {
   "#E8402A": "bg-[#E8402A18] text-[#E8402A]",
-  "#111111": "bg-[#11111118] text-[#111111]",
+  "#111111": "bg-[#11111118] text-foreground",
 };
 
 function formatInvoiceDate(value: Date | null) {
@@ -147,18 +146,18 @@ function InvoiceModal({ state, onSave, onClose }: {
 
   return (
     <div
-      className="fixed inset-0 z-200 flex items-center justify-center bg-[rgba(0,0,0,0.45)] backdrop-blur-[6px]"
+      className="fixed inset-0 z-200 flex items-center justify-center bg-muted backdrop-blur-[6px]"
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="max-h-[90vh] w-[540px] overflow-y-auto rounded-[22px] bg-[#0D0D0D] shadow-[0_32px_80px_rgba(0,0,0,0.22)]">
-        <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.07)] px-7 py-[22px]">
+      <div className="max-h-[90vh] w-[540px] overflow-y-auto rounded-[22px] bg-card shadow-[0_32px_80px_rgba(0,0,0,0.22)]">
+        <div className="flex items-center justify-between border-b border-border px-7 py-[22px]">
           <div>
-            <div className={`text-[17px] font-extrabold tracking-[-0.03em] text-white ${PRO_FONT}`}>
+            <div className={`text-[17px] font-extrabold tracking-[-0.03em] text-foreground `}>
               {ex ? "Edit Invoice" : "New Invoice"}
             </div>
-            <div className={`mt-0.5 text-[11px] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>{ex?.id ?? "Auto-assigned on save"}</div>
+            <div className={`mt-0.5 text-[11px] text-muted-foreground ${MONO_FONT}`}>{ex?.id ?? "Auto-assigned on save"}</div>
           </div>
-          <button onClick={onClose} className="cursor-pointer rounded-lg p-1.5 text-[rgba(255,255,255,0.4)]"><X size={18} /></button>
+          <button onClick={onClose} className="cursor-pointer rounded-lg p-1.5 text-muted-foreground"><X size={18} /></button>
         </div>
 
         <div className="flex flex-col gap-4 px-7 py-6">
@@ -209,7 +208,7 @@ function InvoiceModal({ state, onSave, onClose }: {
                     className={`flex flex-1 cursor-pointer items-center justify-center gap-[5px] rounded-[9px] border-[1.5px] px-1 py-2 text-[10px] capitalize transition-all duration-150 ${MONO_FONT} ${
                       form.status === s
                         ? `${C.toneBg} ${C.toneText} ${C.toneBorder} font-bold`
-                        : "border-[rgba(255,255,255,0.07)] text-[rgba(255,255,255,0.4)] font-normal"
+                        : "border-border text-muted-foreground font-normal"
                     }`}
                   >
                     <C.icon size={10} /> {s}
@@ -222,8 +221,8 @@ function InvoiceModal({ state, onSave, onClose }: {
         </div>
 
         <div className="flex justify-end gap-2.5 px-7 pb-6 pt-[14px]">
-          <button onClick={onClose} className={`cursor-pointer rounded-[10px] border border-[rgba(255,255,255,0.07)] px-5 py-2.5 text-[13px] text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>Cancel</button>
-          <button onClick={handleSave} className={`flex cursor-pointer items-center gap-2 rounded-[10px] bg-(--cos-primary) px-[22px] py-2.5 text-[13px] font-bold text-white ${PRO_FONT}`}>
+          <button onClick={onClose} className={`cursor-pointer rounded-[10px] border border-border px-5 py-2.5 text-[13px] text-muted-foreground `}>Cancel</button>
+          <button onClick={handleSave} className={`flex cursor-pointer items-center gap-2 rounded-[10px] bg-primary px-[22px] py-2.5 text-[13px] font-bold text-primary-foreground `}>
             <PaperPlaneRight size={13} /> {ex ? "FloppyDisk Changes" : "Create Invoice"}
           </button>
         </div>
@@ -242,17 +241,17 @@ function RowMenu({ onEdit, onDelete, onStatusChange }: {
     <div className="relative">
       <button
         onClick={e => { e.stopPropagation(); setOpen(o => !o); }}
-        className="flex cursor-pointer rounded-[7px] p-1.5 text-[rgba(255,255,255,0.4)] transition-colors duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+        className="flex cursor-pointer rounded-[7px] p-1.5 text-muted-foreground transition-colors duration-150 hover:bg-muted"
       >
         <DotsThree size={15} />
       </button>
       {open && (
         <div
-          className="absolute right-0 top-full z-50 min-w-[180px] overflow-hidden rounded-xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          className="absolute right-0 top-full z-50 min-w-[180px] overflow-hidden rounded-xl border border-border bg-card shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
           onMouseLeave={() => setOpen(false)}
         >
           {[
-            { label: "Edit invoice", icon: PencilSimple, action: onEdit, colorClass: "text-[rgba(255,255,255,0.65)]" },
+            { label: "Edit invoice", icon: PencilSimple, action: onEdit, colorClass: "text-muted-foreground" },
             { label: "Mark as Paid", icon: CheckCircle, action: () => onStatusChange(InvoiceStatus.PAID), colorClass: "text-[#16a34a]" },
             { label: "Mark as Sent", icon: Clock, action: () => onStatusChange(InvoiceStatus.SENT), colorClass: "text-[#d97706]" },
             { label: "Mark as Overdue", icon: Warning, action: () => onStatusChange(InvoiceStatus.OVERDUE), colorClass: "text-[#E8402A]" },
@@ -261,7 +260,7 @@ function RowMenu({ onEdit, onDelete, onStatusChange }: {
             <button
               key={item.label}
               onClick={e => { e.stopPropagation(); item.action(); setOpen(false); }}
-              className={`flex w-full cursor-pointer items-center gap-2.5 border-none bg-transparent px-[14px] py-2.5 text-left text-xs transition-colors duration-150 hover:bg-[rgba(255,255,255,0.05)] ${PRO_FONT} ${item.colorClass}`}
+              className={`flex w-full cursor-pointer items-center gap-2.5 border-none bg-transparent px-[14px] py-2.5 text-left text-xs transition-colors duration-150 hover:bg-muted  ${item.colorClass}`}
             >
               <item.icon size={13} /> {item.label}
             </button>
@@ -327,12 +326,12 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
       {/* Header */}
       <div className="mb-7 flex items-start justify-between">
         <div>
-          <h1 className={`mb-1 text-2xl font-extrabold tracking-[-0.04em] text-white ${PRO_FONT}`}>Invoices</h1>
-          <div className={`text-[13px] text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>Manage and track all your brand deal invoices</div>
+          <h1 className={`mb-1 text-2xl font-extrabold tracking-[-0.04em] text-foreground `}>Invoices</h1>
+          <div className={`text-[13px] text-muted-foreground `}>Manage and track all your brand deal invoices</div>
         </div>
         <button
           onClick={() => setModal({})}
-          className={`flex cursor-pointer items-center gap-2 rounded-[11px] bg-(--cos-primary) px-5 py-2.5 text-[13px] font-bold text-white transition-opacity duration-150 hover:opacity-85 ${PRO_FONT}`}
+          className={`flex cursor-pointer items-center gap-2 rounded-[11px] bg-primary px-5 py-2.5 text-[13px] font-bold text-primary-foreground transition-opacity duration-150 hover:opacity-85 `}
         >
           <Plus size={15} /> New Invoice
         </button>
@@ -346,30 +345,30 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
           { label: "Overdue",            value: fmt(totalOverdue), sub: `${invoices.filter(i => i.status === InvoiceStatus.OVERDUE).length} overdue`,        icon: Warning,accent:"#E8402A" },
           { label: "Total Invoices",     value: String(invoices.length), sub: "all time",                                                        icon: TrendUp,  accent: "#16a34a" },
         ].map(k => (
-          <div key={k.label} className="rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[22px] py-5">
+          <div key={k.label} className="rounded-2xl border border-border bg-card px-[22px] py-5">
             <div className="mb-3 flex items-start justify-between">
-              <span className={`text-xs font-medium text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>{k.label}</span>
+              <span className={`text-xs font-medium text-muted-foreground `}>{k.label}</span>
               <div className={`flex h-8 w-8 items-center justify-center rounded-[9px] ${ICON_ACCENT[k.accent]}`}>
                 <k.icon size={15} />
               </div>
             </div>
-            <div className={`mb-[5px] text-[28px] font-extrabold leading-none tracking-[-0.04em] text-white ${PRO_FONT}`}>{k.value}</div>
-            <div className={`text-[11px] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>{k.sub}</div>
+            <div className={`mb-[5px] text-[28px] font-extrabold leading-none tracking-[-0.04em] text-foreground `}>{k.value}</div>
+            <div className={`text-[11px] text-muted-foreground ${MONO_FONT}`}>{k.sub}</div>
           </div>
         ))}
       </div>
 
       {/* Filters */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex rounded-[11px] bg-[rgba(255,255,255,0.05)] p-[3px]">
+        <div className="flex rounded-[11px] bg-muted p-[3px]">
           {TABS.map(t => (
             <button
               key={t}
               onClick={() => setFilters(prev => ({ ...prev, tab: t }))}
-              className={`cursor-pointer rounded-lg border-none px-4 py-1.5 text-xs transition-all duration-150 ${PRO_FONT} ${
+              className={`cursor-pointer rounded-lg border-none px-4 py-1.5 text-xs transition-all duration-150  ${
                 filters.tab === t
-                  ? "bg-[#0D0D0D] font-semibold text-white shadow-[0_1px_4px_rgba(0,0,0,0.1)]"
-                  : "bg-transparent font-normal text-[rgba(255,255,255,0.4)]"
+                  ? "bg-card font-semibold text-foreground shadow-[0_1px_4px_rgba(0,0,0,0.1)]"
+                  : "bg-transparent font-normal text-muted-foreground"
               }`}
             >
               {t}
@@ -378,15 +377,15 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <MagnifyingGlass size={13} color="rgba(255,255,255,0.4)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
+            <MagnifyingGlass size={13} color="var(--muted-foreground)" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               value={filters.search}
               onChange={e => setFilters(prev => ({ ...prev, search: e.target.value }))}
               placeholder="Search..."
-              className={`h-9 w-[180px] rounded-[9px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] pl-[34px] pr-[14px] text-xs text-[rgba(255,255,255,0.7)] outline-none transition-colors duration-150 focus:border-[#E8402A] ${PRO_FONT}`}
+              className={`h-9 w-[180px] rounded-[9px] border border-border bg-card pl-[34px] pr-[14px] text-xs text-muted-foreground outline-none transition-colors duration-150 focus:border-[#E8402A] `}
             />
           </div>
-          <button className={`flex h-9 cursor-pointer items-center gap-1.5 rounded-[9px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[14px] text-xs text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>
+          <button className={`flex h-9 cursor-pointer items-center gap-1.5 rounded-[9px] border border-border bg-card px-[14px] text-xs text-muted-foreground `}>
             <Download size={12} /> Export CSV
           </button>
         </div>
@@ -394,14 +393,14 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
 
       {/* Table + panel */}
       <div className={`grid gap-4 ${selected ? "grid-cols-[1fr_360px]" : "grid-cols-1"}`}>
-        <div className="overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D]">
+        <div className="overflow-hidden rounded-[18px] border border-border bg-card">
           {/* Head */}
-          <div className={`grid grid-cols-[2fr_1.6fr_1fr_1.1fr_140px_60px] border-b border-[rgba(255,255,255,0.07)] px-6 py-3 text-[10px] tracking-wider text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>
+          <div className={`grid grid-cols-[2fr_1.6fr_1fr_1.1fr_140px_60px] border-b border-border px-6 py-3 text-[10px] tracking-wider text-muted-foreground ${MONO_FONT}`}>
             {["CLIENT", "DESCRIPTION", "AMOUNT", "DUE", "STATUS", ""].map(h => <span key={h}>{h}</span>)}
           </div>
 
           {filtered.length === 0 ? (
-            <div className={`px-6 py-12 text-center text-[13px] text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>No invoices found.</div>
+            <div className={`px-6 py-12 text-center text-[13px] text-muted-foreground `}>No invoices found.</div>
           ) : filtered.map((inv, i) => {
             const S = STATUS_CFG[inv.status];
             const isSelected = selected === inv.id;
@@ -409,18 +408,18 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
               <div
                 key={inv.id}
                 onClick={() => setSelected(isSelected ? null : inv.id)}
-                className={`grid grid-cols-[2fr_1.6fr_1fr_1.1fr_140px_60px] items-center px-6 py-[15px] transition-colors duration-150 ${i < filtered.length - 1 ? "border-b border-[rgba(255,255,255,0.07)]" : ""} ${isSelected ? "bg-[rgba(232,64,42,0.03)]" : "bg-transparent hover:bg-[rgba(255,255,255,0.05)]"} cursor-pointer`}
+                className={`grid grid-cols-[2fr_1.6fr_1fr_1.1fr_140px_60px] items-center px-6 py-[15px] transition-colors duration-150 ${i < filtered.length - 1 ? "border-b border-border" : ""} ${isSelected ? "bg-[rgba(232,64,42,0.03)]" : "bg-transparent hover:bg-muted"} cursor-pointer`}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-[11px] font-extrabold ${MONO_FONT} ${LOGO_TONE[inv.color] ?? "bg-[rgba(255,255,255,0.08)] text-white"}`}>{inv.logo}</div>
+                  <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-[11px] font-extrabold ${MONO_FONT} ${LOGO_TONE[inv.color] ?? "bg-muted text-foreground"}`}>{inv.logo}</div>
                   <div>
-                    <div className={`text-[13px] font-semibold text-white ${PRO_FONT}`}>{inv.client}</div>
-                    <div className={`text-[10px] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>{inv.id}</div>
+                    <div className={`text-[13px] font-semibold text-foreground `}>{inv.client}</div>
+                    <div className={`text-[10px] text-muted-foreground ${MONO_FONT}`}>{inv.id}</div>
                   </div>
                 </div>
-                <div className={`truncate pr-2 text-xs text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>{inv.desc}</div>
-                <div className={`text-sm font-bold tracking-[-0.02em] text-white ${PRO_FONT}`}>{fmt(inv.amount)}</div>
-                <div className={`text-[11px] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>{inv.due}</div>
+                <div className={`truncate pr-2 text-xs text-muted-foreground `}>{inv.desc}</div>
+                <div className={`text-sm font-bold tracking-[-0.02em] text-foreground `}>{fmt(inv.amount)}</div>
+                <div className={`text-[11px] text-muted-foreground ${MONO_FONT}`}>{inv.due}</div>
                 <div className={`inline-flex w-fit items-center gap-1.5 rounded-[99px] px-[10px] py-1 ${S.toneBg}`}>
                   <S.icon size={11} className={S.toneText} />
                   <span className={`text-[11px] font-semibold ${S.toneText} ${MONO_FONT}`}>{S.label}</span>
@@ -441,18 +440,18 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
         {selectedInv && (() => {
           const S = STATUS_CFG[selectedInv.status];
           return (
-            <div className="flex flex-col gap-[18px] rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-[26px]">
+            <div className="flex flex-col gap-[18px] rounded-[18px] border border-border bg-card p-[26px]">
               <div className="flex items-start justify-between">
                 <div>
-                  <div className={`mb-1 text-[11px] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>{selectedInv.id}</div>
-                  <div className={`text-lg font-extrabold tracking-[-0.03em] text-white ${PRO_FONT}`}>{selectedInv.client}</div>
+                  <div className={`mb-1 text-[11px] text-muted-foreground ${MONO_FONT}`}>{selectedInv.id}</div>
+                  <div className={`text-lg font-extrabold tracking-[-0.03em] text-foreground `}>{selectedInv.client}</div>
                 </div>
-                <button onClick={() => setSelected(null)} className="cursor-pointer border-none bg-transparent p-1 text-[rgba(255,255,255,0.4)]"><X size={16} /></button>
+                <button onClick={() => setSelected(null)} className="cursor-pointer border-none bg-transparent p-1 text-muted-foreground"><X size={16} /></button>
               </div>
 
-              <div className="rounded-[14px] bg-[rgba(255,255,255,0.05)] p-[18px]">
-                <div className={`mb-1.5 text-[10px] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>INVOICE TOTAL</div>
-                <div className={`text-4xl font-black tracking-tighter text-white ${PRO_FONT}`}>{fmt(selectedInv.amount)}</div>
+              <div className="rounded-[14px] bg-muted p-[18px]">
+                <div className={`mb-1.5 text-[10px] text-muted-foreground ${MONO_FONT}`}>INVOICE TOTAL</div>
+                <div className={`text-4xl font-black tracking-tighter text-foreground `}>{fmt(selectedInv.amount)}</div>
                 <div className={`mt-2.5 inline-flex items-center gap-1.5 rounded-[99px] px-[10px] py-1 ${S.toneBg}`}>
                   <S.icon size={11} className={S.toneText} />
                   <span className={`text-[11px] font-semibold ${S.toneText} ${MONO_FONT}`}>{S.label}</span>
@@ -460,15 +459,15 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
               </div>
 
               {[{ label: "Description", value: selectedInv.desc || "—" }, { label: "Issued", value: selectedInv.issued }, { label: "Due Date", value: selectedInv.due }].map(row => (
-                <div key={row.label} className="border-b border-[rgba(255,255,255,0.07)] pb-[14px]">
-                  <div className={`mb-1 text-[10px] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>{row.label.toUpperCase()}</div>
-                  <div className={`text-[13px] text-[rgba(255,255,255,0.65)] ${PRO_FONT}`}>{row.value}</div>
+                <div key={row.label} className="border-b border-border pb-[14px]">
+                  <div className={`mb-1 text-[10px] text-muted-foreground ${MONO_FONT}`}>{row.label.toUpperCase()}</div>
+                  <div className={`text-[13px] text-muted-foreground `}>{row.value}</div>
                 </div>
               ))}
 
               {/* Status quick-change */}
               <div>
-                <div className={`mb-2.5 text-[10px] tracking-[0.06em] text-[rgba(255,255,255,0.4)] ${MONO_FONT}`}>MARK AS</div>
+                <div className={`mb-2.5 text-[10px] tracking-[0.06em] text-muted-foreground ${MONO_FONT}`}>MARK AS</div>
                 <div className="flex flex-col gap-1.5">
                   {[...INVOICE_STATUS_OPTIONS].reverse().map(s => {
                     const C = STATUS_CFG[s];
@@ -480,11 +479,11 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
                         className={`flex cursor-pointer items-center gap-2.5 rounded-[10px] border px-3 py-[9px] text-left transition-all duration-150 ${
                           active
                             ? `${C.toneBorder} ${C.toneBg}`
-                            : "border-transparent bg-transparent hover:bg-[rgba(255,255,255,0.05)]"
+                            : "border-transparent bg-transparent hover:bg-muted"
                         }`}
                       >
-                        <C.icon size={13} className={active ? C.toneText : "text-[rgba(255,255,255,0.4)]"} />
-                        <span className={`text-xs capitalize ${PRO_FONT} ${active ? `${C.toneText} font-bold` : "font-normal text-[rgba(255,255,255,0.4)]"}`}>{s}</span>
+                        <C.icon size={13} className={active ? C.toneText : "text-muted-foreground"} />
+                        <span className={`text-xs capitalize  ${active ? `${C.toneText} font-bold` : "font-normal text-muted-foreground"}`}>{s}</span>
                         {active && <div className={`ml-auto h-[5px] w-[5px] rounded-full ${C.toneText.replace("text", "bg")}`} />}
                       </button>
                     );
@@ -493,22 +492,22 @@ export function InvoicesPage({ initialData, selectedInvoiceId }: InvoicesPagePro
               </div>
 
               <div className="flex flex-col gap-2">
-                <button onClick={() => setModal({ invoice: selectedInv })} className={`flex cursor-pointer items-center justify-center gap-2 rounded-[11px] border-none bg-(--cos-primary) p-[11px] text-[13px] font-bold text-white ${PRO_FONT}`}>
+                <button onClick={() => setModal({ invoice: selectedInv })} className={`flex cursor-pointer items-center justify-center gap-2 rounded-[11px] border-none bg-primary p-[11px] text-[13px] font-bold text-primary-foreground `}>
                   <PencilSimple size={13} /> Edit Invoice
                 </button>
                 <div className="grid grid-cols-2 gap-2">
-                  <button className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-2.5 text-xs text-[rgba(255,255,255,0.4)] ${PRO_FONT}`}>
+                  <button className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-border bg-card p-2.5 text-xs text-muted-foreground `}>
                     <Download size={12} /> Download
                   </button>
                   <button
                     onClick={() => { setCopied(true); setTimeout(() => setCopied(false), 1500); }}
-                    className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-2.5 text-xs ${PRO_FONT} ${copied ? "text-[#16a34a]" : "text-[rgba(255,255,255,0.4)]"}`}
+                    className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-border bg-card p-2.5 text-xs  ${copied ? "text-[#16a34a]" : "text-muted-foreground"}`}
                   >
                     {copied ? <CheckCircle size={12} /> : <Copy size={12} />}
                     {copied ? "Copied!" : "Copy link"}
                   </button>
                 </div>
-                <button onClick={() => { handleDelete(selectedInv.id); }} className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-[rgba(232,64,42,0.2)] bg-[rgba(232,64,42,0.05)] p-2.5 text-xs text-[#E8402A] ${PRO_FONT}`}>
+                <button onClick={() => { handleDelete(selectedInv.id); }} className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] border border-[rgba(232,64,42,0.2)] bg-[rgba(232,64,42,0.05)] p-2.5 text-xs text-[#E8402A] `}>
                   <Trash size={12} /> Delete invoice
                 </button>
               </div>

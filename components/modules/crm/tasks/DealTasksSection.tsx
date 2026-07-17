@@ -248,12 +248,12 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
 
   return (
     <>
-      <div className="rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
+      <div className="rounded-[20px] border border-border bg-card p-6">
         <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {summaryItems.map((item) => (
-            <Card key={item.label} className="rounded-[14px] border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-3 py-3">
-              <p className="text-[10px] uppercase tracking-wide text-[rgba(255,255,255,0.45)]">{item.label}</p>
-              <p className="mt-1 text-[18px] font-bold text-white">{item.value}</p>
+            <Card key={item.label} className="rounded-[14px] border-border bg-muted px-3 py-3">
+              <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{item.label}</p>
+              <p className="mt-1 text-[18px] font-bold text-foreground">{item.value}</p>
             </Card>
           ))}
         </div>
@@ -283,8 +283,8 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
         />
 
         {isReadOnly ? (
-          <Alert className="mt-4 border-[rgba(255,255,255,0.14)] bg-[rgba(255,255,255,0.03)]">
-            <AlertDescription className="text-[12px] text-[rgba(255,255,255,0.7)]">
+          <Alert className="mt-4 border-border bg-muted">
+            <AlertDescription className="text-[12px] text-muted-foreground">
               This deal is archived. Tasks are in read-only mode.
             </AlertDescription>
           </Alert>

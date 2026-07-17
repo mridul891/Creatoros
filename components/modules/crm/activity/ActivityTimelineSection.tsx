@@ -25,11 +25,11 @@ export function ActivityTimelineSection({
   })
 
   return (
-    <div className="mt-6 rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
+    <div className="mt-6 rounded-[20px] border border-border bg-card p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-white">{title}</h2>
-          <p className="mt-1 text-[12px] text-[rgba(255,255,255,0.5)]">
+          <h2 className="text-lg font-bold text-foreground">{title}</h2>
+          <p className="mt-1 text-[12px] text-muted-foreground">
             {pagination.total} {pagination.total === 1 ? "activity" : "activities"}
           </p>
         </div>

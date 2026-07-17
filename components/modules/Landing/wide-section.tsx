@@ -1,5 +1,5 @@
 import { ImageWithFallback } from "@/components/modules/figma/ImageWithFallback";
-import { wrap } from "./constants";
+import { WRAP_CLASS } from "./constants";
 
 type FeatureColumn = {
   label: string;
@@ -26,22 +26,22 @@ export function WideSection({
   animateFlow = false,
 }: WideSectionProps) {
   return (
-    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#080808] py-24">
-      <div style={wrap}>
+    <section className="border-t border-border bg-background py-16 sm:py-20 lg:py-24">
+      <div className={WRAP_CLASS}>
         <div className="mb-10 max-w-[560px]">
-          <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(235,80,80,0.85)]">
+          <p className="mb-[14px] text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
             {eyebrow}
           </p>
-          <h2 className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-white">
+          <h2 className="mb-[14px] text-balance text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-foreground">
             {title}
           </h2>
-          <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] leading-[1.7] text-[rgba(255,255,255,0.84)]">
+          <p className="m-0 text-[15px] leading-[1.7] text-muted-foreground text-pretty">
             {body}
           </p>
         </div>
 
         <div
-          className={`relative mb-12 overflow-hidden rounded-[10px] border border-[rgba(255,255,255,0.08)] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_32px_80px_rgba(0,0,0,0.6)] ${animateFlow ? "before:pointer-events-none before:absolute before:inset-y-0 before:left-[-25%] before:w-[35%] before:bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.09),transparent)] before:content-['']" : ""}`}
+          className={`relative mb-10 overflow-hidden rounded-xl border border-border bg-card shadow-2xl ring-1 ring-black/5 sm:mb-12 ${animateFlow ? "before:pointer-events-none before:absolute before:inset-y-0 before:left-[-25%] before:w-[35%] before:bg-[linear-gradient(90deg,transparent,rgba(32,97,238,0.12),transparent)] before:content-['']" : ""}`}
           style={animateFlow ? { animation: "wideFramePulse 8s ease-in-out infinite" } : undefined}
         >
           {animateFlow && (
@@ -49,7 +49,7 @@ export function WideSection({
               className="pointer-events-none absolute inset-y-0 left-[-25%] w-[35%]"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)",
+                  "linear-gradient(90deg, transparent, rgba(32,97,238,0.12), transparent)",
                 animation: "wideSweep 4.8s ease-in-out infinite",
               }}
             />
@@ -62,17 +62,17 @@ export function WideSection({
           />
         </div>
 
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {cols.map((column, index) => (
             <div
               key={index}
-              className={`border-t border-[rgba(255,255,255,0.07)] pt-5 transition-transform duration-300 ${animateFlow ? "motion-safe:hover:-translate-y-0.5" : ""}`}
+              className={`border-t border-border pt-5 transition-transform duration-300 ${animateFlow ? "motion-safe:hover:-translate-y-0.5" : ""}`}
               style={animateFlow ? { animation: "flowFadeIn 700ms ease-out both", animationDelay: `${index * 120}ms` } : undefined}
             >
-              <p className="mb-2 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-semibold tracking-[-0.015em] text-white">
+              <p className="mb-2 text-[14px] font-semibold tracking-[-0.015em] text-foreground">
                 {column.label}
               </p>
-              <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.78)]">
+              <p className="m-0 text-[13px] leading-[1.6] text-muted-foreground">
                 {column.desc}
               </p>
             </div>
@@ -93,12 +93,17 @@ export function WideSection({
               100% { transform: translateX(360%); opacity: 0; }
             }
             @keyframes wideFramePulse {
-              0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 32px 80px rgba(0,0,0,0.6); }
-              50% { box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 36px 92px rgba(0,0,0,0.62); }
+              0%, 100% { box-shadow: 0 0 0 1px var(--border), 0 32px 80px rgba(0,0,0,0.08); }
+              50% { box-shadow: 0 0 0 1px var(--border), 0 36px 92px rgba(0,0,0,0.12); }
             }
             @keyframes flowFadeIn {
               from { opacity: 0; transform: translateY(8px); }
               to { opacity: 1; transform: translateY(0); }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              * {
+                animation: none !important;
+              }
             }
           `}
         </style>

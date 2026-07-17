@@ -16,9 +16,8 @@ export type Platform = SocialPlatform;
 export type ModalState = PostModalState;
 export type { Post };
 
-export const PRO_FONT = "font-['SF_Pro_Display',_-apple-system,_sans-serif]";
 export const MONO_FONT = "font-mono";
-export const INPUT_CLASS = `w-full box-border rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[14px] py-[10px] text-[13px] text-[rgba(255,255,255,0.7)] outline-none ${PRO_FONT} focus:border-[#E8402A]`;
+export const INPUT_CLASS = `w-full box-border rounded-[10px] border border-border bg-muted px-[14px] py-[10px] text-[13px] text-muted-foreground outline-none  focus:border-[#E8402A]`;
 
 export const STATUS_CFG: Record<
   PostStatus,

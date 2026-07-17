@@ -34,7 +34,7 @@ type RecentContentItem = {
   thumb: string;
 };
 
-export const DIM = "rgba(255,255,255,0.4)";
+export const DIM = "var(--muted-foreground)";
 export const ACCENT = "#E8402A";
 export const MONO = "'SF Mono', 'Menlo', 'Monaco', monospace";
 

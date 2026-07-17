@@ -26,7 +26,7 @@ export function DealWorkspaceTabs({ dealId, activeTab, taskCount, deliverableCou
 
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange}>
-      <TabsList className="h-9 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] p-1">
+      <TabsList className="h-9 rounded-[10px] border border-border bg-muted p-1">
         {DEAL_WORKSPACE_TAB_DEFINITIONS.map((tab) => (
           <TabsTrigger key={tab.id} value={tab.id} className="h-7 rounded-[8px] px-3 text-[11px] data-[state=active]:text-[#E8402A]">
             {tab.label}
@@ -39,9 +39,9 @@ export function DealWorkspaceTabs({ dealId, activeTab, taskCount, deliverableCou
       {DEAL_WORKSPACE_TAB_DEFINITIONS.map((tab) => (
         <TabsContent key={tab.id} value={tab.id} className="mt-4">
           {tab.isPlaceholder ? (
-            <Card className="rounded-[20px] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
-              <h2 className="text-lg font-bold text-white">{tab.label}</h2>
-              <p className="mt-2 text-[13px] text-[rgba(255,255,255,0.6)]">{tab.label} module is planned and architecture-ready.</p>
+            <Card className="rounded-[20px] border-border bg-card p-6">
+              <h2 className="text-lg font-bold text-foreground">{tab.label}</h2>
+              <p className="mt-2 text-[13px] text-muted-foreground">{tab.label} module is planned and architecture-ready.</p>
             </Card>
           ) : (
             renderTabContent(tab.id)

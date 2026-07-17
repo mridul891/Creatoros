@@ -37,19 +37,19 @@ export function RecentContentSection({
     <div className="mb-10">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold tracking-[-0.02em] text-white">
+          <div className="text-sm font-semibold tracking-[-0.02em] text-foreground">
             Recent Content
           </div>
-          <div className="mt-0.5 font-mono text-xs text-[rgba(255,255,255,0.4)]">
+          <div className="mt-0.5 font-mono text-xs text-muted-foreground">
             Sorted by performance
           </div>
         </div>
-        <div className="flex rounded-[9px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] p-[3px]">
+        <div className="flex rounded-[9px] border border-border bg-muted p-[3px]">
           {[PlatformFilterEnum.ALL, PlatformFilterEnum.INSTAGRAM, PlatformFilterEnum.YOUTUBE].map((itemPlatform) => (
             <button
               key={itemPlatform}
               onClick={() => onChangePlatform(itemPlatform)}
-              className={`cursor-pointer rounded-md border-none px-[13px] py-[5px] font-mono text-[11px] capitalize transition-all duration-150 ${platform === itemPlatform ? "bg-[rgba(255,255,255,0.1)] font-semibold text-white" : "bg-transparent font-normal text-[rgba(255,255,255,0.4)]"}`}
+              className={`cursor-pointer rounded-md border-none px-[13px] py-[5px] font-mono text-[11px] capitalize transition-all duration-150 ${platform === itemPlatform ? "bg-muted font-semibold text-foreground" : "bg-transparent font-normal text-muted-foreground"}`}
             >
               {itemPlatform === PlatformFilterEnum.ALL
                 ? "All"
@@ -67,7 +67,7 @@ export function RecentContentSection({
         ).map((post) => (
           <div
             key={post.id}
-            className="cursor-pointer overflow-hidden rounded-xl border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] transition-colors duration-200 hover:border-[rgba(255,255,255,0.15)]"
+            className="cursor-pointer overflow-hidden rounded-xl border border-border bg-card transition-colors duration-200 hover:border-border"
           >
             <div className="relative aspect-video overflow-hidden">
               <Image
@@ -87,32 +87,32 @@ export function RecentContentSection({
                   <Youtube size={12} color="white" />
                 )}
               </div>
-              <div className="absolute right-2 top-2 flex items-center gap-1 rounded-[99px] bg-[rgba(0,0,0,0.6)] px-[7px] py-[2px] backdrop-blur-[6px]">
+              <div className="absolute right-2 top-2 flex items-center gap-1 rounded-[99px] bg-muted px-[7px] py-[2px] backdrop-blur-[6px]">
                 {post.type === PostType.VIDEO || post.type === PostType.REEL ? (
                   <Play size={8} color="white" />
                 ) : (
                   <ImageIcon size={8} color="white" />
                 )}
-                <span className="font-mono text-[9px] uppercase tracking-[0.06em] text-white">
+                <span className="font-mono text-[9px] uppercase tracking-[0.06em] text-foreground">
                   {post.type}
                 </span>
               </div>
               <div className="absolute bottom-2 left-[10px] right-[10px] flex items-center justify-between">
-                <div className="text-[13px] font-bold text-white">
+                <div className="text-[13px] font-bold text-foreground">
                   {formatMetricNumber(post.views)}
                 </div>
-                <div className="rounded-[99px] bg-[rgba(232,64,42,0.85)] px-[7px] py-[2px] font-mono text-[11px] font-semibold text-white">
+                <div className="rounded-[99px] bg-[rgba(232,64,42,0.85)] px-[7px] py-[2px] font-mono text-[11px] font-semibold text-foreground">
                   {post.er}% ER
                 </div>
               </div>
             </div>
 
             <div className="px-[14px] py-3">
-              <div className="mb-2 text-[13px] font-semibold leading-[1.4] text-white">
+              <div className="mb-2 text-[13px] font-semibold leading-[1.4] text-foreground">
                 {post.title}
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 font-mono text-[11px] text-[rgba(255,255,255,0.4)]">
+                <div className="flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
                   <Eye size={10} /> {formatMetricNumber(post.views)} views
                 </div>
                 <button className="flex cursor-pointer items-center gap-1 rounded-md border-none bg-[rgba(232,64,42,0.08)] px-[9px] py-[3px] font-mono text-[11px] font-semibold text-[#E8402A]">

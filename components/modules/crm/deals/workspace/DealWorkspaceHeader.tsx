@@ -28,25 +28,25 @@ export function DealWorkspaceHeader({ deal, onEdit, onArchiveToggle, onDelete }:
     <>
       <div className="mb-5">
         <Breadcrumb>
-          <BreadcrumbList className="text-[12px] text-[rgba(255,255,255,0.5)]">
+          <BreadcrumbList className="text-[12px] text-muted-foreground">
             <BreadcrumbItem>
-              <BreadcrumbLink asChild className="hover:text-white">
+              <BreadcrumbLink asChild className="hover:text-foreground">
                 <Link href="/dashboard/deals">Deals</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-[rgba(255,255,255,0.35)]" />
+            <BreadcrumbSeparator className="text-muted-foreground" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-[rgba(255,255,255,0.75)]">{deal.campaignName}</BreadcrumbPage>
+              <BreadcrumbPage className="text-muted-foreground">{deal.campaignName}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
 
-      <Card className="rounded-[20px] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-7 py-7">
+      <Card className="rounded-[20px] border-border bg-card px-7 py-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-white">{deal.campaignName}</h1>
-            <p className="mt-1 text-[13px] text-[rgba(255,255,255,0.45)]">{deal.brandName}</p>
+            <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-foreground">{deal.campaignName}</h1>
+            <p className="mt-1 text-[13px] text-muted-foreground">{deal.brandName}</p>
             <div className="mt-2 flex items-center gap-2">
               <DealStageBadge stage={deal.stage} />
             </div>
@@ -56,7 +56,7 @@ export function DealWorkspaceHeader({ deal, onEdit, onArchiveToggle, onDelete }:
               type="button"
               variant="outline"
               onClick={onEdit}
-              className="cursor-pointer border-[rgba(255,255,255,0.1)] bg-transparent text-[13px] text-[rgba(255,255,255,0.75)]"
+              className="cursor-pointer border-border bg-transparent text-[13px] text-muted-foreground"
             >
               Edit
             </Button>
@@ -64,7 +64,7 @@ export function DealWorkspaceHeader({ deal, onEdit, onArchiveToggle, onDelete }:
               type="button"
               variant="outline"
               onClick={onArchiveToggle}
-              className="cursor-pointer border-[rgba(255,255,255,0.1)] bg-transparent text-[13px] text-[rgba(255,255,255,0.75)]"
+              className="cursor-pointer border-border bg-transparent text-[13px] text-muted-foreground"
             >
               {deal.status === "Active" ? "Archive" : "Restore"}
             </Button>

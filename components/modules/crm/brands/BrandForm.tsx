@@ -68,14 +68,14 @@ export function BrandForm({
         }}
       >
         <FieldGroup className="mt-1">
-          <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 sm:p-5">
+          <div className="rounded-xl border border-border bg-muted p-4 sm:p-5">
             <div className="mb-4">
-              <div className="text-xs font-semibold tracking-wide text-[rgba(255,255,255,0.8)]">Brand Details</div>
-              <p className="mt-1 text-[11px] text-[rgba(255,255,255,0.5)]">Start with the core identity details for this sponsor.</p>
+              <div className="text-xs font-semibold tracking-wide text-muted-foreground">Brand Details</div>
+              <p className="mt-1 text-[11px] text-muted-foreground">Start with the core identity details for this sponsor.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field>
-                <FieldLabel className="text-[11px] font-medium text-[rgba(255,255,255,0.72)]">Brand Name *</FieldLabel>
+                <FieldLabel className="text-[11px] font-medium text-muted-foreground">Brand Name *</FieldLabel>
                 <Input
                   autoFocus
                   value={values.name}
@@ -90,7 +90,7 @@ export function BrandForm({
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] font-medium text-[rgba(255,255,255,0.72)]">Category</FieldLabel>
+                <FieldLabel className="text-[11px] font-medium text-muted-foreground">Category</FieldLabel>
                 <Select
                   value={values.category || "__none"}
                   onValueChange={(category) =>
@@ -122,7 +122,7 @@ export function BrandForm({
               </Field>
 
               <Field className="sm:col-span-2">
-                <FieldLabel className="text-[11px] font-medium text-[rgba(255,255,255,0.72)]">Website</FieldLabel>
+                <FieldLabel className="text-[11px] font-medium text-muted-foreground">Website</FieldLabel>
                 <Input
                   type="url"
                   inputMode="url"
@@ -133,7 +133,7 @@ export function BrandForm({
                   aria-invalid={Boolean(fieldErrors?.website)}
                   aria-describedby={fieldErrors?.website ? `${websiteHintId} ${websiteErrorId}` : websiteHintId}
                 />
-                <FieldDescription id={websiteHintId} className="text-[11px] text-[rgba(255,255,255,0.45)]">
+                <FieldDescription id={websiteHintId} className="text-[11px] text-muted-foreground">
                   Include `https://` so links open correctly.
                 </FieldDescription>
                 <FieldError id={websiteErrorId} className="text-[12px]">
@@ -143,14 +143,14 @@ export function BrandForm({
             </div>
           </div>
 
-          <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 sm:p-5">
+          <div className="rounded-xl border border-border bg-muted p-4 sm:p-5">
             <div className="mb-4">
-              <div className="text-xs font-semibold tracking-wide text-[rgba(255,255,255,0.8)]">Primary Contact</div>
-              <p className="mt-1 text-[11px] text-[rgba(255,255,255,0.5)]">Add the best person to reach out to when discussing deals.</p>
+              <div className="text-xs font-semibold tracking-wide text-muted-foreground">Primary Contact</div>
+              <p className="mt-1 text-[11px] text-muted-foreground">Add the best person to reach out to when discussing deals.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field>
-                <FieldLabel className="text-[11px] font-medium text-[rgba(255,255,255,0.72)]">Contact Name</FieldLabel>
+                <FieldLabel className="text-[11px] font-medium text-muted-foreground">Contact Name</FieldLabel>
                 <Input
                   autoComplete="name"
                   value={values.primaryContactName}
@@ -165,7 +165,7 @@ export function BrandForm({
               </Field>
 
               <Field>
-                <FieldLabel className="text-[11px] font-medium text-[rgba(255,255,255,0.72)]">Contact Email</FieldLabel>
+                <FieldLabel className="text-[11px] font-medium text-muted-foreground">Contact Email</FieldLabel>
                 <Input
                   type="email"
                   inputMode="email"
@@ -178,7 +178,7 @@ export function BrandForm({
                     fieldErrors?.primaryContactEmail ? `${emailHintId} ${contactEmailErrorId}` : emailHintId
                   }
                 />
-                <FieldDescription id={emailHintId} className="text-[11px] text-[rgba(255,255,255,0.45)]">
+                <FieldDescription id={emailHintId} className="text-[11px] text-muted-foreground">
                   We use this for outreach notifications and follow-ups.
                 </FieldDescription>
                 <FieldError id={contactEmailErrorId} className="text-[12px]">
@@ -188,9 +188,9 @@ export function BrandForm({
             </div>
           </div>
 
-          <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 sm:p-5">
+          <div className="rounded-xl border border-border bg-muted p-4 sm:p-5">
             <Field>
-              <FieldLabel className="text-[11px] font-medium text-[rgba(255,255,255,0.72)]">Notes</FieldLabel>
+              <FieldLabel className="text-[11px] font-medium text-muted-foreground">Notes</FieldLabel>
               <Textarea
                 value={values.notes}
                 onChange={(event) => onChange({ ...values, notes: event.target.value })}
@@ -198,7 +198,7 @@ export function BrandForm({
                 aria-invalid={Boolean(fieldErrors?.notes)}
                 aria-describedby={fieldErrors?.notes ? notesErrorId : undefined}
                 placeholder="Add sponsorship history, preferences, budget notes, or campaign context."
-                className="min-h-[108px] border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] text-[13px] text-[rgba(255,255,255,0.86)] placeholder:text-[rgba(255,255,255,0.36)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/25"
+                className="min-h-[108px] border-border bg-muted text-[13px] text-muted-foreground placeholder:text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/25"
               />
               <FieldError id={notesErrorId} className="text-[12px]">
                 {fieldErrors?.notes}

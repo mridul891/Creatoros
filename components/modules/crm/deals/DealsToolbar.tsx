@@ -45,10 +45,10 @@ export function DealsToolbar({
   return (
     <div className="mb-4 space-y-3">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="font-mono text-[11px] text-[rgba(255,255,255,0.42)]">{total} total deals</div>
+        <div className="font-mono text-[11px] text-muted-foreground">{total} total deals</div>
         <div className="flex flex-wrap items-center gap-2 max-sm:w-full">
           <Tabs value={archive} onValueChange={(next) => onArchiveChange(next as "active" | "archived")}>
-            <TabsList className="h-9 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] p-1">
+            <TabsList className="h-9 rounded-[10px] border border-border bg-muted p-1">
               <TabsTrigger
                 value="active"
                 className="h-7 rounded-[8px] px-3 text-[11px] data-[state=active]:bg-[rgba(232,64,42,0.15)] data-[state=active]:text-[#E8402A]"
@@ -65,7 +65,7 @@ export function DealsToolbar({
           </Tabs>
 
           <Tabs value={view} onValueChange={(next) => onViewChange(next as "table" | "kanban")}>
-            <TabsList className="h-9 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] p-1">
+            <TabsList className="h-9 rounded-[10px] border border-border bg-muted p-1">
               <TabsTrigger
                 value="table"
                 className="h-7 rounded-[8px] px-3 text-[11px] data-[state=active]:bg-[rgba(232,64,42,0.15)] data-[state=active]:text-[#E8402A]"
@@ -93,7 +93,7 @@ export function DealsToolbar({
         />
 
         <Select value={stage ?? "__all"} onValueChange={(value) => onStageChange(value === "__all" ? undefined : value)}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[170px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[170px]">
             <SelectValue placeholder="Stage" />
           </SelectTrigger>
           <SelectContent>
@@ -110,7 +110,7 @@ export function DealsToolbar({
           value={priority ?? "__all"}
           onValueChange={(value) => onPriorityChange(value === "__all" ? undefined : value)}
         >
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[150px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[150px]">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -124,7 +124,7 @@ export function DealsToolbar({
         </Select>
 
         <Select value={brandId ?? "__all"} onValueChange={(value) => onBrandChange(value === "__all" ? undefined : value)}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[180px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[180px]">
             <SelectValue placeholder="Brand" />
           </SelectTrigger>
           <SelectContent>
@@ -138,7 +138,7 @@ export function DealsToolbar({
         </Select>
 
         <Select value={sort} onValueChange={onSortChange}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[180px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[180px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>

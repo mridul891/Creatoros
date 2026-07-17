@@ -16,11 +16,11 @@ export function BrandDetailInfoCards({ brand }: BrandDetailInfoCardsProps) {
   return (
     <CardContent className="mt-6 px-0">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Card className="border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] py-4">
+        <Card className="border-border bg-muted py-4">
           <CardHeader className="pb-2">
-            <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">WEBSITE</CardTitle>
+            <CardTitle className="font-mono text-[10px] tracking-wider text-muted-foreground">WEBSITE</CardTitle>
           </CardHeader>
-          <CardContent className="text-[13px] text-[rgba(255,255,255,0.75)]">
+          <CardContent className="text-[13px] text-muted-foreground">
             {brand.website ? (
               <a href={brand.website} target="_blank" rel="noreferrer" className="hover:text-[#E8402A]">
                 {brand.website}
@@ -31,44 +31,44 @@ export function BrandDetailInfoCards({ brand }: BrandDetailInfoCardsProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] py-4">
+        <Card className="border-border bg-muted py-4">
           <CardHeader className="pb-2">
-            <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
+            <CardTitle className="font-mono text-[10px] tracking-wider text-muted-foreground">
               PRIMARY CONTACT
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-[13px] text-[rgba(255,255,255,0.75)]">{brand.primaryContactName ?? "—"}</div>
-            <div className="mt-0.5 font-mono text-[11px] text-[rgba(255,255,255,0.5)]">{brand.primaryContactEmail ?? "—"}</div>
+            <div className="text-[13px] text-muted-foreground">{brand.primaryContactName ?? "—"}</div>
+            <div className="mt-0.5 font-mono text-[11px] text-muted-foreground">{brand.primaryContactEmail ?? "—"}</div>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="mt-4 border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] py-4">
+      <Card className="mt-4 border-border bg-muted py-4">
         <CardHeader className="pb-2">
-          <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">NOTES</CardTitle>
+          <CardTitle className="font-mono text-[10px] tracking-wider text-muted-foreground">NOTES</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="whitespace-pre-wrap text-[13px] leading-6 text-[rgba(255,255,255,0.75)]">
+          <p className="whitespace-pre-wrap text-[13px] leading-6 text-muted-foreground">
             {brand.notes ?? "No notes added."}
           </p>
         </CardContent>
       </Card>
 
       <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Card className="rounded-[12px] border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] py-3">
+        <Card className="rounded-[12px] border-border bg-muted py-3">
           <CardHeader className="pb-1">
-            <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">CREATED</CardTitle>
+            <CardTitle className="font-mono text-[10px] tracking-wider text-muted-foreground">CREATED</CardTitle>
           </CardHeader>
-          <CardContent className="text-[12px] text-[rgba(255,255,255,0.75)]">{formatShortDate(brand.createdAt)}</CardContent>
+          <CardContent className="text-[12px] text-muted-foreground">{formatShortDate(brand.createdAt)}</CardContent>
         </Card>
-        <Card className="rounded-[12px] border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] py-3">
+        <Card className="rounded-[12px] border-border bg-muted py-3">
           <CardHeader className="pb-1">
-            <CardTitle className="font-mono text-[10px] tracking-wider text-[rgba(255,255,255,0.4)]">
+            <CardTitle className="font-mono text-[10px] tracking-wider text-muted-foreground">
               LAST UPDATED
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-[12px] text-[rgba(255,255,255,0.75)]">{formatShortDate(brand.updatedAt)}</CardContent>
+          <CardContent className="text-[12px] text-muted-foreground">{formatShortDate(brand.updatedAt)}</CardContent>
         </Card>
       </div>
     </CardContent>

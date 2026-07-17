@@ -21,33 +21,33 @@ function formatDate(value: Date | null) {
 
 export function DeliverablesTable({ items, isCreatingInvoiceId, onEdit, onCreateInvoice, onArchive, onRestore, onDelete }: DeliverablesTableProps) {
   return (
-    <div className="overflow-x-auto rounded-[14px] border border-[rgba(255,255,255,0.07)]">
+    <div className="overflow-x-auto rounded-[14px] border border-border">
       <table className="min-w-full">
         <thead>
-          <tr className="border-b border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] text-left">
-            <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Deliverable</th>
-            <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Due Date</th>
-            <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Status</th>
-            <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Approval</th>
-            <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Revision</th>
-            <th className="px-4 py-3 text-right text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Actions</th>
+          <tr className="border-b border-border bg-muted text-left">
+            <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Deliverable</th>
+            <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Due Date</th>
+            <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Status</th>
+            <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Approval</th>
+            <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Revision</th>
+            <th className="px-4 py-3 text-right text-[11px] font-semibold text-muted-foreground">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
-            <tr key={item.id} className="border-b border-[rgba(255,255,255,0.05)] last:border-none">
+            <tr key={item.id} className="border-b border-border last:border-none">
               <td className="px-4 py-3">
-                <p className="text-[13px] font-semibold text-white">{item.deliverableType}</p>
-                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">{item.platform}</p>
+                <p className="text-[13px] font-semibold text-foreground">{item.deliverableType}</p>
+                <p className="text-[11px] text-muted-foreground">{item.platform}</p>
               </td>
-              <td className="px-4 py-3 text-[12px] text-[rgba(255,255,255,0.72)]">{formatDate(item.dueDate)}</td>
+              <td className="px-4 py-3 text-[12px] text-muted-foreground">{formatDate(item.dueDate)}</td>
               <td className="px-4 py-3">
-                <Badge variant="outline" className="border-[rgba(255,255,255,0.15)] text-[11px] text-[rgba(255,255,255,0.75)]">
+                <Badge variant="outline" className="border-border text-[11px] text-muted-foreground">
                   {item.status}
                 </Badge>
               </td>
-              <td className="px-4 py-3 text-[12px] text-[rgba(255,255,255,0.72)]">{item.approvalStatus}</td>
-              <td className="px-4 py-3 text-[12px] text-[rgba(255,255,255,0.72)]">{item.revisionCount}</td>
+              <td className="px-4 py-3 text-[12px] text-muted-foreground">{item.approvalStatus}</td>
+              <td className="px-4 py-3 text-[12px] text-muted-foreground">{item.revisionCount}</td>
               <td className="px-4 py-3">
                 <div className="flex justify-end gap-2">
                   <Button type="button" size="sm" variant="outline" onClick={() => onEdit(item.id)} className="h-8 cursor-pointer text-[11px]">

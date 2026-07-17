@@ -58,7 +58,7 @@ export function TasksToolbar({
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="font-mono text-[11px] text-[rgba(255,255,255,0.42)]">{total} total tasks</div>
+        <div className="font-mono text-[11px] text-muted-foreground">{total} total tasks</div>
         <Button type="button" className="h-9 cursor-pointer gap-2 px-4 text-[12px] font-semibold" onClick={onCreate} disabled={createDisabled}>
           <Plus size={14} />
           New Task
@@ -75,7 +75,7 @@ export function TasksToolbar({
         />
 
         <Select value={status} onValueChange={onStatusChange}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[165px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[165px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -89,7 +89,7 @@ export function TasksToolbar({
         </Select>
 
         <Select value={priority} onValueChange={onPriorityChange}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[145px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[145px]">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -103,7 +103,7 @@ export function TasksToolbar({
         </Select>
 
         <Select value={archive} onValueChange={(value) => onArchiveChange(value as "active" | "archived")}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[135px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[135px]">
             <SelectValue placeholder="Archive" />
           </SelectTrigger>
           <SelectContent>
@@ -116,7 +116,7 @@ export function TasksToolbar({
         </Select>
 
         <Select value={dueDate} onValueChange={(value) => onDueDateChange(value as "all" | "upcoming" | "overdue" | "none")}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[165px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[165px]">
             <SelectValue placeholder="Due date" />
           </SelectTrigger>
           <SelectContent>
@@ -129,7 +129,7 @@ export function TasksToolbar({
         </Select>
 
         <Select value={sort} onValueChange={onSortChange}>
-          <SelectTrigger className="h-10 w-full border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)] xl:w-[175px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[175px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>

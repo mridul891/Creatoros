@@ -30,30 +30,30 @@ function formatDealValue(value: number) {
 export function DealDetailInfoCards({ deal }: DealDetailInfoCardsProps) {
   return (
     <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">
-        <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Deal Value</p>
-        <p className="mt-2 flex items-center gap-1 text-[18px] font-bold text-white">
+      <Card className="rounded-[14px] border-border bg-muted p-4">
+        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Deal Value</p>
+        <p className="mt-2 flex items-center gap-1 text-[18px] font-bold text-foreground">
           <CurrencyDollar size={15} />
           {deal.currency} {formatDealValue(deal.dealValue)}
         </p>
       </Card>
-      <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">
-        <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Primary Contact</p>
-        <p className="mt-2 flex items-center gap-1 text-[14px] font-semibold text-white">
+      <Card className="rounded-[14px] border-border bg-muted p-4">
+        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Primary Contact</p>
+        <p className="mt-2 flex items-center gap-1 text-[14px] font-semibold text-foreground">
           <UserCircle size={14} />
           {deal.contactName ?? "No contact linked"}
         </p>
       </Card>
-      <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">
-        <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Timeline</p>
-        <p className="mt-2 flex items-center gap-1 text-[13px] text-[rgba(255,255,255,0.78)]">
+      <Card className="rounded-[14px] border-border bg-muted p-4">
+        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Timeline</p>
+        <p className="mt-2 flex items-center gap-1 text-[13px] text-muted-foreground">
           <Calendar size={14} />
           {formatDate(deal.startDate)} - {formatDate(deal.dueDate)}
         </p>
       </Card>
-      <Card className="rounded-[14px] border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] p-4">
-        <p className="font-mono text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">Payment Terms</p>
-        <p className="mt-2 flex items-start gap-1 text-[13px] text-[rgba(255,255,255,0.78)]">
+      <Card className="rounded-[14px] border-border bg-muted p-4">
+        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Payment Terms</p>
+        <p className="mt-2 flex items-start gap-1 text-[13px] text-muted-foreground">
           <FileText size={14} className="mt-0.5" />
           <span>{deal.paymentTerms ?? "Not specified"}</span>
         </p>

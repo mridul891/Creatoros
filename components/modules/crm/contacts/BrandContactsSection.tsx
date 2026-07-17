@@ -162,7 +162,7 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
 
   return (
     <>
-      <div className="mt-6 rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
+      <div className="mt-6 rounded-[20px] border border-border bg-card p-6">
         <BrandContactsToolbar
           total={total}
           search={search}

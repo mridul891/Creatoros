@@ -26,11 +26,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   await requireOnboardedUser();
 
   return (
-    <SidebarProvider className="h-screen overflow-hidden bg-[#050505] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,system-ui,sans-serif]">
+    <SidebarProvider className="h-screen overflow-hidden bg-background ">
       <Sidebar />
       <SidebarInset className="flex flex-1 flex-col overflow-hidden bg-transparent">
-        <div className="sticky top-0 z-10 flex h-14 items-center border-b border-[rgba(255,255,255,0.07)] bg-[#050505]/95 px-4 backdrop-blur md:hidden">
-          <SidebarTrigger className="text-white hover:bg-white/10 hover:text-white" />
+        <div className="sticky top-0 z-10 flex h-14 items-center border-b border-border bg-background/95 px-4 backdrop-blur md:hidden">
+          <SidebarTrigger className="text-foreground hover:bg-muted hover:text-foreground" />
         </div>
         <main className="flex flex-1 flex-col overflow-y-auto">{children}</main>
       </SidebarInset>

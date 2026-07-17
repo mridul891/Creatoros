@@ -36,7 +36,7 @@ export function WaitlistForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto mt-8 flex w-full max-w-md flex-col gap-3 rounded-2xl border border-white/10 bg-white/3 p-3 shadow-[0_8px_40px_-12px_rgba(247,255,155,0.15)] backdrop-blur-md"
+      className="mx-auto mt-8 flex w-full max-w-md flex-col gap-3 rounded-2xl border border-border bg-muted p-3 shadow-[0_8px_40px_-12px_rgba(247,255,155,0.15)] backdrop-blur-md"
     >
       <Input
         type="text"
@@ -45,7 +45,7 @@ export function WaitlistForm() {
         value={firstName}
         onChange={(event) => setFirstName(event.target.value)}
         required
-        className="h-12 w-full rounded-xl border border-white/10 bg-white/4 px-4 text-base text-white shadow-none transition-colors placeholder:text-white/40 focus-visible:border-[#F7FF9B]/60 focus-visible:ring-2 focus-visible:ring-[#F7FF9B]/30 dark:bg-white/4"
+        className="h-12 w-full rounded-xl border border-border bg-muted px-4 text-base text-foreground shadow-none transition-colors placeholder:text-foreground focus-visible:border-[#F7FF9B]/60 focus-visible:ring-2 focus-visible:ring-[#F7FF9B]/30"
       />
       <Input
         type="email"
@@ -54,7 +54,7 @@ export function WaitlistForm() {
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         required
-        className="h-12 w-full rounded-xl border border-white/10 bg-white/4 px-4 text-base text-white shadow-none transition-colors placeholder:text-white/40 focus-visible:border-[#F7FF9B]/60 focus-visible:ring-2 focus-visible:ring-[#F7FF9B]/30 dark:bg-white/4"
+        className="h-12 w-full rounded-xl border border-border bg-muted px-4 text-base text-foreground shadow-none transition-colors placeholder:text-foreground focus-visible:border-[#F7FF9B]/60 focus-visible:ring-2 focus-visible:ring-[#F7FF9B]/30"
       />
       <Button
         type="submit"

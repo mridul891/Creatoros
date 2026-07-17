@@ -104,10 +104,10 @@ function StatBar({ pct, color }: { pct: number; color: string }) {
                       pct === 7 ? "w-[7%]" :
                         pct === 4 ? "w-[4%]" :
                           "w-[3%]";
-  const colorClass = color === "#E8402A" ? "bg-[#E8402A]" : "bg-[#111111]";
+  const colorClass = color === "#E8402A" ? "bg-[#E8402A]" : "bg-secondary";
 
   return (
-    <div className="h-[6px] overflow-hidden rounded-[99px] bg-[rgba(255,255,255,0.05)]">
+    <div className="h-[6px] overflow-hidden rounded-[99px] bg-muted">
       <div className={`h-full rounded-[99px] ${widthClass} ${colorClass}`} />
     </div>
   );
@@ -144,8 +144,8 @@ function EditableField({ value, onSave, multiline = false, large = false }: {
         className={`${sharedInputClasses} resize-y`}
       />
       <span className="mt-[6px] flex gap-[8px]">
-        <button onClick={() => { onSave(draft); setEditing(false); }} className="cursor-pointer rounded-[6px] border-0 bg-(--cos-primary) px-[12px] py-[4px] text-[11px] font-semibold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">FloppyDisk</button>
-        <button onClick={() => setEditing(false)} className="cursor-pointer rounded-[6px] border border-[rgba(255,255,255,0.07)] bg-transparent px-[12px] py-[4px] text-[11px] text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">Cancel</button>
+        <button onClick={() => { onSave(draft); setEditing(false); }} className="cursor-pointer rounded-[6px] border-0 bg-primary px-[12px] py-[4px] text-[11px] font-semibold text-primary-foreground ">FloppyDisk</button>
+        <button onClick={() => setEditing(false)} className="cursor-pointer rounded-[6px] border border-border bg-transparent px-[12px] py-[4px] text-[11px] text-muted-foreground ">Cancel</button>
       </span>
     </span>
   ) : (
@@ -199,8 +199,8 @@ export function MediaKitPage() {
       {/* ── Top bar ── */}
       <div className="mb-[28px] flex items-start justify-between">
         <div>
-          <h1 className="mb-[4px] text-[24px] font-extrabold tracking-[-0.04em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Media Kit</h1>
-          <div className="flex items-center gap-[10px] text-[12px] text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+          <h1 className="mb-[4px] text-[24px] font-extrabold tracking-[-0.04em] text-foreground ">Media Kit</h1>
+          <div className="flex items-center gap-[10px] text-[12px] text-muted-foreground ">
             <div className="h-[6px] w-[6px] rounded-full bg-[#22c55e]" />
             Auto-synced from live platform data · Updated 2h ago
           </div>
@@ -208,34 +208,34 @@ export function MediaKitPage() {
         <div className="flex items-center gap-[8px]">
           <button
             onClick={() => setUiState(prev => ({ ...prev, editMode: !prev.editMode }))}
-            className={`flex cursor-pointer items-center gap-[7px] rounded-[10px] px-[16px] py-[9px] text-[12px] transition-all duration-150 font-['SF_Pro_Display',-apple-system,sans-serif] ${uiState.editMode
+            className={`flex cursor-pointer items-center gap-[7px] rounded-[10px] px-[16px] py-[9px] text-[12px] transition-all duration-150  ${uiState.editMode
               ? "border-[1.5px] border-[#E8402A] bg-[rgba(232,64,42,0.06)] font-semibold text-[#E8402A]"
-              : "border-[1.5px] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] font-normal text-[rgba(255,255,255,0.4)]"
+              : "border-[1.5px] border-border bg-card font-normal text-muted-foreground"
               }`}
           >
             {uiState.editMode ? <><FloppyDisk size={13} /> FloppyDisk Changes</> : <><PencilSimple size={13} /> Edit Kit</>}
           </button>
           <button
             onClick={handleRegenerate}
-            className="flex cursor-pointer items-center gap-[7px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[14px] py-[9px] text-[12px] text-[rgba(255,255,255,0.4)] transition-opacity duration-150 hover:opacity-70 font-['SF_Pro_Display',-apple-system,sans-serif]"
+            className="flex cursor-pointer items-center gap-[7px] rounded-[10px] border border-border bg-card px-[14px] py-[9px] text-[12px] text-muted-foreground transition-opacity duration-150 hover:opacity-70 "
             onMouseEnter={e => e.currentTarget.style.opacity = "0.7"}
             onMouseLeave={e => e.currentTarget.style.opacity = "1"}
           >
             <ArrowClockwise size={13} className={uiState.regenerating ? "animate-spin" : ""} />
             {uiState.regenerating ? "Regenerating…" : "Regenerate"}
           </button>
-          <button onClick={handleCopy} className="flex cursor-pointer items-center gap-[7px] rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] px-[14px] py-[9px] text-[12px] text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+          <button onClick={handleCopy} className="flex cursor-pointer items-center gap-[7px] rounded-[10px] border border-border bg-card px-[14px] py-[9px] text-[12px] text-muted-foreground ">
             {uiState.copied ? <Check size={13} color="#16a34a" /> : <Copy size={13} />}
             {uiState.copied ? "Copied!" : "Share link"}
           </button>
-          <button className="flex cursor-pointer items-center gap-[7px] rounded-[10px] border-0 bg-(--cos-primary) px-[18px] py-[9px] text-[13px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
+          <button className="flex cursor-pointer items-center gap-[7px] rounded-[10px] border-0 bg-primary px-[18px] py-[9px] text-[13px] font-bold text-primary-foreground ">
             <Download size={13} /> Export PDF
           </button>
         </div>
       </div>
 
       {/* ── Kit preview container ── */}
-      <div className="overflow-hidden rounded-[24px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] shadow-[0_8px_48px_rgba(0,0,0,0.07)]">
+      <div className="overflow-hidden rounded-[24px] border border-border bg-card shadow-[0_8px_48px_rgba(0,0,0,0.07)]">
 
         {/* ── Hero cover ── */}
         <div className="relative h-[240px]">
@@ -243,17 +243,17 @@ export function MediaKitPage() {
           <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(17,17,17,0.82)_0%,rgba(17,17,17,0.4)_55%,rgba(232,64,42,0.15)_100%)]" />
 
           {/* Floating brand badge */}
-          <div className="absolute right-[24px] top-[20px] flex items-center gap-[7px] rounded-[99px] border border-[rgba(255,255,255,0.18)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[7px] backdrop-blur-[14px]">
+          <div className="absolute right-[24px] top-[20px] flex items-center gap-[7px] rounded-[99px] border border-border bg-muted px-[16px] py-[7px] backdrop-blur-[14px]">
             <Lightning size={11} color="#E8402A" />
-            <span className="text-[10px] font-semibold tracking-widest text-white font-mono">CREATOROS · VERIFIED</span>
+            <span className="text-[10px] font-semibold tracking-widest text-foreground font-mono">CREATOROS · VERIFIED</span>
           </div>
 
           {/* Key metrics strip in cover */}
           <div className="absolute bottom-[24px] right-[24px] flex gap-[10px]">
             {METRICS_SPOTLIGHT.map(m => (
-              <div key={m.label} className="rounded-[12px] border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[10px] text-center backdrop-blur-[14px]">
-                <div className="text-[18px] font-black leading-none tracking-[-0.04em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">{m.value}</div>
-                <div className="mt-[4px] text-[9px] tracking-[0.06em] text-[rgba(255,255,255,0.6)] font-mono">{m.label.toUpperCase()}</div>
+              <div key={m.label} className="rounded-[12px] border border-border bg-muted px-[16px] py-[10px] text-center backdrop-blur-[14px]">
+                <div className="text-[18px] font-black leading-none tracking-[-0.04em] text-foreground ">{m.value}</div>
+                <div className="mt-[4px] text-[9px] tracking-[0.06em] text-muted-foreground font-mono">{m.label.toUpperCase()}</div>
               </div>
             ))}
           </div>
@@ -261,8 +261,8 @@ export function MediaKitPage() {
           {/* Avatar */}
           <div className="absolute bottom-[-44px] left-[36px]">
             <div className="relative inline-block">
-              <img src={creator.avatar} alt={creator.name} className="block h-[96px] w-[96px] rounded-[24px] border-4 border-[#0D0D0D] object-cover shadow-[0_8px_24px_rgba(0,0,0,0.2)]" />
-              <div className="absolute bottom-[6px] right-[6px] h-[18px] w-[18px] rounded-full border-[3px] border-[#0D0D0D] bg-[#22c55e]" />
+              <img src={creator.avatar} alt={creator.name} className="block h-[96px] w-[96px] rounded-[24px] border-4 border-background object-cover shadow-[0_8px_24px_rgba(0,0,0,0.2)]" />
+              <div className="absolute bottom-[6px] right-[6px] h-[18px] w-[18px] rounded-full border-[3px] border-background bg-[#22c55e]" />
             </div>
           </div>
         </div>
@@ -271,7 +271,7 @@ export function MediaKitPage() {
         <div className="px-[36px] pb-0 pt-[56px]">
           <div className="mb-[24px] flex items-start justify-between">
             <div>
-              <h2 className="mb-[6px] text-[28px] font-black leading-[1.1] tracking-[-0.04em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
+              <h2 className="mb-[6px] text-[28px] font-black leading-[1.1] tracking-[-0.04em] text-foreground ">
                 {uiState.editMode
                   ? <EditableField value={creator.name} onSave={v => patch("name", v)} />
                   : creator.name}
@@ -281,7 +281,7 @@ export function MediaKitPage() {
                   ? <EditableField value={creator.handle} onSave={v => patch("handle", v)} />
                   : creator.handle}
               </div>
-              <div className="mb-[12px] text-[13px] font-medium text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+              <div className="mb-[12px] text-[13px] font-medium text-muted-foreground ">
                 {uiState.editMode
                   ? <EditableField value={creator.title} onSave={v => patch("title", v)} />
                   : creator.title}
@@ -292,7 +292,7 @@ export function MediaKitPage() {
                   { icon: Globe, text: creator.website, key: "website" as const },
                   { icon: EnvelopeSimple, text: creator.email, key: "email" as const },
                 ].map(({ icon: Icon, text, key }) => (
-                  <div key={key} className="flex items-center gap-[6px] text-[12px] text-[rgba(255,255,255,0.4)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+                  <div key={key} className="flex items-center gap-[6px] text-[12px] text-muted-foreground ">
                     <Icon size={12} />
                     {uiState.editMode ? <EditableField value={text} onSave={v => patch(key, v)} /> : text}
                   </div>
@@ -305,12 +305,12 @@ export function MediaKitPage() {
               {PLATFORM_STATS.map(p => (
                 <div key={p.platform} className={`flex items-center gap-[8px] rounded-[12px] px-[14px] py-[8px] ${p.color === "#E8402A"
                   ? "border border-[#E8402A]/25 bg-[#E8402A]/10"
-                  : "border border-[#111111]/25 bg-[#111111]/10"
+                  : "border border-[#111111]/25 bg-secondary/10"
                   }`}>
                   <p.icon size={16} color={p.color} />
                   <div>
-                    <div className="text-[14px] font-extrabold tracking-[-0.03em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">{p.followers}</div>
-                    <div className="text-[9px] text-[rgba(255,255,255,0.4)] font-mono">{p.platform.toUpperCase()}</div>
+                    <div className="text-[14px] font-extrabold tracking-[-0.03em] text-foreground ">{p.followers}</div>
+                    <div className="text-[9px] text-muted-foreground font-mono">{p.platform.toUpperCase()}</div>
                   </div>
                 </div>
               ))}
@@ -318,7 +318,7 @@ export function MediaKitPage() {
           </div>
 
           {/* Bio */}
-          <div className="mb-[28px] max-w-[720px] text-[14px] leading-[1.8] text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+          <div className="mb-[28px] max-w-[720px] text-[14px] leading-[1.8] text-muted-foreground ">
             {uiState.editMode
               ? <EditableField value={creator.bio} onSave={v => patch("bio", v)} multiline />
               : creator.bio}
@@ -327,22 +327,22 @@ export function MediaKitPage() {
           {/* Content niches */}
           <div className="mb-[28px] flex flex-wrap gap-[8px]">
             {CONTENT_NICHES.map(n => (
-              <span key={n} className="rounded-[99px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[14px] py-[5px] text-[12px] font-medium text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">{n}</span>
+              <span key={n} className="rounded-[99px] border border-border bg-muted px-[14px] py-[5px] text-[12px] font-medium text-muted-foreground ">{n}</span>
             ))}
             {uiState.editMode && (
-              <button className="cursor-pointer rounded-[99px] border border-dashed border-[#E8402A]/40 bg-transparent px-[14px] py-[5px] text-[12px] text-[#E8402A] font-['SF_Pro_Display',-apple-system,sans-serif]">+ Add niche</button>
+              <button className="cursor-pointer rounded-[99px] border border-dashed border-[#E8402A]/40 bg-transparent px-[14px] py-[5px] text-[12px] text-[#E8402A] ">+ Add niche</button>
             )}
           </div>
 
           {/* ── Tab bar ── */}
-          <div className="flex gap-[2px] border-b border-[rgba(255,255,255,0.07)]">
+          <div className="flex gap-[2px] border-b border-border">
             {TABS.map(t => (
               <button
                 key={t.id}
                 onClick={() => setUiState(prev => ({ ...prev, tab: t.id }))}
-                className={`-mb-px cursor-pointer border-0 border-b-2 bg-transparent px-[20px] py-[12px] text-[13px] transition-all duration-150 font-['SF_Pro_Display',-apple-system,sans-serif] ${uiState.tab === t.id
-                  ? "border-b-[#E8402A] font-bold text-white"
-                  : "border-b-transparent font-medium text-[rgba(255,255,255,0.4)]"
+                className={`-mb-px cursor-pointer border-0 border-b-2 bg-transparent px-[20px] py-[12px] text-[13px] transition-all duration-150  ${uiState.tab === t.id
+                  ? "border-b-[#E8402A] font-bold text-foreground"
+                  : "border-b-transparent font-medium text-muted-foreground"
                   }`}
               >
                 {t.label}
@@ -360,24 +360,24 @@ export function MediaKitPage() {
 
               {/* Platform deep-dive cards */}
               <div>
-                <div className="mb-[16px] text-[14px] font-bold tracking-[-0.02em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Platform Performance</div>
+                <div className="mb-[16px] text-[14px] font-bold tracking-[-0.02em] text-foreground ">Platform Performance</div>
                 <div className="grid grid-cols-2 gap-[16px]">
                   {PLATFORM_STATS.map(p => (
-                    <div key={p.platform} className="overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#050505]">
+                    <div key={p.platform} className="overflow-hidden rounded-[18px] border border-border bg-background">
                       {/* Header */}
-                      <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.07)] px-[22px] py-[18px]">
+                      <div className="flex items-center justify-between border-b border-border px-[22px] py-[18px]">
                         <div className="flex items-center gap-[12px]">
-                          <div className={`flex h-[42px] w-[42px] items-center justify-center rounded-[13px] ${p.color === "#E8402A" ? "bg-[#E8402A]/15" : "bg-[#111111]/15"}`}>
+                          <div className={`flex h-[42px] w-[42px] items-center justify-center rounded-[13px] ${p.color === "#E8402A" ? "bg-[#E8402A]/15" : "bg-secondary/15"}`}>
                             <p.icon size={20} color={p.color} />
                           </div>
                           <div>
-                            <div className="text-[15px] font-extrabold tracking-[-0.03em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">{p.platform}</div>
-                            <div className="mt-px text-[11px] text-[rgba(255,255,255,0.4)] font-mono">{p.handle}</div>
+                            <div className="text-[15px] font-extrabold tracking-[-0.03em] text-foreground ">{p.platform}</div>
+                            <div className="mt-px text-[11px] text-muted-foreground font-mono">{p.handle}</div>
                           </div>
                         </div>
                         <div className="flex flex-col gap-[4px]">
                           {p.badges.map(b => (
-                            <span key={b} className={`rounded-[99px] px-[8px] py-[2px] text-[9px] font-bold font-mono ${p.color === "#E8402A" ? "bg-[#E8402A]/12 text-[#E8402A]" : "bg-[#111111]/12 text-[#111111]"}`}>{b}</span>
+                            <span key={b} className={`rounded-[99px] px-[8px] py-[2px] text-[9px] font-bold font-mono ${p.color === "#E8402A" ? "bg-[#E8402A]/12 text-[#E8402A]" : "bg-secondary/12 text-foreground"}`}>{b}</span>
                           ))}
                         </div>
                       </div>
@@ -393,10 +393,10 @@ export function MediaKitPage() {
                         ].map(s => (
                           <div key={s.label}>
                             <div className="mb-[4px] flex items-center gap-[4px]">
-                              <s.icon size={10} color="rgba(255,255,255,0.4)" />
-                              <span className="text-[9px] tracking-[0.06em] text-[rgba(255,255,255,0.4)] font-mono">{s.label.toUpperCase()}</span>
+                              <s.icon size={10} color="var(--muted-foreground)" />
+                              <span className="text-[9px] tracking-[0.06em] text-muted-foreground font-mono">{s.label.toUpperCase()}</span>
                             </div>
-                            <div className={`text-[20px] font-extrabold leading-none tracking-[-0.04em] font-['SF_Pro_Display',-apple-system,sans-serif] ${p.color === "#E8402A" ? "text-[#E8402A]" : "text-[#111111]"}`}>{s.value}</div>
+                            <div className={`text-[20px] font-extrabold leading-none tracking-[-0.04em]  ${p.color === "#E8402A" ? "text-[#E8402A]" : "text-foreground"}`}>{s.value}</div>
                           </div>
                         ))}
                       </div>
@@ -407,20 +407,20 @@ export function MediaKitPage() {
 
               {/* Past brand partnerships */}
               <div>
-                <div className="mb-[16px] text-[14px] font-bold tracking-[-0.02em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
+                <div className="mb-[16px] text-[14px] font-bold tracking-[-0.02em] text-foreground ">
                   Brand Partnerships
                 </div>
                 <div className="grid grid-cols-3 gap-[12px]">
                   {RECENT_COLLABS.map(b => (
-                    <div key={b.brand} className="flex cursor-default items-center gap-[14px] rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[#050505] px-[18px] py-[16px] transition-[border-color,transform] duration-200"
+                    <div key={b.brand} className="flex cursor-default items-center gap-[14px] rounded-[14px] border border-border bg-background px-[18px] py-[16px] transition-[border-color,transform] duration-200"
                       onMouseEnter={e => { e.currentTarget.style.borderColor = `${b.color}40`; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; e.currentTarget.style.transform = "none"; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--muted-foreground)"; e.currentTarget.style.transform = "none"; }}
                     >
-                      <div className={`flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[12px] text-[12px] font-black font-mono ${b.color === "#E8402A" ? "bg-[#E8402A]/15 text-[#E8402A]" : "bg-[#111111]/15 text-[#111111]"}`}>{b.logo}</div>
+                      <div className={`flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[12px] text-[12px] font-black font-mono ${b.color === "#E8402A" ? "bg-[#E8402A]/15 text-[#E8402A]" : "bg-secondary/15 text-foreground"}`}>{b.logo}</div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-[12px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">{b.brand}</div>
-                        <div className="mt-px text-[10px] text-[rgba(255,255,255,0.4)] font-mono">{b.category}</div>
-                        <div className={`mt-[3px] text-[11px] font-bold font-mono ${b.color === "#E8402A" ? "text-[#E8402A]" : "text-[#111111]"}`}>{b.result}</div>
+                        <div className="text-[12px] font-bold text-foreground ">{b.brand}</div>
+                        <div className="mt-px text-[10px] text-muted-foreground font-mono">{b.category}</div>
+                        <div className={`mt-[3px] text-[11px] font-bold font-mono ${b.color === "#E8402A" ? "text-[#E8402A]" : "text-foreground"}`}>{b.result}</div>
                       </div>
                       <div className="text-[11px] text-[#E8402A]">{"★".repeat(b.rating)}</div>
                     </div>
@@ -435,16 +435,16 @@ export function MediaKitPage() {
             <div className="grid grid-cols-2 gap-[24px]">
 
               {/* Age */}
-              <div className="rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#050505] p-[24px]">
-                <div className="mb-[4px] text-[13px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Age Distribution</div>
-                <div className="mb-[20px] text-[11px] text-[rgba(255,255,255,0.4)] font-mono">Combined Instagram + YouTube</div>
+              <div className="rounded-[18px] border border-border bg-background p-[24px]">
+                <div className="mb-[4px] text-[13px] font-bold text-foreground ">Age Distribution</div>
+                <div className="mb-[20px] text-[11px] text-muted-foreground font-mono">Combined Instagram + YouTube</div>
                 {DEMOGRAPHICS.age.map(d => (
                   <div key={d.label} className="mb-[14px]">
                     <div className="mb-[6px] flex justify-between">
-                      <span className="text-[13px] font-medium text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">{d.label}</span>
+                      <span className="text-[13px] font-medium text-muted-foreground ">{d.label}</span>
                       <div className="flex items-center gap-[8px]">
-                        <span className="text-[11px] text-[rgba(255,255,255,0.4)] font-mono">{d.pct}% of audience</span>
-                        <span className="text-[14px] font-extrabold tracking-[-0.03em] text-[#111111] font-['SF_Pro_Display',-apple-system,sans-serif]">{d.pct}%</span>
+                        <span className="text-[11px] text-muted-foreground font-mono">{d.pct}% of audience</span>
+                        <span className="text-[14px] font-extrabold tracking-[-0.03em] text-foreground ">{d.pct}%</span>
                       </div>
                     </div>
                     <StatBar pct={d.pct} color={d.pct === 42 ? "#E8402A" : "#111111"} />
@@ -452,20 +452,20 @@ export function MediaKitPage() {
                 ))}
                 <div className="mt-[20px] rounded-[12px] border border-[#E8402A]/15 bg-[#E8402A]/6 px-[16px] py-[12px]">
                   <div className="text-[11px] font-semibold text-[#E8402A] font-mono">CORE DEMO</div>
-                  <div className="mt-[4px] text-[13px] text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">25–34 is the dominant group at <strong>42%</strong> — ideal for aspirational lifestyle, career & wellness brands.</div>
+                  <div className="mt-[4px] text-[13px] text-muted-foreground ">25–34 is the dominant group at <strong>42%</strong> — ideal for aspirational lifestyle, career & wellness brands.</div>
                 </div>
               </div>
 
               {/* Gender */}
-              <div className="rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#050505] p-[24px]">
-                <div className="mb-[4px] text-[13px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Gender Split</div>
-                <div className="mb-[20px] text-[11px] text-[rgba(255,255,255,0.4)] font-mono">Instagram audience</div>
+              <div className="rounded-[18px] border border-border bg-background p-[24px]">
+                <div className="mb-[4px] text-[13px] font-bold text-foreground ">Gender Split</div>
+                <div className="mb-[20px] text-[11px] text-muted-foreground font-mono">Instagram audience</div>
 
                 {/* Donut visual (CSS-only) */}
                 <div className="mb-[24px] flex items-center gap-[24px]">
                   <div className="relative h-[110px] w-[110px] shrink-0">
                     <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
-                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3.8" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--muted-foreground)" strokeWidth="3.8" />
                       <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E8402A" strokeWidth="3.8"
                         strokeDasharray={`${68} ${100 - 68}`} strokeLinecap="round" />
                       <circle cx="18" cy="18" r="15.9" fill="none" stroke="#111111" strokeWidth="3.8"
@@ -473,38 +473,38 @@ export function MediaKitPage() {
                         strokeDashoffset={`${-(68)}`} strokeLinecap="round" />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className="text-[18px] font-black tracking-[-0.04em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">68%</div>
-                      <div className="text-[9px] text-[rgba(255,255,255,0.4)] font-mono">Female</div>
+                      <div className="text-[18px] font-black tracking-[-0.04em] text-foreground ">68%</div>
+                      <div className="text-[9px] text-muted-foreground font-mono">Female</div>
                     </div>
                   </div>
                   <div className="flex-1">
                     {DEMOGRAPHICS.gender.map(g => (
                       <div key={g.label} className="mb-[10px] flex items-center gap-[10px]">
-                        <div className={`h-[10px] w-[10px] shrink-0 rounded-[3px] ${g.label === "Female" ? "bg-[#E8402A]" : g.label === "Male" ? "bg-[#111111]" : "bg-[#D1D1D1]"}`} />
-                        <span className="flex-1 text-[12px] text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">{g.label}</span>
-                        <span className="text-[13px] font-extrabold tracking-[-0.03em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">{g.pct}%</span>
+                        <div className={`h-[10px] w-[10px] shrink-0 rounded-[3px] ${g.label === "Female" ? "bg-[#E8402A]" : g.label === "Male" ? "bg-secondary" : "bg-[#D1D1D1]"}`} />
+                        <span className="flex-1 text-[12px] text-muted-foreground ">{g.label}</span>
+                        <span className="text-[13px] font-extrabold tracking-[-0.03em] text-foreground ">{g.pct}%</span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="rounded-[12px] bg-[rgba(255,255,255,0.05)] px-[16px] py-[12px] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+                <div className="rounded-[12px] bg-muted px-[16px] py-[12px] text-[13px] leading-[1.6] text-muted-foreground ">
                   Predominantly female audience — strong fit for beauty, wellness, fashion, and lifestyle brands.
                 </div>
               </div>
 
               {/* Top locations */}
-              <div className="col-span-2 rounded-[18px] border border-[rgba(255,255,255,0.07)] bg-[#050505] p-[24px]">
-                <div className="mb-[4px] text-[13px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Top Locations</div>
-                <div className="mb-[20px] text-[11px] text-[rgba(255,255,255,0.4)] font-mono">Where your audience lives</div>
+              <div className="col-span-2 rounded-[18px] border border-border bg-background p-[24px]">
+                <div className="mb-[4px] text-[13px] font-bold text-foreground ">Top Locations</div>
+                <div className="mb-[20px] text-[11px] text-muted-foreground font-mono">Where your audience lives</div>
                 <div className="grid grid-cols-3 gap-[16px]">
                   {DEMOGRAPHICS.geo.map((g, i) => (
                     <div key={g.country}>
                       <div className="mb-[8px] flex items-center justify-between">
                         <div className="flex items-center gap-[8px]">
                           <span className="text-[18px]">{g.flag}</span>
-                          <span className="text-[12px] font-medium text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">{g.country}</span>
+                          <span className="text-[12px] font-medium text-muted-foreground ">{g.country}</span>
                         </div>
-                        <span className={`text-[14px] font-extrabold tracking-[-0.03em] font-['SF_Pro_Display',-apple-system,sans-serif] ${i < 2 ? "text-[#E8402A]" : "text-white"}`}>{g.pct}%</span>
+                        <span className={`text-[14px] font-extrabold tracking-[-0.03em]  ${i < 2 ? "text-[#E8402A]" : "text-foreground"}`}>{g.pct}%</span>
                       </div>
                       <StatBar pct={g.pct} color={i < 2 ? "#E8402A" : "#111111"} />
                     </div>
@@ -522,31 +522,31 @@ export function MediaKitPage() {
               <div>
                 <div className="mb-[16px] flex items-center justify-between">
                   <div>
-                    <div className="mb-[2px] text-[14px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Rate Card</div>
-                    <div className="text-[11px] text-[rgba(255,255,255,0.4)] font-mono">All prices in USD · excludes usage licensing</div>
+                    <div className="mb-[2px] text-[14px] font-bold text-foreground ">Rate Card</div>
+                    <div className="text-[11px] text-muted-foreground font-mono">All prices in USD · excludes usage licensing</div>
                   </div>
                   {uiState.editMode && (
-                    <button className="flex cursor-pointer items-center gap-[6px] rounded-[9px] border border-dashed border-[#E8402A]/40 bg-transparent px-[14px] py-[7px] text-[11px] text-[#E8402A] font-['SF_Pro_Display',-apple-system,sans-serif]">
+                    <button className="flex cursor-pointer items-center gap-[6px] rounded-[9px] border border-dashed border-[#E8402A]/40 bg-transparent px-[14px] py-[7px] text-[11px] text-[#E8402A] ">
                       + Add rate
                     </button>
                   )}
                 </div>
                 <div className="grid grid-cols-2 gap-[12px]">
                   {rates.map((r, i) => (
-                    <div key={r.type} className={`flex items-start justify-between rounded-[16px] px-[22px] py-[20px] transition-transform duration-200 ${i === rates.length - 1 ? "border border-transparent bg-(--cos-primary)" : "border border-[rgba(255,255,255,0.07)] bg-[#050505]"}`}
+                    <div key={r.type} className={`flex items-start justify-between rounded-[16px] px-[22px] py-[20px] transition-transform duration-200 ${i === rates.length - 1 ? "border border-transparent bg-primary" : "border border-border bg-background"}`}
                       onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
                       onMouseLeave={e => e.currentTarget.style.transform = "none"}
                     >
                       <div>
-                        <div className="mb-[5px] text-[13px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
+                        <div className="mb-[5px] text-[13px] font-bold text-foreground ">
                           {uiState.editMode && i !== rates.length - 1
                             ? <EditableField value={r.type} onSave={v => setRates(prev => prev.map((x, j) => j === i ? { ...x, type: v } : x))} />
                             : r.type}
                         </div>
-                        <div className={`text-[11px] font-mono ${i === rates.length - 1 ? "text-[rgba(255,255,255,0.5)]" : "text-[rgba(255,255,255,0.4)]"}`}>{r.desc}</div>
+                        <div className={`text-[11px] font-mono ${i === rates.length - 1 ? "text-muted-foreground" : "text-muted-foreground"}`}>{r.desc}</div>
                       </div>
                       <div className="ml-[16px] shrink-0 text-right">
-                        <div className="text-[16px] font-black tracking-[-0.03em] text-[#E8402A] font-['SF_Pro_Display',-apple-system,sans-serif]">
+                        <div className="text-[16px] font-black tracking-[-0.03em] text-[#E8402A] ">
                           {uiState.editMode && i !== rates.length - 1
                             ? <EditableField value={r.price} onSave={v => setRates(prev => prev.map((x, j) => j === i ? { ...x, price: v } : x))} />
                             : r.price}
@@ -562,24 +562,24 @@ export function MediaKitPage() {
                 <div className="rounded-[16px] border border-[#E8402A]/15 bg-[#E8402A]/5 p-[22px]">
                   <div className="mb-[12px] text-[12px] font-bold tracking-[0.06em] text-[#E8402A] font-mono">WHAT&apos;S INCLUDED</div>
                   {["Full creative direction & script", "2 rounds of revision", "30-day exclusivity (campaign packages)", "Analytics report post-campaign", "Story reposts for feed posts", "Professional editing & colour grade"].map(item => (
-                    <div key={item} className="mb-[7px] flex items-center gap-[8px] text-[12px] text-[rgba(255,255,255,0.65)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+                    <div key={item} className="mb-[7px] flex items-center gap-[8px] text-[12px] text-muted-foreground ">
                       <div className="h-[5px] w-[5px] shrink-0 rounded-full bg-[#E8402A]" />
                       {item}
                     </div>
                   ))}
                 </div>
-                <div className="rounded-[16px] bg-(--cos-primary) p-[22px]">
-                  <div className="mb-[12px] text-[12px] font-bold tracking-[0.06em] text-[rgba(255,255,255,0.5)] font-mono">GET IN TOUCH</div>
-                  <div className="mb-[6px] text-[16px] font-extrabold tracking-[-0.03em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Let&apos;s work together</div>
-                  <div className="mb-[18px] text-[12px] leading-[1.6] text-[rgba(255,255,255,0.5)] font-['SF_Pro_Display',-apple-system,sans-serif]">
+                <div className="rounded-[16px] bg-primary p-[22px]">
+                  <div className="mb-[12px] text-[12px] font-bold tracking-[0.06em] text-muted-foreground font-mono">GET IN TOUCH</div>
+                  <div className="mb-[6px] text-[16px] font-extrabold tracking-[-0.03em] text-foreground ">Let&apos;s work together</div>
+                  <div className="mb-[18px] text-[12px] leading-[1.6] text-muted-foreground ">
                     All rates are starting points — final pricing depends on brief scope, exclusivity, and timeline.
                   </div>
-                  <div className="mb-[16px] text-[12px] text-[rgba(255,255,255,0.6)] font-mono">{creator.email}</div>
+                  <div className="mb-[16px] text-[12px] text-muted-foreground font-mono">{creator.email}</div>
                   <div className="flex gap-[8px]">
-                    <button className="flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border-0 bg-[#E8402A] px-[10px] py-[10px] text-[12px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
+                    <button className="flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border-0 bg-[#E8402A] px-[10px] py-[10px] text-[12px] font-bold text-foreground ">
                       <EnvelopeSimple size={12} /> Email Me
                     </button>
-                    <button className="flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border border-[rgba(255,255,255,0.15)] bg-transparent px-[10px] py-[10px] text-[12px] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">
+                    <button className="flex flex-1 cursor-pointer items-center justify-center gap-[6px] rounded-[10px] border border-border bg-transparent px-[10px] py-[10px] text-[12px] text-foreground ">
                       <ShareNetwork size={12} /> Share Kit
                     </button>
                   </div>
@@ -593,16 +593,16 @@ export function MediaKitPage() {
             <div>
               <div className="mb-[16px] flex items-center justify-between">
                 <div>
-                  <div className="mb-[2px] text-[14px] font-bold text-white font-['SF_Pro_Display',-apple-system,sans-serif]">Content Portfolio</div>
-                  <div className="text-[11px] text-[rgba(255,255,255,0.4)] font-mono">Top performing posts across all platforms</div>
+                  <div className="mb-[2px] text-[14px] font-bold text-foreground ">Content Portfolio</div>
+                  <div className="text-[11px] text-muted-foreground font-mono">Top performing posts across all platforms</div>
                 </div>
-                <div className="flex items-center gap-[8px] rounded-[9px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.05)] px-[12px] py-[6px] text-[11px] text-[rgba(255,255,255,0.4)] font-mono">
+                <div className="flex items-center gap-[8px] rounded-[9px] border border-border bg-muted px-[12px] py-[6px] text-[11px] text-muted-foreground font-mono">
                   Sorted by views <CaretRight size={12} />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-[14px]">
                 {PORTFOLIO.map((p, i) => (
-                  <div key={i} className="cursor-pointer overflow-hidden rounded-[16px] border border-[rgba(255,255,255,0.07)] transition-[transform,box-shadow] duration-200"
+                  <div key={i} className="cursor-pointer overflow-hidden rounded-[16px] border border-border transition-[transform,box-shadow] duration-200"
                     onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.12)"; }}
                     onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
                   >
@@ -610,29 +610,29 @@ export function MediaKitPage() {
                       <img src={p.thumb} alt="" className="block h-full w-full object-cover" />
                       <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.7)_0%,transparent_50%)]" />
                       {/* Platform */}
-                      <div className={`absolute left-[10px] top-[10px] flex h-[26px] w-[26px] items-center justify-center rounded-[7px] ${p.platform === SocialPlatform.INSTAGRAM ? "bg-[#E8402A]" : "bg-[#111111]"}`}>
+                      <div className={`absolute left-[10px] top-[10px] flex h-[26px] w-[26px] items-center justify-center rounded-[7px] ${p.platform === SocialPlatform.INSTAGRAM ? "bg-[#E8402A]" : "bg-secondary"}`}>
                         {p.platform === SocialPlatform.INSTAGRAM ? <Instagram size={13} color="white" /> : <Youtube size={13} color="white" />}
                       </div>
                       {/* Type */}
-                      <div className="absolute right-[10px] top-[10px] flex items-center gap-[4px] rounded-[99px] bg-[rgba(0,0,0,0.5)] px-[9px] py-[3px] backdrop-blur-[6px]">
+                      <div className="absolute right-[10px] top-[10px] flex items-center gap-[4px] rounded-[99px] bg-muted px-[9px] py-[3px] backdrop-blur-[6px]">
                         <Play size={8} color="white" />
-                        <span className="text-[9px] tracking-[0.06em] text-white font-mono">{p.type.toUpperCase()}</span>
+                        <span className="text-[9px] tracking-[0.06em] text-foreground font-mono">{p.type.toUpperCase()}</span>
                       </div>
                       {/* Stats */}
                       <div className="absolute bottom-[10px] left-[10px] right-[10px] flex justify-between">
-                        <span className="text-[14px] font-extrabold tracking-[-0.03em] text-white font-['SF_Pro_Display',-apple-system,sans-serif]">{p.views}</span>
-                        <span className="rounded-[99px] bg-[rgba(232,64,42,0.85)] px-[8px] py-[2px] text-[10px] font-bold text-white font-mono">{p.er} ER</span>
+                        <span className="text-[14px] font-extrabold tracking-[-0.03em] text-foreground ">{p.views}</span>
+                        <span className="rounded-[99px] bg-[rgba(232,64,42,0.85)] px-[8px] py-[2px] text-[10px] font-bold text-foreground font-mono">{p.er} ER</span>
                       </div>
                     </div>
-                    <div className="bg-[#0D0D0D] px-[14px] py-[12px]">
+                    <div className="bg-card px-[14px] py-[12px]">
                       <div className="flex items-center gap-[14px]">
-                        <div className="flex items-center gap-[5px] text-[11px] text-[rgba(255,255,255,0.4)] font-mono">
+                        <div className="flex items-center gap-[5px] text-[11px] text-muted-foreground font-mono">
                           <Eye size={10} /> {p.views}
                         </div>
                         <div className="text-[11px] font-semibold text-[#E8402A] font-mono">
                           {p.er} engagement
                         </div>
-                        <button className="ml-auto flex cursor-pointer items-center gap-[4px] border-0 bg-transparent p-0 text-[10px] text-[rgba(255,255,255,0.4)] font-mono">
+                        <button className="ml-auto flex cursor-pointer items-center gap-[4px] border-0 bg-transparent p-0 text-[10px] text-muted-foreground font-mono">
                           <ArrowSquareOut size={10} /> View
                         </button>
                       </div>

@@ -2,7 +2,7 @@
 
 import { InstagramLogo as Instagram, YoutubeLogo as Youtube } from "@phosphor-icons/react/dist/ssr";
 import { SocialPlatform } from "@/enums/post";
-import { Post, PRO_FONT, STATUS_CFG } from "./shared";
+import { Post, STATUS_CFG } from "./shared";
 
 export function PostChip({ post, onClick }: { post: Post; onClick: () => void }) {
   const S = STATUS_CFG[post.status];
@@ -17,7 +17,7 @@ export function PostChip({ post, onClick }: { post: Post; onClick: () => void })
       className={`mb-[2px] flex cursor-pointer items-center gap-[4px] rounded-[5px] px-[7px] py-[3px] transition-opacity duration-150 hover:opacity-75 ${S.bgClass}`}
     >
       <PlatformIcon size={9} color={platformColor} />
-      <span className={`${PRO_FONT} ${S.textClass} max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap text-[9.5px] font-medium`}>
+      <span className={` ${S.textClass} max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap text-[9.5px] font-medium`}>
         {post.title}
       </span>
     </div>

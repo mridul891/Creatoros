@@ -9,7 +9,7 @@ type MarketingPageShellProps = {
 
 export function MarketingPageShell({ children }: MarketingPageShellProps) {
   return (
-    <div className="min-h-screen bg-[#050505]">
+    <div className="min-h-screen bg-background">
       <Nav />
       <main className="pt-14">{children}</main>
       <FooterCTA />

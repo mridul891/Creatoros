@@ -139,13 +139,13 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
   }
 
   return (
-    <div className="rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] p-6">
+    <div className="rounded-[20px] border border-border bg-card p-6">
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-white">Files</h2>
-          <p className="text-[12px] text-[rgba(255,255,255,0.5)]">Contracts, briefs, assets, media, invoices, and references.</p>
+          <h2 className="text-lg font-bold text-foreground">Files</h2>
+          <p className="text-[12px] text-muted-foreground">Contracts, briefs, assets, media, invoices, and references.</p>
         </div>
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-(--cos-primary) px-3 py-2 text-[12px] font-semibold text-white">
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-3 py-2 text-[12px] font-semibold text-primary-foreground">
           <UploadSimple size={14} />
           Upload
           <input type="file" className="hidden" onChange={handleUploadFromInput} />
@@ -155,7 +155,7 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <CrmSearchField value={search} placeholder="Search files" onChange={setSearch} className="w-[260px]" />
         <Select value={archive} onValueChange={(next) => setArchive(next as typeof archive)}>
-          <SelectTrigger className="h-10 w-[140px] border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+          <SelectTrigger className="h-10 w-[140px] border-border bg-card text-xs text-muted-foreground">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -164,7 +164,7 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
           </SelectContent>
         </Select>
         <Select value={category} onValueChange={(next) => setCategory(next as typeof category)}>
-          <SelectTrigger className="h-10 w-[180px] border-[rgba(255,255,255,0.08)] bg-[#0D0D0D] text-xs text-[rgba(255,255,255,0.75)]">
+          <SelectTrigger className="h-10 w-[180px] border-border bg-card text-xs text-muted-foreground">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -181,8 +181,8 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
       {displayError ? <p className="mb-4 text-[12px] text-[#E8402A]">{displayError}</p> : null}
 
       {editingFile ? (
-        <div className="mb-4 rounded-[12px] border border-[rgba(255,255,255,0.08)] p-3">
-          <p className="mb-2 text-[12px] font-semibold text-white">Rename / update metadata</p>
+        <div className="mb-4 rounded-[12px] border border-border p-3">
+          <p className="mb-2 text-[12px] font-semibold text-foreground">Rename / update metadata</p>
           <div className="grid gap-2 md:grid-cols-3">
             <Input value={draft.fileName} onChange={(e) => setDraft((prev) => ({ ...prev, fileName: e.target.value }))} />
             <Input value={draft.storagePath} onChange={(e) => setDraft((prev) => ({ ...prev, storagePath: e.target.value }))} />
@@ -218,40 +218,40 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
         </div>
       ) : null}
 
-      <div className="overflow-x-auto rounded-[14px] border border-[rgba(255,255,255,0.07)]">
+      <div className="overflow-x-auto rounded-[14px] border border-border">
         <table className="min-w-full">
           <thead>
-            <tr className="border-b border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] text-left">
-              <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">File</th>
-              <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Category</th>
-              <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Size</th>
-              <th className="px-4 py-3 text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Updated</th>
-              <th className="px-4 py-3 text-right text-[11px] font-semibold text-[rgba(255,255,255,0.58)]">Actions</th>
+            <tr className="border-b border-border bg-muted text-left">
+              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">File</th>
+              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Category</th>
+              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Size</th>
+              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Updated</th>
+              <th className="px-4 py-3 text-right text-[11px] font-semibold text-muted-foreground">Actions</th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-4 text-[12px] text-[rgba(255,255,255,0.55)]">
+                <td colSpan={5} className="px-4 py-4 text-[12px] text-muted-foreground">
                   Loading files...
                 </td>
               </tr>
             ) : files.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-4 text-[12px] text-[rgba(255,255,255,0.55)]">
+                <td colSpan={5} className="px-4 py-4 text-[12px] text-muted-foreground">
                   No files found for current filters.
                 </td>
               </tr>
             ) : (
               files.map((file) => (
-                <tr key={file.id} className="border-b border-[rgba(255,255,255,0.05)] last:border-none">
+                <tr key={file.id} className="border-b border-border last:border-none">
                   <td className="px-4 py-3">
-                    <p className="text-[13px] font-semibold text-white">{file.fileName}</p>
-                    <p className="text-[11px] text-[rgba(255,255,255,0.5)]">{file.storagePath}</p>
+                    <p className="text-[13px] font-semibold text-foreground">{file.fileName}</p>
+                    <p className="text-[11px] text-muted-foreground">{file.storagePath}</p>
                   </td>
-                  <td className="px-4 py-3 text-[12px] text-[rgba(255,255,255,0.72)]">{file.category}</td>
-                  <td className="px-4 py-3 text-[12px] text-[rgba(255,255,255,0.72)]">{formatSize(file.sizeBytes)}</td>
-                  <td className="px-4 py-3 text-[12px] text-[rgba(255,255,255,0.72)]">{new Date(file.updatedAt).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-[12px] text-muted-foreground">{file.category}</td>
+                  <td className="px-4 py-3 text-[12px] text-muted-foreground">{formatSize(file.sizeBytes)}</td>
+                  <td className="px-4 py-3 text-[12px] text-muted-foreground">{new Date(file.updatedAt).toLocaleString()}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
                       <Button type="button" size="sm" variant="outline" className="h-8" onClick={() => openRename(file)}>

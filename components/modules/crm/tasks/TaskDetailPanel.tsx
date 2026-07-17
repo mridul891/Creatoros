@@ -16,10 +16,10 @@ type TaskDetailPanelProps = {
 export function TaskDetailPanel({ open, task, isLoading = false, loadError, onOpenChange }: TaskDetailPanelProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-[min(95vw,460px)] border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] text-[rgba(255,255,255,0.82)]">
+      <SheetContent side="right" className="w-[min(95vw,460px)] border-border bg-card text-muted-foreground">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-lg font-bold text-white">{task?.title ?? "Task details"}</SheetTitle>
-          <SheetDescription className="text-[12px] text-[rgba(255,255,255,0.52)]">
+          <SheetTitle className="text-lg font-bold text-foreground">{task?.title ?? "Task details"}</SheetTitle>
+          <SheetDescription className="text-[12px] text-muted-foreground">
             Detailed task context for execution tracking.
           </SheetDescription>
         </SheetHeader>
@@ -27,7 +27,7 @@ export function TaskDetailPanel({ open, task, isLoading = false, loadError, onOp
         {isLoading ? (
           <div className="space-y-3">
             {Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="h-20 animate-pulse rounded-[12px] bg-[rgba(255,255,255,0.06)]" />
+              <div key={index} className="h-20 animate-pulse rounded-[12px] bg-muted" />
             ))}
           </div>
         ) : loadError ? (
@@ -37,39 +37,39 @@ export function TaskDetailPanel({ open, task, isLoading = false, loadError, onOp
         ) : task ? (
           <div className="space-y-4 text-[13px]">
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-3">
-                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Status</p>
-                <p className="mt-1 font-semibold text-white">{TASK_STATUS_LABEL[task.status]}</p>
+              <div className="rounded-[12px] border border-border bg-muted p-3">
+                <p className="text-[11px] text-muted-foreground">Status</p>
+                <p className="mt-1 font-semibold text-foreground">{TASK_STATUS_LABEL[task.status]}</p>
               </div>
-              <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-3">
-                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Priority</p>
-                <p className="mt-1 font-semibold text-white">{task.priority}</p>
+              <div className="rounded-[12px] border border-border bg-muted p-3">
+                <p className="text-[11px] text-muted-foreground">Priority</p>
+                <p className="mt-1 font-semibold text-foreground">{task.priority}</p>
               </div>
             </div>
 
-            <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-3">
-              <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Description</p>
-              <p className="mt-1 whitespace-pre-wrap text-[13px] text-[rgba(255,255,255,0.75)]">
+            <div className="rounded-[12px] border border-border bg-muted p-3">
+              <p className="text-[11px] text-muted-foreground">Description</p>
+              <p className="mt-1 whitespace-pre-wrap text-[13px] text-muted-foreground">
                 {task.description ?? "No description provided."}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-3">
-                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Due Date</p>
-                <p className="mt-1 text-[13px] text-[rgba(255,255,255,0.75)]">{task.dueDate ? task.dueDate.toLocaleDateString() : "Not set"}</p>
+              <div className="rounded-[12px] border border-border bg-muted p-3">
+                <p className="text-[11px] text-muted-foreground">Due Date</p>
+                <p className="mt-1 text-[13px] text-muted-foreground">{task.dueDate ? task.dueDate.toLocaleDateString() : "Not set"}</p>
               </div>
            
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-3">
-                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Created</p>
-                <p className="mt-1 text-[13px] text-[rgba(255,255,255,0.75)]">{task.createdAt.toLocaleString()}</p>
+              <div className="rounded-[12px] border border-border bg-muted p-3">
+                <p className="text-[11px] text-muted-foreground">Created</p>
+                <p className="mt-1 text-[13px] text-muted-foreground">{task.createdAt.toLocaleString()}</p>
               </div>
-              <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-3">
-                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Updated</p>
-                <p className="mt-1 text-[13px] text-[rgba(255,255,255,0.75)]">{task.updatedAt.toLocaleString()}</p>
+              <div className="rounded-[12px] border border-border bg-muted p-3">
+                <p className="text-[11px] text-muted-foreground">Updated</p>
+                <p className="mt-1 text-[13px] text-muted-foreground">{task.updatedAt.toLocaleString()}</p>
               </div>
             </div>
           </div>

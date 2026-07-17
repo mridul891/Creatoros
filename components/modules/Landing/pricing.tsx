@@ -79,16 +79,16 @@ export function Pricing() {
   ];
 
   return (
-    <section className="border-t border-[rgba(255,255,255,0.07)] bg-[#050505] py-16 sm:py-20 lg:py-24">
+    <section className="border-t border-border bg-background py-16 sm:py-20 lg:py-24">
       <div className={WRAP_CLASS}>
         <div className="mb-10 text-center sm:mb-14">
-          <p className="mb-[14px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.72)]">
+          <p className="mb-[14px]  text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             Pricing
           </p>
-          <h2 className="mb-3 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-white">
+          <h2 className="mb-3  text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.035em] text-foreground">
             Simple Pricing for Serious Creators
           </h2>
-          <p className="mx-auto m-0 max-w-[760px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[15px] leading-relaxed text-[rgba(255,255,255,0.84)]">
+          <p className="mx-auto m-0 max-w-[760px]  text-[15px] leading-relaxed text-muted-foreground">
             Everything you need to manage brand deals, track sponsorships,
             automate follow-ups, and grow your creator business.
           </p>
@@ -98,33 +98,33 @@ export function Pricing() {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className="relative flex h-full flex-col rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-[#080808] px-5 py-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(255,255,255,0.2)] sm:px-6 sm:py-7"
+              className="relative flex h-full flex-col rounded-[12px] border border-border bg-card px-5 py-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md sm:px-6 sm:py-7"
             >
               {plan.primary && (
-                <div className="pointer-events-none absolute -inset-px -z-10 rounded-[14px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.2),rgba(255,255,255,0.04)_45%,transparent_70%)] blur-sm" />
+                <div className="pointer-events-none absolute -inset-px -z-10 rounded-[14px] bg-[radial-gradient(circle_at_top,var(--primary),var(--primary)_45%,transparent_70%)] opacity-10 blur-sm" />
               )}
               {plan.badge && (
-                <div className="absolute right-3 top-3 rounded-full border border-[rgba(255,255,255,0.24)] bg-[rgba(255,255,255,0.14)] px-2.5 py-[4px] font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[10px] font-semibold tracking-[0.045em] text-white sm:right-4 sm:top-4">
+                <div className="absolute right-3 top-3 rounded-full border border-border bg-muted px-2.5 py-[4px]  text-[10px] font-semibold tracking-[0.045em] text-foreground sm:right-4 sm:top-4">
                   {plan.badge}
                 </div>
               )}
-              <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] font-semibold text-[rgba(255,255,255,0.84)]">
+              <p className="mb-1 mt-0  text-[13px] font-semibold text-muted-foreground">
                 {plan.name}
               </p>
-              <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[clamp(28px,3vw,36px)] font-semibold tracking-[-0.04em] text-white">
+              <p className="mb-1 mt-0  text-[clamp(28px,3vw,36px)] font-semibold tracking-[-0.04em] text-foreground">
                 {plan.price}
                 {plan.price !== "Custom" && (
-                  <span className="text-[14px] font-normal text-[rgba(255,255,255,0.72)]">
+                  <span className="text-[14px] font-normal text-muted-foreground">
                     /month
                   </span>
                 )}
               </p>
-              <p className="mb-6 mt-0 min-h-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] leading-relaxed text-[rgba(255,255,255,0.78)] sm:min-h-[72px]">
+              <p className="mb-6 mt-0 min-h-0  text-[13px] leading-relaxed text-muted-foreground sm:min-h-[72px]">
                 {plan.desc}
               </p>
               <a
                 href="#"
-                className="mb-6 block rounded-[8px] px-0 py-[10px] text-center font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] font-semibold tracking-[-0.01em] text-black no-underline transition-all duration-200 bg-white hover:bg-[rgba(255,255,255,0.92)]"
+                className="mb-6 block rounded-[8px] px-0 py-[10px] text-center  text-[13px] font-semibold tracking-[-0.01em] no-underline transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 {plan.cta}
               </a>
@@ -133,10 +133,10 @@ export function Pricing() {
                   <div key={feature} className="flex items-center gap-2">
                     <Check
                       size={12}
-                      color="rgba(255,255,255,0.62)"
+                      color="var(--muted-foreground)"
                       className="shrink-0"
                     />
-                    <span className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.84)]">
+                    <span className=" text-[13px] text-muted-foreground">
                       {feature}
                     </span>
                   </div>
@@ -146,19 +146,19 @@ export function Pricing() {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 rounded-[10px] border border-[rgba(255,255,255,0.07)] bg-[#080808] px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+        <div className="mt-8 flex flex-col gap-4 rounded-[10px] border border-border bg-muted/50 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
           <div>
-            <p className="mb-1 mt-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[14px] font-semibold text-white">
+            <p className="mb-1 mt-0  text-[14px] font-semibold text-foreground">
               Need an Enterprise Solution?
             </p>
-            <p className="m-0 font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] text-[rgba(255,255,255,0.72)]">
+            <p className="m-0  text-[13px] text-muted-foreground">
               Managing multiple creators or large-scale campaigns? Let&apos;s build a
               custom workflow for your team.
             </p>
           </div>
           <a
             href="#"
-            className="shrink-0 rounded-[7px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] px-[18px] py-2 text-center font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,'Helvetica_Neue',system-ui,sans-serif] text-[13px] font-semibold text-white no-underline transition-colors duration-200 hover:bg-[rgba(255,255,255,0.1)]"
+            className="shrink-0 rounded-[7px] border border-border bg-background px-[18px] py-2 text-center  text-[13px] font-semibold text-foreground no-underline transition-colors duration-200 hover:bg-muted"
           >
             Talk to Sales →
           </a>

@@ -24,13 +24,13 @@ export function TaskRowActions({ task, isReadOnly, onView, onEdit, onArchive, on
           type="button"
           variant="ghost"
           aria-label="Task row actions"
-          className="h-8 w-8 cursor-pointer p-0 text-[rgba(255,255,255,0.6)] hover:bg-[rgba(255,255,255,0.08)]"
+          className="h-8 w-8 cursor-pointer p-0 text-muted-foreground hover:bg-muted"
           onClick={(event) => event.stopPropagation()}
         >
           <DotsThree size={14} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="border-[rgba(255,255,255,0.08)] bg-[#121212] text-[rgba(255,255,255,0.8)]">
+      <DropdownMenuContent align="end" className="border-border bg-[#121212] text-muted-foreground">
         <DropdownMenuItem className="cursor-pointer" onClick={() => onView(task)}>
           View Details
         </DropdownMenuItem>

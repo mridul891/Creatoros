@@ -18,7 +18,7 @@ export function CrmSearchField({ value, placeholder, ariaLabel, onChange, classN
     <div className={cn("relative", className)}>
       <MagnifyingGlass
         size={13}
-        color="rgba(255,255,255,0.4)"
+        color="var(--muted-foreground)"
         className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
       />
       <Input
@@ -26,7 +26,7 @@ export function CrmSearchField({ value, placeholder, ariaLabel, onChange, classN
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         aria-label={ariaLabel}
-        className="h-10 border-[rgba(255,255,255,0.07)] bg-[#0D0D0D] pl-[34px] text-xs text-[rgba(255,255,255,0.7)] placeholder:text-[rgba(255,255,255,0.45)] focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+        className="h-10 border-border bg-card pl-[34px] text-xs text-muted-foreground placeholder:text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
       />
     </div>
   )
