@@ -1,12 +1,11 @@
-// app/actions/join-waitlist.ts
-
 "use server"
 
-import { createSupabaseServerClient } from "@/lib/supabase/server-client"
+import { createInsforgeServerClient } from "@/lib/inforge/server"
 
 export async function joinWaitlist(formData: FormData) {
-  const supabase = await createSupabaseServerClient()
+  const insforge = await createInsforgeServerClient()
   const email = formData.get("email") as string
+  const name = formData.get("name") as string
 
   if (!email) {
     return {
@@ -15,26 +14,24 @@ export async function joinWaitlist(formData: FormData) {
     }
   }
 
-  const { error } = await supabase.from("waitlist").insert([{ email }])
+  const response = await insforge.database.from("waitlist").insert([{ email, name }])
+  console.log(response)
+  // if (error) {
+  //   if (error.code === "23505") {
+  //     return {
+  //       success: false,
+  //       message: "You're already on the waitlist.",
+  //     }
+  //   }
 
-  if (error) {
-    if (error.code === "23505") {
-      return {
-        success: false,
-        message: "You're already on the waitlist.",
-      }
-    }
-
-    return {
-      success: false,
-      message: "Something went wrong.",
-    }
-  }
+  //   return {
+  //     success: false,
+  //     message: "Something went wrong.",
+  //   }
+  // }
 
   return {
     success: true,
-    message: "You're on the waitlist 🎉",
+    message: "You're on the waitlist",
   }
 }
-
-

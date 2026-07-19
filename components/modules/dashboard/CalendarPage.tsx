@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   CaretLeft, CaretRight, Plus, Calendar as CalendarIcon,
-  Clock, CheckCircle, PencilSimple, InstagramLogo as Instagram, YoutubeLogo as Youtube,
+  Clock, CheckCircle, PencilSimple,
 } from "@phosphor-icons/react/dist/ssr";
 import {
   PlatformFilter,
@@ -13,8 +13,9 @@ import {
 } from "@/enums/post";
 import type { CalendarFiltersState } from "@/types/post";
 import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { ModalState, Platform, Post, PostStatus, MONO_FONT, STATUS_CFG } from "./calendar/shared";
+import { ModalState, Post, PostStatus, MONO_FONT, PLATFORM_CFG, STATUS_CFG } from "./calendar/shared";
 import { PostModal } from "./calendar/PostModal";
 import { PostChip } from "./calendar/PostChip";
 import { PostPanel } from "./calendar/PostPanel";
@@ -65,7 +66,8 @@ export function CalendarPage() {
   const selectedPost = posts.find(p => p.id === selectedId) ?? null;
 
   const calendarMonth = calendarState.currentMonth;
-  const firstDayOffset = (new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1).getDay() + 6) % 7;
+  // Sunday-first offset to match react-day-picker's default week start
+  const firstDayOffset = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1).getDay();
   const daysInMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 0).getDate();
   const lastRowIndex = Math.floor((daysInMonth + firstDayOffset - 1) / 7);
   const today = 9;
@@ -99,8 +101,15 @@ export function CalendarPage() {
   const scheduled = posts.filter(p => p.status === PostStatusEnum.SCHEDULED).length;
   const drafts    = posts.filter(p => p.status === PostStatusEnum.DRAFT).length;
 
+  const stats = [
+    { label: "Published", count: published,    color: STATUS_CFG[PostStatusEnum.PUBLISHED].color, icon: CheckCircle },
+    { label: "Scheduled", count: scheduled,    color: STATUS_CFG[PostStatusEnum.SCHEDULED].color, icon: Clock },
+    { label: "Drafts",    count: drafts,       color: STATUS_CFG[PostStatusEnum.DRAFT].color,     icon: PencilSimple },
+    { label: "Total",     count: posts.length, color: "var(--foreground)",                        icon: CalendarIcon },
+  ];
+
   return (
-    <div className="w-full max-w-[1280px] px-[36px] py-[28px]">
+    <div className="w-full max-w-[1280px] px-4 py-6 md:px-9 md:py-7">
       {modal && (
         <PostModal
           state={modal}
@@ -130,78 +139,77 @@ export function CalendarPage() {
       </Dialog>
 
       {/* Header */}
-      <div className="mb-[24px] flex items-start justify-between">
+      <div className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <h1 className={`mb-[4px]  text-[24px] font-extrabold tracking-[-0.04em] text-foreground`}>Content Calendar</h1>
-          <div className={` text-[13px] text-muted-foreground`}>Plan and track every post across all platforms</div>
+          <h1 className="mb-1 text-2xl font-bold tracking-tight text-foreground">Content Calendar</h1>
+          <p className="text-[13px] text-muted-foreground">Plan and track every post across all platforms</p>
         </div>
-        <button onClick={() => setModal({ day: today + 1 })} className={`flex cursor-pointer items-center gap-[8px] rounded-[11px] border-none bg-primary px-[20px] py-[10px]  text-[13px] font-bold text-primary-foreground`}>
-          <Plus size={15} /> New Post
-        </button>
+        <Button onClick={() => setModal({ day: today + 1 })} className="shrink-0 gap-1.5 px-4 font-semibold">
+          <Plus size={15} weight="bold" /> New Post
+        </Button>
       </div>
 
       {/* Stats */}
-      <div className="mb-[24px] flex gap-[12px]">
-        {[
-          { label: "Published", count: published, color: "#16a34a", icon: CheckCircle },
-          { label: "Scheduled", count: scheduled, color: "#E8402A", icon: Clock },
-          { label: "Drafts",    count: drafts,    color: "#717171", icon: PencilSimple },
-            { label: "Total",     count: posts.length, color: "#111111", icon: CalendarIcon },
-        ].map(s => (
-          <div key={s.label} className="flex items-center gap-[8px] rounded-[10px] border border-border bg-card px-[16px] py-[8px]">
-            <s.icon size={13} color={s.color} />
-            <span className={` text-[14px] font-extrabold tracking-[-0.03em] text-foreground`}>{s.count}</span>
-            <span className={` text-[12px] text-muted-foreground`}>{s.label}</span>
+      <div className="mb-6 flex flex-wrap gap-3">
+        {stats.map(s => (
+          <div key={s.label} className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 shadow-xs">
+            <s.icon size={14} color={s.color} weight="bold" />
+            <span className="text-sm font-bold tracking-tight text-foreground">{s.count}</span>
+            <span className="text-xs text-muted-foreground">{s.label}</span>
           </div>
         ))}
       </div>
 
       <div>
           {/* Month nav + filters */}
-          <div className="mb-[14px] flex items-center justify-between">
-            <div className="flex items-center gap-[10px]">
-              <button
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon-sm"
+                aria-label="Previous month"
                 onClick={() =>
                   setCalendarState(prev => ({
                     ...prev,
                     currentMonth: new Date(prev.currentMonth.getFullYear(), prev.currentMonth.getMonth() - 1, 1),
                   }))
                 }
-                className="flex cursor-pointer rounded-[8px] border border-border px-[10px] py-[6px] text-muted-foreground"
               >
                 <CaretLeft size={14} />
-              </button>
-              <span className={` text-[16px] font-extrabold tracking-[-0.03em] text-foreground`}>{monthLabel}</span>
-              <button
+              </Button>
+              <span className="min-w-[120px] text-center text-base font-semibold tracking-tight text-foreground">{monthLabel}</span>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                aria-label="Next month"
                 onClick={() =>
                   setCalendarState(prev => ({
                     ...prev,
                     currentMonth: new Date(prev.currentMonth.getFullYear(), prev.currentMonth.getMonth() + 1, 1),
                   }))
                 }
-                className="flex cursor-pointer rounded-[8px] border border-border px-[10px] py-[6px] text-muted-foreground"
               >
                 <CaretRight size={14} />
-              </button>
+              </Button>
             </div>
-            <div className="flex gap-[8px]">
-              <div className="flex rounded-[9px] bg-muted p-[3px]">
+            <div className="flex gap-2">
+              <div className="flex rounded-lg bg-muted p-[3px]">
                 {[PlatformFilter.ALL, PlatformFilter.INSTAGRAM, PlatformFilter.YOUTUBE].map(p => (
                   <button
                     key={p}
                     onClick={() => setFilters(prev => ({ ...prev, platform: p }))}
-                    className={`cursor-pointer rounded-[6px] px-[12px] py-[5px] ${MONO_FONT} text-[10px] transition-all duration-150 ${filters.platform === p ? "bg-card font-bold text-foreground shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-muted-foreground"}`}
+                    className={`cursor-pointer rounded-md px-3 py-1 text-[11px] transition-all duration-150 ${filters.platform === p ? "bg-card font-semibold text-foreground shadow-sm" : "bg-transparent font-medium text-muted-foreground hover:text-foreground"}`}
                   >
                     {p === PlatformFilter.ALL ? "All" : p === PlatformFilter.INSTAGRAM ? "IG" : "YT"}
                   </button>
                 ))}
               </div>
-              <div className="flex rounded-[9px] bg-muted p-[3px]">
+              <div className="flex rounded-lg bg-muted p-[3px]">
                 {[PlatformFilter.ALL, PostStatusEnum.PUBLISHED, PostStatusEnum.SCHEDULED, PostStatusEnum.DRAFT].map(s => (
                   <button
                     key={s}
                     onClick={() => setFilters(prev => ({ ...prev, status: s }))}
-                    className={`cursor-pointer rounded-[6px] px-[10px] py-[5px] ${MONO_FONT} text-[10px] capitalize transition-all duration-150 ${filters.status === s ? "bg-card font-bold text-foreground shadow-[0_1px_4px_rgba(0,0,0,0.1)]" : "bg-transparent font-normal text-muted-foreground"}`}
+                    className={`cursor-pointer rounded-md px-2.5 py-1 text-[11px] capitalize transition-all duration-150 ${filters.status === s ? "bg-card font-semibold text-foreground shadow-sm" : "bg-transparent font-medium text-muted-foreground hover:text-foreground"}`}
                   >
                     {s}
                   </button>
@@ -211,16 +219,22 @@ export function CalendarPage() {
           </div>
 
           {/* Grid */}
-          <div className="overflow-hidden rounded-[18px] border border-border bg-card">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
             <Calendar
               month={calendarMonth}
               disableNavigation
               showOutsideDays={false}
+              className="w-full p-0"
               classNames={{
+                root: "w-full",
+                month: "flex w-full flex-col",
+                nav: "hidden",
+                month_caption: "hidden",
                 month_grid: "w-full border-collapse",
+                weekdays: "border-b border-border",
+                weekday: "py-2.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground",
                 week: "",
                 day: "relative p-0 align-top",
-                weekdays: "border-b border-border",
               }}
               components={{
                 Day: ({ day, modifiers }: CalendarDayProps) => {
@@ -233,29 +247,31 @@ export function CalendarPage() {
                   const isToday = dayNumber === today;
                   const jsDay = day.date.getDay();
                   const isWeekend = jsDay === 0 || jsDay === 6;
-                  const colIndex = (jsDay + 6) % 7;
+                  // Sunday-first columns/rows, matching the rendered weekday header
+                  const colIndex = jsDay;
                   const rowIndex = Math.floor((dayNumber + firstDayOffset - 1) / 7);
 
                   return (
                     <td
-                      className={`align-top ${(colIndex < 6) ? "border-r border-border" : ""} ${rowIndex < lastRowIndex ? "border-b border-border" : ""} ${isWeekend ? "bg-muted" : "bg-transparent"}`}
+                      className={`w-[14.2857%] align-top ${(colIndex < 6) ? "border-r border-border" : ""} ${rowIndex < lastRowIndex ? "border-b border-border" : ""} ${isWeekend ? "bg-muted/40" : "bg-transparent"}`}
                     >
-                      <div className="group relative min-h-[110px] px-[8px] pb-[6px] pt-[8px]">
-                        <div className={`mb-[4px] flex h-[24px] w-[24px] items-center justify-center rounded-full ${MONO_FONT} text-[12px] ${isToday ? "bg-[#E8402A] font-extrabold text-foreground" : "bg-transparent font-medium text-muted-foreground"}`}>
+                      <div className="group relative min-h-[110px] px-2 pb-1.5 pt-2">
+                        <div className={`mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs ${isToday ? "bg-primary font-bold text-primary-foreground" : "bg-transparent font-medium text-muted-foreground"}`}>
                           {dayNumber}
                         </div>
                         <div>
                           {dayPosts.slice(0, 3).map(p => (
                             <PostChip key={p.id} post={p} onClick={() => setSelectedId(p.id)} />
                           ))}
-                          {dayPosts.length > 3 && <div className={`pl-[4px] ${MONO_FONT} text-[9px] text-muted-foreground`}>+{dayPosts.length - 3} more</div>}
+                          {dayPosts.length > 3 && <div className="pl-1 text-[10px] font-medium text-muted-foreground">+{dayPosts.length - 3} more</div>}
                         </div>
                         {/* Add button on hover */}
                         <button
                           onClick={() => setModal({ day: dayNumber })}
-                          className="absolute bottom-[6px] right-[6px] flex h-[18px] w-[18px] cursor-pointer items-center justify-center rounded-full border border-dashed border-border bg-card p-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                          aria-label={`Add post on June ${dayNumber}`}
+                          className="absolute bottom-1.5 right-1.5 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-dashed border-border bg-card p-0 text-muted-foreground opacity-0 transition-opacity duration-150 hover:border-primary/40 hover:text-primary focus-visible:opacity-100 group-hover:opacity-100"
                         >
-                          <Plus size={10} color="var(--muted-foreground)" />
+                          <Plus size={10} />
                         </button>
                       </div>
                     </td>
@@ -266,34 +282,37 @@ export function CalendarPage() {
           </div>
 
           {/* Upcoming */}
-          <div className="mt-[24px]">
-            <div className={`mb-[12px]  text-[13px] font-bold tracking-[-0.02em] text-foreground`}>Upcoming this week</div>
-            <div className="flex flex-col gap-[8px]">
+          <div className="mt-6">
+            <div className="mb-3 text-[13px] font-semibold tracking-tight text-foreground">Upcoming this week</div>
+            <div className="flex flex-col gap-2">
               {posts.filter(p => p.status !== PostStatusEnum.DRAFT && p.day >= today && p.day <= today + 7)
                 .sort((a, b) => a.day - b.day || a.time.localeCompare(b.time))
                 .map(post => {
                   const S = STATUS_CFG[post.status];
-                  const PlatformIcon = post.platform === SocialPlatform.INSTAGRAM ? Instagram : Youtube;
-                  const platformColor = post.platform === SocialPlatform.INSTAGRAM ? "#E8402A" : "#111111";
-                  const platformPillBg = post.platform === SocialPlatform.INSTAGRAM ? "bg-[#E8402A12]" : "bg-[#11111112]";
+                  const P = PLATFORM_CFG[post.platform];
                   return (
-                    <div key={post.id} className="flex cursor-pointer items-center gap-[14px] rounded-[12px] border border-border bg-card px-[18px] py-[13px] transition-colors duration-150 hover:border-[rgba(232,64,42,0.3)]"
+                    <div key={post.id} className="flex cursor-pointer items-center gap-3.5 rounded-lg border border-border bg-card px-4 py-3 shadow-xs transition-all duration-150 hover:border-ring/50 hover:shadow-sm"
                       onClick={() => setSelectedId(post.id)}
                     >
-                      <div className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] ${platformPillBg}`}>
-                        <PlatformIcon size={15} color={platformColor} />
+                      <div className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-lg ${P.pillBg}`}>
+                        <P.icon size={15} color={P.color} />
                       </div>
-                      <div className="flex-1">
-                        <div className={` text-[13px] font-semibold text-foreground`}>{post.title}</div>
-                        <div className={`mt-[2px] ${MONO_FONT} text-[11px] text-muted-foreground`}>June {post.day} · {post.time || "—"}</div>
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-[13px] font-semibold text-foreground">{post.title}</div>
+                        <div className={`mt-0.5 ${MONO_FONT} text-[11px] text-muted-foreground`}>June {post.day} · {post.time || "—"}</div>
                       </div>
-                      <div className={`inline-flex items-center gap-[5px] rounded-[99px] px-[10px] py-[4px] ${S.bgClass}`}>
-                        <S.icon size={10} color={S.color} />
-                        <span className={`${MONO_FONT} ${S.textClass} text-[10px] font-semibold`}>{S.label}</span>
+                      <div className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 ${S.bgClass}`}>
+                        <S.icon size={10} color={S.color} weight="bold" />
+                        <span className={`${S.textClass} text-[10px] font-semibold`}>{S.label}</span>
                       </div>
-                      <button onClick={e => { e.stopPropagation(); setModal({ day: post.day, post }); }} className="flex cursor-pointer items-center rounded-[7px] border border-border px-[8px] py-[5px] text-muted-foreground">
+                      <Button
+                        variant="outline"
+                        size="icon-sm"
+                        aria-label={`Edit ${post.title}`}
+                        onClick={e => { e.stopPropagation(); setModal({ day: post.day, post }); }}
+                      >
                         <PencilSimple size={12} />
-                      </button>
+                      </Button>
                     </div>
                   );
                 })}

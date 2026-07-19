@@ -5,11 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { SearchableSelect } from "@/components/ui/searchable-select"
 import { Textarea } from "@/components/ui/textarea"
-import { DEAL_PRIORITIES, DEAL_PRIORITY_THEME, DEAL_STAGES, DEAL_STAGE_LABEL, type DealPriority, type DealStage } from "@/enums/deal"
+import { DEAL_PRIORITIES, DEAL_STAGES, DEAL_STAGE_LABEL } from "@/enums/deal"
 import { type DealFormValues } from "@/lib/crm/deals/dealForm"
 import type { DealField } from "@/types/deal"
 import { CrmFormDialog } from "../shared"
+import { CircleNotch } from "@phosphor-icons/react"
+import { Separator } from "@/components/ui/separator"
 
 type DealFormProps = {
   open: boolean
@@ -26,6 +29,27 @@ type DealFormProps = {
   onSubmit: () => void
 }
 
+function SectionHeader({
+  title,
+  description,
+}: {
+  title: string
+  description?: string
+}) {
+  return (
+    <div className="space-y-1">
+      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      {description && (
+        <p className="text-xs text-muted-foreground">{description}</p>
+      )}
+    </div>
+  )
+}
+
+function SectionDivider() {
+  return <Separator />
+}
+
 export function DealForm({
   open,
   title,
@@ -40,10 +64,19 @@ export function DealForm({
   onOpenChange,
   onSubmit,
 }: DealFormProps) {
-  const selectedPriority: DealPriority = DEAL_PRIORITIES.includes(values.priority as DealPriority)
-    ? (values.priority as DealPriority)
-    : "Medium"
-  const priorityTheme = DEAL_PRIORITY_THEME[selectedPriority]
+  const brandOptions = brands.map((brand) => ({
+    value: brand.id,
+    label: brand.name,
+  }))
+
+  const contactOptions = contacts.map((contact) => ({
+    value: contact.id,
+    label: contact.name,
+  }))
+
+  const handleChange = (field: keyof DealFormValues, value: string) => {
+    onChange({ ...values, [field]: value })
+  }
 
   return (
     <CrmFormDialog
@@ -55,10 +88,9 @@ export function DealForm({
         <>
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             onClick={() => onOpenChange(false)}
             disabled={isSubmitting}
-            className="h-10 cursor-pointer border-border bg-transparent px-4 text-muted-foreground hover:bg-muted"
           >
             Cancel
           </Button>
@@ -66,225 +98,267 @@ export function DealForm({
             type="button"
             onClick={onSubmit}
             disabled={isSubmitting}
-            className="h-10 cursor-pointer bg-primary px-5 text-primary-foreground shadow-[0_8px_24px_rgba(232,64,42,0.25)] hover:bg-primary"
+            className="min-w-[120px]"
           >
-            {isSubmitting ? "Saving..." : submitLabel}
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <CircleNotch className="h-4 w-4 animate-spin" />
+                Saving...
+              </span>
+            ) : submitLabel}
           </Button>
         </>
       }
     >
-      <FieldGroup className="mt-2 gap-6">
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="space-y-4 rounded-[14px] border border-border bg-muted p-4 sm:p-5">
-            <div className="space-y-1">
-              <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Deal Basics</p>
-              <p className="text-[11px] text-muted-foreground">Campaign, value, and account context.</p>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field className="sm:col-span-2">
-                <FieldLabel className="text-[11px] text-muted-foreground">Campaign Name *</FieldLabel>
-                <Input
-                  value={values.campaignName}
-                  onChange={(event) => onChange({ ...values, campaignName: event.target.value })}
-                  aria-invalid={Boolean(fieldErrors?.campaignName)}
-                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
-                />
-                <FieldError>{fieldErrors?.campaignName}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Deal Value *</FieldLabel>
-                <Input
-                  value={values.dealValue}
-                  onChange={(event) => onChange({ ...values, dealValue: event.target.value })}
-                  aria-invalid={Boolean(fieldErrors?.dealValue)}
-                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
-                />
-                <FieldError>{fieldErrors?.dealValue}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Currency *</FieldLabel>
-                <Input
-                  value={values.currency}
-                  onChange={(event) => onChange({ ...values, currency: event.target.value.toUpperCase() })}
-                  aria-invalid={Boolean(fieldErrors?.currency)}
-                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
-                />
-                <FieldError>{fieldErrors?.currency}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Brand *</FieldLabel>
-                <Select value={values.brandId} onValueChange={(brandId) => onChange({ ...values, brandId, contactId: "" })}>
-                  <SelectTrigger className="h-10 w-full border-border bg-muted text-[13px] text-muted-foreground">
-                    <SelectValue placeholder="Select a brand" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {brands.map((brand) => (
-                      <SelectItem key={brand.id} value={brand.id}>
-                        {brand.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FieldError>{fieldErrors?.brandId}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Contact</FieldLabel>
-                <Select
-                  value={values.contactId || "__none"}
-                  onValueChange={(value) => onChange({ ...values, contactId: value === "__none" ? "" : value })}
-                >
-                  <SelectTrigger className="h-10 w-full border-border bg-muted text-[13px] text-muted-foreground">
-                    <SelectValue placeholder="Select a contact" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="__none">No contact</SelectItem>
-                    {contacts.map((contact) => (
-                      <SelectItem key={contact.id} value={contact.id}>
-                        {contact.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FieldError>{fieldErrors?.contactId}</FieldError>
-              </Field>
-
-            </div>
-          </div>
-
-          <div className="space-y-4 rounded-[14px] border border-border bg-muted p-4 sm:p-5">
-            <div className="space-y-1">
-              <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Pipeline And Dates</p>
-              <p className="text-[11px] text-muted-foreground">Track movement and deadlines at a glance.</p>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Stage *</FieldLabel>
-                <Select value={values.stage} onValueChange={(stage) => onChange({ ...values, stage: stage as DealStage })}>
-                  <SelectTrigger className="h-10 w-full border-border bg-muted text-[13px] text-muted-foreground">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DEAL_STAGES.map((stage) => (
-                      <SelectItem key={stage} value={stage}>
-                        {DEAL_STAGE_LABEL[stage]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FieldError>{fieldErrors?.stage}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Priority *</FieldLabel>
-                <Select
-                  value={values.priority}
-                  onValueChange={(priority) => onChange({ ...values, priority: priority as DealPriority })}
-                >
-                  <SelectTrigger
-                    className={`h-10 w-full border-border bg-muted text-[13px] text-muted-foreground ${priorityTheme.select}`}
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DEAL_PRIORITIES.map((priority) => (
-                      <SelectItem key={priority} value={priority}>
-                        {priority}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <div
-                  className={`mt-2 inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-semibold tracking-wide ${priorityTheme.badge}`}
-                >
-                  Priority: {selectedPriority}
-                </div>
-                <FieldError>{fieldErrors?.priority}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Start Date</FieldLabel>
-                <Input
-                  type="date"
-                  value={values.startDate}
-                  onChange={(event) => onChange({ ...values, startDate: event.target.value })}
-                  aria-invalid={Boolean(fieldErrors?.startDate)}
-                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
-                />
-                <FieldError>{fieldErrors?.startDate}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Due Date</FieldLabel>
-                <Input
-                  type="date"
-                  value={values.dueDate}
-                  onChange={(event) => onChange({ ...values, dueDate: event.target.value })}
-                  aria-invalid={Boolean(fieldErrors?.dueDate)}
-                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
-                />
-                <FieldError>{fieldErrors?.dueDate}</FieldError>
-              </Field>
-
-              <Field>
-                <FieldLabel className="text-[11px] text-muted-foreground">Payment Due Date</FieldLabel>
-                <Input
-                  type="date"
-                  value={values.paymentDueDate}
-                  onChange={(event) => onChange({ ...values, paymentDueDate: event.target.value })}
-                  aria-invalid={Boolean(fieldErrors?.paymentDueDate)}
-                  className="h-10 border-border bg-muted text-[13px] text-muted-foreground"
-                />
-                <FieldError>{fieldErrors?.paymentDueDate}</FieldError>
-              </Field>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Field>
-            <FieldLabel className="text-[11px] text-muted-foreground">Payment Terms</FieldLabel>
-            <Textarea
-              rows={4}
-              value={values.paymentTerms}
-              onChange={(event) => onChange({ ...values, paymentTerms: event.target.value })}
-              aria-invalid={Boolean(fieldErrors?.paymentTerms)}
-              className="border-border bg-muted text-[13px] text-muted-foreground"
-            />
-            <FieldError>{fieldErrors?.paymentTerms}</FieldError>
-          </Field>
-
-          <Field>
-            <FieldLabel className="text-[11px] text-muted-foreground">Campaign Description</FieldLabel>
-            <Textarea
-              rows={4}
-              value={values.campaignDescription}
-              onChange={(event) => onChange({ ...values, campaignDescription: event.target.value })}
-              aria-invalid={Boolean(fieldErrors?.campaignDescription)}
-              className="border-border bg-muted text-[13px] text-muted-foreground"
-            />
-            <FieldError>{fieldErrors?.campaignDescription}</FieldError>
-          </Field>
-        </div>
-
-        <Field>
-          <FieldLabel className="text-[11px] text-muted-foreground">Notes</FieldLabel>
-          <Textarea
-            rows={4}
-            value={values.notes}
-            onChange={(event) => onChange({ ...values, notes: event.target.value })}
-            aria-invalid={Boolean(fieldErrors?.notes)}
-            className="border-border bg-muted text-[13px] text-muted-foreground"
+      <FieldGroup>
+        {/* Section 1: Campaign Details */}
+        <div className="space-y-4">
+          <SectionHeader
+            title="Campaign Details"
+            description="Identify the campaign and associate it with a brand and contact."
           />
-          <FieldError>{fieldErrors?.notes}</FieldError>
-        </Field>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field className="sm:col-span-2">
+              <FieldLabel>Campaign Name</FieldLabel>
+              <Input
+                value={values.campaignName}
+                onChange={(e) => handleChange("campaignName", e.target.value)}
+                placeholder="e.g., Summer Collection Launch"
+                aria-invalid={Boolean(fieldErrors?.campaignName)}
+              />
+              <FieldError>{fieldErrors?.campaignName}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Brand</FieldLabel>
+              <SearchableSelect
+                options={brandOptions}
+                value={values.brandId}
+                onValueChange={(brandId) => handleChange("brandId", brandId)}
+                placeholder="Select brand"
+                searchPlaceholder="Search brands..."
+                noResultsMessage="No brands found"
+                disabled={brandOptions.length === 0}
+              />
+              <FieldError>{fieldErrors?.brandId}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Contact</FieldLabel>
+              <SearchableSelect
+                options={contactOptions}
+                value={values.contactId || ""}
+                onValueChange={(contactId) => handleChange("contactId", contactId)}
+                placeholder="Select contact (optional)"
+                searchPlaceholder="Search contacts..."
+                noResultsMessage="No contacts found"
+                disabled={!values.brandId || contactOptions.length === 0}
+              />
+              <FieldError>{fieldErrors?.contactId}</FieldError>
+            </Field>
+          </div>
+        </div>
+
+        <SectionDivider />
+
+        {/* Section 2: Deal Information */}
+        <div className="space-y-4">
+          <SectionHeader
+            title="Deal Information"
+            description="Define the financial terms and current status of the deal."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field>
+              <FieldLabel>Deal Value</FieldLabel>
+              <Input
+                type="number"
+                value={values.dealValue}
+                onChange={(e) => handleChange("dealValue", e.target.value)}
+                placeholder="5000"
+                aria-invalid={Boolean(fieldErrors?.dealValue)}
+              />
+              <FieldError>{fieldErrors?.dealValue}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Currency</FieldLabel>
+              <Select
+                value={values.currency || "USD"}
+                onValueChange={(currency) => handleChange("currency", currency)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="EUR">EUR</SelectItem>
+                  <SelectItem value="GBP">GBP</SelectItem>
+                  <SelectItem value="INR">INR</SelectItem>
+                  <SelectItem value="CAD">CAD</SelectItem>
+                  <SelectItem value="AUD">AUD</SelectItem>
+                </SelectContent>
+              </Select>
+              <FieldError>{fieldErrors?.currency}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Stage</FieldLabel>
+              <Select
+                value={values.stage}
+                onValueChange={(stage) => handleChange("stage", stage)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {DEAL_STAGES.map((stage) => (
+                    <SelectItem key={stage} value={stage}>
+                      {DEAL_STAGE_LABEL[stage]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError>{fieldErrors?.stage}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Priority</FieldLabel>
+              <Select
+                value={values.priority}
+                onValueChange={(priority) => handleChange("priority", priority)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {DEAL_PRIORITIES.map((priority) => (
+                    <SelectItem key={priority} value={priority}>
+                      <span className="flex items-center gap-2">
+                        <span
+                          className={`h-2 w-2 rounded-md ${
+                            priority === "High"
+                              ? "bg-red-500"
+                              : priority === "Medium"
+                              ? "bg-amber-500"
+                              : "bg-green-500"
+                          }`}
+                        />
+                        {priority}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError>{fieldErrors?.priority}</FieldError>
+            </Field>
+          </div>
+        </div>
+
+        <SectionDivider />
+
+        {/* Section 3: Timeline */}
+        <div className="space-y-4">
+          <SectionHeader
+            title="Timeline"
+            description="Set key dates for the campaign lifecycle."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Field>
+              <FieldLabel>Start Date</FieldLabel>
+              <Input
+                type="date"
+                value={values.startDate}
+                onChange={(e) => handleChange("startDate", e.target.value)}
+                aria-invalid={Boolean(fieldErrors?.startDate)}
+              />
+              <FieldError>{fieldErrors?.startDate}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Due Date</FieldLabel>
+              <Input
+                type="date"
+                value={values.dueDate}
+                onChange={(e) => handleChange("dueDate", e.target.value)}
+                aria-invalid={Boolean(fieldErrors?.dueDate)}
+              />
+              <FieldError>{fieldErrors?.dueDate}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Payment Due</FieldLabel>
+              <Input
+                type="date"
+                value={values.paymentDueDate}
+                onChange={(e) => handleChange("paymentDueDate", e.target.value)}
+                aria-invalid={Boolean(fieldErrors?.paymentDueDate)}
+              />
+              <FieldError>{fieldErrors?.paymentDueDate}</FieldError>
+            </Field>
+          </div>
+        </div>
+
+        <SectionDivider />
+
+        {/* Section 4: Payment */}
+        <div className="space-y-4">
+          <SectionHeader
+            title="Payment"
+            description="Define payment terms and conditions."
+          />
+          <div className="grid grid-cols-1 gap-4">
+            <Field className="sm:col-span-2">
+              <FieldLabel>Payment Terms</FieldLabel>
+              <Textarea
+                rows={3}
+                value={values.paymentTerms}
+                onChange={(e) => handleChange("paymentTerms", e.target.value)}
+                placeholder="e.g., Net 30, 50% upfront..."
+                aria-invalid={Boolean(fieldErrors?.paymentTerms)}
+              />
+              <FieldError>{fieldErrors?.paymentTerms}</FieldError>
+            </Field>
+          </div>
+        </div>
+
+        <SectionDivider />
+
+        {/* Section 5: Additional Information */}
+        <div className="space-y-4">
+          <SectionHeader
+            title="Additional Information"
+            description="Add descriptive details and internal notes for the team."
+          />
+          <div className="grid grid-cols-1 gap-4">
+            <Field>
+              <FieldLabel>Campaign Description</FieldLabel>
+              <Textarea
+                rows={4}
+                value={values.campaignDescription}
+                onChange={(e) => handleChange("campaignDescription", e.target.value)}
+                placeholder="Deliverables, expectations, requirements..."
+                aria-invalid={Boolean(fieldErrors?.campaignDescription)}
+              />
+              <FieldError>{fieldErrors?.campaignDescription}</FieldError>
+            </Field>
+
+            <Field>
+              <FieldLabel>Internal Notes</FieldLabel>
+              <Textarea
+                rows={3}
+                value={values.notes}
+                onChange={(e) => handleChange("notes", e.target.value)}
+                placeholder="Internal notes for the team..."
+                aria-invalid={Boolean(fieldErrors?.notes)}
+              />
+              <FieldError>{fieldErrors?.notes}</FieldError>
+            </Field>
+          </div>
+        </div>
 
         {formError ? (
-          <Alert variant="destructive" className="border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.1)]">
-            <AlertDescription className="text-[12px] text-[#E8402A]">{formError}</AlertDescription>
+          <Alert variant="destructive" className="mt-4">
+            <AlertDescription>{formError}</AlertDescription>
           </Alert>
         ) : null}
       </FieldGroup>

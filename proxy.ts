@@ -1,45 +1,25 @@
-import { createServerClient } from "@supabase/ssr"
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { updateSession } from "@insforge/sdk/ssr/middleware"
 
 export default async function proxy(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  })
+  const response = NextResponse.next({ request })
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const insforgeUrl = process.env.NEXT_PUBLIC_INSFORGE_URL
+  const insforgeAnonKey = process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!insforgeUrl || !insforgeAnonKey) {
     return response
   }
 
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll()
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-        response = NextResponse.next({
-          request: {
-            headers: request.headers,
-          },
-        })
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options)
-        )
-      },
-    },
+  await updateSession({
+    requestCookies: request.cookies,
+    responseCookies: response.cookies,
   })
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const accessToken = request.cookies.get("insforge_access_token")?.value
 
-  if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
+  if (request.nextUrl.pathname.startsWith("/dashboard") && !accessToken) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 

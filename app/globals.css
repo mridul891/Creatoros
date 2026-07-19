@@ -1,3 +1,6 @@
+@import '../styles/_variables.scss';
+@import '../styles/_keyframe-animations.scss';
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -88,8 +91,8 @@
     --accent: oklch(0.9500 0 0);
     --accent-foreground: oklch(0.2050 0 0);
     --destructive: oklch(0.5770 0.2450 27.3250);
-    --border: oklch(0.9500 0 0);
-    --input: oklch(0.9700 0 0);
+    --border: oklch(0.9220 0 0);
+    --input: oklch(0.8700 0 0);
     --ring: oklch(0.7080 0 0);
     --chart-1: oklch(0.8100 0.1000 252);
     --chart-2: oklch(0.6200 0.1900 260);

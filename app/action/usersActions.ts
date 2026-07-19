@@ -1,19 +1,21 @@
 "use server"
-import { createSupabaseServerClient } from "@/lib/supabase/server-client"
-import { syncUserFromSupabaseUser } from "@/lib/auth/sync-user"
+
+import { createInsforgeServerClient } from "@/lib/inforge/server"
+import { syncUserFromInsforgeUser } from "@/lib/auth/sync-user"
 
 export async function insertUser() {
   try {
-    const supabase = await createSupabaseServerClient()
-    const { data, error } = await supabase.auth.getUser()
+    const insforge = await createInsforgeServerClient()
+    const { data, error } = await insforge.auth.getCurrentUser()
+
     if (error) {
       throw new Error(error.message)
     }
-    if (!data.user) {
+    if (!data?.user) {
       throw new Error("Unable to sync user because there is no active session")
     }
 
-    await syncUserFromSupabaseUser(data.user)
+    await syncUserFromInsforgeUser(data.user)
   } catch (error) {
     console.error("Failed to upsert user with Prisma", error)
     throw new Error("Unable to save user")

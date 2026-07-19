@@ -9,14 +9,15 @@ import {
   Handshake,
   SquaresFour,
   SignOut,
+  FileCode,
   Sparkle,
 } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useTransition } from "react";
 import { DashboardRoute } from "@/enums/dashboard-route";
-import { getSupabaseBrowserClient } from "@/lib/supabase/browser-client";
+import { signOut } from "@/lib/inforge/auth-actions";
 import {
   Sidebar as AppSidebar,
   SidebarContent,
@@ -42,6 +43,7 @@ const NAV_ITEMS = [
   { href: DashboardRoute.DEALS, label: "Deal", icon: Handshake },
   { href: DashboardRoute.INVOICES, label: "Invoices", icon: FileText },
   { href: DashboardRoute.MEDIA_KIT, label: "Media Kit", icon: Sparkle },
+  { href: DashboardRoute.SCRIPTS, label: "Scripts", icon: FileCode },
 ];
 
 function isNavItemActive(pathname: string, href: DashboardRoute) {
@@ -60,20 +62,12 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, setOpenMobile, state } = useSidebar();
-  const [isSigningOut, setIsSigningOut] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSignOut = async () => {
-    setIsSigningOut(true);
-    const supabase = getSupabaseBrowserClient();
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-      setIsSigningOut(false);
-      return;
-    }
-
-    router.replace("/login");
-    router.refresh();
+  const handleSignOut = () => {
+    startTransition(async () => {
+      await signOut();
+    });
   };
 
   return (
@@ -163,11 +157,11 @@ export function Sidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleSignOut}
-              disabled={isSigningOut}
+              disabled={isPending}
               className="h-10 rounded-xl px-3 text-[13px] font-medium"
             >
               <SignOut />
-              <span>{isSigningOut ? "Signing out..." : "Sign out"}</span>
+              <span>{isPending ? "Signing out..." : "Sign out"}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

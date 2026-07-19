@@ -30,15 +30,15 @@ export function CrmFormDialog({
 }: CrmFormDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        className="max-h-[92vh] w-[calc(100vw-1.5rem)] max-w-2xl gap-0 overflow-hidden p-0"
-      >
-        <DialogHeader className="gap-1 border-b px-4 py-4 pr-12 sm:px-6">
-          <DialogTitle>{title}</DialogTitle>
+      <DialogContent className="flex max-h-[90vh] w-[calc(100vw-2rem)] flex-col gap-0 overflow-hidden rounded-xl p-0 sm:max-w-[720px]">
+        <DialogHeader className="shrink-0 gap-1.5 border-b border-border px-6 py-5">
+          <DialogTitle className="text-lg font-semibold tracking-tight">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div className="overflow-y-auto px-4 py-4 sm:px-6">{children}</div>
-        <DialogFooter className="border-t px-4 py-3 sm:px-6">
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
+          {children}
+        </div>
+        <DialogFooter className="m-0 shrink-0 flex-row justify-end gap-2 rounded-b-xl border-t border-border bg-muted/50 px-6 py-4">
           {footer}
         </DialogFooter>
       </DialogContent>

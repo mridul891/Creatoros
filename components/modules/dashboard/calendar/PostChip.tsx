@@ -1,25 +1,23 @@
 "use client";
 
-import { InstagramLogo as Instagram, YoutubeLogo as Youtube } from "@phosphor-icons/react/dist/ssr";
-import { SocialPlatform } from "@/enums/post";
-import { Post, STATUS_CFG } from "./shared";
+import { PLATFORM_CFG, Post, STATUS_CFG } from "./shared";
 
 export function PostChip({ post, onClick }: { post: Post; onClick: () => void }) {
   const S = STATUS_CFG[post.status];
-  const platformColor = post.platform === SocialPlatform.INSTAGRAM ? "#E8402A" : "#111111";
-  const PlatformIcon = post.platform === SocialPlatform.INSTAGRAM ? Instagram : Youtube;
+  const P = PLATFORM_CFG[post.platform];
   return (
-    <div
+    <button
+      type="button"
       onClick={(e) => {
         e.stopPropagation();
         onClick();
       }}
-      className={`mb-[2px] flex cursor-pointer items-center gap-[4px] rounded-[5px] px-[7px] py-[3px] transition-opacity duration-150 hover:opacity-75 ${S.bgClass}`}
+      className={`mb-0.5 flex w-full cursor-pointer items-center gap-1 rounded px-1.5 py-[3px] text-left transition-opacity duration-150 hover:opacity-75 ${S.bgClass}`}
     >
-      <PlatformIcon size={9} color={platformColor} />
-      <span className={` ${S.textClass} max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap text-[9.5px] font-medium`}>
+      <P.icon size={10} color={P.color} className="shrink-0" />
+      <span className={`${S.textClass} min-w-0 flex-1 truncate text-[10px] font-medium`}>
         {post.title}
       </span>
-    </div>
+    </button>
   );
 }

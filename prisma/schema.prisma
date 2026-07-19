@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
   engineType = "library"
 }
 
@@ -8,12 +8,12 @@ datasource db {
 }
 
 model User {
-  id                   String    @id @db.Uuid
-  email                String    @unique
+  id                   String               @id @db.Uuid
+  email                String               @unique
   name                 String?
-  avatarUrl            String?   @map("avatar_url")
-  lastSignInAt         DateTime? @map("last_sign_in_at")
-  isOnboardingComplete Boolean   @default(false) @map("is_onboarding_complete")
+  avatarUrl            String?              @map("avatar_url")
+  lastSignInAt         DateTime?            @map("last_sign_in_at")
+  isOnboardingComplete Boolean              @default(false) @map("is_onboarding_complete")
   creator              Creator?
   brands               Brand[]
   contacts             Contact[]
@@ -27,14 +27,16 @@ model User {
   payments             Payment[]
   notifications        Notification[]
   integrationAccounts  IntegrationAccount[]
+  scripts              Scripts[]
   activities           Activity[]
-  createdAt            DateTime  @default(now()) @map("created_at")
-  updatedAt            DateTime  @updatedAt @map("updated_at")
+  createdAt            DateTime             @default(now()) @map("created_at")
+  updatedAt            DateTime             @updatedAt @map("updated_at")
 
   @@index([createdAt], map: "users_created_at_idx")
   @@index([lastSignInAt], map: "users_last_sign_in_at_idx")
   @@map("users")
 }
+
 enum CreatorType {
   Micro
   Mid
@@ -210,21 +212,21 @@ model Creator {
 }
 
 model Brand {
-  id                  String   @id @default(uuid()) @db.Uuid
-  userId              String   @map("user_id") @db.Uuid
-  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                  String     @id @default(uuid()) @db.Uuid
+  userId              String     @map("user_id") @db.Uuid
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   contacts            Contact[]
   deals               Deal[]
   activities          Activity[]
   name                String
-  normalizedName      String   @map("normalized_name")
+  normalizedName      String     @map("normalized_name")
   category            String?
   website             String?
-  primaryContactName  String?  @map("primary_contact_name")
-  primaryContactEmail String?  @map("primary_contact_email")
+  primaryContactName  String?    @map("primary_contact_name")
+  primaryContactEmail String?    @map("primary_contact_email")
   notes               String?
-  createdAt           DateTime @default(now()) @map("created_at")
-  updatedAt           DateTime @updatedAt @map("updated_at")
+  createdAt           DateTime   @default(now()) @map("created_at")
+  updatedAt           DateTime   @updatedAt @map("updated_at")
 
   @@unique([userId, normalizedName], map: "brands_user_id_normalized_name_key")
   @@index([userId, updatedAt(sort: Desc)], map: "brands_user_id_updated_at_idx")
@@ -288,44 +290,44 @@ model Activity {
 }
 
 model Deal {
-  id                     String       @id @default(uuid()) @db.Uuid
-  userId                 String       @map("user_id") @db.Uuid
-  user                   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  brandId                String       @map("brand_id") @db.Uuid
-  brand                  Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  contactId              String?      @map("contact_id") @db.Uuid
-  contact                Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  id                     String        @id @default(uuid()) @db.Uuid
+  userId                 String        @map("user_id") @db.Uuid
+  user                   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandId                String        @map("brand_id") @db.Uuid
+  brand                  Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  contactId              String?       @map("contact_id") @db.Uuid
+  contact                Contact?      @relation(fields: [contactId], references: [id], onDelete: SetNull)
   activities             Activity[]
   tasks                  Task[]
   deliverables           Deliverable[]
   notesEntity            DealNote[]
   files                  DealFile[]
   invoices               Invoice[]
-  campaignName           String       @map("campaign_name")
-  normalizedCampaignName String       @map("normalized_campaign_name")
-  dealValue              Decimal      @map("deal_value") @db.Decimal(12, 2)
-  currency               String       @default("USD")
-  stage                  DealStage    @default(Lead)
-  priority               DealPriority @default(Medium)
-  status                 DealStatus   @default(Active)
-  startDate              DateTime?    @map("start_date")
-  dueDate                DateTime?    @map("due_date")
-  expectedCloseDate      DateTime?    @map("expected_close_date")
-  paymentDueDate         DateTime?    @map("payment_due_date")
-  paymentTerms           String?      @map("payment_terms")
-  campaignDescription    String?      @map("campaign_description")
-  deliverablesSummary    String?      @map("deliverables_summary")
+  campaignName           String        @map("campaign_name")
+  normalizedCampaignName String        @map("normalized_campaign_name")
+  dealValue              Decimal       @map("deal_value") @db.Decimal(12, 2)
+  currency               String        @default("USD")
+  stage                  DealStage     @default(Lead)
+  priority               DealPriority  @default(Medium)
+  status                 DealStatus    @default(Active)
+  startDate              DateTime?     @map("start_date")
+  dueDate                DateTime?     @map("due_date")
+  expectedCloseDate      DateTime?     @map("expected_close_date")
+  paymentDueDate         DateTime?     @map("payment_due_date")
+  paymentTerms           String?       @map("payment_terms")
+  campaignDescription    String?       @map("campaign_description")
+  deliverablesSummary    String?       @map("deliverables_summary")
   notes                  String?
   source                 String?
   probability            Int?
-  externalRef            String?      @map("external_ref")
-  lastStageChangedAt     DateTime?    @map("last_stage_changed_at")
-  deliveredAt            DateTime?    @map("delivered_at")
-  completedAt            DateTime?    @map("completed_at")
-  paidAt                 DateTime?    @map("paid_at")
-  archivedAt             DateTime?    @map("archived_at")
-  createdAt              DateTime     @default(now()) @map("created_at")
-  updatedAt              DateTime     @updatedAt @map("updated_at")
+  externalRef            String?       @map("external_ref")
+  lastStageChangedAt     DateTime?     @map("last_stage_changed_at")
+  deliveredAt            DateTime?     @map("delivered_at")
+  completedAt            DateTime?     @map("completed_at")
+  paidAt                 DateTime?     @map("paid_at")
+  archivedAt             DateTime?     @map("archived_at")
+  createdAt              DateTime      @default(now()) @map("created_at")
+  updatedAt              DateTime      @updatedAt @map("updated_at")
 
   @@unique([userId, brandId, normalizedCampaignName], map: "deals_user_brand_campaign_unique")
   @@index([userId, status, updatedAt(sort: Desc)], map: "deals_user_status_updated_at_idx")
@@ -336,58 +338,58 @@ model Deal {
 }
 
 model Task {
-  id                       String       @id @default(uuid()) @db.Uuid
-  userId                   String       @map("user_id") @db.Uuid
-  user                     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId                   String       @map("deal_id") @db.Uuid
-  deal                     Deal         @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  title                    String
-  normalizedTitle          String       @map("normalized_title")
-  description              String?
-  status                   TaskStatus   @default(Todo)
-  priority                 TaskPriority @default(Medium)
-  dueDate                  DateTime?    @map("due_date")
-  orderIndex               Int          @default(0) @map("order_index")
-  createdBy                String       @map("created_by") @db.Uuid
-  updatedBy                String       @map("updated_by") @db.Uuid
-  isArchived               Boolean      @default(false) @map("is_archived")
-  archivedAt               DateTime?    @map("archived_at")
-  createdAt                DateTime     @default(now()) @map("created_at")
-  updatedAt                DateTime     @updatedAt @map("updated_at")
+  id              String       @id @default(uuid()) @db.Uuid
+  userId          String       @map("user_id") @db.Uuid
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dealId          String       @map("deal_id") @db.Uuid
+  deal            Deal         @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  title           String
+  normalizedTitle String       @map("normalized_title")
+  description     String?
+  status          TaskStatus   @default(Todo)
+  priority        TaskPriority @default(Medium)
+  dueDate         DateTime?    @map("due_date")
+  orderIndex      Int          @default(0) @map("order_index")
+  createdBy       String       @map("created_by") @db.Uuid
+  updatedBy       String       @map("updated_by") @db.Uuid
+  isArchived      Boolean      @default(false) @map("is_archived")
+  archivedAt      DateTime?    @map("archived_at")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
 
+  @@unique([dealId, normalizedTitle, isArchived], map: "tasks_deal_title_archived_unique")
   @@index([dealId, isArchived, orderIndex], map: "tasks_deal_archived_order_idx")
   @@index([dealId, status, isArchived], map: "tasks_deal_status_archived_idx")
   @@index([dealId, priority, isArchived], map: "tasks_deal_priority_archived_idx")
   @@index([dealId, dueDate, isArchived], map: "tasks_deal_due_date_archived_idx")
   @@index([userId, updatedAt(sort: Desc)], map: "tasks_user_updated_at_idx")
-  @@unique([dealId, normalizedTitle, isArchived], map: "tasks_deal_title_archived_unique")
   @@map("tasks")
 }
 
 model Deliverable {
-  id                       String                    @id @default(uuid()) @db.Uuid
-  userId                   String                    @map("user_id") @db.Uuid
-  user                     User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId                   String                    @map("deal_id") @db.Uuid
-  deal                     Deal                      @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  platform                 String
-  deliverableType          String                    @map("deliverable_type")
-  normalizedDeliverableType String                   @map("normalized_deliverable_type")
-  dueDate                  DateTime?                 @map("due_date")
-  status                   DeliverableStatus         @default(Draft)
-  approvalStatus           DeliverableApprovalStatus @default(NotSubmitted) @map("approval_status")
-  submissionUrl            String?                   @map("submission_url")
-  publishedUrl             String?                   @map("published_url")
-  internalNotes            String?                   @map("internal_notes")
-  brandNotes               String?                   @map("brand_notes")
-  revisionCount            Int                       @default(0) @map("revision_count")
-  orderIndex               Int                       @default(0) @map("order_index")
-  isArchived               Boolean                   @default(false) @map("is_archived")
-  archivedAt               DateTime?                 @map("archived_at")
-  createdBy                String                    @map("created_by") @db.Uuid
-  updatedBy                String                    @map("updated_by") @db.Uuid
-  createdAt                DateTime                  @default(now()) @map("created_at")
-  updatedAt                DateTime                  @updatedAt @map("updated_at")
+  id                        String                    @id @default(uuid()) @db.Uuid
+  userId                    String                    @map("user_id") @db.Uuid
+  user                      User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dealId                    String                    @map("deal_id") @db.Uuid
+  deal                      Deal                      @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  platform                  String
+  deliverableType           String                    @map("deliverable_type")
+  normalizedDeliverableType String                    @map("normalized_deliverable_type")
+  dueDate                   DateTime?                 @map("due_date")
+  status                    DeliverableStatus         @default(Draft)
+  approvalStatus            DeliverableApprovalStatus @default(NotSubmitted) @map("approval_status")
+  submissionUrl             String?                   @map("submission_url")
+  publishedUrl              String?                   @map("published_url")
+  internalNotes             String?                   @map("internal_notes")
+  brandNotes                String?                   @map("brand_notes")
+  revisionCount             Int                       @default(0) @map("revision_count")
+  orderIndex                Int                       @default(0) @map("order_index")
+  isArchived                Boolean                   @default(false) @map("is_archived")
+  archivedAt                DateTime?                 @map("archived_at")
+  createdBy                 String                    @map("created_by") @db.Uuid
+  updatedBy                 String                    @map("updated_by") @db.Uuid
+  createdAt                 DateTime                  @default(now()) @map("created_at")
+  updatedAt                 DateTime                  @updatedAt @map("updated_at")
 
   @@index([dealId, isArchived, orderIndex], map: "deliverables_deal_archived_order_idx")
   @@index([dealId, status, isArchived], map: "deliverables_deal_status_archived_idx")
@@ -397,20 +399,20 @@ model Deliverable {
 }
 
 model DealNote {
-  id          String         @id @default(uuid()) @db.Uuid
-  userId      String         @map("user_id") @db.Uuid
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId      String         @map("deal_id") @db.Uuid
-  deal        Deal           @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  title       String
-  content     String
-  isPinned    Boolean        @default(false) @map("is_pinned")
-  status      DealNoteStatus @default(Active)
-  createdBy   String         @map("created_by") @db.Uuid
-  updatedBy   String         @map("updated_by") @db.Uuid
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @updatedAt @map("updated_at")
-  archivedAt  DateTime?      @map("archived_at")
+  id         String         @id @default(uuid()) @db.Uuid
+  userId     String         @map("user_id") @db.Uuid
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dealId     String         @map("deal_id") @db.Uuid
+  deal       Deal           @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  title      String
+  content    String
+  isPinned   Boolean        @default(false) @map("is_pinned")
+  status     DealNoteStatus @default(Active)
+  createdBy  String         @map("created_by") @db.Uuid
+  updatedBy  String         @map("updated_by") @db.Uuid
+  createdAt  DateTime       @default(now()) @map("created_at")
+  updatedAt  DateTime       @updatedAt @map("updated_at")
+  archivedAt DateTime?      @map("archived_at")
 
   @@index([dealId, status, isPinned, updatedAt(sort: Desc)], map: "deal_notes_deal_status_pinned_updated_idx")
   @@index([userId, updatedAt(sort: Desc)], map: "deal_notes_user_updated_at_idx")
@@ -418,22 +420,22 @@ model DealNote {
 }
 
 model DealFile {
-  id           String         @id @default(uuid()) @db.Uuid
-  userId       String         @map("user_id") @db.Uuid
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId       String         @map("deal_id") @db.Uuid
-  deal         Deal           @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  fileName     String         @map("file_name")
-  storagePath  String         @map("storage_path")
-  mimeType     String?        @map("mime_type")
-  sizeBytes    BigInt?        @map("size_bytes")
-  category     DealFileCategory
-  status       DealFileStatus @default(Active)
-  metadata     Json?
-  uploadedBy   String         @map("uploaded_by") @db.Uuid
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  archivedAt   DateTime?      @map("archived_at")
+  id          String           @id @default(uuid()) @db.Uuid
+  userId      String           @map("user_id") @db.Uuid
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dealId      String           @map("deal_id") @db.Uuid
+  deal        Deal             @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  fileName    String           @map("file_name")
+  storagePath String           @map("storage_path")
+  mimeType    String?          @map("mime_type")
+  sizeBytes   BigInt?          @map("size_bytes")
+  category    DealFileCategory
+  status      DealFileStatus   @default(Active)
+  metadata    Json?
+  uploadedBy  String           @map("uploaded_by") @db.Uuid
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  archivedAt  DateTime?        @map("archived_at")
 
   @@index([dealId, status, category, updatedAt(sort: Desc)], map: "deal_files_deal_status_category_updated_idx")
   @@index([userId, updatedAt(sort: Desc)], map: "deal_files_user_updated_at_idx")
@@ -441,17 +443,17 @@ model DealFile {
 }
 
 model CampaignTemplate {
-  id              String                      @id @default(uuid()) @db.Uuid
-  userId          String                      @map("user_id") @db.Uuid
-  user            User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name            String
-  normalizedName  String                      @map("normalized_name")
-  description     String?
-  isSystem        Boolean                     @default(false) @map("is_system")
-  tasks           CampaignTemplateTask[]
-  deliverables    CampaignTemplateDeliverable[]
-  createdAt       DateTime                    @default(now()) @map("created_at")
-  updatedAt       DateTime                    @updatedAt @map("updated_at")
+  id             String                        @id @default(uuid()) @db.Uuid
+  userId         String                        @map("user_id") @db.Uuid
+  user           User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  normalizedName String                        @map("normalized_name")
+  description    String?
+  isSystem       Boolean                       @default(false) @map("is_system")
+  tasks          CampaignTemplateTask[]
+  deliverables   CampaignTemplateDeliverable[]
+  createdAt      DateTime                      @default(now()) @map("created_at")
+  updatedAt      DateTime                      @updatedAt @map("updated_at")
 
   @@unique([userId, normalizedName], map: "campaign_templates_user_normalized_name_key")
   @@index([userId, updatedAt(sort: Desc)], map: "campaign_templates_user_updated_at_idx")
@@ -459,31 +461,31 @@ model CampaignTemplate {
 }
 
 model CampaignTemplateTask {
-  id                String           @id @default(uuid()) @db.Uuid
-  templateId        String           @map("template_id") @db.Uuid
-  template          CampaignTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  title             String
-  description       String?
-  priority          TaskPriority     @default(Medium)
-  dueOffsetDays     Int              @default(0) @map("due_offset_days")
-  orderIndex        Int              @default(0) @map("order_index")
-  createdAt         DateTime         @default(now()) @map("created_at")
-  updatedAt         DateTime         @updatedAt @map("updated_at")
+  id            String           @id @default(uuid()) @db.Uuid
+  templateId    String           @map("template_id") @db.Uuid
+  template      CampaignTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  title         String
+  description   String?
+  priority      TaskPriority     @default(Medium)
+  dueOffsetDays Int              @default(0) @map("due_offset_days")
+  orderIndex    Int              @default(0) @map("order_index")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
 
   @@index([templateId, orderIndex], map: "campaign_template_tasks_template_order_idx")
   @@map("campaign_template_tasks")
 }
 
 model CampaignTemplateDeliverable {
-  id                    String           @id @default(uuid()) @db.Uuid
-  templateId            String           @map("template_id") @db.Uuid
-  template              CampaignTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  platform              String
-  deliverableType       String           @map("deliverable_type")
-  dueOffsetDays         Int              @default(0) @map("due_offset_days")
-  orderIndex            Int              @default(0) @map("order_index")
-  createdAt             DateTime         @default(now()) @map("created_at")
-  updatedAt             DateTime         @updatedAt @map("updated_at")
+  id              String           @id @default(uuid()) @db.Uuid
+  templateId      String           @map("template_id") @db.Uuid
+  template        CampaignTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  platform        String
+  deliverableType String           @map("deliverable_type")
+  dueOffsetDays   Int              @default(0) @map("due_offset_days")
+  orderIndex      Int              @default(0) @map("order_index")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
 
   @@index([templateId, orderIndex], map: "campaign_template_deliverables_template_order_idx")
   @@map("campaign_template_deliverables")
@@ -513,18 +515,18 @@ model Invoice {
 }
 
 model Payment {
-  id          String        @id @default(uuid()) @db.Uuid
-  userId      String        @map("user_id") @db.Uuid
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  invoiceId   String?       @map("invoice_id") @db.Uuid
-  invoice     Invoice?      @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
-  amount      Decimal       @db.Decimal(12, 2)
-  currency    String        @default("USD")
-  status      PaymentStatus @default(Pending)
-  receivedAt  DateTime?     @map("received_at")
-  metadata    Json?
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
+  id         String        @id @default(uuid()) @db.Uuid
+  userId     String        @map("user_id") @db.Uuid
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoiceId  String?       @map("invoice_id") @db.Uuid
+  invoice    Invoice?      @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  amount     Decimal       @db.Decimal(12, 2)
+  currency   String        @default("USD")
+  status     PaymentStatus @default(Pending)
+  receivedAt DateTime?     @map("received_at")
+  metadata   Json?
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
 
   @@index([userId, status, createdAt(sort: Desc)], map: "payments_user_status_created_at_idx")
   @@index([invoiceId, createdAt(sort: Desc)], map: "payments_invoice_created_at_idx")
@@ -532,18 +534,18 @@ model Payment {
 }
 
 model Notification {
-  id          String             @id @default(uuid()) @db.Uuid
-  userId      String             @map("user_id") @db.Uuid
-  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title       String
-  message     String
-  status      NotificationStatus @default(Unread)
-  entityType  ActivityEntityType @map("entity_type")
-  entityId    String             @map("entity_id")
-  dealId      String?            @map("deal_id") @db.Uuid
-  metadata    Json?
-  createdAt   DateTime           @default(now()) @map("created_at")
-  updatedAt   DateTime           @updatedAt @map("updated_at")
+  id         String             @id @default(uuid()) @db.Uuid
+  userId     String             @map("user_id") @db.Uuid
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String
+  message    String
+  status     NotificationStatus @default(Unread)
+  entityType ActivityEntityType @map("entity_type")
+  entityId   String             @map("entity_id")
+  dealId     String?            @map("deal_id") @db.Uuid
+  metadata   Json?
+  createdAt  DateTime           @default(now()) @map("created_at")
+  updatedAt  DateTime           @updatedAt @map("updated_at")
 
   @@index([userId, status, createdAt(sort: Desc)], map: "notifications_user_status_created_at_idx")
   @@index([userId, dealId, createdAt(sort: Desc)], map: "notifications_user_deal_created_at_idx")
@@ -568,4 +570,17 @@ model IntegrationAccount {
   @@unique([userId, platform, externalAccountId], map: "integration_accounts_user_platform_external_key")
   @@index([userId, platform], map: "integration_accounts_user_platform_idx")
   @@map("integration_accounts")
+}
+
+model Scripts {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  code        Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("scripts")
 }

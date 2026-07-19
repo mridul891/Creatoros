@@ -42,6 +42,22 @@ next-env.d.ts
 
 # local AI tooling metadata
 .cursor/
-.claude/
 .gemini/
+
+# InsForge credentials (keep insforge.toml tracked)
+.insforge/
+
+# AI agent skills & tools
+.agent/
+.agents/
+.augment/
+.claude/
 CLAUDE.md
+.cline/
+.github/copilot*
+.kilocode/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.windsurf/

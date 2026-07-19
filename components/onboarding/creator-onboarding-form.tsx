@@ -3,7 +3,6 @@
 import { FormEvent, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { At, Check, Play, Sparkle, User } from "@phosphor-icons/react/dist/ssr"
 
 import {
   CREATOR_TYPE_OPTIONS,
@@ -48,7 +47,6 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [formError, setFormError] = useState<string | null>(null)
-  const bioCharactersLeft = 280 - bio.length
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -78,42 +76,22 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-3xl border border-border bg-card p-6 shadow-[0_30px_80px_-40px_rgba(232,64,42,0.6)] backdrop-blur-xl sm:p-8"
-    >
-      <FieldGroup>
-        <div className="space-y-4">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs text-foreground">
-            <Sparkle className="size-3.5 text-[#E8402A]" />
-            Step 1 of 1
-          </div>
-
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              Finish your onboarding
-            </h1>
-            <FieldDescription className="mt-2 text-foreground">
-              Add a few details so we can personalize your creator workspace.
-            </FieldDescription>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-muted p-3">
-            <div className="flex items-start gap-2 text-xs text-foreground">
-              <Check className="mt-0.5 size-4 shrink-0 text-[#E8402A]" />
-              <p>
-                Your profile helps us prioritize the deals and insights that are
-                most relevant to your growth stage.
-              </p>
-            </div>
-          </div>
+    <form onSubmit={handleSubmit} className="p-2">
+      <FieldGroup className="gap-8">
+        <div className="space-y-3">
+          <h1 className="text-base font-light tracking-tight text-black sm:text-[2.5rem] leading-tight">
+            Almost there
+          </h1>
+          <p className="text-sm text-black/50 leading-relaxed">
+            Tell us a bit about yourself so we can personalize your experience.
+          </p>
         </div>
 
         <Field>
-          <FieldLabel className="text-foreground">
-            Creator type
+          <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+            I am a
           </FieldLabel>
-          <div className="grid gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-3 gap-2 mt-2">
             {CREATOR_TYPE_OPTIONS.map((option) => (
               <button
                 key={option.value}
@@ -122,11 +100,11 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
                 onClick={() => setCreatorType(option.value)}
                 aria-pressed={creatorType === option.value}
                 className={cn(
-                  "group flex h-11 items-center justify-center rounded-xl border bg-card px-3 text-sm font-medium transition-all",
+                  "relative h-12 rounded-lg border text-sm font-medium transition-all duration-200",
                   "disabled:cursor-not-allowed disabled:opacity-50",
                   creatorType === option.value
-                    ? "border-[#E8402A]/55 bg-[#E8402A]/15 text-foreground shadow-[0_0_0_1px_rgba(232,64,42,0.3)]"
-                    : "border-border text-foreground hover:border-border hover:bg-muted"
+                    ? "border-black bg-black text-white"
+                    : "border-black/10 bg-white text-black/70 hover:border-black/20 hover:bg-black/2"
                 )}
               >
                 {option.label}
@@ -137,103 +115,101 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
           <FieldError>{fieldErrors.creatorType}</FieldError>
         </Field>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field className="sm:col-span-2">
-            <FieldLabel htmlFor="niche" className="text-foreground">
-              Niche
-            </FieldLabel>
-            <div className="relative">
-              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground" />
-              <Input
-                id="niche"
-                name="niche"
-                value={niche}
-                onChange={(event) => setNiche(event.target.value)}
-                placeholder="e.g. fitness, fashion, tech"
-                maxLength={80}
-                disabled={isSubmitting}
-                aria-invalid={Boolean(fieldErrors.niche)}
-                className="h-11 border-border bg-card pl-9 text-foreground placeholder:text-foreground"
-              />
-            </div>
-            <FieldError>{fieldErrors.niche}</FieldError>
-          </Field>
+        <Field>
+          <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+            Your niche
+          </FieldLabel>
+          <Input
+            id="niche"
+            name="niche"
+            value={niche}
+            onChange={(event) => setNiche(event.target.value)}
+            placeholder="fitness, fashion, tech, gaming..."
+            maxLength={80}
+            disabled={isSubmitting}
+            aria-invalid={Boolean(fieldErrors.niche)}
+            className="mt-2 h-12 rounded-lg border-black/10 bg-white text-black placeholder:text-black/30 focus:border-black focus:ring-0"
+          />
+          <FieldError>{fieldErrors.niche}</FieldError>
+        </Field>
 
+        <div className="grid gap-4 sm:grid-cols-2">
           <Field>
-            <FieldLabel htmlFor="instagramHandle" className="text-foreground">
-              Instagram handle <span className="text-foreground">(optional)</span>
+            <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+              Instagram
+              <span className="ml-1 normal-case text-black/25">(optional)</span>
             </FieldLabel>
-            <div className="relative">
-              <At className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground" />
-              <Input
-                id="instagramHandle"
-                name="instagramHandle"
-                value={instagramHandle}
-                onChange={(event) => setInstagramHandle(event.target.value)}
-                placeholder="@yourhandle"
-                maxLength={30}
-                disabled={isSubmitting}
-                aria-invalid={Boolean(fieldErrors.instagramHandle)}
-                className="h-11 border-border bg-card pl-9 text-foreground placeholder:text-foreground"
-              />
-            </div>
+            <Input
+              id="instagramHandle"
+              name="instagramHandle"
+              value={instagramHandle}
+              onChange={(event) => setInstagramHandle(event.target.value)}
+              placeholder="@username"
+              maxLength={30}
+              disabled={isSubmitting}
+              aria-invalid={Boolean(fieldErrors.instagramHandle)}
+              className="mt-2 h-12 rounded-lg border-black/10 bg-white text-black placeholder:text-black/30 focus:border-black focus:ring-0"
+            />
             <FieldError>{fieldErrors.instagramHandle}</FieldError>
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="youtubeHandle" className="text-foreground">
-              YouTube handle <span className="text-foreground">(optional)</span>
+            <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+              YouTube
+              <span className="ml-1 normal-case text-black/25">(optional)</span>
             </FieldLabel>
-            <div className="relative">
-              <Play className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground" />
-              <Input
-                id="youtubeHandle"
-                name="youtubeHandle"
-                value={youtubeHandle}
-                onChange={(event) => setYoutubeHandle(event.target.value)}
-                placeholder="@yourchannel"
-                maxLength={30}
-                disabled={isSubmitting}
-                aria-invalid={Boolean(fieldErrors.youtubeHandle)}
-                className="h-11 border-border bg-card pl-9 text-foreground placeholder:text-foreground"
-              />
-            </div>
+            <Input
+              id="youtubeHandle"
+              name="youtubeHandle"
+              value={youtubeHandle}
+              onChange={(event) => setYoutubeHandle(event.target.value)}
+              placeholder="@channel"
+              maxLength={30}
+              disabled={isSubmitting}
+              aria-invalid={Boolean(fieldErrors.youtubeHandle)}
+              className="mt-2 h-12 rounded-lg border-black/10 bg-white text-black placeholder:text-black/30 focus:border-black focus:ring-0"
+            />
             <FieldError>{fieldErrors.youtubeHandle}</FieldError>
           </Field>
         </div>
 
         <Field>
-          <FieldLabel htmlFor="bio" className="text-foreground">
-            Bio <span className="text-foreground">(optional)</span>
+          <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+            Short bio
+            <span className="ml-1 normal-case text-black/25">(optional)</span>
           </FieldLabel>
           <textarea
             id="bio"
             name="bio"
             value={bio}
             onChange={(event) => setBio(event.target.value)}
-            placeholder="What do you create and who is your audience?"
+            placeholder="What do you create? Who's your audience?"
             maxLength={280}
             disabled={isSubmitting}
             aria-invalid={Boolean(fieldErrors.bio)}
-            className="min-h-28 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
+            rows={3}
+            className="mt-2 w-full resize-none rounded-lg border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition-colors placeholder:text-black/30 focus:border-black disabled:cursor-not-allowed disabled:opacity-50"
           />
-          <FieldDescription className="flex items-center justify-between text-foreground">
-            <span>Keep it short (max 280 characters).</span>
-            <span>{bioCharactersLeft} left</span>
-          </FieldDescription>
           <FieldError>{fieldErrors.bio}</FieldError>
         </Field>
 
-        {formError ? <FieldError>{formError}</FieldError> : null}
+        {formError ? (
+          <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+            {formError}
+          </div>
+        ) : null}
 
         <Button
           type="submit"
-          size="lg"
           disabled={isSubmitting}
-          className="h-11 w-full rounded-xl bg-white text-black hover:bg-muted"
+          className="h-12 w-full rounded-lg bg-black text-white font-medium hover:bg-black/90 transition-colors"
         >
-          {isSubmitting ? "Saving..." : "Complete onboarding"}
+          {isSubmitting ? "Setting up..." : "Complete setup"}
         </Button>
+
+        <p className="text-center text-xs text-black/40">
+          You can always update this later in settings.
+        </p>
       </FieldGroup>
     </form>
   )
