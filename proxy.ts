@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { updateSession } from "@insforge/sdk/ssr/middleware"
+import { cookies } from "next/headers"
 
 export default async function proxy(request: NextRequest) {
   const response = NextResponse.next({ request })
@@ -13,8 +14,8 @@ export default async function proxy(request: NextRequest) {
   }
 
   await updateSession({
-    requestCookies: request.cookies,
-    responseCookies: response.cookies,
+    requestCookies: await cookies(),
+    responseCookies: await cookies(),
   })
 
   const accessToken = request.cookies.get("insforge_access_token")?.value
