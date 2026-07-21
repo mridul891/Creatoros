@@ -281,43 +281,6 @@ export function CalendarPage() {
             />
           </div>
 
-          {/* Upcoming */}
-          <div className="mt-6">
-            <div className="mb-3 text-[13px] font-semibold tracking-tight text-foreground">Upcoming this week</div>
-            <div className="flex flex-col gap-2">
-              {posts.filter(p => p.status !== PostStatusEnum.DRAFT && p.day >= today && p.day <= today + 7)
-                .sort((a, b) => a.day - b.day || a.time.localeCompare(b.time))
-                .map(post => {
-                  const S = STATUS_CFG[post.status];
-                  const P = PLATFORM_CFG[post.platform];
-                  return (
-                    <div key={post.id} className="flex cursor-pointer items-center gap-3.5 rounded-lg border border-border bg-card px-4 py-3 shadow-xs transition-all duration-150 hover:border-ring/50 hover:shadow-sm"
-                      onClick={() => setSelectedId(post.id)}
-                    >
-                      <div className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-lg ${P.pillBg}`}>
-                        <P.icon size={15} color={P.color} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate text-[13px] font-semibold text-foreground">{post.title}</div>
-                        <div className={`mt-0.5 ${MONO_FONT} text-[11px] text-muted-foreground`}>June {post.day} · {post.time || "—"}</div>
-                      </div>
-                      <div className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 ${S.bgClass}`}>
-                        <S.icon size={10} color={S.color} weight="bold" />
-                        <span className={`${S.textClass} text-[10px] font-semibold`}>{S.label}</span>
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="icon-sm"
-                        aria-label={`Edit ${post.title}`}
-                        onClick={e => { e.stopPropagation(); setModal({ day: post.day, post }); }}
-                      >
-                        <PencilSimple size={12} />
-                      </Button>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
       </div>
     </div>
   );

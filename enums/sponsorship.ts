@@ -15,5 +15,4 @@ export enum DealPriority {
 export enum SponsorshipMode {
   TABLE = "table",
   KANBAN = "kanban",
-  Analytics = "analytics",
 }

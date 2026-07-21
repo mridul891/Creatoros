@@ -3,7 +3,7 @@ export enum DashboardRoute {
   CALENDAR = "/dashboard/calendar",
   DEALS = "/dashboard/deals",
   BRANDS = "/dashboard/brands",
-  ANALYTICS = "/dashboard/analytics",
+  PIPELINE = "/dashboard/pipeline",
   INVOICES = "/dashboard/invoices",
   MEDIA_KIT = "/dashboard/media-kit",
   SCRIPTS = "/dashboard/script",
