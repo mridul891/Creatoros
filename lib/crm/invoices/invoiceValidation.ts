@@ -15,5 +15,7 @@ export const invoiceListSchema = z.object({
   status: z.enum(INVOICE_STATUSES).optional(),
 })
 
-export type CreateInvoiceFromDeliverableInput = z.infer<typeof createInvoiceFromDeliverableSchema>
+export type CreateInvoiceFromDeliverableInput = z.infer<
+  typeof createInvoiceFromDeliverableSchema
+>
 export type InvoiceListInput = z.infer<typeof invoiceListSchema>

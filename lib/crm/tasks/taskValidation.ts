@@ -9,9 +9,9 @@ import {
   type TaskPriority,
 } from "@/enums/task"
 import type { TaskField } from "@/types/task"
-import type { TaskFormValues } from "./taskForm"
 import { getFieldErrors } from "../shared/action"
 import { parseTaskDateInput } from "./taskDate"
+import type { TaskFormValues } from "./taskForm"
 
 const stringDateToDate = z.preprocess((value) => {
   if (value instanceof Date) {
@@ -36,8 +36,16 @@ const stringDateToDate = z.preprocess((value) => {
 
 const taskBaseSchema = z.object({
   dealId: z.uuid("Deal id is invalid."),
-  title: z.string().trim().min(2, "Task title must be at least 2 characters.").max(180, "Task title cannot exceed 180 characters."),
-  description: z.string().trim().max(5000, "Description cannot exceed 5000 characters.").optional(),
+  title: z
+    .string()
+    .trim()
+    .min(2, "Task title must be at least 2 characters.")
+    .max(180, "Task title cannot exceed 180 characters."),
+  description: z
+    .string()
+    .trim()
+    .max(5000, "Description cannot exceed 5000 characters.")
+    .optional(),
   status: z.enum(TASK_STATUSES),
   priority: z.enum(TASK_PRIORITIES),
   dueDate: stringDateToDate,
@@ -80,7 +88,9 @@ export const taskStatusUpdateSchema = z.object({
 
 export const taskReorderSchema = z.object({
   dealId: z.uuid("Deal id is invalid."),
-  orderedTaskIds: z.array(z.uuid("Task id is invalid.")).min(1, "At least one task is required."),
+  orderedTaskIds: z
+    .array(z.uuid("Task id is invalid."))
+    .min(1, "At least one task is required."),
 })
 
 export type TaskCreateUpdateInput = z.infer<typeof taskCreateUpdateSchema>
@@ -111,7 +121,9 @@ export function toPrioritySortValue(priority: TaskPriority) {
   }
 }
 
-export function getTaskFormFieldErrors(values: TaskFormValues): Partial<Record<TaskField, string>> {
+export function getTaskFormFieldErrors(
+  values: TaskFormValues
+): Partial<Record<TaskField, string>> {
   const parsed = taskCreateUpdateSchema.safeParse({
     dealId: values.dealId,
     title: values.title,

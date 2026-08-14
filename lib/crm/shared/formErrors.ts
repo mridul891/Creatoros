@@ -2,7 +2,7 @@ type FieldMap = Record<string, string>
 
 export function keepUnresolvedErrors<TField extends string>(
   currentErrors: Partial<Record<TField, string>>,
-  nextErrors: Partial<Record<TField, string>>,
+  nextErrors: Partial<Record<TField, string>>
 ): Partial<Record<TField, string>> {
   const unresolved: Partial<Record<TField, string>> = {}
 

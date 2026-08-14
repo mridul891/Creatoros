@@ -6,24 +6,24 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from "recharts";
-import { AnalyticsRange } from "@/enums/analytics";
+} from "recharts"
+import { AnalyticsRange } from "@/enums/analytics"
 
-import { ChartTooltip } from "./ChartTooltip";
-import { ACCENT, MONO, type Range } from "./data";
-import { Skeleton } from "./Skeleton";
+import { ChartTooltip } from "./ChartTooltip"
+import { ACCENT, MONO, type Range } from "./data"
+import { Skeleton } from "./Skeleton"
 
 const RANGE_OPTIONS: Range[] = [
   AnalyticsRange.SEVEN_DAYS as Range,
   AnalyticsRange.THIRTY_DAYS as Range,
   AnalyticsRange.NINETY_DAYS as Range,
-];
+]
 
 type GrowthPoint = {
-  label: string;
-  followers: number;
-  views: number;
-};
+  label: string
+  followers: number
+  views: number
+}
 
 export function GrowthSection({
   loading,
@@ -31,25 +31,28 @@ export function GrowthSection({
   chartData,
   onChangeRange,
 }: {
-  loading: boolean;
-  range: Range;
-  chartData: GrowthPoint[];
-  onChangeRange: (range: Range) => void;
+  loading: boolean
+  range: Range
+  chartData: GrowthPoint[]
+  onChangeRange: (range: Range) => void
 }) {
   return (
     <div className="mb-4 rounded-[14px] border border-border bg-card px-[26px] py-[22px]">
       <div className="mb-[22px] flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold tracking-[-0.02em] text-foreground">
+          <div className="font-semibold text-foreground text-sm tracking-[-0.02em]">
             Audience Growth
           </div>
-          <div className="mt-0.5 font-mono text-xs text-muted-foreground">
+          <div className="mt-0.5 font-mono text-muted-foreground text-xs">
             Followers & views over time
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex gap-[14px]">
-            {[{ color: "#aaa", label: "Followers" }, { color: ACCENT, label: "Views" }].map((legend) => (
+            {[
+              { color: "#aaa", label: "Followers" },
+              { color: ACCENT, label: "Views" },
+            ].map((legend) => (
               <div
                 key={legend.label}
                 className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground"
@@ -88,10 +91,20 @@ export function GrowthSection({
             />
             <XAxis
               dataKey="label"
-              tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: MONO }}
+              tick={{
+                fill: "var(--muted-foreground)",
+                fontSize: 10,
+                fontFamily: MONO,
+              }}
               axisLine={false}
               tickLine={false}
-              interval={range === AnalyticsRange.SEVEN_DAYS ? 0 : range === AnalyticsRange.THIRTY_DAYS ? 4 : 14}
+              interval={
+                range === AnalyticsRange.SEVEN_DAYS
+                  ? 0
+                  : range === AnalyticsRange.THIRTY_DAYS
+                    ? 4
+                    : 14
+              }
             />
             <YAxis hide />
             <Tooltip content={<ChartTooltip />} />
@@ -116,5 +129,5 @@ export function GrowthSection({
         </ResponsiveContainer>
       )}
     </div>
-  );
+  )
 }

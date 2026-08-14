@@ -17,18 +17,44 @@ type CommandCenterData = {
 
 function getTodayBounds() {
   const now = new Date()
-  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
-  const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999)
+  const start = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    0,
+    0,
+    0,
+    0
+  )
+  const end = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    23,
+    59,
+    59,
+    999
+  )
   return { start, end }
 }
 
-export async function getCommandCenterData(userId: string): Promise<CommandCenterData> {
+export async function getCommandCenterData(
+  userId: string
+): Promise<CommandCenterData> {
   const now = new Date()
   const { start: todayStart, end: todayEnd } = getTodayBounds()
   const nearDeadlineEnd = new Date(todayEnd)
   nearDeadlineEnd.setDate(nearDeadlineEnd.getDate() + 7)
 
-  const [todayTasks, todayDeliverables, dealsWaitingForResponse, dealsNearDeadline, paymentsExpected, overduePayments, recentActivity] = await Promise.all([
+  const [
+    todayTasks,
+    todayDeliverables,
+    dealsWaitingForResponse,
+    dealsNearDeadline,
+    paymentsExpected,
+    overduePayments,
+    recentActivity,
+  ] = await Promise.all([
     prisma.task.count({
       where: {
         userId,

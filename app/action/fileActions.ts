@@ -3,8 +3,21 @@
 import { revalidatePath } from "next/cache"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import { archiveFile, createFile, deleteFile, FileServiceError, listDealFiles, renameFile, restoreFile } from "@/lib/crm/files/fileService"
-import { fileArchiveSchema, fileCreateSchema, fileListSchema, fileUpdateSchema } from "@/lib/crm/files/fileValidation"
+import {
+  archiveFile,
+  createFile,
+  deleteFile,
+  FileServiceError,
+  listDealFiles,
+  renameFile,
+  restoreFile,
+} from "@/lib/crm/files/fileService"
+import {
+  fileArchiveSchema,
+  fileCreateSchema,
+  fileListSchema,
+  fileUpdateSchema,
+} from "@/lib/crm/files/fileValidation"
 import { sanitizeOptionalString } from "@/lib/crm/shared/form"
 import type { DealFileListData } from "@/types/dealFile"
 
@@ -29,7 +42,10 @@ function revalidateFilePaths(dealId?: string) {
   }
 }
 
-function mapFileServiceError(error: unknown, fallbackMessage: string): FileMutationResult {
+function mapFileServiceError(
+  error: unknown,
+  fallbackMessage: string
+): FileMutationResult {
   if (error instanceof FileServiceError) {
     return {
       success: false,
@@ -67,7 +83,11 @@ export async function listDealFilesAction(input: {
       data,
     }
   } catch (error) {
-    console.error("files.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("files.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load files. Please try again.",
@@ -75,7 +95,9 @@ export async function listDealFilesAction(input: {
   }
 }
 
-export async function createFileAction(formData: FormData): Promise<FileMutationResult> {
+export async function createFileAction(
+  formData: FormData
+): Promise<FileMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = fileCreateSchema.safeParse({
     dealId: formData.get("dealId"),
@@ -104,11 +126,16 @@ export async function createFileAction(formData: FormData): Promise<FileMutation
     }
   } catch (error) {
     console.error("files.create_failed", { userId: user.id, error })
-    return mapFileServiceError(error, "We could not upload this file. Please try again.")
+    return mapFileServiceError(
+      error,
+      "We could not upload this file. Please try again."
+    )
   }
 }
 
-export async function renameFileAction(formData: FormData): Promise<FileMutationResult> {
+export async function renameFileAction(
+  formData: FormData
+): Promise<FileMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = fileUpdateSchema.safeParse({
     fileId: formData.get("fileId"),
@@ -137,12 +164,21 @@ export async function renameFileAction(formData: FormData): Promise<FileMutation
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("files.rename_failed", { userId: user.id, fileId: parsed.data.fileId, error })
-    return mapFileServiceError(error, "We could not rename this file. Please try again.")
+    console.error("files.rename_failed", {
+      userId: user.id,
+      fileId: parsed.data.fileId,
+      error,
+    })
+    return mapFileServiceError(
+      error,
+      "We could not rename this file. Please try again."
+    )
   }
 }
 
-export async function archiveFileAction(fileId: string): Promise<FileMutationResult> {
+export async function archiveFileAction(
+  fileId: string
+): Promise<FileMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = fileArchiveSchema.safeParse({ fileId })
   if (!parsed.success) {
@@ -161,12 +197,21 @@ export async function archiveFileAction(fileId: string): Promise<FileMutationRes
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("files.archive_failed", { userId: user.id, fileId: parsed.data.fileId, error })
-    return mapFileServiceError(error, "We could not archive this file. Please try again.")
+    console.error("files.archive_failed", {
+      userId: user.id,
+      fileId: parsed.data.fileId,
+      error,
+    })
+    return mapFileServiceError(
+      error,
+      "We could not archive this file. Please try again."
+    )
   }
 }
 
-export async function restoreFileAction(fileId: string): Promise<FileMutationResult> {
+export async function restoreFileAction(
+  fileId: string
+): Promise<FileMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = fileArchiveSchema.safeParse({ fileId })
   if (!parsed.success) {
@@ -185,12 +230,21 @@ export async function restoreFileAction(fileId: string): Promise<FileMutationRes
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("files.restore_failed", { userId: user.id, fileId: parsed.data.fileId, error })
-    return mapFileServiceError(error, "We could not restore this file. Please try again.")
+    console.error("files.restore_failed", {
+      userId: user.id,
+      fileId: parsed.data.fileId,
+      error,
+    })
+    return mapFileServiceError(
+      error,
+      "We could not restore this file. Please try again."
+    )
   }
 }
 
-export async function deleteFileAction(fileId: string): Promise<FileMutationResult> {
+export async function deleteFileAction(
+  fileId: string
+): Promise<FileMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = fileArchiveSchema.safeParse({ fileId })
   if (!parsed.success) {
@@ -209,7 +263,14 @@ export async function deleteFileAction(fileId: string): Promise<FileMutationResu
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("files.delete_failed", { userId: user.id, fileId: parsed.data.fileId, error })
-    return mapFileServiceError(error, "We could not delete this file. Please try again.")
+    console.error("files.delete_failed", {
+      userId: user.id,
+      fileId: parsed.data.fileId,
+      error,
+    })
+    return mapFileServiceError(
+      error,
+      "We could not delete this file. Please try again."
+    )
   }
 }

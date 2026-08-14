@@ -1,11 +1,13 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
-
-import type { BrandListData } from "@/types/brand"
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
 import { recordActivity } from "@/lib/crm/activity/activityService"
-import { prisma } from "@/lib/prisma"
 import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
-import { normalizeBrandName, type BrandCreateUpdateInput } from "./brandValidation"
+import { prisma } from "@/lib/prisma"
+import type { BrandListData } from "@/types/brand"
+import {
+  type BrandCreateUpdateInput,
+  normalizeBrandName,
+} from "./brandValidation"
 
 const PAGE_SIZE_DEFAULT = 20
 const PAGE_SIZE_MAX = 50
@@ -46,7 +48,7 @@ export async function listBrands(
     search?: string
     page?: number
     pageSize?: number
-  },
+  }
 ): Promise<BrandListData> {
   const search = input?.search?.trim() ?? ""
   const page = clampPage(input?.page)
@@ -63,8 +65,18 @@ export async function listBrands(
           OR: [
             { name: { contains: search, mode: "insensitive" as const } },
             { category: { contains: search, mode: "insensitive" as const } },
-            { primaryContactName: { contains: search, mode: "insensitive" as const } },
-            { primaryContactEmail: { contains: search, mode: "insensitive" as const } },
+            {
+              primaryContactName: {
+                contains: search,
+                mode: "insensitive" as const,
+              },
+            },
+            {
+              primaryContactEmail: {
+                contains: search,
+                mode: "insensitive" as const,
+              },
+            },
           ],
         }
       : {}),
@@ -121,7 +133,10 @@ export async function getBrand(userId: string, brandId: string) {
   })
 }
 
-export async function createBrand(userId: string, input: BrandCreateUpdateInput) {
+export async function createBrand(
+  userId: string,
+  input: BrandCreateUpdateInput
+) {
   return prisma.$transaction(async (tx) => {
     const normalizedName = normalizeBrandName(input.name)
     const isUnique = await ensureNoDuplicateName({
@@ -168,7 +183,11 @@ export async function createBrand(userId: string, input: BrandCreateUpdateInput)
   })
 }
 
-export async function updateBrand(userId: string, brandId: string, input: BrandCreateUpdateInput) {
+export async function updateBrand(
+  userId: string,
+  brandId: string,
+  input: BrandCreateUpdateInput
+) {
   return prisma.$transaction(async (tx) => {
     const normalizedName = normalizeBrandName(input.name)
     const isUnique = await ensureNoDuplicateName({

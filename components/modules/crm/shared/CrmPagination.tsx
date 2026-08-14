@@ -15,7 +15,11 @@ type CrmPaginationProps = {
   onPageChange: (page: number) => void
 }
 
-export function CrmPagination({ page, totalPages, onPageChange }: CrmPaginationProps) {
+export function CrmPagination({
+  page,
+  totalPages,
+  onPageChange,
+}: CrmPaginationProps) {
   const canGoPrevious = page > 1
   const canGoNext = page < totalPages
 

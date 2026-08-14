@@ -16,7 +16,9 @@ export const metadata: Metadata = {
   title: "Brand Details",
 }
 
-export default async function DashboardBrandDetailPage({ params }: DashboardBrandDetailPageProps) {
+export default async function DashboardBrandDetailPage({
+  params,
+}: DashboardBrandDetailPageProps) {
   const { id } = await params
   const [result, contactsResult, activitiesResult] = await Promise.all([
     getBrandAction(id),

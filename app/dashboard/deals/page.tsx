@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
 
-import { listDealsAction, listDealFormOptionsAction } from "@/app/action/dealActions"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import {
+  listDealFormOptionsAction,
+  listDealsAction,
+} from "@/app/action/dealActions"
 import { DealsPageServer } from "@/components/modules/crm/deals/DealsPageServer"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export const metadata: Metadata = {
   title: "Deals",
@@ -27,7 +30,9 @@ type DashboardDealsPageProps = {
   }>
 }
 
-export default async function DashboardDealsPage({ searchParams }: DashboardDealsPageProps) {
+export default async function DashboardDealsPage({
+  searchParams,
+}: DashboardDealsPageProps) {
   const params = await searchParams
   const page = Number(params.page ?? 1)
   const pageSize = params.pageSize ? Number(params.pageSize) : undefined
@@ -49,13 +54,22 @@ export default async function DashboardDealsPage({ searchParams }: DashboardDeal
     listDealFormOptionsAction(),
   ])
 
-  if (!listResult.success || !listResult.data || !optionsResult.success || !optionsResult.data) {
+  if (
+    !listResult.success ||
+    !listResult.data ||
+    !optionsResult.success ||
+    !optionsResult.data
+  ) {
     return (
       <div className="w-full max-w-[960px] px-9 py-7">
         <Alert className="rounded-[18px] border-border bg-card px-6 py-12">
-          <AlertTitle className="text-xl font-bold text-foreground">Could not load deals</AlertTitle>
+          <AlertTitle className="font-bold text-foreground text-xl">
+            Could not load deals
+          </AlertTitle>
           <AlertDescription className="mt-2 text-[13px] text-muted-foreground">
-            {listResult.message ?? optionsResult.message ?? "Please refresh and try again."}
+            {listResult.message ??
+              optionsResult.message ??
+              "Please refresh and try again."}
           </AlertDescription>
         </Alert>
       </div>

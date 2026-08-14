@@ -1,8 +1,8 @@
 "use server"
 
+import { createAuthActions } from "@insforge/sdk/ssr"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { createAuthActions } from "@insforge/sdk/ssr"
 
 export async function signInWithPassword(formData: FormData) {
   const cookieStore = await cookies()
@@ -27,7 +27,10 @@ export async function initiateGoogleOAuth() {
   const cookieStore = await cookies()
   const auth = createAuthActions({ cookies: cookieStore })
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_INSFORGE_URL?.replace(/\.insforge\.app$/, "") || "http://localhost:3000"
+  const appUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXT_PUBLIC_INSFORGE_URL?.replace(/\.insforge\.app$/, "") ||
+    "http://localhost:3000"
 
   const { data, error } = await auth.signInWithOAuth("google", {
     redirectTo: `${appUrl}/api/auth/callback`,

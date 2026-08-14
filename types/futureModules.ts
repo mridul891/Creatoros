@@ -12,7 +12,14 @@ export interface CalendarEventContract {
 export interface NotificationContract {
   id: string
   userId: string
-  entityType: "Deal" | "Task" | "Deliverable" | "File" | "Invoice" | "Payment" | "Note"
+  entityType:
+    | "Deal"
+    | "Task"
+    | "Deliverable"
+    | "File"
+    | "Invoice"
+    | "Payment"
+    | "Note"
   entityId: string
   title: string
   message: string

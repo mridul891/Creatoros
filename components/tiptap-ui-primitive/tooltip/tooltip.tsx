@@ -1,6 +1,24 @@
 "use client"
 
 import {
+  autoUpdate,
+  FloatingDelayGroup,
+  FloatingPortal,
+  flip,
+  offset,
+  type Placement,
+  type ReferenceType,
+  shift,
+  type UseFloatingReturn,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+  useMergeRefs,
+  useRole,
+} from "@floating-ui/react"
+import {
   cloneElement,
   createContext,
   forwardRef,
@@ -10,24 +28,6 @@ import {
   useState,
   version,
 } from "react"
-import {
-  useFloating,
-  autoUpdate,
-  offset,
-  flip,
-  shift,
-  useHover,
-  useFocus,
-  useDismiss,
-  useRole,
-  useInteractions,
-  useMergeRefs,
-  FloatingPortal,
-  type Placement,
-  type UseFloatingReturn,
-  type ReferenceType,
-  FloatingDelayGroup,
-} from "@floating-ui/react"
 import "@/components/tiptap-ui-primitive/tooltip/tooltip.scss"
 
 interface TooltipProviderProps {
@@ -42,18 +42,14 @@ interface TooltipProviderProps {
   useDelayGroup?: boolean
 }
 
-interface TooltipTriggerProps extends Omit<
-  React.HTMLProps<HTMLElement>,
-  "ref"
-> {
+interface TooltipTriggerProps
+  extends Omit<React.HTMLProps<HTMLElement>, "ref"> {
   asChild?: boolean
   children: React.ReactNode
 }
 
-interface TooltipContentProps extends Omit<
-  React.HTMLProps<HTMLDivElement>,
-  "ref"
-> {
+interface TooltipContentProps
+  extends Omit<React.HTMLProps<HTMLDivElement>, "ref"> {
   children?: React.ReactNode
   portal?: boolean
   portalProps?: Omit<React.ComponentProps<typeof FloatingPortal>, "children">
@@ -169,9 +165,9 @@ export const TooltipTrigger = forwardRef<HTMLElement, TooltipTriggerProps>(
     const context = useTooltipContext()
     const childrenRef = isValidElement(children)
       ? parseInt(version, 10) >= 19
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ? // biome-ignore lint/suspicious/noExplicitAny: React 19 element refs are not strongly typed on this polymorphic path.
           (children as { props: { ref?: React.Ref<any> } }).props.ref
-        : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        : // biome-ignore lint/suspicious/noExplicitAny: React 18 legacy ref access is untyped on ReactElement.
           (children as any).ref
       : undefined
     const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef])

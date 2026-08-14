@@ -1,6 +1,6 @@
-import type { ImgHTMLAttributes } from "react";
+import type { ImgHTMLAttributes } from "react"
 
-type ImageWithFallbackProps = ImgHTMLAttributes<HTMLImageElement>;
+type ImageWithFallbackProps = ImgHTMLAttributes<HTMLImageElement>
 
 const IMAGE_DIMENSIONS: Record<string, { width: number; height: number }> = {
   "/heroimage.svg": { width: 1440, height: 900 },
@@ -10,7 +10,7 @@ const IMAGE_DIMENSIONS: Record<string, { width: number; height: number }> = {
   "/analytics-mini.svg": { width: 400, height: 296 },
   "/calendar-mini.svg": { width: 400, height: 296 },
   "/media-kit-mini.svg": { width: 400, height: 296 },
-};
+}
 
 export function ImageWithFallback({
   loading,
@@ -21,9 +21,9 @@ export function ImageWithFallback({
   ...props
 }: ImageWithFallbackProps) {
   const fallbackDimensions =
-    typeof src === "string" ? IMAGE_DIMENSIONS[src] : undefined;
-  const resolvedWidth = width ?? fallbackDimensions?.width;
-  const resolvedHeight = height ?? fallbackDimensions?.height;
+    typeof src === "string" ? IMAGE_DIMENSIONS[src] : undefined
+  const resolvedWidth = width ?? fallbackDimensions?.width
+  const resolvedHeight = height ?? fallbackDimensions?.height
 
   return (
     <img
@@ -34,5 +34,5 @@ export function ImageWithFallback({
       height={resolvedHeight}
       {...props}
     />
-  );
+  )
 }

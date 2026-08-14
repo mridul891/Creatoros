@@ -1,18 +1,18 @@
 import type { Node as PMNode } from "@tiptap/pm/model"
 import type { Transaction } from "@tiptap/pm/state"
-import { clsx, type ClassValue } from "clsx"
 import {
   AllSelection,
   NodeSelection,
   Selection,
   TextSelection,
 } from "@tiptap/pm/state"
-import { cellAround, CellSelection } from "@tiptap/pm/tables"
+import { CellSelection, cellAround } from "@tiptap/pm/tables"
 import {
-  findParentNodeClosestToPos,
   type Editor,
+  findParentNodeClosestToPos,
   type NodeWithPos,
 } from "@tiptap/react"
+import { type ClassValue, clsx } from "clsx"
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -247,7 +247,7 @@ export function findNodePosition(props: {
 }): { pos: number; node: PMNode } | null {
   const { editor, node, nodePos } = props
 
-  if (!editor || !editor.state?.doc) return null
+  if (!editor?.state?.doc) return null
 
   // Zero is valid position
   const hasValidNode = node !== undefined && node !== null
@@ -301,7 +301,7 @@ export function isNodeTypeSelected(
   nodeTypeNames: string[] = [],
   checkAncestorNodes: boolean = false
 ): boolean {
-  if (!editor || !editor.state.selection) return false
+  if (!editor?.state.selection) return false
 
   const { selection } = editor.state
   if (selection.empty) return false
@@ -419,7 +419,7 @@ type ProtocolOptions = {
 type ProtocolConfig = Array<ProtocolOptions | string>
 
 const ATTR_WHITESPACE =
-  // eslint-disable-next-line no-control-regex
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: This URI sanitizer intentionally matches ASCII control characters and unicode whitespace.
   /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g
 
 export function isAllowedUri(
@@ -452,13 +452,14 @@ export function isAllowedUri(
 
   return (
     !uri ||
-    uri.replace(ATTR_WHITESPACE, "").match(
-      new RegExp(
-        // eslint-disable-next-line no-useless-escape
-        `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.\-]+(?:[^a-z+.\-:]|$))`,
-        "i"
+    uri
+      .replace(ATTR_WHITESPACE, "")
+      .match(
+        new RegExp(
+          `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.-]+(?:[^a-z+.-:]|$))`,
+          "i"
+        )
       )
-    )
   )
 }
 

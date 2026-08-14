@@ -29,7 +29,9 @@ export const DEAL_WORKSPACE_TAB_DEFINITIONS: DealWorkspaceTabDefinition[] = [
   { id: "payments", label: "Payments", isPlaceholder: true },
 ]
 
-export function isDealWorkspaceTab(value: string | undefined): value is DealWorkspaceTab {
+export function isDealWorkspaceTab(
+  value: string | undefined
+): value is DealWorkspaceTab {
   if (!value) {
     return false
   }

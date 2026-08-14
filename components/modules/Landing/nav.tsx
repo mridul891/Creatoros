@@ -1,21 +1,25 @@
-
-import Link from "next/link";
-
-import { WRAP_CLASS } from "./constants";
-import Image from "next/image";
+import Image from "next/image"
+import Link from "next/link"
+import { WRAP_CLASS } from "./constants"
 
 export function Nav() {
   const links = [
     { label: "Product", href: "/product" },
     { label: "Features", href: "/features" },
     { label: "Pricing", href: "/pricing" },
-  ];
+  ]
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 flex h-14 items-center border-b border-border bg-background/80 backdrop-blur-xl sm:h-16">
+    <nav className="fixed inset-x-0 top-0 z-50 flex h-14 items-center border-border border-b bg-background/80 backdrop-blur-xl sm:h-16">
       <div className={`${WRAP_CLASS} flex items-center justify-between gap-3`}>
         <Link href="/" className="flex items-center gap-2 no-underline">
-          <Image src="/logo.svg" alt="logo" width={96} height={96} className="sm:w-[100px]" />
+          <Image
+            src="/logo.svg"
+            alt="logo"
+            width={96}
+            height={96}
+            className="sm:w-[100px]"
+          />
         </Link>
 
         <div className="mx-auto hidden items-center gap-0.5 md:flex">
@@ -23,7 +27,7 @@ export function Nav() {
             <Link
               key={link.label}
               href={link.href}
-              className="rounded-[7px] px-[13px] py-1.5  text-[13px] font-medium text-muted-foreground no-underline transition-colors duration-150 hover:text-foreground"
+              className="rounded-[7px] px-[13px] py-1.5 font-medium text-[13px] text-muted-foreground no-underline transition-colors duration-150 hover:text-foreground"
             >
               {link.label}
             </Link>
@@ -39,7 +43,7 @@ export function Nav() {
           </Link> */}
           <Link
             href="/waitlist"
-            className="rounded-[7px] bg-primary px-3 py-[7px] text-center  text-[12px] font-semibold tracking-[-0.02em] text-primary-foreground no-underline shadow-sm transition-colors hover:bg-primary/90 sm:px-4 sm:text-[13px]"
+            className="rounded-[7px] bg-primary px-3 py-[7px] text-center font-semibold text-[12px] text-primary-foreground tracking-[-0.02em] no-underline shadow-sm transition-colors hover:bg-primary/90 sm:px-4 sm:text-[13px]"
           >
             <span className="sm:hidden">Join Waitlist</span>
             <span className="hidden sm:inline">Join The Waitlist</span>
@@ -47,5 +51,5 @@ export function Nav() {
         </div>
       </div>
     </nav>
-  );
+  )
 }

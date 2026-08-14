@@ -1,23 +1,24 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
 import {
-  ArrowLeft,
-  Check,
-  CircleNotch,
-  CaretDown,
-  Briefcase,
-  User,
-} from "@phosphor-icons/react/dist/ssr"
+  ArrowDown01Icon,
+  ArrowLeft02Icon,
+  Briefcase01Icon,
+  Loading03Icon,
+  Tick02Icon,
+  UserIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import type { ScriptType } from "./shared"
 import { TYPE_CFG } from "./shared"
 
@@ -28,13 +29,20 @@ type ScriptEditorShellProps = {
   children: React.ReactNode
 }
 
-export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps) {
+export function ScriptEditorShell({
+  scriptId,
+  children,
+}: ScriptEditorShellProps) {
   const isNew = scriptId.startsWith("new-")
 
   const [title, setTitle] = useState(isNew ? "" : "Morning Routine Ad Read")
-  const [type, setType] = useState<ScriptType>(isNew ? "personal" : "brand_deal")
+  const [type, setType] = useState<ScriptType>(
+    isNew ? "personal" : "brand_deal"
+  )
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved")
-  const [linkedBrand, setLinkedBrand] = useState<string | null>(isNew ? null : "GlowRepublic")
+  const [linkedBrand, setLinkedBrand] = useState<string | null>(
+    isNew ? null : "GlowRepublic"
+  )
 
   useEffect(() => {
     if (saveStatus === "unsaved") {
@@ -44,7 +52,7 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
       }, 1000)
       return () => clearTimeout(timer)
     }
-  }, [saveStatus, title, type])
+  }, [saveStatus])
 
   function handleTitleChange(value: string) {
     setTitle(value)
@@ -64,7 +72,7 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Top Bar */}
-      <div className="flex shrink-0 items-center justify-between gap-4 border-b border-border bg-card px-4 py-3 md:px-6">
+      <div className="flex shrink-0 items-center justify-between gap-4 border-border border-b bg-card px-4 py-3 md:px-6">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -73,7 +81,7 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
             className="h-8 w-8 shrink-0"
           >
             <Link href="/dashboard/script" aria-label="Back to Scripts">
-              <ArrowLeft size={16} />
+              <HugeiconsIcon icon={ArrowLeft02Icon} size={16} />
             </Link>
           </Button>
 
@@ -84,14 +92,14 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="h-8 gap-1.5 px-2.5 text-xs font-medium"
+                className="h-8 gap-1.5 px-2.5 font-medium text-xs"
               >
                 <span
                   className="h-2 w-2 rounded-full"
                   style={{ backgroundColor: typeConfig.color }}
                 />
                 {typeConfig.label}
-                <CaretDown size={10} />
+                <HugeiconsIcon icon={ArrowDown01Icon} size={10} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-36">
@@ -99,14 +107,18 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
                 onClick={() => handleTypeChange("brand_deal")}
                 className={type === "brand_deal" ? "bg-accent" : ""}
               >
-                <Briefcase size={14} className="mr-2" />
+                <HugeiconsIcon
+                  icon={Briefcase01Icon}
+                  size={14}
+                  className="mr-2"
+                />
                 Brand Deal
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => handleTypeChange("personal")}
                 className={type === "personal" ? "bg-accent" : ""}
               >
-                <User size={14} className="mr-2" />
+                <HugeiconsIcon icon={UserIcon} size={14} className="mr-2" />
                 Personal
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -118,14 +130,16 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="h-8 gap-1.5 px-2.5 text-xs font-medium text-primary"
+                  className="h-8 gap-1.5 px-2.5 font-medium text-primary text-xs"
                 >
                   {linkedBrand || "Link to Deal"}
-                  <CaretDown size={10} />
+                  <HugeiconsIcon icon={ArrowDown01Icon} size={10} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-44">
-                <DropdownMenuItem onClick={() => setLinkedBrand("GlowRepublic")}>
+                <DropdownMenuItem
+                  onClick={() => setLinkedBrand("GlowRepublic")}
+                >
                   GlowRepublic
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setLinkedBrand("PulseTech")}>
@@ -140,16 +154,24 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
         </div>
 
         {/* Save Status */}
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2 text-muted-foreground text-xs">
           {saveStatus === "saving" && (
             <>
-              <CircleNotch size={12} className="animate-spin" />
+              <HugeiconsIcon
+                icon={Loading03Icon}
+                size={12}
+                className="animate-spin"
+              />
               <span>Saving...</span>
             </>
           )}
           {saveStatus === "saved" && (
             <>
-              <Check size={12} className="text-green-500" />
+              <HugeiconsIcon
+                icon={Tick02Icon}
+                size={12}
+                className="text-green-500"
+              />
               <span>Saved</span>
             </>
           )}
@@ -160,12 +182,12 @@ export function ScriptEditorShell({ scriptId, children }: ScriptEditorShellProps
       </div>
 
       {/* Title Area */}
-      <div className="shrink-0 border-b border-border bg-background px-4 py-4 md:px-6">
+      <div className="shrink-0 border-border border-b bg-background px-4 py-4 md:px-6">
         <Input
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
           placeholder="Untitled Script"
-          className="h-auto border-none bg-transparent p-0 text-2xl font-bold tracking-tight text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-0"
+          className="h-auto border-none bg-transparent p-0 font-bold text-2xl text-foreground tracking-tight placeholder:text-muted-foreground/50 focus-visible:ring-0"
         />
       </div>
 

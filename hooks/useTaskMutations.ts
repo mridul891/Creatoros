@@ -11,7 +11,10 @@ import {
   updateTaskAction,
   updateTaskStatusAction,
 } from "@/app/action/taskActions"
-import { buildTaskFormData, type TaskFormValues } from "@/lib/crm/tasks/taskForm"
+import {
+  buildTaskFormData,
+  type TaskFormValues,
+} from "@/lib/crm/tasks/taskForm"
 import type { TaskListItem } from "@/types/task"
 
 type UseTaskMutationsOptions = {
@@ -41,7 +44,10 @@ export function useTaskMutations({ onRefresh }: UseTaskMutationsOptions) {
     }
   }
 
-  async function runStatusChange(taskId: string, status: TaskListItem["status"]) {
+  async function runStatusChange(
+    taskId: string,
+    status: TaskListItem["status"]
+  ) {
     setUpdatingTaskId(taskId)
     let result
     try {

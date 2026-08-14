@@ -10,7 +10,13 @@ type DealDeleteDialogProps = {
   onConfirm: () => void
 }
 
-export function DealDeleteDialog({ open, campaignName, isLoading, onOpenChange, onConfirm }: DealDeleteDialogProps) {
+export function DealDeleteDialog({
+  open,
+  campaignName,
+  isLoading,
+  onOpenChange,
+  onConfirm,
+}: DealDeleteDialogProps) {
   return (
     <CrmConfirmDialog
       open={open}

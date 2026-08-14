@@ -15,8 +15,12 @@ export function useDealFiles({ dealId, initialData }: UseDealFilesOptions) {
   const [files, setFiles] = useState<DealFileListItem[]>(initialData.items)
   const [pagination, setPagination] = useState(initialData.pagination)
   const [search, setSearch] = useState(initialData.filters.search)
-  const [archive, setArchive] = useState<"active" | "archived">(initialData.filters.archive)
-  const [category, setCategory] = useState<DealFileCategory | "all">(initialData.filters.category ?? "all")
+  const [archive, setArchive] = useState<"active" | "archived">(
+    initialData.filters.archive
+  )
+  const [category, setCategory] = useState<DealFileCategory | "all">(
+    initialData.filters.category ?? "all"
+  )
   const [isLoading, setIsLoading] = useState(false)
   const [loadError, setLoadError] = useState("")
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -31,7 +35,7 @@ export function useDealFiles({ dealId, initialData }: UseDealFilesOptions) {
     setLoadError("")
     setIsLoading(false)
     hasHydratedRef.current = false
-  }, [dealId, initialData])
+  }, [initialData])
 
   const refetch = useCallback(
     async (nextPage = 1) => {
@@ -54,7 +58,7 @@ export function useDealFiles({ dealId, initialData }: UseDealFilesOptions) {
       setFiles(result.data.items)
       setPagination(result.data.pagination)
     },
-    [archive, category, dealId, search],
+    [archive, category, dealId, search]
   )
 
   useEffect(() => {
@@ -76,7 +80,7 @@ export function useDealFiles({ dealId, initialData }: UseDealFilesOptions) {
         clearTimeout(debounceRef.current)
       }
     }
-  }, [archive, category, refetch, search])
+  }, [refetch])
 
   return {
     files,

@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/modules/dashboard/analytics/Skeleton";
+import { Skeleton } from "@/components/modules/dashboard/analytics/Skeleton"
 
 export default function DashboardLoading() {
   return (
@@ -17,5 +17,5 @@ export default function DashboardLoading() {
         <Skeleton h={130} r={14} />
       </div>
     </div>
-  );
+  )
 }

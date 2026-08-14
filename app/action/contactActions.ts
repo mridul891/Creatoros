@@ -3,12 +3,6 @@
 import { revalidatePath } from "next/cache"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import { getFieldErrors } from "@/lib/crm/shared/action"
-import { sanitizeOptionalString } from "@/lib/crm/shared/form"
-import {
-  contactListSchema,
-  contactSchema,
-} from "@/lib/crm/contacts/contactValidation"
 import {
   archiveContact,
   ContactServiceError,
@@ -17,6 +11,12 @@ import {
   listContactsByBrand,
   updateContact,
 } from "@/lib/crm/contacts/contactService"
+import {
+  contactListSchema,
+  contactSchema,
+} from "@/lib/crm/contacts/contactValidation"
+import { getFieldErrors } from "@/lib/crm/shared/action"
+import { sanitizeOptionalString } from "@/lib/crm/shared/form"
 import type { ContactField, ContactListData } from "@/types/contact"
 
 export type ContactMutationResult = {
@@ -66,7 +66,10 @@ function parseContactFormData(formData: FormData) {
   })
 }
 
-function mapServiceErrorToMutationResult(error: unknown, fallbackMessage: string): ContactMutationResult {
+function mapServiceErrorToMutationResult(
+  error: unknown,
+  fallbackMessage: string
+): ContactMutationResult {
   if (error instanceof ContactServiceError) {
     if (error.code === "DUPLICATE" && error.field) {
       return {
@@ -124,7 +127,11 @@ export async function listContactsByBrandAction(input: {
       }
     }
 
-    console.error("contacts.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("contacts.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load contacts. Please try again.",
@@ -132,7 +139,10 @@ export async function listContactsByBrandAction(input: {
   }
 }
 
-export async function getContactAction(brandId: string, contactId: string): Promise<ContactGetResult> {
+export async function getContactAction(
+  brandId: string,
+  contactId: string
+): Promise<ContactGetResult> {
   const user = await requireOnboardedUser()
 
   if (!brandId || !contactId) {
@@ -156,7 +166,12 @@ export async function getContactAction(brandId: string, contactId: string): Prom
       }
     }
 
-    console.error("contacts.get_failed", { userId: user.id, brandId, contactId, error })
+    console.error("contacts.get_failed", {
+      userId: user.id,
+      brandId,
+      contactId,
+      error,
+    })
     return {
       success: false,
       message: "We could not load this contact. Please try again.",
@@ -164,7 +179,9 @@ export async function getContactAction(brandId: string, contactId: string): Prom
   }
 }
 
-export async function createContactAction(formData: FormData): Promise<ContactMutationResult> {
+export async function createContactAction(
+  formData: FormData
+): Promise<ContactMutationResult> {
   const user = await requireOnboardedUser()
   const brandId = formData.get("brandId")
 
@@ -199,11 +216,16 @@ export async function createContactAction(formData: FormData): Promise<ContactMu
     }
   } catch (error) {
     console.error("contacts.create_failed", { userId: user.id, brandId, error })
-    return mapServiceErrorToMutationResult(error, "We could not create this contact. Please try again.")
+    return mapServiceErrorToMutationResult(
+      error,
+      "We could not create this contact. Please try again."
+    )
   }
 }
 
-export async function updateContactAction(formData: FormData): Promise<ContactMutationResult> {
+export async function updateContactAction(
+  formData: FormData
+): Promise<ContactMutationResult> {
   const user = await requireOnboardedUser()
   const brandId = formData.get("brandId")
   const contactId = formData.get("contactId")
@@ -246,12 +268,23 @@ export async function updateContactAction(formData: FormData): Promise<ContactMu
       data,
     }
   } catch (error) {
-    console.error("contacts.update_failed", { userId: user.id, brandId, contactId, error })
-    return mapServiceErrorToMutationResult(error, "We could not update this contact. Please try again.")
+    console.error("contacts.update_failed", {
+      userId: user.id,
+      brandId,
+      contactId,
+      error,
+    })
+    return mapServiceErrorToMutationResult(
+      error,
+      "We could not update this contact. Please try again."
+    )
   }
 }
 
-export async function archiveContactAction(brandId: string, contactId: string): Promise<ContactMutationResult> {
+export async function archiveContactAction(
+  brandId: string,
+  contactId: string
+): Promise<ContactMutationResult> {
   const user = await requireOnboardedUser()
 
   if (!brandId || !contactId) {
@@ -270,9 +303,17 @@ export async function archiveContactAction(brandId: string, contactId: string): 
     }
   } catch (error) {
     if (!(error instanceof ContactServiceError)) {
-      console.error("contacts.archive_failed", { userId: user.id, brandId, contactId, error })
+      console.error("contacts.archive_failed", {
+        userId: user.id,
+        brandId,
+        contactId,
+        error,
+      })
     }
 
-    return mapServiceErrorToMutationResult(error, "We could not archive this contact. Please try again.")
+    return mapServiceErrorToMutationResult(
+      error,
+      "We could not archive this contact. Please try again."
+    )
   }
 }

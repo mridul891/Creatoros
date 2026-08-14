@@ -1,8 +1,15 @@
 "use client"
 
+import {
+  Alert02Icon,
+  CancelCircleIcon,
+  CheckmarkCircle02Icon,
+  InformationCircleIcon,
+  Loading03Icon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
-import { CheckCircle, Info, Warning, XCircle, CircleNotch } from "@phosphor-icons/react/dist/ssr"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
@@ -13,19 +20,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
       className="toaster group"
       icons={{
         success: (
-          <CheckCircle className="size-4" />
+          <HugeiconsIcon icon={CheckmarkCircle02Icon} className="size-4" />
         ),
-        info: (
-          <Info className="size-4" />
-        ),
-        warning: (
-          <Warning className="size-4" />
-        ),
-        error: (
-          <XCircle className="size-4" />
-        ),
+        info: <HugeiconsIcon icon={InformationCircleIcon} className="size-4" />,
+        warning: <HugeiconsIcon icon={Alert02Icon} className="size-4" />,
+        error: <HugeiconsIcon icon={CancelCircleIcon} className="size-4" />,
         loading: (
-          <CircleNotch className="size-4 animate-spin" />
+          <HugeiconsIcon icon={Loading03Icon} className="size-4 animate-spin" />
         ),
       }}
       style={

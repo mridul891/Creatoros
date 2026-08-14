@@ -1,8 +1,8 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import type { DealListData } from "@/types/deal"
 import { buildDealsUrl } from "@/lib/crm/deals/dealsUrl"
+import type { DealListData } from "@/types/deal"
 
 type DealsFilterPatch = Partial<{
   search: string
@@ -22,13 +22,16 @@ export function useDealsNavigation(filters: DealListData["filters"]) {
       buildDealsUrl({
         search: "search" in nextFilters ? nextFilters.search : filters.search,
         view: "view" in nextFilters ? nextFilters.view : filters.view,
-        archive: "archive" in nextFilters ? nextFilters.archive : filters.archive,
+        archive:
+          "archive" in nextFilters ? nextFilters.archive : filters.archive,
         stage: "stage" in nextFilters ? nextFilters.stage : filters.stage,
-        priority: "priority" in nextFilters ? nextFilters.priority : filters.priority,
-        brandId: "brandId" in nextFilters ? nextFilters.brandId : filters.brandId,
+        priority:
+          "priority" in nextFilters ? nextFilters.priority : filters.priority,
+        brandId:
+          "brandId" in nextFilters ? nextFilters.brandId : filters.brandId,
         sort: "sort" in nextFilters ? nextFilters.sort : filters.sort,
         page: 1,
-      }),
+      })
     )
   }
 
@@ -43,7 +46,7 @@ export function useDealsNavigation(filters: DealListData["filters"]) {
         brandId: filters.brandId,
         sort: filters.sort,
         page,
-      }),
+      })
     )
   }
 

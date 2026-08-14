@@ -3,10 +3,13 @@
 import { requireOnboardedUser } from "@/lib/auth/require-user"
 import {
   ActivityServiceError,
-  listActivitiesByDeal,
   listActivitiesByBrand,
+  listActivitiesByDeal,
 } from "@/lib/crm/activity/activityService"
-import { activityDealListSchema, activityListSchema } from "@/lib/crm/activity/activityValidation"
+import {
+  activityDealListSchema,
+  activityListSchema,
+} from "@/lib/crm/activity/activityValidation"
 import type { ActivityListData } from "@/types/activity"
 
 export type ActivityListResult = {
@@ -44,7 +47,11 @@ export async function listBrandActivitiesAction(input: {
       }
     }
 
-    console.error("activities.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("activities.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load activities. Please try again.",
@@ -81,7 +88,11 @@ export async function listDealActivitiesAction(input: {
       }
     }
 
-    console.error("activities.list_deal_failed", { userId: user.id, input: parsed.data, error })
+    console.error("activities.list_deal_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load activities. Please try again.",

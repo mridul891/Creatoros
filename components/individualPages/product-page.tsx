@@ -1,19 +1,19 @@
-import { ChartBar, LinkSimple, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
-
-import { MarketingPageShell } from "./marketing-page-shell";
-import { MadeFor } from "../modules/Landing/made-for";
-import { SplitSection } from "../modules/Landing/split-section";
-import { StatsSection } from "../modules/Landing/stats-section";
-import { SubpageHero } from "../modules/Landing/subpage-hero";
-import { ValuePillars } from "../modules/Landing/value-pillars";
-import { WideSection } from "../modules/Landing/wide-section";
-import { DIM } from "../modules/Landing/constants";
+import { ChartIcon, LinkIcon, ShieldIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { DIM } from "../modules/Landing/constants"
 import {
   IMG_FEATURE_CALENDAR,
   IMG_FEATURE_DASHBOARD,
   IMG_INVOICING_SCREEN,
   IMG_PIPELINE_SCREEN,
-} from "../modules/Landing/image-urls";
+} from "../modules/Landing/image-urls"
+import { MadeFor } from "../modules/Landing/made-for"
+import { SplitSection } from "../modules/Landing/split-section"
+import { StatsSection } from "../modules/Landing/stats-section"
+import { SubpageHero } from "../modules/Landing/subpage-hero"
+import { ValuePillars } from "../modules/Landing/value-pillars"
+import { WideSection } from "../modules/Landing/wide-section"
+import { MarketingPageShell } from "./marketing-page-shell"
 
 export function ProductPage() {
   return (
@@ -32,17 +32,17 @@ export function ProductPage() {
         body="Everything in CreatorOS is designed to help creators spend less time on operations and more time on growth. Teams get a clear source of truth across every stage of the revenue cycle."
         pillars={[
           {
-            icon: <LinkSimple size={15} color={DIM} />,
+            icon: <HugeiconsIcon icon={LinkIcon} size={15} color={DIM} />,
             title: "Connected workflow",
             body: "Move from planning to publishing to invoicing without context switching across disconnected tools.",
           },
           {
-            icon: <ChartBar size={15} color={DIM} />,
+            icon: <HugeiconsIcon icon={ChartIcon} size={15} color={DIM} />,
             title: "Decision-grade visibility",
             body: "Track performance, conversion, and payout signals in one place to prioritize what moves revenue.",
           },
           {
-            icon: <ShieldCheck size={15} color={DIM} />,
+            icon: <HugeiconsIcon icon={ShieldIcon} size={15} color={DIM} />,
             title: "Reliable operations",
             body: "Use standardized pipelines, reminders, and billing flows that keep client commitments on schedule.",
           },
@@ -122,5 +122,5 @@ export function ProductPage() {
 
       <StatsSection />
     </MarketingPageShell>
-  );
+  )
 }

@@ -18,13 +18,17 @@ interface InsforgeUser {
 function getDisplayName(user: InsforgeUser) {
   const profile = user.profile ?? {}
   const rawName = profile.full_name ?? profile.name
-  return typeof rawName === "string" && rawName.trim().length > 0 ? rawName.trim() : null
+  return typeof rawName === "string" && rawName.trim().length > 0
+    ? rawName.trim()
+    : null
 }
 
 function getAvatarUrl(user: InsforgeUser) {
   const profile = user.profile ?? {}
   const rawAvatar = profile.avatar_url ?? profile.picture
-  return typeof rawAvatar === "string" && rawAvatar.length > 0 ? rawAvatar : null
+  return typeof rawAvatar === "string" && rawAvatar.length > 0
+    ? rawAvatar
+    : null
 }
 
 export async function syncUserFromInsforgeUser(user: InsforgeUser) {

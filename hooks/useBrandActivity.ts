@@ -10,8 +10,13 @@ type UseBrandActivityOptions = {
   initialData: ActivityListData
 }
 
-export function useBrandActivity({ brandId, initialData }: UseBrandActivityOptions) {
-  const [activities, setActivities] = useState<ActivityListItem[]>(initialData.items)
+export function useBrandActivity({
+  brandId,
+  initialData,
+}: UseBrandActivityOptions) {
+  const [activities, setActivities] = useState<ActivityListItem[]>(
+    initialData.items
+  )
   const [pagination, setPagination] = useState(initialData.pagination)
   const [isLoading, setIsLoading] = useState(false)
   const [loadError, setLoadError] = useState("")
@@ -36,7 +41,7 @@ export function useBrandActivity({ brandId, initialData }: UseBrandActivityOptio
       setActivities(result.data.items)
       setPagination(result.data.pagination)
     },
-    [brandId, pagination.pageSize],
+    [brandId, pagination.pageSize]
   )
 
   useEffect(() => {

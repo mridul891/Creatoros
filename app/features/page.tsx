@@ -1,5 +1,5 @@
-import { FeaturesPage } from "@/components/individualPages/features-page";
-import type { Metadata } from "next";
+import type { Metadata } from "next"
+import { FeaturesPage } from "@/components/individualPages/features-page"
 
 export const metadata: Metadata = {
   title: "Features",
@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/features",
   },
-};
+}
 
 export default function FeaturesRoutePage() {
-  return <FeaturesPage />;
+  return <FeaturesPage />
 }

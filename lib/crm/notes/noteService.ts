@@ -5,7 +5,11 @@ import { recordActivity } from "@/lib/crm/activity/activityService"
 import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
 import { prisma } from "@/lib/prisma"
 import type { DealNoteListData, DealNoteListItem } from "@/types/dealNote"
-import type { NoteCreateInput, NoteListInput, NoteUpdateInput } from "./noteValidation"
+import type {
+  NoteCreateInput,
+  NoteListInput,
+  NoteUpdateInput,
+} from "./noteValidation"
 
 const PAGE_SIZE_DEFAULT = 20
 const PAGE_SIZE_MAX = 50
@@ -24,7 +28,11 @@ export class NoteServiceError extends Error {
   code: "NOT_FOUND" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
   field?: "noteId" | "dealId" | "content" | "title"
 
-  constructor(message: string, code: NoteServiceError["code"], field?: NoteServiceError["field"]) {
+  constructor(
+    message: string,
+    code: NoteServiceError["code"],
+    field?: NoteServiceError["field"]
+  ) {
     super(message)
     this.name = "NoteServiceError"
     this.code = code
@@ -60,10 +68,20 @@ function toListItem(item: {
   }
 }
 
-async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promise<OwnedDeal> {
+async function getOwnedDeal(
+  tx: PrismaTx,
+  userId: string,
+  dealId: string
+): Promise<OwnedDeal> {
   const deal = await tx.deal.findFirst({
     where: { id: dealId, userId },
-    select: { id: true, brandId: true, contactId: true, campaignName: true, status: true },
+    select: {
+      id: true,
+      brandId: true,
+      contactId: true,
+      campaignName: true,
+      status: true,
+    },
   })
 
   if (!deal) {
@@ -78,7 +96,13 @@ async function getOwnedNote(tx: PrismaTx, userId: string, noteId: string) {
     where: { id: noteId, userId },
     include: {
       deal: {
-        select: { id: true, brandId: true, contactId: true, campaignName: true, status: true },
+        select: {
+          id: true,
+          brandId: true,
+          contactId: true,
+          campaignName: true,
+          status: true,
+        },
       },
     },
   })
@@ -92,7 +116,11 @@ async function getOwnedNote(tx: PrismaTx, userId: string, noteId: string) {
 
 function ensureDealIsActive(deal: OwnedDeal) {
   if (deal.status === "Archived") {
-    throw new NoteServiceError("Notes cannot be modified for archived deals.", "INVALID_OPERATION", "dealId")
+    throw new NoteServiceError(
+      "Notes cannot be modified for archived deals.",
+      "INVALID_OPERATION",
+      "dealId"
+    )
   }
 }
 
@@ -120,10 +148,16 @@ async function recordNoteActivity(options: {
   })
 }
 
-export async function listDealNotes(userId: string, input: NoteListInput): Promise<DealNoteListData> {
+export async function listDealNotes(
+  userId: string,
+  input: NoteListInput
+): Promise<DealNoteListData> {
   await getOwnedDeal(prisma, userId, input.dealId)
   const page = clampPage(input.page)
-  const pageSize = clampPageSize(input.pageSize, { pageSize: PAGE_SIZE_DEFAULT, maxPageSize: PAGE_SIZE_MAX })
+  const pageSize = clampPageSize(input.pageSize, {
+    pageSize: PAGE_SIZE_DEFAULT,
+    maxPageSize: PAGE_SIZE_MAX,
+  })
   const skip = (page - 1) * pageSize
   const search = input.search?.trim() ?? ""
 
@@ -241,7 +275,10 @@ export async function archiveNote(userId: string, noteId: string) {
     const existing = await getOwnedNote(tx, userId, noteId)
     ensureDealIsActive(existing.deal)
     if (existing.status === "Archived") {
-      throw new NoteServiceError("Note is already archived.", "INVALID_OPERATION")
+      throw new NoteServiceError(
+        "Note is already archived.",
+        "INVALID_OPERATION"
+      )
     }
 
     const note = await tx.dealNote.update({
@@ -289,7 +326,10 @@ export async function deleteNote(userId: string, noteId: string) {
     const existing = await getOwnedNote(tx, userId, noteId)
     ensureDealIsActive(existing.deal)
     if (existing.status !== "Archived") {
-      throw new NoteServiceError("Only archived notes can be deleted.", "FORBIDDEN")
+      throw new NoteServiceError(
+        "Only archived notes can be deleted.",
+        "FORBIDDEN"
+      )
     }
 
     await tx.dealNote.delete({

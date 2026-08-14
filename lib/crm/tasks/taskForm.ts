@@ -10,7 +10,6 @@ export type TaskFormValues = {
   priority: TaskPriority
   dueDate: string
   orderIndex: string
-
 }
 
 export const EMPTY_TASK_FORM: TaskFormValues = {
@@ -27,7 +26,18 @@ function toDateInputValue(date: Date | null) {
   return formatTaskDateInput(date)
 }
 
-export function taskToFormValues(task: Pick<TaskListItem, "dealId" | "title" | "description" | "status" | "priority" | "dueDate" | "orderIndex">): TaskFormValues {
+export function taskToFormValues(
+  task: Pick<
+    TaskListItem,
+    | "dealId"
+    | "title"
+    | "description"
+    | "status"
+    | "priority"
+    | "dueDate"
+    | "orderIndex"
+  >
+): TaskFormValues {
   return {
     dealId: task.dealId,
     title: task.title,

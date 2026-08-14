@@ -14,7 +14,9 @@ export async function joinWaitlist(formData: FormData) {
     }
   }
 
-  const response = await insforge.database.from("waitlist").insert([{ email, name }])
+  const response = await insforge.database
+    .from("waitlist")
+    .insert([{ email, name }])
   console.log(response)
   // if (error) {
   //   if (error.code === "23505") {

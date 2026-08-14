@@ -1,10 +1,15 @@
 "use client"
 
-import { PushPin, Plus, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr"
+import { Add01Icon, PinIcon, Search01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
-import { CrmConfirmDialog, CrmPageHeaderClient, CrmPagination } from "@/components/modules/crm/shared"
+import {
+  CrmConfirmDialog,
+  CrmPageHeaderClient,
+  CrmPagination,
+} from "@/components/modules/crm/shared"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -18,26 +23,54 @@ type DealNotesSectionProps = {
   initialLoadError?: string
 }
 
-export function DealNotesSection({ dealId, initialData, initialLoadError }: DealNotesSectionProps) {
-  const { notes, pagination, search, archive, isLoading, loadError, setSearch, setArchive, setPage, refetch } = useDealNotes({
+export function DealNotesSection({
+  dealId,
+  initialData,
+  initialLoadError,
+}: DealNotesSectionProps) {
+  const {
+    notes,
+    pagination,
+    search,
+    archive,
+    isLoading,
+    loadError,
+    setSearch,
+    setArchive,
+    setPage,
+    refetch,
+  } = useDealNotes({
     dealId,
     initialData,
   })
 
-  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(notes[0]?.id ?? null)
+  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(
+    notes[0]?.id ?? null
+  )
   const [titleDraft, setTitleDraft] = useState("")
   const [contentDraft, setContentDraft] = useState("")
   const [isAutoSaving, setIsAutoSaving] = useState(false)
   const [pendingArchiveId, setPendingArchiveId] = useState<string | null>(null)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
-  const { isSubmitting, isMutating, submitCreate, submitUpdate, runArchive, runRestore, runDelete } = useNoteMutations({
+  const {
+    isSubmitting,
+    isMutating,
+    submitCreate,
+    submitUpdate,
+    runArchive,
+    runRestore,
+    runDelete,
+  } = useNoteMutations({
     onRefresh: () => {
       void refetch(pagination.page)
     },
   })
 
-  const selectedNote = useMemo(() => notes.find((note) => note.id === selectedNoteId) ?? null, [notes, selectedNoteId])
+  const selectedNote = useMemo(
+    () => notes.find((note) => note.id === selectedNoteId) ?? null,
+    [notes, selectedNoteId]
+  )
   const displayError = initialLoadError ?? loadError
 
   useEffect(() => {
@@ -49,11 +82,15 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
   useEffect(() => {
     setTitleDraft(selectedNote?.title ?? "")
     setContentDraft(selectedNote?.content ?? "")
-  }, [selectedNote?.id, selectedNote?.title, selectedNote?.content])
+  }, [selectedNote?.title, selectedNote?.content])
 
   useEffect(() => {
     if (!selectedNote) return
-    if (titleDraft === selectedNote.title && contentDraft === selectedNote.content) return
+    if (
+      titleDraft === selectedNote.title &&
+      contentDraft === selectedNote.content
+    )
+      return
 
     const timer = setTimeout(async () => {
       setIsAutoSaving(true)
@@ -73,7 +110,15 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
     }, 700)
 
     return () => clearTimeout(timer)
-  }, [contentDraft, dealId, pagination.page, refetch, selectedNote, submitUpdate, titleDraft])
+  }, [
+    contentDraft,
+    dealId,
+    pagination.page,
+    refetch,
+    selectedNote,
+    submitUpdate,
+    titleDraft,
+  ])
 
   async function handleCreate() {
     const result = await submitCreate({
@@ -106,7 +151,10 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
   async function confirmArchive() {
     if (!pendingArchiveId) return
     const note = notes.find((item) => item.id === pendingArchiveId)
-    const result = note?.status === "Archived" ? await runRestore(pendingArchiveId) : await runArchive(pendingArchiveId)
+    const result =
+      note?.status === "Archived"
+        ? await runRestore(pendingArchiveId)
+        : await runArchive(pendingArchiveId)
     if (result.success) {
       setPendingArchiveId(null)
       await refetch(pagination.page)
@@ -128,36 +176,62 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
         title="Notes"
         description="Rich text notes with auto-save, pinning, and search."
         actionLabel="Add Note"
-        actionIcon={<Plus size={14} />}
+        actionIcon={<HugeiconsIcon icon={Add01Icon} size={14} />}
         onAction={handleCreate}
         className="mb-4"
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <div className="relative w-[260px]">
-          <MagnifyingGlass size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <HugeiconsIcon
+            icon={Search01Icon}
+            size={13}
+            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+          />
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search notes"
-            className="h-10 border-border bg-card pl-[34px] text-xs text-muted-foreground"
+            className="h-10 border-border bg-card pl-[34px] text-muted-foreground text-xs"
           />
         </div>
-        <Button type="button" size="sm" variant={archive === "active" ? "default" : "outline"} className="h-9" onClick={() => setArchive("active")}>
+        <Button
+          type="button"
+          size="sm"
+          variant={archive === "active" ? "default" : "outline"}
+          className="h-9"
+          onClick={() => setArchive("active")}
+        >
           Active
         </Button>
-        <Button type="button" size="sm" variant={archive === "archived" ? "default" : "outline"} className="h-9" onClick={() => setArchive("archived")}>
+        <Button
+          type="button"
+          size="sm"
+          variant={archive === "archived" ? "default" : "outline"}
+          className="h-9"
+          onClick={() => setArchive("archived")}
+        >
           Archived
         </Button>
-        <p className="text-[11px] text-muted-foreground">{isAutoSaving ? "Auto-saving..." : "All changes saved"}</p>
+        <p className="text-[11px] text-muted-foreground">
+          {isAutoSaving ? "Auto-saving..." : "All changes saved"}
+        </p>
       </div>
 
-      {displayError ? <p className="mb-4 text-[12px] text-[#E8402A]">{displayError}</p> : null}
+      {displayError ? (
+        <p className="mb-4 text-[#E8402A] text-[12px]">{displayError}</p>
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-[280px_1fr]">
         <div className="rounded-[14px] border border-border p-3">
-          {isLoading ? <p className="text-[12px] text-muted-foreground">Loading notes...</p> : null}
-          {notes.length === 0 ? <p className="text-[12px] text-muted-foreground">No notes yet.</p> : null}
+          {isLoading ? (
+            <p className="text-[12px] text-muted-foreground">
+              Loading notes...
+            </p>
+          ) : null}
+          {notes.length === 0 ? (
+            <p className="text-[12px] text-muted-foreground">No notes yet.</p>
+          ) : null}
           <div className="space-y-2">
             {notes.map((note) => (
               <button
@@ -171,11 +245,23 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
                 }`}
               >
                 <div className="mb-1 flex items-center justify-between gap-2">
-                  <p className="truncate text-[12px] font-semibold text-foreground">{note.title}</p>
-                  <PushPin size={12} className={note.isPinned ? "text-[#E8402A]" : "text-muted-foreground"} />
+                  <p className="truncate font-semibold text-[12px] text-foreground">
+                    {note.title}
+                  </p>
+                  <HugeiconsIcon
+                    icon={PinIcon}
+                    size={12}
+                    className={
+                      note.isPinned ? "text-[#E8402A]" : "text-muted-foreground"
+                    }
+                  />
                 </div>
-                <p className="line-clamp-2 text-[11px] text-muted-foreground">{note.content}</p>
-                <p className="mt-2 text-[10px] text-muted-foreground">{new Date(note.updatedAt).toLocaleString()}</p>
+                <p className="line-clamp-2 text-[11px] text-muted-foreground">
+                  {note.content}
+                </p>
+                <p className="mt-2 text-[10px] text-muted-foreground">
+                  {new Date(note.updatedAt).toLocaleString()}
+                </p>
               </button>
             ))}
           </div>
@@ -197,15 +283,33 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
               />
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
-                  <Button type="button" size="sm" variant="outline" onClick={() => handleTogglePin(selectedNote)} disabled={isSubmitting}>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleTogglePin(selectedNote)}
+                    disabled={isSubmitting}
+                  >
                     {selectedNote.isPinned ? "Unpin" : "PushPin"}
                   </Button>
                   {selectedNote.status === "Archived" ? (
-                    <Button type="button" size="sm" variant="outline" onClick={() => setPendingArchiveId(selectedNote.id)} disabled={isMutating}>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setPendingArchiveId(selectedNote.id)}
+                      disabled={isMutating}
+                    >
                       Restore
                     </Button>
                   ) : (
-                    <Button type="button" size="sm" variant="outline" onClick={() => setPendingArchiveId(selectedNote.id)} disabled={isMutating}>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setPendingArchiveId(selectedNote.id)}
+                      disabled={isMutating}
+                    >
                       Archive
                     </Button>
                   )}
@@ -222,12 +326,20 @@ export function DealNotesSection({ dealId, initialData, initialLoadError }: Deal
               </div>
             </div>
           ) : (
-            <p className="text-[12px] text-muted-foreground">Select a note to start editing.</p>
+            <p className="text-[12px] text-muted-foreground">
+              Select a note to start editing.
+            </p>
           )}
         </div>
       </div>
 
-      {pagination.totalPages > 1 ? <CrmPagination page={pagination.page} totalPages={pagination.totalPages} onPageChange={setPage} /> : null}
+      {pagination.totalPages > 1 ? (
+        <CrmPagination
+          page={pagination.page}
+          totalPages={pagination.totalPages}
+          onPageChange={setPage}
+        />
+      ) : null}
 
       <CrmConfirmDialog
         open={Boolean(pendingArchiveId)}

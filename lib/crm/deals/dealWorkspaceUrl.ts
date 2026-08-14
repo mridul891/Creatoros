@@ -5,11 +5,16 @@ type BuildDealWorkspaceUrlOptions = {
   tab?: DealWorkspaceTab
 }
 
-export function buildDealWorkspaceUrl({ dealId, tab }: BuildDealWorkspaceUrlOptions) {
+export function buildDealWorkspaceUrl({
+  dealId,
+  tab,
+}: BuildDealWorkspaceUrlOptions) {
   const params = new URLSearchParams()
   if (tab && tab !== "overview") {
     params.set("tab", tab)
   }
   const query = params.toString()
-  return query ? `/dashboard/deals/${dealId}?${query}` : `/dashboard/deals/${dealId}`
+  return query
+    ? `/dashboard/deals/${dealId}?${query}`
+    : `/dashboard/deals/${dealId}`
 }

@@ -3,7 +3,13 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { listDealTasksAction } from "@/app/action/taskActions"
-import type { TaskArchiveFilter, TaskDueDateFilter, TaskPriority, TaskSortOption, TaskStatus } from "@/enums/task"
+import type {
+  TaskArchiveFilter,
+  TaskDueDateFilter,
+  TaskPriority,
+  TaskSortOption,
+  TaskStatus,
+} from "@/enums/task"
 import type { TaskListData, TaskListItem } from "@/types/task"
 
 type UseDealTasksOptions = {
@@ -16,10 +22,18 @@ export function useDealTasks({ dealId, initialData }: UseDealTasksOptions) {
   const [pagination, setPagination] = useState(initialData.pagination)
   const [summary, setSummary] = useState(initialData.summary)
   const [search, setSearch] = useState(initialData.filters.search)
-  const [status, setStatus] = useState<TaskStatus | "all">(initialData.filters.status ?? "all")
-  const [priority, setPriority] = useState<TaskPriority | "all">(initialData.filters.priority ?? "all")
-  const [archive, setArchive] = useState<TaskArchiveFilter>(initialData.filters.archive)
-  const [dueDate, setDueDate] = useState<TaskDueDateFilter>(initialData.filters.dueDate)
+  const [status, setStatus] = useState<TaskStatus | "all">(
+    initialData.filters.status ?? "all"
+  )
+  const [priority, setPriority] = useState<TaskPriority | "all">(
+    initialData.filters.priority ?? "all"
+  )
+  const [archive, setArchive] = useState<TaskArchiveFilter>(
+    initialData.filters.archive
+  )
+  const [dueDate, setDueDate] = useState<TaskDueDateFilter>(
+    initialData.filters.dueDate
+  )
   const [sort, setSort] = useState<TaskSortOption>(initialData.filters.sort)
   const [isLoading, setIsLoading] = useState(false)
   const [loadError, setLoadError] = useState("")
@@ -39,7 +53,7 @@ export function useDealTasks({ dealId, initialData }: UseDealTasksOptions) {
     setLoadError("")
     setIsLoading(false)
     hasHydratedRef.current = false
-  }, [dealId, initialData])
+  }, [initialData])
 
   const refetch = useCallback(
     async (nextPage = 1) => {
@@ -66,7 +80,7 @@ export function useDealTasks({ dealId, initialData }: UseDealTasksOptions) {
       setPagination(result.data.pagination)
       setSummary(result.data.summary)
     },
-    [archive, dealId, dueDate, priority, search, sort, status],
+    [archive, dealId, dueDate, priority, search, sort, status]
   )
 
   useEffect(() => {
@@ -88,7 +102,7 @@ export function useDealTasks({ dealId, initialData }: UseDealTasksOptions) {
         clearTimeout(debounceRef.current)
       }
     }
-  }, [archive, dueDate, priority, refetch, search, sort, status])
+  }, [refetch])
 
   async function setPage(nextPage: number) {
     await refetch(nextPage)

@@ -1,19 +1,25 @@
-"use client";
+"use client"
 
-import { SponsorshipMode } from "@/enums/sponsorship";
-import { DealModal } from "./DealModal";
-import { PipelineHeader } from "./PipelineHeader";
-import { PipelineKanban } from "./PipelineKanban";
-import { PipelineStats } from "./PipelineStats";
-import { PipelineTable } from "./PipelineTable";
-import { usePipeline } from "./usePipeline";
+import { SponsorshipMode } from "@/enums/sponsorship"
+import { DealModal } from "./DealModal"
+import { PipelineHeader } from "./PipelineHeader"
+import { PipelineKanban } from "./PipelineKanban"
+import { PipelineStats } from "./PipelineStats"
+import { PipelineTable } from "./PipelineTable"
+import { usePipeline } from "./usePipeline"
 
 export function PipelinePage() {
-  const pipeline = usePipeline(SponsorshipMode.TABLE);
+  const pipeline = usePipeline(SponsorshipMode.TABLE)
 
   return (
     <div className="w-full max-w-[1300px] px-9 py-7">
-      {pipeline.modal && <DealModal state={pipeline.modal} onSave={pipeline.handleSave} onClose={pipeline.closeModal} />}
+      {pipeline.modal && (
+        <DealModal
+          state={pipeline.modal}
+          onSave={pipeline.handleSave}
+          onClose={pipeline.closeModal}
+        />
+      )}
 
       <PipelineHeader
         viewMode={pipeline.viewMode}
@@ -29,8 +35,8 @@ export function PipelinePage() {
         <PipelineTable
           deals={pipeline.filteredDeals}
           onSelectDeal={(deal) => {
-            pipeline.openDealPanel(deal.id);
-            pipeline.openEditModal(deal);
+            pipeline.openDealPanel(deal.id)
+            pipeline.openEditModal(deal)
           }}
           onStageChange={pipeline.handleStageChange}
           onPriorityChange={pipeline.handlePriorityChange}
@@ -56,5 +62,5 @@ export function PipelinePage() {
         />
       )}
     </div>
-  );
+  )
 }

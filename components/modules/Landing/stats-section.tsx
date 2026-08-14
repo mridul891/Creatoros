@@ -1,49 +1,51 @@
-import * as React from "react";
-import { Clock, TrendUp, Users } from "@phosphor-icons/react/dist/ssr";
+import {
+  Clock01Icon,
+  TradeUpIcon,
+  UserGroupIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
-
-import { DIM, WRAP_CLASS } from "./constants";
-
+import { DIM, WRAP_CLASS } from "./constants"
 
 export function StatsSection() {
   const stats = [
     {
       n: "3.2×",
       label: "Average revenue growth in first 6 months",
-      icon: <TrendUp size={14} color={DIM} />,
+      icon: <HugeiconsIcon icon={TradeUpIcon} size={14} color={DIM} />,
     },
     {
       n: "95%",
       label: "Of deals closed with our pipeline",
-      icon: <Users size={14} color={DIM} />,
+      icon: <HugeiconsIcon icon={UserGroupIcon} size={14} color={DIM} />,
     },
     {
       n: "12h",
       label: "Saved per week on admin tasks",
-      icon: <Clock size={14} color={DIM} />,
+      icon: <HugeiconsIcon icon={Clock01Icon} size={14} color={DIM} />,
     },
-  ];
+  ]
 
   return (
-    <section className="border-t border-border bg-muted/30 py-16 sm:py-20 lg:py-24">
+    <section className="border-border border-t bg-muted/30 py-16 sm:py-20 lg:py-24">
       <div className={WRAP_CLASS}>
         <div className="mb-10 flex flex-col items-start gap-8 md:mb-[72px] md:flex-row md:gap-16">
           <div className="max-w-[340px]">
-            <p className="mb-3  text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
+            <p className="mb-3 font-semibold text-[11px] text-primary uppercase tracking-[0.12em]">
               Business Impact
             </p>
-            <h2 className="m-0  text-[clamp(24px,3.5vw,36px)] font-semibold tracking-[-0.035em] text-foreground">
+            <h2 className="m-0 font-semibold text-[clamp(24px,3.5vw,36px)] text-foreground tracking-[-0.035em]">
               Results You Can Expect
             </h2>
           </div>
 
           <div className="grid w-full flex-1 grid-cols-1 gap-x-12 gap-y-6 sm:grid-cols-2 sm:gap-y-7 lg:grid-cols-3">
             {stats.map((stat, index) => (
-              <div key={index} className="border-t border-border pt-5">
-                <p className="mb-2  text-[clamp(36px,4.5vw,48px)] font-semibold tracking-[-0.045em] text-foreground">
+              <div key={index} className="border-border border-t pt-5">
+                <p className="mb-2 font-semibold text-[clamp(36px,4.5vw,48px)] text-foreground tracking-[-0.045em]">
                   {stat.n}
                 </p>
-                <p className="m-0  text-[13px] leading-[1.55] text-muted-foreground">
+                <p className="m-0 text-[13px] text-muted-foreground leading-[1.55]">
                   {stat.label}
                 </p>
               </div>
@@ -82,5 +84,5 @@ export function StatsSection() {
         </div> */}
       </div>
     </section>
-  );
+  )
 }

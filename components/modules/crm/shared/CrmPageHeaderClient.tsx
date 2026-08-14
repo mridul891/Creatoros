@@ -23,16 +23,23 @@ export function CrmPageHeaderClient({
   className,
 }: CrmPageHeaderClientProps) {
   return (
-    <div className={cn("mb-7 flex flex-wrap items-start justify-between gap-4", className)}>
+    <div
+      className={cn(
+        "mb-7 flex flex-wrap items-start justify-between gap-4",
+        className
+      )}
+    >
       <div>
-        <h1 className="text-2xl font-extrabold tracking-[-0.04em] text-foreground">{title}</h1>
+        <h1 className="font-extrabold text-2xl text-foreground tracking-[-0.04em]">
+          {title}
+        </h1>
         <p className="mt-1 text-[13px] text-muted-foreground">{description}</p>
       </div>
       {actionLabel && onAction ? (
         <Button
           type="button"
           onClick={onAction}
-          className="h-10 cursor-pointer gap-2 bg-primary px-4 text-[13px] font-semibold text-primary-foreground hover:bg-primary"
+          className="h-10 cursor-pointer gap-2 bg-primary px-4 font-semibold text-[13px] text-primary-foreground hover:bg-primary"
         >
           {actionIcon}
           {actionLabel}

@@ -9,8 +9,11 @@ type UseInvoiceMutationsOptions = {
   onRefresh?: () => void
 }
 
-export function useInvoiceMutations({ onRefresh }: UseInvoiceMutationsOptions = {}) {
-  const [isCreatingFromDeliverableId, setIsCreatingFromDeliverableId] = useState<string | null>(null)
+export function useInvoiceMutations({
+  onRefresh,
+}: UseInvoiceMutationsOptions = {}) {
+  const [isCreatingFromDeliverableId, setIsCreatingFromDeliverableId] =
+    useState<string | null>(null)
 
   async function createFromDeliverable(deliverableId: string) {
     setIsCreatingFromDeliverableId(deliverableId)

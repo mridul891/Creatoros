@@ -1,8 +1,8 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import type { ActivityEntityType, ActivityType } from "@/enums/activity"
-import { prisma } from "@/lib/prisma"
 import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
+import { prisma } from "@/lib/prisma"
 import type { ActivityListData, ActivityListItem } from "@/types/activity"
 
 const PAGE_SIZE_DEFAULT = 20
@@ -68,7 +68,9 @@ function toActivityListItem(activity: {
     title: activity.title,
     description: activity.description,
     metadata:
-      activity.metadata && typeof activity.metadata === "object" && !Array.isArray(activity.metadata)
+      activity.metadata &&
+      typeof activity.metadata === "object" &&
+      !Array.isArray(activity.metadata)
         ? (activity.metadata as Record<string, unknown>)
         : null,
     createdAt: activity.createdAt,
@@ -101,7 +103,7 @@ export async function listActivitiesByBrand(
     brandId: string
     page?: number
     pageSize?: number
-  },
+  }
 ): Promise<ActivityListData> {
   await assertOwnedBrand(userId, input.brandId, prisma)
 
@@ -146,7 +148,7 @@ export async function listActivitiesByBrand(
         ...item,
         type: item.type as ActivityType,
         entityType: item.entityType as ActivityEntityType,
-      }),
+      })
     ),
     pagination: {
       page,
@@ -166,7 +168,7 @@ export async function listActivitiesByDeal(
     dealId: string
     page?: number
     pageSize?: number
-  },
+  }
 ): Promise<ActivityListData> {
   const deal = await prisma.deal.findFirst({
     where: { id: input.dealId, userId },
@@ -218,7 +220,7 @@ export async function listActivitiesByDeal(
         ...item,
         type: item.type as ActivityType,
         entityType: item.entityType as ActivityEntityType,
-      }),
+      })
     ),
     pagination: {
       page,

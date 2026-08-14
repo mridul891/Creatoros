@@ -27,7 +27,9 @@ export const EMPTY_CONTACT_FORM: ContactFormValues = {
   isPrimary: false,
 }
 
-export function contactToFormValues(contact: ContactListItem): ContactFormValues {
+export function contactToFormValues(
+  contact: ContactListItem
+): ContactFormValues {
   return {
     name: contact.name,
     email: contact.email ?? "",
@@ -38,7 +40,9 @@ export function contactToFormValues(contact: ContactListItem): ContactFormValues
   }
 }
 
-export function contactMutationToFormValues(result: ContactMutationData): ContactFormValues {
+export function contactMutationToFormValues(
+  result: ContactMutationData
+): ContactFormValues {
   return {
     name: result.name,
     email: result.email ?? "",
@@ -49,7 +53,11 @@ export function contactMutationToFormValues(result: ContactMutationData): Contac
   }
 }
 
-export function buildContactFormData(values: ContactFormValues, brandId: string, contactId?: string) {
+export function buildContactFormData(
+  values: ContactFormValues,
+  brandId: string,
+  contactId?: string
+) {
   const formData = new FormData()
   formData.set("brandId", brandId)
   if (contactId) {

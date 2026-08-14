@@ -1,7 +1,13 @@
 "use client"
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DEAL_PRIORITIES, DEAL_SORT_OPTIONS, DEAL_STAGES } from "@/enums/deal"
 import { CrmSearchField } from "../shared"
 
@@ -45,9 +51,16 @@ export function DealsToolbar({
   return (
     <div className="mb-4 space-y-3">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="font-mono text-[11px] text-muted-foreground">{total} total deals</div>
+        <div className="font-mono text-[11px] text-muted-foreground">
+          {total} total deals
+        </div>
         <div className="flex flex-wrap items-center gap-2 max-sm:w-full">
-          <Tabs value={archive} onValueChange={(next) => onArchiveChange(next as "active" | "archived")}>
+          <Tabs
+            value={archive}
+            onValueChange={(next) =>
+              onArchiveChange(next as "active" | "archived")
+            }
+          >
             <TabsList className="h-9 rounded-[10px] border border-border bg-muted p-1">
               <TabsTrigger
                 value="active"
@@ -64,7 +77,10 @@ export function DealsToolbar({
             </TabsList>
           </Tabs>
 
-          <Tabs value={view} onValueChange={(next) => onViewChange(next as "table" | "kanban")}>
+          <Tabs
+            value={view}
+            onValueChange={(next) => onViewChange(next as "table" | "kanban")}
+          >
             <TabsList className="h-9 rounded-[10px] border border-border bg-muted p-1">
               <TabsTrigger
                 value="table"
@@ -92,8 +108,13 @@ export function DealsToolbar({
           className="w-full sm:col-span-2 lg:col-span-3 xl:w-[320px]"
         />
 
-        <Select value={stage ?? "__all"} onValueChange={(value) => onStageChange(value === "__all" ? undefined : value)}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[170px]">
+        <Select
+          value={stage ?? "__all"}
+          onValueChange={(value) =>
+            onStageChange(value === "__all" ? undefined : value)
+          }
+        >
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[170px]">
             <SelectValue placeholder="Stage" />
           </SelectTrigger>
           <SelectContent>
@@ -108,9 +129,11 @@ export function DealsToolbar({
 
         <Select
           value={priority ?? "__all"}
-          onValueChange={(value) => onPriorityChange(value === "__all" ? undefined : value)}
+          onValueChange={(value) =>
+            onPriorityChange(value === "__all" ? undefined : value)
+          }
         >
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[150px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[150px]">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -123,8 +146,13 @@ export function DealsToolbar({
           </SelectContent>
         </Select>
 
-        <Select value={brandId ?? "__all"} onValueChange={(value) => onBrandChange(value === "__all" ? undefined : value)}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[180px]">
+        <Select
+          value={brandId ?? "__all"}
+          onValueChange={(value) =>
+            onBrandChange(value === "__all" ? undefined : value)
+          }
+        >
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[180px]">
             <SelectValue placeholder="Brand" />
           </SelectTrigger>
           <SelectContent>
@@ -138,13 +166,17 @@ export function DealsToolbar({
         </Select>
 
         <Select value={sort} onValueChange={onSortChange}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[180px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[180px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
             {DEAL_SORT_OPTIONS.map((option) => (
               <SelectItem key={option} value={option}>
-                {option === "updatedAt" ? "Recently Updated" : option === "value" ? "Highest Value" : "Due Date"}
+                {option === "updatedAt"
+                  ? "Recently Updated"
+                  : option === "value"
+                    ? "Highest Value"
+                    : "Due Date"}
               </SelectItem>
             ))}
           </SelectContent>

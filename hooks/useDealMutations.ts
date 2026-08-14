@@ -11,7 +11,10 @@ import {
   updateDealPriorityAction,
   updateDealStageAction,
 } from "@/app/action/dealActions"
-import { buildDealFormData, type DealFormValues } from "@/lib/crm/deals/dealForm"
+import {
+  buildDealFormData,
+  type DealFormValues,
+} from "@/lib/crm/deals/dealForm"
 import type { DealListItem } from "@/types/deal"
 
 type UseDealMutationsOptions = {
@@ -19,7 +22,10 @@ type UseDealMutationsOptions = {
   onDeleteSuccess?: () => void
 }
 
-export function useDealMutations({ onRefresh, onDeleteSuccess }: UseDealMutationsOptions) {
+export function useDealMutations({
+  onRefresh,
+  onDeleteSuccess,
+}: UseDealMutationsOptions) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isMutating, setIsMutating] = useState(false)
   const [isInlineUpdating, setIsInlineUpdating] = useState(false)
@@ -95,7 +101,10 @@ export function useDealMutations({ onRefresh, onDeleteSuccess }: UseDealMutation
     return result
   }
 
-  async function runPriorityChange(dealId: string, priority: DealListItem["priority"]) {
+  async function runPriorityChange(
+    dealId: string,
+    priority: DealListItem["priority"]
+  ) {
     setIsInlineUpdating(true)
     const result = await updateDealPriorityAction(dealId, priority)
     setIsInlineUpdating(false)

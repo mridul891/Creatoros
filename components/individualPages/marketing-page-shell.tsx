@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 
-import { FooterCTA } from "../modules/Landing/footer-cta";
-import { Nav } from "../modules/Landing/nav";
+import { FooterCTA } from "../modules/Landing/footer-cta"
+import { Nav } from "../modules/Landing/nav"
 
 type MarketingPageShellProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export function MarketingPageShell({ children }: MarketingPageShellProps) {
   return (
@@ -14,5 +14,5 @@ export function MarketingPageShell({ children }: MarketingPageShellProps) {
       <main className="pt-14">{children}</main>
       <FooterCTA />
     </div>
-  );
+  )
 }

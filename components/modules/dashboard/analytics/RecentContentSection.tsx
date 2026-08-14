@@ -1,51 +1,52 @@
 import {
-  ArrowUpRight,
-  InstagramLogo as Instagram,
-  YoutubeLogo as Youtube,
-  Eye,
-  Image as ImageIcon,
-  Play,
-} from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
+  ArrowUpRight02Icon,
+  Image02Icon,
+  InstagramIcon,
+  PlayIcon,
+  ViewIcon,
+  YoutubeIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import Image from "next/image"
 import {
   PlatformFilter as PlatformFilterEnum,
   PostType,
   SocialPlatform,
-} from "@/enums/post";
+} from "@/enums/post"
 
-import {
-  PlatformFilter,
-  RECENT_CONTENT,
-  formatMetricNumber,
-} from "./data";
+import { formatMetricNumber, type PlatformFilter, RECENT_CONTENT } from "./data"
 
 export function RecentContentSection({
   platform,
   onChangePlatform,
 }: {
-  platform: PlatformFilter;
-  onChangePlatform: (platform: PlatformFilter) => void;
+  platform: PlatformFilter
+  onChangePlatform: (platform: PlatformFilter) => void
 }) {
   const selectedPlatform =
     platform === PlatformFilterEnum.ALL
       ? null
       : platform === PlatformFilterEnum.INSTAGRAM
         ? SocialPlatform.INSTAGRAM
-        : SocialPlatform.YOUTUBE;
+        : SocialPlatform.YOUTUBE
 
   return (
     <div className="mb-10">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold tracking-[-0.02em] text-foreground">
+          <div className="font-semibold text-foreground text-sm tracking-[-0.02em]">
             Recent Content
           </div>
-          <div className="mt-0.5 font-mono text-xs text-muted-foreground">
+          <div className="mt-0.5 font-mono text-muted-foreground text-xs">
             Sorted by performance
           </div>
         </div>
         <div className="flex rounded-[9px] border border-border bg-muted p-[3px]">
-          {[PlatformFilterEnum.ALL, PlatformFilterEnum.INSTAGRAM, PlatformFilterEnum.YOUTUBE].map((itemPlatform) => (
+          {[
+            PlatformFilterEnum.ALL,
+            PlatformFilterEnum.INSTAGRAM,
+            PlatformFilterEnum.YOUTUBE,
+          ].map((itemPlatform) => (
             <button
               key={itemPlatform}
               onClick={() => onChangePlatform(itemPlatform)}
@@ -63,7 +64,8 @@ export function RecentContentSection({
 
       <div className="grid grid-cols-3 gap-[14px]">
         {RECENT_CONTENT.filter(
-          (content) => selectedPlatform == null || content.platform === selectedPlatform,
+          (content) =>
+            selectedPlatform == null || content.platform === selectedPlatform
         ).map((post) => (
           <div
             key={post.id}
@@ -79,44 +81,45 @@ export function RecentContentSection({
               />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.7)_0%,transparent_50%)]" />
               <div
-                className={`absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-md ${post.platform === SocialPlatform.INSTAGRAM ? "bg-[#E8402A]" : "bg-[#222]"}`}
+                className={`absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-md ${post.platform === SocialPlatform.INSTAGRAM ? "bg-[#E8402A]" : "bg-[#222]"}`}
               >
                 {post.platform === SocialPlatform.INSTAGRAM ? (
-                  <Instagram size={12} color="white" />
+                  <HugeiconsIcon icon={InstagramIcon} size={12} color="white" />
                 ) : (
-                  <Youtube size={12} color="white" />
+                  <HugeiconsIcon icon={YoutubeIcon} size={12} color="white" />
                 )}
               </div>
-              <div className="absolute right-2 top-2 flex items-center gap-1 rounded-[99px] bg-muted px-[7px] py-[2px] backdrop-blur-[6px]">
+              <div className="absolute top-2 right-2 flex items-center gap-1 rounded-[99px] bg-muted px-[7px] py-[2px] backdrop-blur-[6px]">
                 {post.type === PostType.VIDEO || post.type === PostType.REEL ? (
-                  <Play size={8} color="white" />
+                  <HugeiconsIcon icon={PlayIcon} size={8} color="white" />
                 ) : (
-                  <ImageIcon size={8} color="white" />
+                  <HugeiconsIcon icon={Image02Icon} size={8} color="white" />
                 )}
-                <span className="font-mono text-[9px] uppercase tracking-[0.06em] text-foreground">
+                <span className="font-mono text-[9px] text-foreground uppercase tracking-[0.06em]">
                   {post.type}
                 </span>
               </div>
-              <div className="absolute bottom-2 left-[10px] right-[10px] flex items-center justify-between">
-                <div className="text-[13px] font-bold text-foreground">
+              <div className="absolute right-[10px] bottom-2 left-[10px] flex items-center justify-between">
+                <div className="font-bold text-[13px] text-foreground">
                   {formatMetricNumber(post.views)}
                 </div>
-                <div className="rounded-[99px] bg-[rgba(232,64,42,0.85)] px-[7px] py-[2px] font-mono text-[11px] font-semibold text-foreground">
+                <div className="rounded-[99px] bg-[rgba(232,64,42,0.85)] px-[7px] py-[2px] font-mono font-semibold text-[11px] text-foreground">
                   {post.er}% ER
                 </div>
               </div>
             </div>
 
             <div className="px-[14px] py-3">
-              <div className="mb-2 text-[13px] font-semibold leading-[1.4] text-foreground">
+              <div className="mb-2 font-semibold text-[13px] text-foreground leading-[1.4]">
                 {post.title}
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
-                  <Eye size={10} /> {formatMetricNumber(post.views)} views
+                  <HugeiconsIcon icon={ViewIcon} size={10} />{" "}
+                  {formatMetricNumber(post.views)} views
                 </div>
-                <button className="flex cursor-pointer items-center gap-1 rounded-md border-none bg-[rgba(232,64,42,0.08)] px-[9px] py-[3px] font-mono text-[11px] font-semibold text-[#E8402A]">
-                  Details <ArrowUpRight size={9} />
+                <button className="flex cursor-pointer items-center gap-1 rounded-md border-none bg-[rgba(232,64,42,0.08)] px-[9px] py-[3px] font-mono font-semibold text-[#E8402A] text-[11px]">
+                  Details <HugeiconsIcon icon={ArrowUpRight02Icon} size={9} />
                 </button>
               </div>
             </div>
@@ -124,5 +127,5 @@ export function RecentContentSection({
         ))}
       </div>
     </div>
-  );
+  )
 }

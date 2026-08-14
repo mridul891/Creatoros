@@ -34,7 +34,7 @@ export default function WaitlistPage() {
               prefetch={false}
               className="inline-flex items-center gap-2 px-1 py-1 font-medium"
             >
-              <span className="text-sm font-semibold tracking-wide text-black">
+              <span className="font-semibold text-black text-sm tracking-wide">
                 !notyetlaunched
               </span>
             </Link>
@@ -45,15 +45,17 @@ export default function WaitlistPage() {
               <div className="flex flex-col gap-6 p-6 sm:p-8">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                    <span className="rounded-full bg-primary/10 px-3 py-1 font-medium text-primary text-xs">
                       Coming soon
                     </span>
                   </div>
-                  <h1 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+                  <h1 className="font-semibold text-3xl text-black tracking-tight sm:text-4xl">
                     Never Lose Track of a Brand Deal Again.
                   </h1>
-                  <p className="text-base leading-relaxed text-black/60">
-                    Track brand deals, sponsorships, invoices, payments, and deadlines from one beautifully organized workspace built specifically for content creators.
+                  <p className="text-base text-black/60 leading-relaxed">
+                    Track brand deals, sponsorships, invoices, payments, and
+                    deadlines from one beautifully organized workspace built
+                    specifically for content creators.
                   </p>
                 </div>
 

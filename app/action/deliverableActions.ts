@@ -3,8 +3,16 @@
 import { revalidatePath } from "next/cache"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import { getFieldErrors } from "@/lib/crm/shared/action"
-import { sanitizeOptionalString } from "@/lib/crm/shared/form"
+import {
+  archiveDeliverable,
+  createDeliverable,
+  DeliverableServiceError,
+  deleteDeliverable,
+  getDeliverable,
+  listDealDeliverables,
+  restoreDeliverable,
+  updateDeliverable,
+} from "@/lib/crm/deliverables/deliverableService"
 import {
   deliverableArchiveSchema,
   deliverableCreateSchema,
@@ -13,17 +21,13 @@ import {
   deliverableRestoreSchema,
   deliverableUpdateSchema,
 } from "@/lib/crm/deliverables/deliverableValidation"
-import {
-  archiveDeliverable,
-  createDeliverable,
-  deleteDeliverable,
-  DeliverableServiceError,
-  getDeliverable,
-  listDealDeliverables,
-  restoreDeliverable,
-  updateDeliverable,
-} from "@/lib/crm/deliverables/deliverableService"
-import type { DeliverableDetail, DeliverableField, DeliverableListData } from "@/types/deliverable"
+import { getFieldErrors } from "@/lib/crm/shared/action"
+import { sanitizeOptionalString } from "@/lib/crm/shared/form"
+import type {
+  DeliverableDetail,
+  DeliverableField,
+  DeliverableListData,
+} from "@/types/deliverable"
 
 export type DeliverableMutationResult = {
   success: boolean
@@ -57,9 +61,15 @@ function revalidateDeliverablePaths(dealId?: string) {
   }
 }
 
-function mapDeliverableServiceError(error: unknown, fallbackMessage: string): DeliverableMutationResult {
+function mapDeliverableServiceError(
+  error: unknown,
+  fallbackMessage: string
+): DeliverableMutationResult {
   if (error instanceof DeliverableServiceError) {
-    if ((error.code === "DUPLICATE" || error.code === "INVALID_OPERATION") && error.field) {
+    if (
+      (error.code === "DUPLICATE" || error.code === "INVALID_OPERATION") &&
+      error.field
+    ) {
       return {
         success: false,
         message: error.message,
@@ -125,7 +135,11 @@ export async function listDealDeliverablesAction(input: {
       data,
     }
   } catch (error) {
-    console.error("deliverables.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("deliverables.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load deliverables. Please try again.",
@@ -133,7 +147,9 @@ export async function listDealDeliverablesAction(input: {
   }
 }
 
-export async function getDeliverableAction(deliverableId: string): Promise<DeliverableGetResult> {
+export async function getDeliverableAction(
+  deliverableId: string
+): Promise<DeliverableGetResult> {
   const user = await requireOnboardedUser()
   const parsed = deliverableArchiveSchema.safeParse({ deliverableId })
   if (!parsed.success) {
@@ -156,7 +172,11 @@ export async function getDeliverableAction(deliverableId: string): Promise<Deliv
         message: error.message,
       }
     }
-    console.error("deliverables.get_failed", { userId: user.id, deliverableId: parsed.data.deliverableId, error })
+    console.error("deliverables.get_failed", {
+      userId: user.id,
+      deliverableId: parsed.data.deliverableId,
+      error,
+    })
     return {
       success: false,
       message: "We could not load this deliverable. Please try again.",
@@ -164,7 +184,9 @@ export async function getDeliverableAction(deliverableId: string): Promise<Deliv
   }
 }
 
-export async function createDeliverableAction(formData: FormData): Promise<DeliverableMutationResult> {
+export async function createDeliverableAction(
+  formData: FormData
+): Promise<DeliverableMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = parseDeliverableMutationFormData(formData)
 
@@ -186,11 +208,16 @@ export async function createDeliverableAction(formData: FormData): Promise<Deliv
     }
   } catch (error) {
     console.error("deliverables.create_failed", { userId: user.id, error })
-    return mapDeliverableServiceError(error, "We could not create this deliverable. Please try again.")
+    return mapDeliverableServiceError(
+      error,
+      "We could not create this deliverable. Please try again."
+    )
   }
 }
 
-export async function updateDeliverableAction(formData: FormData): Promise<DeliverableMutationResult> {
+export async function updateDeliverableAction(
+  formData: FormData
+): Promise<DeliverableMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = deliverableUpdateSchema.safeParse({
     deliverableId: formData.get("deliverableId"),
@@ -217,7 +244,11 @@ export async function updateDeliverableAction(formData: FormData): Promise<Deliv
   }
 
   try {
-    const data = await updateDeliverable(user.id, parsed.data.deliverableId, parsed.data)
+    const data = await updateDeliverable(
+      user.id,
+      parsed.data.deliverableId,
+      parsed.data
+    )
     revalidateDeliverablePaths(data.dealId)
     return {
       success: true,
@@ -225,12 +256,21 @@ export async function updateDeliverableAction(formData: FormData): Promise<Deliv
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("deliverables.update_failed", { userId: user.id, deliverableId: parsed.data.deliverableId, error })
-    return mapDeliverableServiceError(error, "We could not update this deliverable. Please try again.")
+    console.error("deliverables.update_failed", {
+      userId: user.id,
+      deliverableId: parsed.data.deliverableId,
+      error,
+    })
+    return mapDeliverableServiceError(
+      error,
+      "We could not update this deliverable. Please try again."
+    )
   }
 }
 
-export async function archiveDeliverableAction(deliverableId: string): Promise<DeliverableMutationResult> {
+export async function archiveDeliverableAction(
+  deliverableId: string
+): Promise<DeliverableMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = deliverableArchiveSchema.safeParse({ deliverableId })
   if (!parsed.success) {
@@ -249,12 +289,21 @@ export async function archiveDeliverableAction(deliverableId: string): Promise<D
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("deliverables.archive_failed", { userId: user.id, deliverableId: parsed.data.deliverableId, error })
-    return mapDeliverableServiceError(error, "We could not archive this deliverable. Please try again.")
+    console.error("deliverables.archive_failed", {
+      userId: user.id,
+      deliverableId: parsed.data.deliverableId,
+      error,
+    })
+    return mapDeliverableServiceError(
+      error,
+      "We could not archive this deliverable. Please try again."
+    )
   }
 }
 
-export async function restoreDeliverableAction(deliverableId: string): Promise<DeliverableMutationResult> {
+export async function restoreDeliverableAction(
+  deliverableId: string
+): Promise<DeliverableMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = deliverableRestoreSchema.safeParse({ deliverableId })
   if (!parsed.success) {
@@ -273,12 +322,21 @@ export async function restoreDeliverableAction(deliverableId: string): Promise<D
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("deliverables.restore_failed", { userId: user.id, deliverableId: parsed.data.deliverableId, error })
-    return mapDeliverableServiceError(error, "We could not restore this deliverable. Please try again.")
+    console.error("deliverables.restore_failed", {
+      userId: user.id,
+      deliverableId: parsed.data.deliverableId,
+      error,
+    })
+    return mapDeliverableServiceError(
+      error,
+      "We could not restore this deliverable. Please try again."
+    )
   }
 }
 
-export async function deleteDeliverableAction(deliverableId: string): Promise<DeliverableMutationResult> {
+export async function deleteDeliverableAction(
+  deliverableId: string
+): Promise<DeliverableMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = deliverableDeleteSchema.safeParse({ deliverableId })
   if (!parsed.success) {
@@ -297,7 +355,14 @@ export async function deleteDeliverableAction(deliverableId: string): Promise<De
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("deliverables.delete_failed", { userId: user.id, deliverableId: parsed.data.deliverableId, error })
-    return mapDeliverableServiceError(error, "We could not delete this deliverable. Please try again.")
+    console.error("deliverables.delete_failed", {
+      userId: user.id,
+      deliverableId: parsed.data.deliverableId,
+      error,
+    })
+    return mapDeliverableServiceError(
+      error,
+      "We could not delete this deliverable. Please try again."
+    )
   }
 }

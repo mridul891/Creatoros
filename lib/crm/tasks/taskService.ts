@@ -9,10 +9,10 @@ import { prisma } from "@/lib/prisma"
 import type { TaskDetail, TaskListData, TaskListItem } from "@/types/task"
 import {
   normalizeTaskTitle,
-  toPrioritySortValue,
   type TaskCreateUpdateInput,
   type TaskListInput,
   type TaskStatusUpdateInput,
+  toPrioritySortValue,
 } from "./taskValidation"
 
 const PAGE_SIZE_DEFAULT = 20
@@ -21,13 +21,27 @@ const UPCOMING_WINDOW_DAYS = 14
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient
 
-type TaskServiceErrorField = "title" | "status" | "priority" | "dealId" | "taskId"
+type TaskServiceErrorField =
+  | "title"
+  | "status"
+  | "priority"
+  | "dealId"
+  | "taskId"
 
 export class TaskServiceError extends Error {
-  code: "NOT_FOUND" | "DUPLICATE" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
+  code:
+    | "NOT_FOUND"
+    | "DUPLICATE"
+    | "INVALID_OPERATION"
+    | "FORBIDDEN"
+    | "UNKNOWN"
   field?: TaskServiceErrorField
 
-  constructor(message: string, code: TaskServiceError["code"], field?: TaskServiceErrorField) {
+  constructor(
+    message: string,
+    code: TaskServiceError["code"],
+    field?: TaskServiceErrorField
+  ) {
     super(message)
     this.name = "TaskServiceError"
     this.code = code
@@ -80,7 +94,11 @@ function toListItem(task: TaskProjection): TaskListItem {
   }
 }
 
-async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promise<OwnedDeal> {
+async function getOwnedDeal(
+  tx: PrismaTx,
+  userId: string,
+  dealId: string
+): Promise<OwnedDeal> {
   const deal = await tx.deal.findFirst({
     where: { id: dealId, userId },
     select: {
@@ -138,7 +156,9 @@ async function getOwnedTask(tx: PrismaTx, userId: string, taskId: string) {
   return task
 }
 
-function getDueDateFilter(input: TaskListInput["dueDate"]): Prisma.DateTimeNullableFilter | null | undefined {
+function getDueDateFilter(
+  input: TaskListInput["dueDate"]
+): Prisma.DateTimeNullableFilter | null | undefined {
   const now = new Date()
   const todayStart = startOfLocalDay(now)
   switch (input) {
@@ -156,7 +176,10 @@ function getDueDateFilter(input: TaskListInput["dueDate"]): Prisma.DateTimeNulla
   }
 }
 
-function buildListWhere(userId: string, input: TaskListInput): Prisma.TaskWhereInput {
+function buildListWhere(
+  userId: string,
+  input: TaskListInput
+): Prisma.TaskWhereInput {
   const search = input.search?.trim() ?? ""
   const dueDateFilter = getDueDateFilter(input.dueDate)
   const andFilters: Prisma.TaskWhereInput[] = []
@@ -174,7 +197,11 @@ function buildListWhere(userId: string, input: TaskListInput): Prisma.TaskWhereI
     dealId: input.dealId,
     isArchived: input.archive === "archived",
     ...(input.priority ? { priority: input.priority } : {}),
-    ...(dueDateFilter === null ? { dueDate: null } : dueDateFilter ? { dueDate: dueDateFilter } : {}),
+    ...(dueDateFilter === null
+      ? { dueDate: null }
+      : dueDateFilter
+        ? { dueDate: dueDateFilter }
+        : {}),
     ...(andFilters.length > 0 ? { AND: andFilters } : {}),
     ...(search
       ? {
@@ -187,7 +214,9 @@ function buildListWhere(userId: string, input: TaskListInput): Prisma.TaskWhereI
   }
 }
 
-function getSortOrder(sort: TaskListInput["sort"]): Prisma.TaskOrderByWithRelationInput[] {
+function getSortOrder(
+  sort: TaskListInput["sort"]
+): Prisma.TaskOrderByWithRelationInput[] {
   switch (sort) {
     case "dueDate":
       return [{ dueDate: "asc" }, { updatedAt: "desc" }]
@@ -221,7 +250,11 @@ function mapPrismaError(error: unknown): never {
     typeof error.code === "string" &&
     error.code === "P2002"
   ) {
-    throw new TaskServiceError("A task with this title already exists for this deal.", "DUPLICATE", "title")
+    throw new TaskServiceError(
+      "A task with this title already exists for this deal.",
+      "DUPLICATE",
+      "title"
+    )
   }
 
   throw error
@@ -229,13 +262,20 @@ function mapPrismaError(error: unknown): never {
 
 function ensureTaskIsMutable(task: { isArchived: boolean }) {
   if (task.isArchived) {
-    throw new TaskServiceError("Archived tasks cannot be modified.", "INVALID_OPERATION")
+    throw new TaskServiceError(
+      "Archived tasks cannot be modified.",
+      "INVALID_OPERATION"
+    )
   }
 }
 
 function ensureDealIsActive(deal: OwnedDeal) {
   if (deal.status === "Archived") {
-    throw new TaskServiceError("Tasks cannot be changed for archived deals.", "INVALID_OPERATION", "dealId")
+    throw new TaskServiceError(
+      "Tasks cannot be changed for archived deals.",
+      "INVALID_OPERATION",
+      "dealId"
+    )
   }
 }
 
@@ -263,9 +303,15 @@ async function recordTaskActivity(options: {
   })
 }
 
-export async function listDealTasks(userId: string, input: TaskListInput): Promise<TaskListData> {
+export async function listDealTasks(
+  userId: string,
+  input: TaskListInput
+): Promise<TaskListData> {
   const requestedPage = clampPage(input.page)
-  const pageSize = clampPageSize(input.pageSize, { pageSize: PAGE_SIZE_DEFAULT, maxPageSize: PAGE_SIZE_MAX })
+  const pageSize = clampPageSize(input.pageSize, {
+    pageSize: PAGE_SIZE_DEFAULT,
+    maxPageSize: PAGE_SIZE_MAX,
+  })
   const skip = (requestedPage - 1) * pageSize
   const where = buildListWhere(userId, input)
   const orderBy = getSortOrder(input.sort)
@@ -280,52 +326,57 @@ export async function listDealTasks(userId: string, input: TaskListInput): Promi
   const shouldComputeUpcoming = input.dueDate !== "none"
   const shouldComputeOverdue = input.dueDate !== "none"
 
-  const [items, total, completed, upcoming, overdue] = await prisma.$transaction([
-    prisma.task.findMany({
-      where,
-      orderBy,
-      skip,
-      take: pageSize,
-      select: {
-        id: true,
-        userId: true,
-        dealId: true,
-        title: true,
-        description: true,
-        status: true,
-        priority: true,
-        dueDate: true,
-        orderIndex: true,
-        isArchived: true,
-        archivedAt: true,
-        createdBy: true,
-        updatedBy: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    }),
-    prisma.task.count({ where }),
-    prisma.task.count({
-      where: {
-        ...where,
-        status: "Done",
-      },
-    }),
-    prisma.task.count({
-      where: {
-        ...where,
-        ...(shouldComputeUpcoming ? { dueDate: { gte: todayStart, lte: upcomingCutoffEnd } } : { id: { in: [] } }),
-        status: { not: "Done" },
-      },
-    }),
-    prisma.task.count({
-      where: {
-        ...where,
-        ...(shouldComputeOverdue ? { dueDate: { lt: todayStart } } : { id: { in: [] } }),
-        status: { not: "Done" },
-      },
-    }),
-  ])
+  const [items, total, completed, upcoming, overdue] =
+    await prisma.$transaction([
+      prisma.task.findMany({
+        where,
+        orderBy,
+        skip,
+        take: pageSize,
+        select: {
+          id: true,
+          userId: true,
+          dealId: true,
+          title: true,
+          description: true,
+          status: true,
+          priority: true,
+          dueDate: true,
+          orderIndex: true,
+          isArchived: true,
+          archivedAt: true,
+          createdBy: true,
+          updatedBy: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+      prisma.task.count({ where }),
+      prisma.task.count({
+        where: {
+          ...where,
+          status: "Done",
+        },
+      }),
+      prisma.task.count({
+        where: {
+          ...where,
+          ...(shouldComputeUpcoming
+            ? { dueDate: { gte: todayStart, lte: upcomingCutoffEnd } }
+            : { id: { in: [] } }),
+          status: { not: "Done" },
+        },
+      }),
+      prisma.task.count({
+        where: {
+          ...where,
+          ...(shouldComputeOverdue
+            ? { dueDate: { lt: todayStart } }
+            : { id: { in: [] } }),
+          status: { not: "Done" },
+        },
+      }),
+    ])
 
   const listItems = items.map((item) => toListItem(item))
   const summary = {
@@ -356,7 +407,10 @@ export async function listDealTasks(userId: string, input: TaskListInput): Promi
   }
 }
 
-export async function getTask(userId: string, taskId: string): Promise<TaskDetail> {
+export async function getTask(
+  userId: string,
+  taskId: string
+): Promise<TaskDetail> {
   const task = await prisma.task.findFirst({
     where: { id: taskId, userId },
     select: {
@@ -391,14 +445,21 @@ export async function getTask(userId: string, taskId: string): Promise<TaskDetai
 export async function createTask(userId: string, input: TaskCreateUpdateInput) {
   return prisma.$transaction(async (tx) => {
     if (input.status !== "Todo") {
-      throw new TaskServiceError("New tasks must start in Todo.", "INVALID_OPERATION", "status")
+      throw new TaskServiceError(
+        "New tasks must start in Todo.",
+        "INVALID_OPERATION",
+        "status"
+      )
     }
 
     const deal = await getOwnedDeal(tx, userId, input.dealId)
     ensureDealIsActive(deal)
     await lockTaskOrdering(tx, userId, input.dealId)
 
-    const orderIndex = typeof input.orderIndex === "number" ? input.orderIndex : await getNextOrderIndex(tx, userId, input.dealId)
+    const orderIndex =
+      typeof input.orderIndex === "number"
+        ? input.orderIndex
+        : await getNextOrderIndex(tx, userId, input.dealId)
     const normalizedTitle = normalizeTaskTitle(input.title)
 
     let created: Awaited<ReturnType<typeof tx.task.create>>
@@ -444,13 +505,21 @@ export async function createTask(userId: string, input: TaskCreateUpdateInput) {
   })
 }
 
-export async function updateTask(userId: string, taskId: string, input: TaskCreateUpdateInput) {
+export async function updateTask(
+  userId: string,
+  taskId: string,
+  input: TaskCreateUpdateInput
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedTask(tx, userId, taskId)
     ensureTaskIsMutable(existing)
 
     if (existing.dealId !== input.dealId) {
-      throw new TaskServiceError("Task deal cannot be changed.", "INVALID_OPERATION", "dealId")
+      throw new TaskServiceError(
+        "Task deal cannot be changed.",
+        "INVALID_OPERATION",
+        "dealId"
+      )
     }
 
     const deal = await getOwnedDeal(tx, userId, input.dealId)
@@ -501,7 +570,10 @@ export async function updateTask(userId: string, taskId: string, input: TaskCrea
   })
 }
 
-export async function updateTaskStatus(userId: string, input: TaskStatusUpdateInput) {
+export async function updateTaskStatus(
+  userId: string,
+  input: TaskStatusUpdateInput
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedTask(tx, userId, input.taskId)
     ensureTaskIsMutable(existing)
@@ -520,7 +592,10 @@ export async function updateTaskStatus(userId: string, input: TaskStatusUpdateIn
       userId,
       deal: existing.deal,
       taskId: updated.id,
-      type: input.status === "Done" ? ACTIVITY_TYPE.TASK_COMPLETED : ACTIVITY_TYPE.TASK_STATUS_CHANGED,
+      type:
+        input.status === "Done"
+          ? ACTIVITY_TYPE.TASK_COMPLETED
+          : ACTIVITY_TYPE.TASK_STATUS_CHANGED,
       title: input.status === "Done" ? "Task completed" : "Task status changed",
       description: `${updated.title} moved to ${input.status}.`,
       metadata: {
@@ -543,7 +618,10 @@ export async function archiveTask(userId: string, taskId: string) {
     ensureDealIsActive(existing.deal)
 
     if (existing.isArchived) {
-      throw new TaskServiceError("Task is already archived.", "INVALID_OPERATION")
+      throw new TaskServiceError(
+        "Task is already archived.",
+        "INVALID_OPERATION"
+      )
     }
 
     const archived = await tx.task.update({
@@ -619,7 +697,10 @@ export async function deleteTask(userId: string, taskId: string) {
     ensureDealIsActive(existing.deal)
 
     if (!existing.isArchived) {
-      throw new TaskServiceError("Only archived tasks can be deleted.", "FORBIDDEN")
+      throw new TaskServiceError(
+        "Only archived tasks can be deleted.",
+        "FORBIDDEN"
+      )
     }
 
     await tx.task.delete({
@@ -646,7 +727,11 @@ export async function deleteTask(userId: string, taskId: string) {
   })
 }
 
-export async function reorderTasks(userId: string, dealId: string, orderedTaskIds: string[]) {
+export async function reorderTasks(
+  userId: string,
+  dealId: string,
+  orderedTaskIds: string[]
+) {
   return prisma.$transaction(async (tx) => {
     const deal = await getOwnedDeal(tx, userId, dealId)
     ensureDealIsActive(deal)
@@ -666,10 +751,15 @@ export async function reorderTasks(userId: string, dealId: string, orderedTaskId
     const taskSet = new Set(tasks.map((task) => task.id))
     const orderedSet = new Set(orderedTaskIds)
     const hasUnknown = orderedTaskIds.some((taskId) => !taskSet.has(taskId))
-    const hasMissing = orderedSet.size !== taskSet.size || tasks.some((task) => !orderedSet.has(task.id))
+    const hasMissing =
+      orderedSet.size !== taskSet.size ||
+      tasks.some((task) => !orderedSet.has(task.id))
 
     if (hasUnknown || hasMissing) {
-      throw new TaskServiceError("Task ordering payload is invalid.", "INVALID_OPERATION")
+      throw new TaskServiceError(
+        "Task ordering payload is invalid.",
+        "INVALID_OPERATION"
+      )
     }
 
     for (const [index, taskId] of orderedTaskIds.entries()) {

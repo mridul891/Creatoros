@@ -1,26 +1,26 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { useRouter } from "next/navigation"
 import {
-  Plus,
-  NotePencil,
-  Briefcase,
-  User,
-  Files,
-  MagnifyingGlass,
-  SquaresFour,
-  List,
-  CaretDown,
-} from "@phosphor-icons/react/dist/ssr"
+  Add01Icon,
+  ArrowDown01Icon,
+  Briefcase01Icon,
+  Files01Icon,
+  GridViewIcon,
+  LeftToRightListBulletIcon,
+  Search01Icon,
+  UserIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { useRouter } from "next/navigation"
+import { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import { ScriptCard } from "./ScriptCard"
 import { ScriptEmptyState } from "./ScriptEmptyState"
 import type { Script, ScriptType } from "./shared"
@@ -50,7 +50,8 @@ const SEED_SCRIPTS: Script[] = [
     brandId: "b1",
     brandName: "GlowRepublic",
     dealId: "d1",
-    content: "Opening hook for the morning routine segment. Hey everyone! So I've been using this amazing skincare product for the past month and I wanted to share my honest thoughts with you all...",
+    content:
+      "Opening hook for the morning routine segment. Hey everyone! So I've been using this amazing skincare product for the past month and I wanted to share my honest thoughts with you all...",
     createdAt: new Date(2026, 5, 15, 10, 30),
     updatedAt: new Date(2026, 6, 20, 14, 34),
   },
@@ -58,7 +59,8 @@ const SEED_SCRIPTS: Script[] = [
     id: "2",
     title: "Seoul Travel Vlog Script",
     type: "personal",
-    content: "Day 1 in Seoul! Starting the morning at a traditional hanok cafe. The architecture here is absolutely stunning. We'll explore Bukchon Hanok Village and then head to Gwangjang Market for some street food...",
+    content:
+      "Day 1 in Seoul! Starting the morning at a traditional hanok cafe. The architecture here is absolutely stunning. We'll explore Bukchon Hanok Village and then head to Gwangjang Market for some street food...",
     createdAt: new Date(2026, 5, 10, 9, 0),
     updatedAt: new Date(2026, 6, 19, 11, 22),
   },
@@ -69,7 +71,8 @@ const SEED_SCRIPTS: Script[] = [
     brandId: "b2",
     brandName: "PulseTech",
     dealId: "d2",
-    content: "Intro sequence with product showcase. Today we're taking a deep dive into the new PulseTech smart home system. I've been testing this out for three weeks now and here's everything you need to know...",
+    content:
+      "Intro sequence with product showcase. Today we're taking a deep dive into the new PulseTech smart home system. I've been testing this out for three weeks now and here's everything you need to know...",
     createdAt: new Date(2026, 5, 18, 14, 0),
     updatedAt: new Date(2026, 6, 18, 16, 45),
   },
@@ -77,7 +80,8 @@ const SEED_SCRIPTS: Script[] = [
     id: "4",
     title: "5AM Morning Challenge",
     type: "personal",
-    content: "Week-long challenge vlog structure. What happens when you wake up at 5AM for an entire week? I'm going to find out. Day 1: Alarm goes off... and I immediately regret this decision...",
+    content:
+      "Week-long challenge vlog structure. What happens when you wake up at 5AM for an entire week? I'm going to find out. Day 1: Alarm goes off... and I immediately regret this decision...",
     createdAt: new Date(2026, 5, 20, 8, 0),
     updatedAt: new Date(2026, 6, 17, 9, 15),
   },
@@ -88,7 +92,8 @@ const SEED_SCRIPTS: Script[] = [
     brandId: "b1",
     brandName: "GlowRepublic",
     dealId: "d3",
-    content: "Talking points for summer skincare collaboration. Summer is here and that means it's time to switch up our skincare routine! I've partnered with GlowRepublic to show you my updated summer essentials...",
+    content:
+      "Talking points for summer skincare collaboration. Summer is here and that means it's time to switch up our skincare routine! I've partnered with GlowRepublic to show you my updated summer essentials...",
     createdAt: new Date(2026, 6, 1, 12, 0),
     updatedAt: new Date(2026, 6, 15, 17, 30),
   },
@@ -96,7 +101,8 @@ const SEED_SCRIPTS: Script[] = [
     id: "6",
     title: "Desk Setup Tour 2026",
     type: "personal",
-    content: "Full walkthrough of the updated workspace. You've been asking for this for months - the complete 2026 desk setup tour! Let me show you every single thing on and around my desk...",
+    content:
+      "Full walkthrough of the updated workspace. You've been asking for this for months - the complete 2026 desk setup tour! Let me show you every single thing on and around my desk...",
     createdAt: new Date(2026, 6, 5, 15, 0),
     updatedAt: new Date(2026, 6, 12, 10, 0),
   },
@@ -175,9 +181,24 @@ export function ScriptsPage() {
   }
 
   const statItems = [
-    { label: "Total", count: stats.total, icon: Files, color: "var(--foreground)" },
-    { label: "Brand Deal", count: stats.brandDeal, icon: Briefcase, color: TYPE_CFG.brand_deal.color },
-    { label: "Personal", count: stats.personal, icon: User, color: TYPE_CFG.personal.color },
+    {
+      label: "Total",
+      count: stats.total,
+      icon: Files01Icon,
+      color: "var(--foreground)",
+    },
+    {
+      label: "Brand Deal",
+      count: stats.brandDeal,
+      icon: Briefcase01Icon,
+      color: TYPE_CFG.brand_deal.color,
+    },
+    {
+      label: "Personal",
+      count: stats.personal,
+      icon: UserIcon,
+      color: TYPE_CFG.personal.color,
+    },
   ]
 
   const currentSort = SORT_OPTIONS.find((o) => o.value === sortBy)
@@ -188,16 +209,18 @@ export function ScriptsPage() {
       {/* Header */}
       <div className="mb-7 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-[-0.04em] text-foreground">Scripts</h1>
+          <h1 className="font-extrabold text-2xl text-foreground tracking-[-0.04em]">
+            Scripts
+          </h1>
           <p className="mt-1 text-[13px] text-muted-foreground">
             Write and manage scripts for your brand deals and content
           </p>
         </div>
         <Button
           onClick={handleCreate}
-          className="h-10 cursor-pointer gap-2 bg-primary px-4 text-[13px] font-semibold text-primary-foreground hover:bg-primary"
+          className="h-10 cursor-pointer gap-2 bg-primary px-4 font-semibold text-[13px] text-primary-foreground hover:bg-primary"
         >
-          <Plus size={15} weight="bold" />
+          <HugeiconsIcon icon={Add01Icon} size={15} strokeWidth={2} />
           New Script
         </Button>
       </div>
@@ -209,9 +232,16 @@ export function ScriptsPage() {
             key={stat.label}
             className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 shadow-xs"
           >
-            <stat.icon size={14} color={stat.color} weight="bold" />
-            <span className="text-sm font-bold tracking-tight text-foreground">{stat.count}</span>
-            <span className="text-xs text-muted-foreground">{stat.label}</span>
+            <HugeiconsIcon
+              icon={stat.icon}
+              size={14}
+              color={stat.color}
+              strokeWidth={2}
+            />
+            <span className="font-bold text-foreground text-sm tracking-tight">
+              {stat.count}
+            </span>
+            <span className="text-muted-foreground text-xs">{stat.label}</span>
           </div>
         ))}
       </div>
@@ -219,16 +249,17 @@ export function ScriptsPage() {
       {/* Toolbar */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div className="relative w-full max-w-[280px]">
-          <MagnifyingGlass
+          <HugeiconsIcon
+            icon={Search01Icon}
             size={13}
             color="var(--muted-foreground)"
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2"
           />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search scripts..."
-            className="h-10 border-border bg-card pl-[34px] text-xs text-muted-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+            className="h-10 border-border bg-card pl-[34px] text-muted-foreground text-xs placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
           />
         </div>
 
@@ -236,9 +267,12 @@ export function ScriptsPage() {
           {/* Type Filter */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="h-9 gap-1.5 px-3 text-xs font-medium">
+              <Button
+                variant="outline"
+                className="h-9 gap-1.5 px-3 font-medium text-xs"
+              >
                 {currentFilter?.label}
-                <CaretDown size={12} />
+                <HugeiconsIcon icon={ArrowDown01Icon} size={12} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-36">
@@ -257,9 +291,12 @@ export function ScriptsPage() {
           {/* Sort */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="h-9 gap-1.5 px-3 text-xs font-medium">
+              <Button
+                variant="outline"
+                className="h-9 gap-1.5 px-3 font-medium text-xs"
+              >
                 {currentSort?.label}
-                <CaretDown size={12} />
+                <HugeiconsIcon icon={ArrowDown01Icon} size={12} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-36">
@@ -286,7 +323,7 @@ export function ScriptsPage() {
               }`}
               aria-label="Grid view"
             >
-              <SquaresFour size={14} weight={viewMode === "grid" ? "fill" : "regular"} />
+              <HugeiconsIcon icon={GridViewIcon} size={14} />
             </button>
             <button
               onClick={() => setViewMode("list")}
@@ -297,7 +334,7 @@ export function ScriptsPage() {
               }`}
               aria-label="List view"
             >
-              <List size={14} weight={viewMode === "list" ? "fill" : "regular"} />
+              <HugeiconsIcon icon={LeftToRightListBulletIcon} size={14} />
             </button>
           </div>
         </div>
@@ -324,23 +361,28 @@ export function ScriptsPage() {
               key={script.id}
               href={`/dashboard/script/${script.id}`}
               className={`flex items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/50 ${
-                index < filteredScripts.length - 1 ? "border-b border-border" : ""
+                index < filteredScripts.length - 1
+                  ? "border-border border-b"
+                  : ""
               }`}
             >
               <span
                 className="h-2 w-2 shrink-0 rounded-full"
                 style={{ backgroundColor: TYPE_CFG[script.type].color }}
               />
-              <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
+              <span className="min-w-0 flex-1 truncate font-medium text-foreground text-sm">
                 {script.title}
               </span>
               {script.brandName && (
-                <span className="shrink-0 text-xs font-medium text-primary">
+                <span className="shrink-0 font-medium text-primary text-xs">
                   {script.brandName}
                 </span>
               )}
               <span className="shrink-0 text-[11px] text-muted-foreground">
-                {script.updatedAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                {script.updatedAt.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
               </span>
             </a>
           ))}

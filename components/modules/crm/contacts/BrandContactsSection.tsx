@@ -11,17 +11,21 @@ import {
   updateContactAction,
 } from "@/app/action/contactActions"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useBrandContacts } from "@/hooks/useBrandContacts"
 import {
   buildContactFormData,
+  type ContactFormValues,
   contactMutationToFormValues,
   contactToFormValues,
   EMPTY_CONTACT_FORM,
-  type ContactFormValues,
 } from "@/lib/crm/contacts/contactForm"
-import { useBrandContacts } from "@/hooks/useBrandContacts"
-import type { ContactField, ContactListData, ContactListItem } from "@/types/contact"
-import { ContactArchiveDialog } from "./ContactArchiveDialog"
+import type {
+  ContactField,
+  ContactListData,
+  ContactListItem,
+} from "@/types/contact"
 import { BrandContactsToolbar } from "./BrandContactsToolbar"
+import { ContactArchiveDialog } from "./ContactArchiveDialog"
 import { ContactFormModal } from "./ContactFormModal"
 import { ContactsEmptyState } from "./ContactsEmptyState"
 import { ContactsTable } from "./ContactsTable"
@@ -32,7 +36,10 @@ type BrandContactsSectionProps = {
   initialData: ContactListData
 }
 
-export function BrandContactsSection({ brandId, initialData }: BrandContactsSectionProps) {
+export function BrandContactsSection({
+  brandId,
+  initialData,
+}: BrandContactsSectionProps) {
   const router = useRouter()
   const {
     contacts,
@@ -57,9 +64,12 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isArchiving, setIsArchiving] = useState(false)
   const [isFetchingEdit, setIsFetchingEdit] = useState(false)
-  const [formValues, setFormValues] = useState<ContactFormValues>(EMPTY_CONTACT_FORM)
+  const [formValues, setFormValues] =
+    useState<ContactFormValues>(EMPTY_CONTACT_FORM)
   const [formError, setFormError] = useState("")
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<ContactField, string>>>({})
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<ContactField, string>>
+  >({})
 
   function resetForm() {
     setFormValues(EMPTY_CONTACT_FORM)
@@ -82,7 +92,10 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
 
     if (!result.success || !result.data) {
       setFormValues(contactToFormValues(contact))
-      toast.error(("message" in result ? result.message : undefined) ?? "Could not load full contact details.")
+      toast.error(
+        ("message" in result ? result.message : undefined) ??
+          "Could not load full contact details."
+      )
       return
     }
 
@@ -93,7 +106,9 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
     setIsSubmitting(true)
     setFormError("")
     setFieldErrors({})
-    const result = await createContactAction(buildContactFormData(formValues, brandId))
+    const result = await createContactAction(
+      buildContactFormData(formValues, brandId)
+    )
     setIsSubmitting(false)
 
     if (!result.success || !result.data) {
@@ -116,7 +131,9 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
     setIsSubmitting(true)
     setFormError("")
     setFieldErrors({})
-    const result = await updateContactAction(buildContactFormData(formValues, brandId, editing.id))
+    const result = await updateContactAction(
+      buildContactFormData(formValues, brandId, editing.id)
+    )
     setIsSubmitting(false)
 
     if (!result.success || !result.data) {
@@ -173,8 +190,13 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
         />
 
         {loadError ? (
-          <Alert variant="destructive" className="mt-4 border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.1)]">
-            <AlertDescription className="text-[12px] text-[#E8402A]">{loadError}</AlertDescription>
+          <Alert
+            variant="destructive"
+            className="mt-4 border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.1)]"
+          >
+            <AlertDescription className="text-[#E8402A] text-[12px]">
+              {loadError}
+            </AlertDescription>
           </Alert>
         ) : null}
 
@@ -182,9 +204,17 @@ export function BrandContactsSection({ brandId, initialData }: BrandContactsSect
           {isLoading ? (
             <ContactsTableSkeleton />
           ) : contacts.length === 0 ? (
-            <ContactsEmptyState isSearch={isSearchMode} status={status} onCreate={openCreate} />
+            <ContactsEmptyState
+              isSearch={isSearchMode}
+              status={status}
+              onCreate={openCreate}
+            />
           ) : (
-            <ContactsTable items={contacts} onEdit={openEdit} onArchive={setArchiving} />
+            <ContactsTable
+              items={contacts}
+              onEdit={openEdit}
+              onArchive={setArchiving}
+            />
           )}
         </div>
       </div>

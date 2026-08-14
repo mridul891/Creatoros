@@ -3,17 +3,8 @@
 import { revalidatePath } from "next/cache"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
+import { getFieldErrors } from "@/lib/crm/shared/action"
 import { sanitizeOptionalString } from "@/lib/crm/shared/form"
-import {
-  taskArchiveSchema,
-  taskCreateSchema,
-  taskDeleteSchema,
-  taskListSchema,
-  taskReorderSchema,
-  taskRestoreSchema,
-  taskStatusUpdateSchema,
-  taskUpdateSchema,
-} from "@/lib/crm/tasks/taskValidation"
 import {
   archiveTask,
   createTask,
@@ -26,7 +17,16 @@ import {
   updateTask,
   updateTaskStatus,
 } from "@/lib/crm/tasks/taskService"
-import { getFieldErrors } from "@/lib/crm/shared/action"
+import {
+  taskArchiveSchema,
+  taskCreateSchema,
+  taskDeleteSchema,
+  taskListSchema,
+  taskReorderSchema,
+  taskRestoreSchema,
+  taskStatusUpdateSchema,
+  taskUpdateSchema,
+} from "@/lib/crm/tasks/taskValidation"
 import type { TaskDetail, TaskField, TaskListData } from "@/types/task"
 
 export type TaskMutationResult = {
@@ -56,9 +56,15 @@ export type TaskListResult = {
   data?: TaskListData
 }
 
-function mapTaskServiceError(error: unknown, fallbackMessage: string): TaskMutationResult {
+function mapTaskServiceError(
+  error: unknown,
+  fallbackMessage: string
+): TaskMutationResult {
   if (error instanceof TaskServiceError) {
-    if ((error.code === "DUPLICATE" || error.code === "INVALID_OPERATION") && error.field) {
+    if (
+      (error.code === "DUPLICATE" || error.code === "INVALID_OPERATION") &&
+      error.field
+    ) {
       return {
         success: false,
         message: error.message,
@@ -126,7 +132,11 @@ export async function listDealTasksAction(input: {
       data,
     }
   } catch (error) {
-    console.error("tasks.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("tasks.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load tasks. Please try again.",
@@ -157,7 +167,11 @@ export async function getTaskAction(taskId: string): Promise<TaskGetResult> {
         message: error.message,
       }
     }
-    console.error("tasks.get_failed", { userId: user.id, taskId: parsed.data.taskId, error })
+    console.error("tasks.get_failed", {
+      userId: user.id,
+      taskId: parsed.data.taskId,
+      error,
+    })
     return {
       success: false,
       message: "We could not load this task. Please try again.",
@@ -165,7 +179,9 @@ export async function getTaskAction(taskId: string): Promise<TaskGetResult> {
   }
 }
 
-export async function createTaskAction(formData: FormData): Promise<TaskMutationResult> {
+export async function createTaskAction(
+  formData: FormData
+): Promise<TaskMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = parseTaskMutationFormData(formData)
 
@@ -187,11 +203,16 @@ export async function createTaskAction(formData: FormData): Promise<TaskMutation
     }
   } catch (error) {
     console.error("tasks.create_failed", { userId: user.id, error })
-    return mapTaskServiceError(error, "We could not create this task. Please try again.")
+    return mapTaskServiceError(
+      error,
+      "We could not create this task. Please try again."
+    )
   }
 }
 
-export async function updateTaskAction(formData: FormData): Promise<TaskMutationResult> {
+export async function updateTaskAction(
+  formData: FormData
+): Promise<TaskMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = taskUpdateSchema.safeParse({
     taskId: formData.get("taskId"),
@@ -222,12 +243,22 @@ export async function updateTaskAction(formData: FormData): Promise<TaskMutation
       data,
     }
   } catch (error) {
-    console.error("tasks.update_failed", { userId: user.id, taskId: parsed.data.taskId, error })
-    return mapTaskServiceError(error, "We could not update this task. Please try again.")
+    console.error("tasks.update_failed", {
+      userId: user.id,
+      taskId: parsed.data.taskId,
+      error,
+    })
+    return mapTaskServiceError(
+      error,
+      "We could not update this task. Please try again."
+    )
   }
 }
 
-export async function updateTaskStatusAction(taskId: string, status: string): Promise<TaskMutationResult> {
+export async function updateTaskStatusAction(
+  taskId: string,
+  status: string
+): Promise<TaskMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = taskStatusUpdateSchema.safeParse({ taskId, status })
 
@@ -247,12 +278,22 @@ export async function updateTaskStatusAction(taskId: string, status: string): Pr
       data,
     }
   } catch (error) {
-    console.error("tasks.status_update_failed", { userId: user.id, taskId: parsed.data.taskId, status: parsed.data.status, error })
-    return mapTaskServiceError(error, "We could not update this task status. Please try again.")
+    console.error("tasks.status_update_failed", {
+      userId: user.id,
+      taskId: parsed.data.taskId,
+      status: parsed.data.status,
+      error,
+    })
+    return mapTaskServiceError(
+      error,
+      "We could not update this task status. Please try again."
+    )
   }
 }
 
-export async function archiveTaskAction(taskId: string): Promise<TaskMutationResult> {
+export async function archiveTaskAction(
+  taskId: string
+): Promise<TaskMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = taskArchiveSchema.safeParse({ taskId })
   if (!parsed.success) {
@@ -270,12 +311,21 @@ export async function archiveTaskAction(taskId: string): Promise<TaskMutationRes
       message: "Task archived successfully.",
     }
   } catch (error) {
-    console.error("tasks.archive_failed", { userId: user.id, taskId: parsed.data.taskId, error })
-    return mapTaskServiceError(error, "We could not archive this task. Please try again.")
+    console.error("tasks.archive_failed", {
+      userId: user.id,
+      taskId: parsed.data.taskId,
+      error,
+    })
+    return mapTaskServiceError(
+      error,
+      "We could not archive this task. Please try again."
+    )
   }
 }
 
-export async function restoreTaskAction(taskId: string): Promise<TaskMutationResult> {
+export async function restoreTaskAction(
+  taskId: string
+): Promise<TaskMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = taskRestoreSchema.safeParse({ taskId })
   if (!parsed.success) {
@@ -293,12 +343,21 @@ export async function restoreTaskAction(taskId: string): Promise<TaskMutationRes
       message: "Task restored successfully.",
     }
   } catch (error) {
-    console.error("tasks.restore_failed", { userId: user.id, taskId: parsed.data.taskId, error })
-    return mapTaskServiceError(error, "We could not restore this task. Please try again.")
+    console.error("tasks.restore_failed", {
+      userId: user.id,
+      taskId: parsed.data.taskId,
+      error,
+    })
+    return mapTaskServiceError(
+      error,
+      "We could not restore this task. Please try again."
+    )
   }
 }
 
-export async function deleteTaskAction(taskId: string): Promise<TaskMutationResult> {
+export async function deleteTaskAction(
+  taskId: string
+): Promise<TaskMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = taskDeleteSchema.safeParse({ taskId })
   if (!parsed.success) {
@@ -316,12 +375,22 @@ export async function deleteTaskAction(taskId: string): Promise<TaskMutationResu
       message: "Task deleted successfully.",
     }
   } catch (error) {
-    console.error("tasks.delete_failed", { userId: user.id, taskId: parsed.data.taskId, error })
-    return mapTaskServiceError(error, "We could not delete this task. Please try again.")
+    console.error("tasks.delete_failed", {
+      userId: user.id,
+      taskId: parsed.data.taskId,
+      error,
+    })
+    return mapTaskServiceError(
+      error,
+      "We could not delete this task. Please try again."
+    )
   }
 }
 
-export async function reorderTasksAction(dealId: string, orderedTaskIds: string[]): Promise<TaskMutationResult> {
+export async function reorderTasksAction(
+  dealId: string,
+  orderedTaskIds: string[]
+): Promise<TaskMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = taskReorderSchema.safeParse({ dealId, orderedTaskIds })
 
@@ -340,7 +409,14 @@ export async function reorderTasksAction(dealId: string, orderedTaskIds: string[
       message: "Tasks reordered.",
     }
   } catch (error) {
-    console.error("tasks.reorder_failed", { userId: user.id, dealId: parsed.data.dealId, error })
-    return mapTaskServiceError(error, "We could not reorder tasks. Please try again.")
+    console.error("tasks.reorder_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      error,
+    })
+    return mapTaskServiceError(
+      error,
+      "We could not reorder tasks. Please try again."
+    )
   }
 }

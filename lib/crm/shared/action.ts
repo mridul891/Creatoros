@@ -1,6 +1,8 @@
 import type { z } from "zod"
 
-export function getFieldErrors<TField extends string>(error: z.ZodError): Partial<Record<TField, string>> {
+export function getFieldErrors<TField extends string>(
+  error: z.ZodError
+): Partial<Record<TField, string>> {
   const fields: Partial<Record<TField, string>> = {}
 
   for (const issue of error.issues) {

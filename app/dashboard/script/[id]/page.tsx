@@ -1,5 +1,5 @@
-import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 import { ScriptEditorShell } from "@/components/modules/dashboard/scripts/ScriptEditorShell"
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 
 export default async function ScriptPage({
   params,

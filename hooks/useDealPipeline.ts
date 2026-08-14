@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { updateDealStageAction } from "@/app/action/dealActions"
-import { type DealStage } from "@/enums/deal"
+import type { DealStage } from "@/enums/deal"
 import type { DealListItem } from "@/types/deal"
 
 type UseDealPipelineOptions = {
@@ -12,8 +12,13 @@ type UseDealPipelineOptions = {
   onMoveSuccess?: () => void
 }
 
-export function useDealPipeline({ initialDeals, onMoveSuccess }: UseDealPipelineOptions) {
-  const [optimisticStages, setOptimisticStages] = useState<Record<string, DealStage>>({})
+export function useDealPipeline({
+  initialDeals,
+  onMoveSuccess,
+}: UseDealPipelineOptions) {
+  const [optimisticStages, setOptimisticStages] = useState<
+    Record<string, DealStage>
+  >({})
   const [isMutating, setIsMutating] = useState(false)
 
   const deals = useMemo(
@@ -22,7 +27,7 @@ export function useDealPipeline({ initialDeals, onMoveSuccess }: UseDealPipeline
         const optimisticStage = optimisticStages[deal.id]
         return optimisticStage ? { ...deal, stage: optimisticStage } : deal
       }),
-    [initialDeals, optimisticStages],
+    [initialDeals, optimisticStages]
   )
 
   async function moveDeal(dealId: string, nextStage: DealStage) {

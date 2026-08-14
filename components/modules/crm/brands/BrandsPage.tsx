@@ -1,6 +1,7 @@
 "use client"
 
-import { Plus } from "@phosphor-icons/react/dist/ssr"
+import { PlusSignIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -11,13 +12,18 @@ import {
   updateBrandAction,
 } from "@/app/action/brandActions"
 import { useBrandListSearch } from "@/hooks/useBrandListSearch"
-import { buildBrandFormData, brandToFormValues, EMPTY_BRAND_FORM, type BrandFormValues } from "@/lib/crm/brands/brandForm"
+import {
+  type BrandFormValues,
+  brandToFormValues,
+  buildBrandFormData,
+  EMPTY_BRAND_FORM,
+} from "@/lib/crm/brands/brandForm"
 import type { BrandField, BrandListData, BrandListItem } from "@/types/brand"
+import { CrmPageHeaderClient, CrmPagination, CrmSearchField } from "../shared"
 import { BrandDeleteDialog } from "./BrandDeleteDialog"
 import { BrandEmptyState } from "./BrandEmptyState"
 import { BrandForm } from "./BrandForm"
 import { BrandsTable } from "./BrandsTable"
-import { CrmPageHeaderClient, CrmPagination, CrmSearchField } from "../shared"
 
 type BrandsPageProps = { listData: BrandListData; initialSearch: string }
 
@@ -28,13 +34,19 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
   const [showCreate, setShowCreate] = useState(false)
   const [editing, setEditing] = useState<BrandListItem | null>(null)
   const [deleting, setDeleting] = useState<BrandListItem | null>(null)
-  const [formValues, setFormValues] = useState<BrandFormValues>(EMPTY_BRAND_FORM)
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<BrandField, string>>>({})
+  const [formValues, setFormValues] =
+    useState<BrandFormValues>(EMPTY_BRAND_FORM)
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<BrandField, string>>
+  >({})
   const [formError, setFormError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const isSearchMode = useMemo(() => initialSearch.trim().length > 0, [initialSearch])
+  const isSearchMode = useMemo(
+    () => initialSearch.trim().length > 0,
+    [initialSearch]
+  )
 
   function resetFormState() {
     setFormValues(EMPTY_BRAND_FORM)
@@ -83,7 +95,9 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
     setFieldErrors({})
     setFormError("")
 
-    const result = await updateBrandAction(buildBrandFormData(formValues, editing.id))
+    const result = await updateBrandAction(
+      buildBrandFormData(formValues, editing.id)
+    )
     setIsSubmitting(false)
 
     if (!result.success) {
@@ -127,12 +141,12 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
   }
 
   return (
-    <div className="w-full max-w-[1280px] px-9 py-7">
+    <div className="w-full max-w-7xl px-9 py-7">
       <CrmPageHeaderClient
         title="Brands CRM"
         description="Manage sponsor relationships and keep outreach details organized."
         actionLabel="New Brand"
-        actionIcon={<Plus size={15} />}
+        actionIcon={<HugeiconsIcon icon={PlusSignIcon} size={15} />}
         onAction={handleCreateOpen}
       />
 
@@ -151,7 +165,11 @@ export function BrandsPage({ listData, initialSearch }: BrandsPageProps) {
       {listData.items.length === 0 ? (
         <BrandEmptyState isSearch={isSearchMode} onCreate={handleCreateOpen} />
       ) : (
-        <BrandsTable items={listData.items} onEdit={handleEditOpen} onDelete={setDeleting} />
+        <BrandsTable
+          items={listData.items}
+          onEdit={handleEditOpen}
+          onDelete={setDeleting}
+        />
       )}
 
       <CrmPagination

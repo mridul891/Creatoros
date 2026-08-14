@@ -2,8 +2,16 @@ import { z } from "zod"
 
 export const noteCreateSchema = z.object({
   dealId: z.uuid("Deal id is invalid."),
-  title: z.string().trim().min(2, "Title must be at least 2 characters.").max(180, "Title cannot exceed 180 characters."),
-  content: z.string().trim().min(1, "Note content cannot be empty.").max(20000, "Note content cannot exceed 20000 characters."),
+  title: z
+    .string()
+    .trim()
+    .min(2, "Title must be at least 2 characters.")
+    .max(180, "Title cannot exceed 180 characters."),
+  content: z
+    .string()
+    .trim()
+    .min(1, "Note content cannot be empty.")
+    .max(20000, "Note content cannot exceed 20000 characters."),
 })
 
 export const noteUpdateSchema = noteCreateSchema.extend({

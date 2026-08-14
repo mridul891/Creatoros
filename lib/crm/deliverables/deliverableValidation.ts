@@ -6,10 +6,10 @@ import {
   DELIVERABLE_DEFAULT_TYPES,
   DELIVERABLE_STATUSES,
 } from "@/enums/deliverable"
-import { parseDateOnlyInput } from "@/lib/crm/shared/date"
-import { getFieldErrors } from "@/lib/crm/shared/action"
-import type { DeliverableField } from "@/types/deliverable"
 import type { DeliverableFormValues } from "@/lib/crm/deliverables/deliverableForm"
+import { getFieldErrors } from "@/lib/crm/shared/action"
+import { parseDateOnlyInput } from "@/lib/crm/shared/date"
+import type { DeliverableField } from "@/types/deliverable"
 
 const stringDateToDate = z.preprocess((value) => {
   if (value instanceof Date) {
@@ -32,15 +32,31 @@ const urlField = z.string().trim().url("Please enter a valid URL.").optional()
 
 const deliverableBaseSchema = z.object({
   dealId: z.uuid("Deal id is invalid."),
-  platform: z.string().trim().min(2, "Platform is required.").max(80, "Platform cannot exceed 80 characters."),
-  deliverableType: z.string().trim().min(2, "Deliverable type is required.").max(120, "Deliverable type cannot exceed 120 characters."),
+  platform: z
+    .string()
+    .trim()
+    .min(2, "Platform is required.")
+    .max(80, "Platform cannot exceed 80 characters."),
+  deliverableType: z
+    .string()
+    .trim()
+    .min(2, "Deliverable type is required.")
+    .max(120, "Deliverable type cannot exceed 120 characters."),
   dueDate: stringDateToDate,
   status: z.enum(DELIVERABLE_STATUSES),
   approvalStatus: z.enum(DELIVERABLE_APPROVAL_STATUSES),
   submissionUrl: urlField,
   publishedUrl: urlField,
-  internalNotes: z.string().trim().max(5000, "Internal notes cannot exceed 5000 characters.").optional(),
-  brandNotes: z.string().trim().max(5000, "Brand notes cannot exceed 5000 characters.").optional(),
+  internalNotes: z
+    .string()
+    .trim()
+    .max(5000, "Internal notes cannot exceed 5000 characters.")
+    .optional(),
+  brandNotes: z
+    .string()
+    .trim()
+    .max(5000, "Brand notes cannot exceed 5000 characters.")
+    .optional(),
   revisionCount: z.coerce.number().int().nonnegative().max(1000),
   orderIndex: z.coerce.number().int().nonnegative().optional(),
 })
@@ -81,7 +97,9 @@ function toOptionalString(value: string) {
   return trimmed.length > 0 ? trimmed : undefined
 }
 
-export function getDeliverableFormFieldErrors(values: DeliverableFormValues): Partial<Record<DeliverableField, string>> {
+export function getDeliverableFormFieldErrors(
+  values: DeliverableFormValues
+): Partial<Record<DeliverableField, string>> {
   const parsed = deliverableCreateSchema.safeParse({
     dealId: values.dealId,
     platform: values.platform,
@@ -104,5 +122,7 @@ export function getDeliverableFormFieldErrors(values: DeliverableFormValues): Pa
   return getFieldErrors<DeliverableField>(parsed.error)
 }
 
-export const DELIVERABLE_PLATFORM_SUGGESTIONS = [...DELIVERABLE_DEFAULT_PLATFORMS]
+export const DELIVERABLE_PLATFORM_SUGGESTIONS = [
+  ...DELIVERABLE_DEFAULT_PLATFORMS,
+]
 export const DELIVERABLE_TYPE_SUGGESTIONS = [...DELIVERABLE_DEFAULT_TYPES]

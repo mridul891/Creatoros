@@ -1,6 +1,7 @@
 "use client"
 
-import { DotsThree } from "@phosphor-icons/react/dist/ssr"
+import { MoreHorizontalIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { useRouter } from "next/navigation"
 import type { KeyboardEvent } from "react"
 
@@ -11,11 +12,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { formatShortDate } from "@/lib/format/date"
 import type { BrandListItem } from "@/types/brand"
 
-type BrandsTableProps = { items: BrandListItem[]; onEdit: (brand: BrandListItem) => void; onDelete: (brand: BrandListItem) => void }
+type BrandsTableProps = {
+  items: BrandListItem[]
+  onEdit: (brand: BrandListItem) => void
+  onDelete: (brand: BrandListItem) => void
+}
 
 export function BrandsTable({ items, onEdit, onDelete }: BrandsTableProps) {
   const router = useRouter()
@@ -24,7 +36,10 @@ export function BrandsTable({ items, onEdit, onDelete }: BrandsTableProps) {
     router.push(`/dashboard/brands/${brandId}`)
   }
 
-  function handleRowKeyDown(event: KeyboardEvent<HTMLTableRowElement>, brandId: string) {
+  function handleRowKeyDown(
+    event: KeyboardEvent<HTMLTableRowElement>,
+    brandId: string
+  ) {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault()
       navigateToBrand(brandId)
@@ -34,21 +49,21 @@ export function BrandsTable({ items, onEdit, onDelete }: BrandsTableProps) {
   return (
     <div className="overflow-hidden rounded-[18px] border border-border bg-card">
       <Table className="table-fixed border-collapse">
-        <TableHeader className="border-b border-border">
+        <TableHeader className="border-border border-b">
           <TableRow className="border-0 hover:bg-transparent">
-            <TableHead className="w-[28%] px-6 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[28%] px-6 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               BRAND
             </TableHead>
-            <TableHead className="w-[16%] px-6 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[16%] px-6 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               CATEGORY
             </TableHead>
-            <TableHead className="w-[24%] px-6 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[24%] px-6 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               PRIMARY CONTACT
             </TableHead>
-            <TableHead className="w-[14%] px-6 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[14%] px-6 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               UPDATED
             </TableHead>
-            <TableHead className="w-[18%] px-6 py-3 text-right font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[18%] px-6 py-3 text-right font-mono text-[10px] text-muted-foreground tracking-wider">
               ACTIONS
             </TableHead>
           </TableRow>
@@ -61,11 +76,13 @@ export function BrandsTable({ items, onEdit, onDelete }: BrandsTableProps) {
               tabIndex={0}
               onClick={() => navigateToBrand(brand.id)}
               onKeyDown={(event) => handleRowKeyDown(event, brand.id)}
-              className="cursor-pointer border-b border-border bg-transparent hover:bg-muted"
+              className="cursor-pointer border-border border-b bg-transparent hover:bg-muted"
             >
               <TableCell className="px-6 py-4">
                 <div className="min-w-0">
-                  <div className="truncate text-[13px] font-semibold text-foreground">{brand.name}</div>
+                  <div className="truncate font-semibold text-[13px] text-foreground">
+                    {brand.name}
+                  </div>
                   <div className="truncate text-[11px] text-muted-foreground">
                     {brand.website ?? "No website"}
                   </div>
@@ -98,7 +115,7 @@ export function BrandsTable({ items, onEdit, onDelete }: BrandsTableProps) {
                         onClick={(event) => event.stopPropagation()}
                         className="cursor-pointer text-muted-foreground hover:bg-muted"
                       >
-                        <DotsThree />
+                        <HugeiconsIcon icon={MoreHorizontalIcon} size={15} />
                         <span className="sr-only">Open actions</span>
                       </Button>
                     </DropdownMenuTrigger>

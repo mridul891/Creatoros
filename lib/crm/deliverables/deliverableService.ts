@@ -4,12 +4,16 @@ import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
 import { recordActivity } from "@/lib/crm/activity/activityService"
 import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
 import { prisma } from "@/lib/prisma"
-import type { DeliverableDetail, DeliverableListData, DeliverableListItem } from "@/types/deliverable"
+import type {
+  DeliverableDetail,
+  DeliverableListData,
+  DeliverableListItem,
+} from "@/types/deliverable"
 import {
-  normalizeDeliverableType,
   type DeliverableCreateInput,
   type DeliverableListInput,
   type DeliverableUpdateInput,
+  normalizeDeliverableType,
 } from "./deliverableValidation"
 
 const PAGE_SIZE_DEFAULT = 20
@@ -17,13 +21,27 @@ const PAGE_SIZE_MAX = 50
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient
 
-type DeliverableServiceErrorField = "deliverableId" | "dealId" | "deliverableType" | "status" | "approvalStatus"
+type DeliverableServiceErrorField =
+  | "deliverableId"
+  | "dealId"
+  | "deliverableType"
+  | "status"
+  | "approvalStatus"
 
 export class DeliverableServiceError extends Error {
-  code: "NOT_FOUND" | "DUPLICATE" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
+  code:
+    | "NOT_FOUND"
+    | "DUPLICATE"
+    | "INVALID_OPERATION"
+    | "FORBIDDEN"
+    | "UNKNOWN"
   field?: DeliverableServiceErrorField
 
-  constructor(message: string, code: DeliverableServiceError["code"], field?: DeliverableServiceErrorField) {
+  constructor(
+    message: string,
+    code: DeliverableServiceError["code"],
+    field?: DeliverableServiceErrorField
+  ) {
     super(message)
     this.name = "DeliverableServiceError"
     this.code = code
@@ -67,7 +85,8 @@ function toListItem(item: {
     deliverableType: item.deliverableType,
     dueDate: item.dueDate,
     status: item.status as DeliverableListItem["status"],
-    approvalStatus: item.approvalStatus as DeliverableListItem["approvalStatus"],
+    approvalStatus:
+      item.approvalStatus as DeliverableListItem["approvalStatus"],
     submissionUrl: item.submissionUrl,
     publishedUrl: item.publishedUrl,
     internalNotes: item.internalNotes,
@@ -83,10 +102,20 @@ function toListItem(item: {
   }
 }
 
-async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promise<OwnedDeal> {
+async function getOwnedDeal(
+  tx: PrismaTx,
+  userId: string,
+  dealId: string
+): Promise<OwnedDeal> {
   const deal = await tx.deal.findFirst({
     where: { id: dealId, userId },
-    select: { id: true, brandId: true, contactId: true, campaignName: true, status: true },
+    select: {
+      id: true,
+      brandId: true,
+      contactId: true,
+      campaignName: true,
+      status: true,
+    },
   })
 
   if (!deal) {
@@ -96,18 +125,32 @@ async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promi
   return deal
 }
 
-async function getOwnedDeliverable(tx: PrismaTx, userId: string, deliverableId: string) {
+async function getOwnedDeliverable(
+  tx: PrismaTx,
+  userId: string,
+  deliverableId: string
+) {
   const item = await tx.deliverable.findFirst({
     where: { id: deliverableId, userId },
     include: {
       deal: {
-        select: { id: true, brandId: true, contactId: true, campaignName: true, status: true },
+        select: {
+          id: true,
+          brandId: true,
+          contactId: true,
+          campaignName: true,
+          status: true,
+        },
       },
     },
   })
 
   if (!item) {
-    throw new DeliverableServiceError("Deliverable not found.", "NOT_FOUND", "deliverableId")
+    throw new DeliverableServiceError(
+      "Deliverable not found.",
+      "NOT_FOUND",
+      "deliverableId"
+    )
   }
 
   return item
@@ -115,11 +158,19 @@ async function getOwnedDeliverable(tx: PrismaTx, userId: string, deliverableId: 
 
 function ensureDealIsActive(deal: OwnedDeal) {
   if (deal.status === "Archived") {
-    throw new DeliverableServiceError("Deliverables cannot be modified for archived deals.", "INVALID_OPERATION", "dealId")
+    throw new DeliverableServiceError(
+      "Deliverables cannot be modified for archived deals.",
+      "INVALID_OPERATION",
+      "dealId"
+    )
   }
 }
 
-async function lockDeliverableOrdering(tx: PrismaTx, userId: string, dealId: string) {
+async function lockDeliverableOrdering(
+  tx: PrismaTx,
+  userId: string,
+  dealId: string
+) {
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`${userId}:deliverable:${dealId}`}))`
 }
 
@@ -134,8 +185,18 @@ async function getNextOrderIndex(tx: PrismaTx, userId: string, dealId: string) {
 }
 
 function mapPrismaError(error: unknown): never {
-  if (typeof error === "object" && error !== null && "code" in error && typeof error.code === "string" && error.code === "P2002") {
-    throw new DeliverableServiceError("A matching deliverable already exists for this deal.", "DUPLICATE", "deliverableType")
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    typeof error.code === "string" &&
+    error.code === "P2002"
+  ) {
+    throw new DeliverableServiceError(
+      "A matching deliverable already exists for this deal.",
+      "DUPLICATE",
+      "deliverableType"
+    )
   }
   throw error
 }
@@ -164,7 +225,10 @@ async function recordDeliverableActivity(options: {
   })
 }
 
-function buildWhere(userId: string, input: DeliverableListInput): Prisma.DeliverableWhereInput {
+function buildWhere(
+  userId: string,
+  input: DeliverableListInput
+): Prisma.DeliverableWhereInput {
   const search = input.search?.trim() ?? ""
 
   return {
@@ -172,7 +236,9 @@ function buildWhere(userId: string, input: DeliverableListInput): Prisma.Deliver
     dealId: input.dealId,
     isArchived: input.archive === "archived",
     ...(input.status ? { status: input.status } : {}),
-    ...(input.platform ? { platform: { equals: input.platform, mode: "insensitive" } } : {}),
+    ...(input.platform
+      ? { platform: { equals: input.platform, mode: "insensitive" } }
+      : {}),
     ...(search
       ? {
           OR: [
@@ -186,7 +252,9 @@ function buildWhere(userId: string, input: DeliverableListInput): Prisma.Deliver
   }
 }
 
-function getOrderBy(sort: DeliverableListInput["sort"]): Prisma.DeliverableOrderByWithRelationInput[] {
+function getOrderBy(
+  sort: DeliverableListInput["sort"]
+): Prisma.DeliverableOrderByWithRelationInput[] {
   switch (sort) {
     case "dueDate":
       return [{ dueDate: "asc" }, { updatedAt: "desc" }]
@@ -199,29 +267,38 @@ function getOrderBy(sort: DeliverableListInput["sort"]): Prisma.DeliverableOrder
   }
 }
 
-export async function listDealDeliverables(userId: string, input: DeliverableListInput): Promise<DeliverableListData> {
+export async function listDealDeliverables(
+  userId: string,
+  input: DeliverableListInput
+): Promise<DeliverableListData> {
   await getOwnedDeal(prisma, userId, input.dealId)
 
   const page = clampPage(input.page)
-  const pageSize = clampPageSize(input.pageSize, { pageSize: PAGE_SIZE_DEFAULT, maxPageSize: PAGE_SIZE_MAX })
+  const pageSize = clampPageSize(input.pageSize, {
+    pageSize: PAGE_SIZE_DEFAULT,
+    maxPageSize: PAGE_SIZE_MAX,
+  })
   const skip = (page - 1) * pageSize
   const where = buildWhere(userId, input)
   const orderBy = getOrderBy(input.sort)
 
-  const [items, total, draft, submitted, needsRevision, approved, published] = await prisma.$transaction([
-    prisma.deliverable.findMany({
-      where,
-      orderBy,
-      skip,
-      take: pageSize,
-    }),
-    prisma.deliverable.count({ where }),
-    prisma.deliverable.count({ where: { ...where, status: "Draft" } }),
-    prisma.deliverable.count({ where: { ...where, status: "Submitted" } }),
-    prisma.deliverable.count({ where: { ...where, status: "NeedsRevision" } }),
-    prisma.deliverable.count({ where: { ...where, status: "Approved" } }),
-    prisma.deliverable.count({ where: { ...where, status: "Published" } }),
-  ])
+  const [items, total, draft, submitted, needsRevision, approved, published] =
+    await prisma.$transaction([
+      prisma.deliverable.findMany({
+        where,
+        orderBy,
+        skip,
+        take: pageSize,
+      }),
+      prisma.deliverable.count({ where }),
+      prisma.deliverable.count({ where: { ...where, status: "Draft" } }),
+      prisma.deliverable.count({ where: { ...where, status: "Submitted" } }),
+      prisma.deliverable.count({
+        where: { ...where, status: "NeedsRevision" },
+      }),
+      prisma.deliverable.count({ where: { ...where, status: "Approved" } }),
+      prisma.deliverable.count({ where: { ...where, status: "Published" } }),
+    ])
 
   return {
     items: items.map((item) => toListItem(item)),
@@ -249,13 +326,20 @@ export async function listDealDeliverables(userId: string, input: DeliverableLis
   }
 }
 
-export async function getDeliverable(userId: string, deliverableId: string): Promise<DeliverableDetail> {
+export async function getDeliverable(
+  userId: string,
+  deliverableId: string
+): Promise<DeliverableDetail> {
   const item = await prisma.deliverable.findFirst({
     where: { id: deliverableId, userId },
   })
 
   if (!item) {
-    throw new DeliverableServiceError("Deliverable not found.", "NOT_FOUND", "deliverableId")
+    throw new DeliverableServiceError(
+      "Deliverable not found.",
+      "NOT_FOUND",
+      "deliverableId"
+    )
   }
 
   return {
@@ -264,12 +348,18 @@ export async function getDeliverable(userId: string, deliverableId: string): Pro
   }
 }
 
-export async function createDeliverable(userId: string, input: DeliverableCreateInput) {
+export async function createDeliverable(
+  userId: string,
+  input: DeliverableCreateInput
+) {
   return prisma.$transaction(async (tx) => {
     const deal = await getOwnedDeal(tx, userId, input.dealId)
     ensureDealIsActive(deal)
     await lockDeliverableOrdering(tx, userId, input.dealId)
-    const orderIndex = typeof input.orderIndex === "number" ? input.orderIndex : await getNextOrderIndex(tx, userId, input.dealId)
+    const orderIndex =
+      typeof input.orderIndex === "number"
+        ? input.orderIndex
+        : await getNextOrderIndex(tx, userId, input.dealId)
 
     let created: Awaited<ReturnType<typeof tx.deliverable.create>>
     try {
@@ -279,7 +369,9 @@ export async function createDeliverable(userId: string, input: DeliverableCreate
           dealId: input.dealId,
           platform: input.platform,
           deliverableType: input.deliverableType,
-          normalizedDeliverableType: normalizeDeliverableType(input.deliverableType),
+          normalizedDeliverableType: normalizeDeliverableType(
+            input.deliverableType
+          ),
           dueDate: input.dueDate ?? null,
           status: input.status,
           approvalStatus: input.approvalStatus,
@@ -318,13 +410,21 @@ export async function createDeliverable(userId: string, input: DeliverableCreate
   })
 }
 
-export async function updateDeliverable(userId: string, deliverableId: string, input: DeliverableUpdateInput) {
+export async function updateDeliverable(
+  userId: string,
+  deliverableId: string,
+  input: DeliverableUpdateInput
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeliverable(tx, userId, deliverableId)
     ensureDealIsActive(existing.deal)
 
     if (existing.dealId !== input.dealId) {
-      throw new DeliverableServiceError("Deliverable deal cannot be changed.", "INVALID_OPERATION", "dealId")
+      throw new DeliverableServiceError(
+        "Deliverable deal cannot be changed.",
+        "INVALID_OPERATION",
+        "dealId"
+      )
     }
 
     let updated: Awaited<ReturnType<typeof tx.deliverable.update>>
@@ -334,7 +434,9 @@ export async function updateDeliverable(userId: string, deliverableId: string, i
         data: {
           platform: input.platform,
           deliverableType: input.deliverableType,
-          normalizedDeliverableType: normalizeDeliverableType(input.deliverableType),
+          normalizedDeliverableType: normalizeDeliverableType(
+            input.deliverableType
+          ),
           dueDate: input.dueDate ?? null,
           status: input.status,
           approvalStatus: input.approvalStatus,
@@ -383,13 +485,19 @@ export async function updateDeliverable(userId: string, deliverableId: string, i
   })
 }
 
-export async function archiveDeliverable(userId: string, deliverableId: string) {
+export async function archiveDeliverable(
+  userId: string,
+  deliverableId: string
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeliverable(tx, userId, deliverableId)
     ensureDealIsActive(existing.deal)
 
     if (existing.isArchived) {
-      throw new DeliverableServiceError("Deliverable is already archived.", "INVALID_OPERATION")
+      throw new DeliverableServiceError(
+        "Deliverable is already archived.",
+        "INVALID_OPERATION"
+      )
     }
 
     const updated = await tx.deliverable.update({
@@ -408,13 +516,19 @@ export async function archiveDeliverable(userId: string, deliverableId: string) 
   })
 }
 
-export async function restoreDeliverable(userId: string, deliverableId: string) {
+export async function restoreDeliverable(
+  userId: string,
+  deliverableId: string
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeliverable(tx, userId, deliverableId)
     ensureDealIsActive(existing.deal)
 
     if (!existing.isArchived) {
-      throw new DeliverableServiceError("Deliverable is already active.", "INVALID_OPERATION")
+      throw new DeliverableServiceError(
+        "Deliverable is already active.",
+        "INVALID_OPERATION"
+      )
     }
 
     const updated = await tx.deliverable.update({
@@ -438,7 +552,10 @@ export async function deleteDeliverable(userId: string, deliverableId: string) {
     const existing = await getOwnedDeliverable(tx, userId, deliverableId)
     ensureDealIsActive(existing.deal)
     if (!existing.isArchived) {
-      throw new DeliverableServiceError("Only archived deliverables can be deleted.", "FORBIDDEN")
+      throw new DeliverableServiceError(
+        "Only archived deliverables can be deleted.",
+        "FORBIDDEN"
+      )
     }
 
     await tx.deliverable.delete({

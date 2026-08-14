@@ -1,13 +1,13 @@
-import { InvoicesPage } from "@/components/modules/dashboard/InvoicesPage";
-import type { Metadata } from "next";
-import { listInvoicesAction } from "@/app/action/invoiceActions";
+import type { Metadata } from "next"
+import { listInvoicesAction } from "@/app/action/invoiceActions"
+import { InvoicesPage } from "@/components/modules/dashboard/InvoicesPage"
 
 export const metadata: Metadata = {
   title: "Invoices",
   alternates: {
     canonical: "/dashboard/invoices",
   },
-};
+}
 
 type DashboardInvoicesPageProps = {
   searchParams: Promise<{
@@ -15,7 +15,9 @@ type DashboardInvoicesPageProps = {
   }>
 }
 
-export default async function DashboardInvoicesPage({ searchParams }: DashboardInvoicesPageProps) {
+export default async function DashboardInvoicesPage({
+  searchParams,
+}: DashboardInvoicesPageProps) {
   const search = await searchParams
   const result = await listInvoicesAction()
 
@@ -39,5 +41,5 @@ export default async function DashboardInvoicesPage({ searchParams }: DashboardI
       }
       selectedInvoiceId={search.invoice}
     />
-  );
+  )
 }

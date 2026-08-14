@@ -6,7 +6,9 @@ type DeliverablesEmptyStateProps = {
   onCreate: () => void
 }
 
-export function DeliverablesEmptyState({ onCreate }: DeliverablesEmptyStateProps) {
+export function DeliverablesEmptyState({
+  onCreate,
+}: DeliverablesEmptyStateProps) {
   return (
     <CrmEmptyStateClient
       title="No deliverables yet"

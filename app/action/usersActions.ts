@@ -1,7 +1,7 @@
 "use server"
 
-import { createInsforgeServerClient } from "@/lib/inforge/server"
 import { syncUserFromInsforgeUser } from "@/lib/auth/sync-user"
+import { createInsforgeServerClient } from "@/lib/inforge/server"
 
 export async function insertUser() {
   try {

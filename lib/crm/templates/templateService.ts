@@ -1,10 +1,13 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
-import { normalizeTaskTitle } from "@/lib/crm/tasks/taskValidation"
-import { normalizeDeliverableType } from "@/lib/crm/deliverables/deliverableValidation"
-import { normalizeTemplateName, type CampaignTemplateCreateUpdateInput } from "@/lib/crm/templates/templateValidation"
 import { recordActivity } from "@/lib/crm/activity/activityService"
+import { normalizeDeliverableType } from "@/lib/crm/deliverables/deliverableValidation"
+import { normalizeTaskTitle } from "@/lib/crm/tasks/taskValidation"
+import {
+  type CampaignTemplateCreateUpdateInput,
+  normalizeTemplateName,
+} from "@/lib/crm/templates/templateValidation"
 import { prisma } from "@/lib/prisma"
 import type { CampaignTemplateItem } from "@/types/campaignTemplate"
 
@@ -20,10 +23,19 @@ type OwnedDeal = {
 }
 
 export class TemplateServiceError extends Error {
-  code: "NOT_FOUND" | "DUPLICATE" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
+  code:
+    | "NOT_FOUND"
+    | "DUPLICATE"
+    | "INVALID_OPERATION"
+    | "FORBIDDEN"
+    | "UNKNOWN"
   field?: "name"
 
-  constructor(message: string, code: TemplateServiceError["code"], field?: TemplateServiceError["field"]) {
+  constructor(
+    message: string,
+    code: TemplateServiceError["code"],
+    field?: TemplateServiceError["field"]
+  ) {
     super(message)
     this.name = "TemplateServiceError"
     this.code = code
@@ -33,7 +45,11 @@ export class TemplateServiceError extends Error {
 
 const SYSTEM_TEMPLATE_NAME = "Instagram Reel Campaign"
 
-async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promise<OwnedDeal> {
+async function getOwnedDeal(
+  tx: PrismaTx,
+  userId: string,
+  dealId: string
+): Promise<OwnedDeal> {
   const deal = await tx.deal.findFirst({
     where: { id: dealId, userId },
     select: {
@@ -53,7 +69,11 @@ async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promi
   return deal
 }
 
-async function getOwnedTemplate(tx: PrismaTx, userId: string, templateId: string) {
+async function getOwnedTemplate(
+  tx: PrismaTx,
+  userId: string,
+  templateId: string
+) {
   const template = await tx.campaignTemplate.findFirst({
     where: { id: templateId, userId },
     include: {
@@ -78,8 +98,21 @@ function toTemplateItem(template: {
   name: string
   description: string | null
   isSystem: boolean
-  tasks: Array<{ id: string; title: string; description: string | null; priority: string; dueOffsetDays: number; orderIndex: number }>
-  deliverables: Array<{ id: string; platform: string; deliverableType: string; dueOffsetDays: number; orderIndex: number }>
+  tasks: Array<{
+    id: string
+    title: string
+    description: string | null
+    priority: string
+    dueOffsetDays: number
+    orderIndex: number
+  }>
+  deliverables: Array<{
+    id: string
+    platform: string
+    deliverableType: string
+    dueOffsetDays: number
+    orderIndex: number
+  }>
   createdAt: Date
   updatedAt: Date
 }): CampaignTemplateItem {
@@ -92,7 +125,8 @@ function toTemplateItem(template: {
       id: item.id,
       title: item.title,
       description: item.description,
-      priority: item.priority as CampaignTemplateItem["tasks"][number]["priority"],
+      priority:
+        item.priority as CampaignTemplateItem["tasks"][number]["priority"],
       dueOffsetDays: item.dueOffsetDays,
       orderIndex: item.orderIndex,
     })),
@@ -130,15 +164,47 @@ export async function ensureSystemCampaignTemplates(userId: string) {
       isSystem: true,
       tasks: {
         create: [
-          { title: "Align brief with brand", dueOffsetDays: 0, orderIndex: 0, priority: "High" },
-          { title: "Draft script and shot list", dueOffsetDays: 1, orderIndex: 1, priority: "High" },
-          { title: "Shoot reel content", dueOffsetDays: 2, orderIndex: 2, priority: "Medium" },
-          { title: "Edit reel and caption", dueOffsetDays: 3, orderIndex: 3, priority: "Medium" },
-          { title: "Submit for brand approval", dueOffsetDays: 4, orderIndex: 4, priority: "High" },
+          {
+            title: "Align brief with brand",
+            dueOffsetDays: 0,
+            orderIndex: 0,
+            priority: "High",
+          },
+          {
+            title: "Draft script and shot list",
+            dueOffsetDays: 1,
+            orderIndex: 1,
+            priority: "High",
+          },
+          {
+            title: "Shoot reel content",
+            dueOffsetDays: 2,
+            orderIndex: 2,
+            priority: "Medium",
+          },
+          {
+            title: "Edit reel and caption",
+            dueOffsetDays: 3,
+            orderIndex: 3,
+            priority: "Medium",
+          },
+          {
+            title: "Submit for brand approval",
+            dueOffsetDays: 4,
+            orderIndex: 4,
+            priority: "High",
+          },
         ],
       },
       deliverables: {
-        create: [{ platform: "Instagram", deliverableType: "Reel", dueOffsetDays: 4, orderIndex: 0 }],
+        create: [
+          {
+            platform: "Instagram",
+            deliverableType: "Reel",
+            dueOffsetDays: 4,
+            orderIndex: 0,
+          },
+        ],
       },
     },
     select: { id: true },
@@ -147,7 +213,9 @@ export async function ensureSystemCampaignTemplates(userId: string) {
   return created.id
 }
 
-export async function listCampaignTemplates(userId: string): Promise<CampaignTemplateItem[]> {
+export async function listCampaignTemplates(
+  userId: string
+): Promise<CampaignTemplateItem[]> {
   await ensureSystemCampaignTemplates(userId)
 
   const templates = await prisma.campaignTemplate.findMany({
@@ -174,7 +242,11 @@ function mapPrismaError(error: unknown): never {
     typeof error.code === "string" &&
     error.code === "P2002"
   ) {
-    throw new TemplateServiceError("A template with this name already exists.", "DUPLICATE", "name")
+    throw new TemplateServiceError(
+      "A template with this name already exists.",
+      "DUPLICATE",
+      "name"
+    )
   }
 
   throw error
@@ -205,7 +277,10 @@ function buildTemplateWriteData(input: CampaignTemplateCreateUpdateInput) {
   }
 }
 
-export async function createCampaignTemplate(userId: string, input: CampaignTemplateCreateUpdateInput): Promise<CampaignTemplateItem> {
+export async function createCampaignTemplate(
+  userId: string,
+  input: CampaignTemplateCreateUpdateInput
+): Promise<CampaignTemplateItem> {
   try {
     const created = await prisma.campaignTemplate.create({
       data: {
@@ -237,7 +312,10 @@ export async function updateCampaignTemplate(
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedTemplate(tx, userId, templateId)
     if (existing.isSystem) {
-      throw new TemplateServiceError("System templates cannot be edited.", "FORBIDDEN")
+      throw new TemplateServiceError(
+        "System templates cannot be edited.",
+        "FORBIDDEN"
+      )
     }
 
     let updated: Awaited<ReturnType<typeof getOwnedTemplate>>
@@ -285,11 +363,17 @@ export async function updateCampaignTemplate(
   })
 }
 
-export async function deleteCampaignTemplate(userId: string, templateId: string) {
+export async function deleteCampaignTemplate(
+  userId: string,
+  templateId: string
+) {
   return prisma.$transaction(async (tx) => {
     const template = await getOwnedTemplate(tx, userId, templateId)
     if (template.isSystem) {
-      throw new TemplateServiceError("System templates cannot be deleted.", "FORBIDDEN")
+      throw new TemplateServiceError(
+        "System templates cannot be deleted.",
+        "FORBIDDEN"
+      )
     }
 
     await tx.campaignTemplate.delete({
@@ -309,10 +393,18 @@ function addDays(date: Date, offsetDays: number) {
   return result
 }
 
-export async function applyCampaignTemplateInTransaction(tx: PrismaTx, userId: string, dealId: string, templateId: string) {
+export async function applyCampaignTemplateInTransaction(
+  tx: PrismaTx,
+  userId: string,
+  dealId: string,
+  templateId: string
+) {
   const deal = await getOwnedDeal(tx, userId, dealId)
   if (deal.status === "Archived") {
-    throw new TemplateServiceError("Templates cannot be applied to archived deals.", "INVALID_OPERATION")
+    throw new TemplateServiceError(
+      "Templates cannot be applied to archived deals.",
+      "INVALID_OPERATION"
+    )
   }
 
   const template = await getOwnedTemplate(tx, userId, templateId)
@@ -345,7 +437,9 @@ export async function applyCampaignTemplateInTransaction(tx: PrismaTx, userId: s
         dealId: deal.id,
         platform: deliverable.platform,
         deliverableType: deliverable.deliverableType,
-        normalizedDeliverableType: normalizeDeliverableType(deliverable.deliverableType),
+        normalizedDeliverableType: normalizeDeliverableType(
+          deliverable.deliverableType
+        ),
         dueDate,
         status: "Draft",
         approvalStatus: "NotSubmitted",
@@ -389,7 +483,11 @@ export async function applyCampaignTemplateInTransaction(tx: PrismaTx, userId: s
   })
 }
 
-export async function applyCampaignTemplate(userId: string, dealId: string, templateId: string) {
+export async function applyCampaignTemplate(
+  userId: string,
+  dealId: string,
+  templateId: string
+) {
   return prisma.$transaction(async (tx) => {
     await applyCampaignTemplateInTransaction(tx, userId, dealId, templateId)
   })

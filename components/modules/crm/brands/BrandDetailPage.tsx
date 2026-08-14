@@ -6,10 +6,12 @@ import { useState } from "react"
 import { toast } from "sonner"
 
 import {
+  type BrandMutationResult,
   deleteBrandAction,
   updateBrandAction,
-  type BrandMutationResult,
 } from "@/app/action/brandActions"
+import { ActivityTimelineSection } from "@/components/modules/crm/activity/ActivityTimelineSection"
+import { BrandContactsSection } from "@/components/modules/crm/contacts/BrandContactsSection"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,14 +22,16 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { ActivityTimelineSection } from "@/components/modules/crm/activity/ActivityTimelineSection"
-import type { ContactListData } from "@/types/contact"
-import type { BrandField } from "@/types/brand"
+import {
+  type BrandFormValues,
+  brandToFormValues,
+  buildBrandFormData,
+} from "@/lib/crm/brands/brandForm"
 import type { ActivityListData } from "@/types/activity"
-import { buildBrandFormData, brandToFormValues, type BrandFormValues } from "@/lib/crm/brands/brandForm"
-import { BrandContactsSection } from "@/components/modules/crm/contacts/BrandContactsSection"
-import { BrandDetailInfoCards } from "./BrandDetailInfoCards"
+import type { BrandField } from "@/types/brand"
+import type { ContactListData } from "@/types/contact"
 import { BrandDeleteDialog } from "./BrandDeleteDialog"
+import { BrandDetailInfoCards } from "./BrandDetailInfoCards"
 import { BrandForm } from "./BrandForm"
 
 type BrandDetailPageProps = {
@@ -46,23 +50,33 @@ type BrandDetailPageProps = {
   activityData: ActivityListData
 }
 
-export function BrandDetailPage({ brand, contactsData, activityData }: BrandDetailPageProps) {
+export function BrandDetailPage({
+  brand,
+  contactsData,
+  activityData,
+}: BrandDetailPageProps) {
   const router = useRouter()
 
   const [showEdit, setShowEdit] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [formValues, setFormValues] = useState<BrandFormValues>(() => brandToFormValues(brand))
+  const [formValues, setFormValues] = useState<BrandFormValues>(() =>
+    brandToFormValues(brand)
+  )
   const [formError, setFormError] = useState("")
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<BrandField, string>>>({})
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<BrandField, string>>
+  >({})
 
   async function handleUpdate() {
     setIsSubmitting(true)
     setFormError("")
     setFieldErrors({})
 
-    const result: BrandMutationResult = await updateBrandAction(buildBrandFormData(formValues, brand.id))
+    const result: BrandMutationResult = await updateBrandAction(
+      buildBrandFormData(formValues, brand.id)
+    )
     setIsSubmitting(false)
 
     if (!result.success) {
@@ -103,7 +117,9 @@ export function BrandDetailPage({ brand, contactsData, activityData }: BrandDeta
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-muted-foreground" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-muted-foreground">{brand.name}</BreadcrumbPage>
+              <BreadcrumbPage className="text-muted-foreground">
+                {brand.name}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -112,8 +128,12 @@ export function BrandDetailPage({ brand, contactsData, activityData }: BrandDeta
       <Card className="rounded-[20px] border-border bg-card px-7 py-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-foreground">{brand.name}</h1>
-            <p className="mt-1 text-[13px] text-muted-foreground">{brand.category ?? "Uncategorized"}</p>
+            <h1 className="font-extrabold text-2xl text-foreground tracking-[-0.03em]">
+              {brand.name}
+            </h1>
+            <p className="mt-1 text-[13px] text-muted-foreground">
+              {brand.category ?? "Uncategorized"}
+            </p>
           </div>
           <div className="flex gap-2">
             <Button

@@ -23,18 +23,24 @@ export const DEAL_PRIORITY_THEME: Record<
 > = {
   High: {
     row: "bg-[rgba(232,64,42,0.06)]",
-    badge: "border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.14)] text-[#FF9A8B]",
-    select: "border-[rgba(232,64,42,0.4)] bg-[rgba(232,64,42,0.12)] text-[#FFB1A5]",
+    badge:
+      "border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.14)] text-[#FF9A8B]",
+    select:
+      "border-[rgba(232,64,42,0.4)] bg-[rgba(232,64,42,0.12)] text-[#FFB1A5]",
   },
   Medium: {
     row: "bg-[rgba(245,158,11,0.06)]",
-    badge: "border-[rgba(245,158,11,0.35)] bg-[rgba(245,158,11,0.14)] text-[#FDD78C]",
-    select: "border-[rgba(245,158,11,0.35)] bg-[rgba(245,158,11,0.12)] text-[#FDE68A]",
+    badge:
+      "border-[rgba(245,158,11,0.35)] bg-[rgba(245,158,11,0.14)] text-[#FDD78C]",
+    select:
+      "border-[rgba(245,158,11,0.35)] bg-[rgba(245,158,11,0.12)] text-[#FDE68A]",
   },
   Low: {
     row: "bg-[rgba(34,197,94,0.06)]",
-    badge: "border-[rgba(34,197,94,0.35)] bg-[rgba(34,197,94,0.14)] text-[#9CE7BA]",
-    select: "border-[rgba(34,197,94,0.35)] bg-[rgba(34,197,94,0.12)] text-[#86EFAC]",
+    badge:
+      "border-[rgba(34,197,94,0.35)] bg-[rgba(34,197,94,0.14)] text-[#9CE7BA]",
+    select:
+      "border-[rgba(34,197,94,0.35)] bg-[rgba(34,197,94,0.12)] text-[#86EFAC]",
   },
 }
 
@@ -58,7 +64,7 @@ const STAGE_INDEX: Record<DealStage, number> = DEAL_STAGES.reduce(
     accumulator[stage] = index
     return accumulator
   },
-  {} as Record<DealStage, number>,
+  {} as Record<DealStage, number>
 )
 
 export function isValidStageTransition(from: DealStage, to: DealStage) {

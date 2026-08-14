@@ -1,10 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-
-import type { BrandField, BrandListData } from "@/types/brand"
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import { brandCreateUpdateSchema } from "@/lib/crm/brands/brandValidation"
 import {
   BrandServiceError,
   createBrand,
@@ -13,8 +10,10 @@ import {
   listBrands,
   updateBrand,
 } from "@/lib/crm/brands/brandService"
+import { brandCreateUpdateSchema } from "@/lib/crm/brands/brandValidation"
 import { getFieldErrors } from "@/lib/crm/shared/action"
 import { sanitizeOptionalString } from "@/lib/crm/shared/form"
+import type { BrandField, BrandListData } from "@/types/brand"
 
 export type BrandMutationResult = {
   success: boolean
@@ -121,14 +120,20 @@ export async function getBrandAction(brandId: string): Promise<BrandGetResult> {
   }
 }
 
-export async function createBrandAction(formData: FormData): Promise<BrandMutationResult> {
+export async function createBrandAction(
+  formData: FormData
+): Promise<BrandMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = brandCreateUpdateSchema.safeParse({
     name: formData.get("name"),
     category: sanitizeOptionalString(formData.get("category")),
     website: sanitizeOptionalString(formData.get("website")),
-    primaryContactName: sanitizeOptionalString(formData.get("primaryContactName")),
-    primaryContactEmail: sanitizeOptionalString(formData.get("primaryContactEmail")),
+    primaryContactName: sanitizeOptionalString(
+      formData.get("primaryContactName")
+    ),
+    primaryContactEmail: sanitizeOptionalString(
+      formData.get("primaryContactEmail")
+    ),
     notes: sanitizeOptionalString(formData.get("notes")),
   })
 
@@ -165,7 +170,9 @@ export async function createBrandAction(formData: FormData): Promise<BrandMutati
   }
 }
 
-export async function updateBrandAction(formData: FormData): Promise<BrandMutationResult> {
+export async function updateBrandAction(
+  formData: FormData
+): Promise<BrandMutationResult> {
   const user = await requireOnboardedUser()
   const brandId = formData.get("brandId")
 
@@ -180,8 +187,12 @@ export async function updateBrandAction(formData: FormData): Promise<BrandMutati
     name: formData.get("name"),
     category: sanitizeOptionalString(formData.get("category")),
     website: sanitizeOptionalString(formData.get("website")),
-    primaryContactName: sanitizeOptionalString(formData.get("primaryContactName")),
-    primaryContactEmail: sanitizeOptionalString(formData.get("primaryContactEmail")),
+    primaryContactName: sanitizeOptionalString(
+      formData.get("primaryContactName")
+    ),
+    primaryContactEmail: sanitizeOptionalString(
+      formData.get("primaryContactEmail")
+    ),
     notes: sanitizeOptionalString(formData.get("notes")),
   })
 
@@ -224,7 +235,9 @@ export async function updateBrandAction(formData: FormData): Promise<BrandMutati
   }
 }
 
-export async function deleteBrandAction(brandId: string): Promise<BrandMutationResult> {
+export async function deleteBrandAction(
+  brandId: string
+): Promise<BrandMutationResult> {
   const user = await requireOnboardedUser()
 
   if (!brandId) {

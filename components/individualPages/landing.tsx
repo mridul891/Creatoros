@@ -1,16 +1,16 @@
-import { FooterCTA } from "../modules/Landing/footer-cta";
-import { Hero } from "../modules/Landing/hero";
-import { MadeFor } from "../modules/Landing/made-for";
-import { Nav } from "../modules/Landing/nav";
-import { Pricing } from "../modules/Landing/pricing";
-import { SplitSection } from "../modules/Landing/split-section";
-import { StatsSection } from "../modules/Landing/stats-section";
+import { FooterCTA } from "../modules/Landing/footer-cta"
+import { Hero } from "../modules/Landing/hero"
 import {
   IMG_FEATURE_CALENDAR,
   IMG_FEATURE_DASHBOARD,
   IMG_INVOICING_SCREEN,
   IMG_PIPELINE_SCREEN,
-} from "../modules/Landing/image-urls";
+} from "../modules/Landing/image-urls"
+import { MadeFor } from "../modules/Landing/made-for"
+import { Nav } from "../modules/Landing/nav"
+import { Pricing } from "../modules/Landing/pricing"
+import { SplitSection } from "../modules/Landing/split-section"
+import { StatsSection } from "../modules/Landing/stats-section"
 
 export function LandingPage() {
   return (
@@ -60,7 +60,6 @@ export function LandingPage() {
         ]}
         img={IMG_PIPELINE_SCREEN}
         imgAlt="Sponsorship pipeline"
-
       />
 
       <SplitSection
@@ -82,5 +81,5 @@ export function LandingPage() {
       <Pricing />
       <FooterCTA />
     </div>
-  );
+  )
 }

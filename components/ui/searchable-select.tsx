@@ -1,11 +1,9 @@
 "use client"
 
+import { Search01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import type * as SelectPrimitive from "@radix-ui/react-select"
 import * as React from "react"
-import * as SelectPrimitive from "@radix-ui/react-select"
-
-import { cn } from "@/lib/utils"
-import { MagnifyingGlassIcon as SearchIcon } from "@phosphor-icons/react"
-
 import {
   Select,
   SelectContent,
@@ -18,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
 export interface SearchableSelectOption {
   value: string
@@ -26,7 +25,10 @@ export interface SearchableSelectOption {
 }
 
 interface SearchableSelectProps
-  extends Omit<React.ComponentProps<typeof SelectPrimitive.Root>, "onValueChange"> {
+  extends Omit<
+    React.ComponentProps<typeof SelectPrimitive.Root>,
+    "onValueChange"
+  > {
   options: SearchableSelectOption[]
   value: string
   onValueChange: (value: string) => void
@@ -96,14 +98,17 @@ export function SearchableSelect({
       {...props}
     >
       <SelectTrigger
-        className={cn("w-full data-placeholder:text-muted-foreground", triggerClassName)}
+        className={cn(
+          "w-full data-placeholder:text-muted-foreground",
+          triggerClassName
+        )}
         aria-autocomplete="list"
       >
         <SelectValue
           placeholder={
-            selectedOption || renderValue
-              ? null
-              : <span data-placeholder>{placeholder}</span>
+            selectedOption || renderValue ? null : (
+              <span data-placeholder>{placeholder}</span>
+            )
           }
         />
       </SelectTrigger>
@@ -113,15 +118,17 @@ export function SearchableSelect({
       >
         <SelectGroup>
           <div className="relative px-2 py-1.5">
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4 pointer-events-none" />
+            <HugeiconsIcon
+              icon={Search01Icon}
+              className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+            />
             <input
               type="search"
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder={searchPlaceholder}
-              className="w-full h-8 pl-9 pr-3 rounded-md border border-input bg-background text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-8 w-full rounded-md border border-input bg-background pr-3 pl-9 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={disabled}
-              autoFocus
             />
           </div>
           <SelectSeparator className="mx-2 my-1" />

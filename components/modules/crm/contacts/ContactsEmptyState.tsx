@@ -8,11 +8,19 @@ type ContactsEmptyStateProps = {
   onCreate: () => void
 }
 
-export function ContactsEmptyState({ isSearch, status, onCreate }: ContactsEmptyStateProps) {
+export function ContactsEmptyState({
+  isSearch,
+  status,
+  onCreate,
+}: ContactsEmptyStateProps) {
   return (
     <CrmEmptyStateClient
       title={
-        isSearch ? "No contacts match your filters" : status === "archived" ? "No archived contacts" : "No contacts yet"
+        isSearch
+          ? "No contacts match your filters"
+          : status === "archived"
+            ? "No archived contacts"
+            : "No contacts yet"
       }
       description={
         isSearch

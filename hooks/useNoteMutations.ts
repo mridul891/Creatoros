@@ -2,8 +2,6 @@
 
 import { useState } from "react"
 import { toast } from "sonner"
-
-import { buildNoteFormData } from "@/lib/crm/notes/noteForm"
 import {
   archiveNoteAction,
   createNoteAction,
@@ -11,6 +9,7 @@ import {
   restoreNoteAction,
   updateNoteAction,
 } from "@/app/action/noteActions"
+import { buildNoteFormData } from "@/lib/crm/notes/noteForm"
 
 type UseNoteMutationsOptions = {
   onRefresh: () => void
@@ -20,7 +19,11 @@ export function useNoteMutations({ onRefresh }: UseNoteMutationsOptions) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isMutating, setIsMutating] = useState(false)
 
-  async function submitCreate(input: { dealId: string; title: string; content: string }) {
+  async function submitCreate(input: {
+    dealId: string
+    title: string
+    content: string
+  }) {
     setIsSubmitting(true)
     try {
       return await createNoteAction(buildNoteFormData(input))
@@ -29,7 +32,13 @@ export function useNoteMutations({ onRefresh }: UseNoteMutationsOptions) {
     }
   }
 
-  async function submitUpdate(input: { noteId: string; dealId: string; title: string; content: string; isPinned?: boolean }) {
+  async function submitUpdate(input: {
+    noteId: string
+    dealId: string
+    title: string
+    content: string
+    isPinned?: boolean
+  }) {
     setIsSubmitting(true)
     try {
       return await updateNoteAction(buildNoteFormData(input))

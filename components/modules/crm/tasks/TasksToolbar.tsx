@@ -1,10 +1,23 @@
 "use client"
 
-import { Plus } from "@phosphor-icons/react/dist/ssr"
+import { Add01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { TASK_ARCHIVE_FILTERS, TASK_DUE_DATE_FILTERS, TASK_PRIORITIES, TASK_SORT_OPTIONS, TASK_STATUSES } from "@/enums/task"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  TASK_ARCHIVE_FILTERS,
+  TASK_DUE_DATE_FILTERS,
+  TASK_PRIORITIES,
+  TASK_SORT_OPTIONS,
+  TASK_STATUSES,
+} from "@/enums/task"
 import { CrmSearchField } from "../shared"
 
 type TasksToolbarProps = {
@@ -58,9 +71,16 @@ export function TasksToolbar({
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="font-mono text-[11px] text-muted-foreground">{total} total tasks</div>
-        <Button type="button" className="h-9 cursor-pointer gap-2 px-4 text-[12px] font-semibold" onClick={onCreate} disabled={createDisabled}>
-          <Plus size={14} />
+        <div className="font-mono text-[11px] text-muted-foreground">
+          {total} total tasks
+        </div>
+        <Button
+          type="button"
+          className="h-9 cursor-pointer gap-2 px-4 font-semibold text-[12px]"
+          onClick={onCreate}
+          disabled={createDisabled}
+        >
+          <HugeiconsIcon icon={Add01Icon} size={14} />
           New Task
         </Button>
       </div>
@@ -75,21 +95,25 @@ export function TasksToolbar({
         />
 
         <Select value={status} onValueChange={onStatusChange}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[165px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[165px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
             {TASK_STATUSES.map((item) => (
               <SelectItem key={item} value={item}>
-                {item === "InProgress" ? "In Progress" : item === "InReview" ? "In Review" : item}
+                {item === "InProgress"
+                  ? "In Progress"
+                  : item === "InReview"
+                    ? "In Review"
+                    : item}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select value={priority} onValueChange={onPriorityChange}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[145px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[145px]">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -102,8 +126,13 @@ export function TasksToolbar({
           </SelectContent>
         </Select>
 
-        <Select value={archive} onValueChange={(value) => onArchiveChange(value as "active" | "archived")}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[135px]">
+        <Select
+          value={archive}
+          onValueChange={(value) =>
+            onArchiveChange(value as "active" | "archived")
+          }
+        >
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[135px]">
             <SelectValue placeholder="Archive" />
           </SelectTrigger>
           <SelectContent>
@@ -115,8 +144,13 @@ export function TasksToolbar({
           </SelectContent>
         </Select>
 
-        <Select value={dueDate} onValueChange={(value) => onDueDateChange(value as "all" | "upcoming" | "overdue" | "none")}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[165px]">
+        <Select
+          value={dueDate}
+          onValueChange={(value) =>
+            onDueDateChange(value as "all" | "upcoming" | "overdue" | "none")
+          }
+        >
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[165px]">
             <SelectValue placeholder="Due date" />
           </SelectTrigger>
           <SelectContent>
@@ -129,7 +163,7 @@ export function TasksToolbar({
         </Select>
 
         <Select value={sort} onValueChange={onSortChange}>
-          <SelectTrigger className="h-10 w-full border-border bg-card text-xs text-muted-foreground xl:w-[175px]">
+          <SelectTrigger className="h-10 w-full border-border bg-card text-muted-foreground text-xs xl:w-[175px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>

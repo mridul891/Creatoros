@@ -1,6 +1,7 @@
 "use client"
 
-import { Warning } from "@phosphor-icons/react/dist/ssr"
+import { Alert02Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import {
   AlertDialog,
@@ -38,9 +39,11 @@ export function CrmConfirmDialog({
       <AlertDialogContent className="border-border bg-card text-muted-foreground">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-[rgba(232,64,42,0.14)] text-[#E8402A]">
-            <Warning />
+            <HugeiconsIcon icon={Alert02Icon} />
           </AlertDialogMedia>
-          <AlertDialogTitle className="text-foreground">{title}</AlertDialogTitle>
+          <AlertDialogTitle className="text-foreground">
+            {title}
+          </AlertDialogTitle>
           <AlertDialogDescription className="text-muted-foreground">
             {description}
           </AlertDialogDescription>

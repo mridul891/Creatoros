@@ -1,4 +1,10 @@
-import type { TaskArchiveFilter, TaskDueDateFilter, TaskPriority, TaskSortOption, TaskStatus } from "@/enums/task"
+import type {
+  TaskArchiveFilter,
+  TaskDueDateFilter,
+  TaskPriority,
+  TaskSortOption,
+  TaskStatus,
+} from "@/enums/task"
 
 export interface TaskListItem {
   id: string

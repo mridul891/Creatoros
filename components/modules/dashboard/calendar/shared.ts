@@ -1,57 +1,54 @@
 import {
-  CheckCircle,
-  Clock,
-  InstagramLogo,
-  PencilSimple,
-  YoutubeLogo,
-} from "@phosphor-icons/react/dist/ssr";
-import type { Icon } from "@phosphor-icons/react/dist/lib/types";
+  CheckmarkCircle02Icon,
+  Clock01Icon,
+  Edit02Icon,
+  InstagramIcon,
+  YoutubeIcon,
+} from "@hugeicons/core-free-icons"
+import type { IconSvgElement } from "@hugeicons/react"
 import {
   PostStatus as PostStatusEnum,
-  PostType as PostTypeEnum,
+  type PostType as PostTypeEnum,
   SocialPlatform,
-} from "@/enums/post";
-import type {
-  Post,
-  PostModalState,
-} from "@/types/post";
+} from "@/enums/post"
+import type { Post, PostModalState } from "@/types/post"
 
-export type PostStatus = PostStatusEnum;
-export type PostType = PostTypeEnum;
-export type Platform = SocialPlatform;
-export type ModalState = PostModalState;
-export type { Post };
+export type PostStatus = PostStatusEnum
+export type PostType = PostTypeEnum
+export type Platform = SocialPlatform
+export type ModalState = PostModalState
+export type { Post }
 
-export const MONO_FONT = "font-mono";
-export const INPUT_CLASS = `w-full box-border rounded-md border border-border bg-muted px-3.5 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground outline-none transition-colors duration-150 focus:border-primary/40 focus:ring-2 focus:ring-primary/15`;
+export const MONO_FONT = "font-mono"
+export const INPUT_CLASS = `w-full box-border rounded-md border border-border bg-muted px-3.5 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground outline-none transition-colors duration-150 focus:border-primary/40 focus:ring-2 focus:ring-primary/15`
 
 export const PLATFORM_CFG: Record<
   Platform,
-  { icon: Icon; color: string; pillBg: string; label: string }
+  { icon: IconSvgElement; color: string; pillBg: string; label: string }
 > = {
   [SocialPlatform.INSTAGRAM]: {
-    icon: InstagramLogo,
+    icon: InstagramIcon,
     color: "#E1306C",
     pillBg: "bg-[#E1306C]/10",
     label: "Instagram",
   },
   [SocialPlatform.YOUTUBE]: {
-    icon: YoutubeLogo,
+    icon: YoutubeIcon,
     color: "var(--foreground)",
     pillBg: "bg-foreground/10",
     label: "YouTube",
   },
-};
+}
 
 export const STATUS_CFG: Record<
   PostStatus,
   {
-    color: string;
-    textClass: string;
-    bgClass: string;
-    borderClass: string;
-    label: string;
-    icon: Icon;
+    color: string
+    textClass: string
+    bgClass: string
+    borderClass: string
+    label: string
+    icon: IconSvgElement
   }
 > = {
   [PostStatusEnum.PUBLISHED]: {
@@ -60,7 +57,7 @@ export const STATUS_CFG: Record<
     bgClass: "bg-[#16a34a]/10",
     borderClass: "border-[#16a34a]/25",
     label: "Published",
-    icon: CheckCircle,
+    icon: CheckmarkCircle02Icon,
   },
   [PostStatusEnum.SCHEDULED]: {
     color: "var(--primary)",
@@ -68,7 +65,7 @@ export const STATUS_CFG: Record<
     bgClass: "bg-primary/10",
     borderClass: "border-primary/25",
     label: "Scheduled",
-    icon: Clock,
+    icon: Clock01Icon,
   },
   [PostStatusEnum.DRAFT]: {
     color: "var(--muted-foreground)",
@@ -76,6 +73,6 @@ export const STATUS_CFG: Record<
     bgClass: "bg-muted-foreground/10",
     borderClass: "border-muted-foreground/25",
     label: "Draft",
-    icon: PencilSimple,
+    icon: Edit02Icon,
   },
-};
+}

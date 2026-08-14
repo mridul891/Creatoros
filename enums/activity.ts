@@ -49,5 +49,6 @@ export const ACTIVITY_TYPE = {
 export const ACTIVITY_ENTITY_TYPES = Object.values(ACTIVITY_ENTITY)
 export const ACTIVITY_TYPES = Object.values(ACTIVITY_TYPE)
 
-export type ActivityEntityType = (typeof ACTIVITY_ENTITY)[keyof typeof ACTIVITY_ENTITY]
+export type ActivityEntityType =
+  (typeof ACTIVITY_ENTITY)[keyof typeof ACTIVITY_ENTITY]
 export type ActivityType = (typeof ACTIVITY_TYPE)[keyof typeof ACTIVITY_TYPE]

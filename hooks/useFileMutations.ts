@@ -3,7 +3,13 @@
 import { useState } from "react"
 import { toast } from "sonner"
 
-import { archiveFileAction, createFileAction, deleteFileAction, renameFileAction, restoreFileAction } from "@/app/action/fileActions"
+import {
+  archiveFileAction,
+  createFileAction,
+  deleteFileAction,
+  renameFileAction,
+  restoreFileAction,
+} from "@/app/action/fileActions"
 
 type UseFileMutationsOptions = {
   onRefresh: () => void
@@ -28,7 +34,8 @@ function toFormData(input: FileMutationPayload, fileId?: string) {
   formData.set("storagePath", input.storagePath)
   formData.set("category", input.category)
   if (input.mimeType) formData.set("mimeType", input.mimeType)
-  if (typeof input.sizeBytes === "number") formData.set("sizeBytes", String(input.sizeBytes))
+  if (typeof input.sizeBytes === "number")
+    formData.set("sizeBytes", String(input.sizeBytes))
   return formData
 }
 

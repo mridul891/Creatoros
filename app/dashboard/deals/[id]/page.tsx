@@ -2,13 +2,19 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { listDealActivitiesAction } from "@/app/action/activityActions"
-import { getDealAction, listDealFormOptionsAction } from "@/app/action/dealActions"
+import {
+  getDealAction,
+  listDealFormOptionsAction,
+} from "@/app/action/dealActions"
 import { listDealDeliverablesAction } from "@/app/action/deliverableActions"
 import { listDealFilesAction } from "@/app/action/fileActions"
 import { listDealNotesAction } from "@/app/action/noteActions"
 import { listDealTasksAction } from "@/app/action/taskActions"
 import { DealDetailPageServer } from "@/components/modules/crm/deals/DealDetailPageServer"
-import { isDealWorkspaceTab, type DealWorkspaceTab } from "@/lib/crm/deals/dealWorkspaceTabs"
+import {
+  type DealWorkspaceTab,
+  isDealWorkspaceTab,
+} from "@/lib/crm/deals/dealWorkspaceTabs"
 
 type DashboardDealDetailPageProps = {
   params: Promise<{
@@ -19,7 +25,9 @@ type DashboardDealDetailPageProps = {
   }>
 }
 
-export async function generateMetadata({ params }: DashboardDealDetailPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: DashboardDealDetailPageProps): Promise<Metadata> {
   const { id } = await params
   const dealResult = await getDealAction(id)
   if (!dealResult.success) {
@@ -30,19 +38,42 @@ export async function generateMetadata({ params }: DashboardDealDetailPageProps)
   }
 }
 
-export default async function DashboardDealDetailPage({ params, searchParams }: DashboardDealDetailPageProps) {
+export default async function DashboardDealDetailPage({
+  params,
+  searchParams,
+}: DashboardDealDetailPageProps) {
   const { id } = await params
   const search = await searchParams
-  const initialTab: DealWorkspaceTab = isDealWorkspaceTab(search.tab) ? search.tab : "overview"
+  const initialTab: DealWorkspaceTab = isDealWorkspaceTab(search.tab)
+    ? search.tab
+    : "overview"
 
-  const [dealResult, optionsResult, activitiesResult, tasksResult, deliverablesResult, notesResult, filesResult] = await Promise.all([
+  const [
+    dealResult,
+    optionsResult,
+    activitiesResult,
+    tasksResult,
+    deliverablesResult,
+    notesResult,
+    filesResult,
+  ] = await Promise.all([
     getDealAction(id),
     listDealFormOptionsAction(),
-    initialTab === "activity" ? listDealActivitiesAction({ dealId: id }) : Promise.resolve(null),
-    initialTab === "tasks" ? listDealTasksAction({ dealId: id }) : Promise.resolve(null),
-    initialTab === "deliverables" ? listDealDeliverablesAction({ dealId: id }) : Promise.resolve(null),
-    initialTab === "notes" ? listDealNotesAction({ dealId: id }) : Promise.resolve(null),
-    initialTab === "files" ? listDealFilesAction({ dealId: id }) : Promise.resolve(null),
+    initialTab === "activity"
+      ? listDealActivitiesAction({ dealId: id })
+      : Promise.resolve(null),
+    initialTab === "tasks"
+      ? listDealTasksAction({ dealId: id })
+      : Promise.resolve(null),
+    initialTab === "deliverables"
+      ? listDealDeliverablesAction({ dealId: id })
+      : Promise.resolve(null),
+    initialTab === "notes"
+      ? listDealNotesAction({ dealId: id })
+      : Promise.resolve(null),
+    initialTab === "files"
+      ? listDealFilesAction({ dealId: id })
+      : Promise.resolve(null),
   ])
 
   if (!dealResult.success || !optionsResult.success || !optionsResult.data) {
@@ -56,7 +87,8 @@ export default async function DashboardDealDetailPage({ params, searchParams }: 
       activityError={
         !activitiesResult || activitiesResult.success
           ? undefined
-          : activitiesResult.message ?? "Could not load deal timeline activities."
+          : (activitiesResult.message ??
+            "Could not load deal timeline activities.")
       }
       activityData={
         activitiesResult?.success && activitiesResult.data
@@ -75,8 +107,14 @@ export default async function DashboardDealDetailPage({ params, searchParams }: 
             }
       }
       brands={optionsResult.data.brands}
-      contacts={optionsResult.data.contactsByBrand[dealResult.data.brandId] ?? []}
-      tasksError={!tasksResult || tasksResult.success ? undefined : tasksResult.message ?? "Could not load deal tasks."}
+      contacts={
+        optionsResult.data.contactsByBrand[dealResult.data.brandId] ?? []
+      }
+      tasksError={
+        !tasksResult || tasksResult.success
+          ? undefined
+          : (tasksResult.message ?? "Could not load deal tasks.")
+      }
       tasksData={
         tasksResult?.success && tasksResult.data
           ? tasksResult.data
@@ -106,7 +144,7 @@ export default async function DashboardDealDetailPage({ params, searchParams }: 
       deliverablesError={
         !deliverablesResult || deliverablesResult.success
           ? undefined
-          : deliverablesResult.message ?? "Could not load deal deliverables."
+          : (deliverablesResult.message ?? "Could not load deal deliverables.")
       }
       deliverablesData={
         deliverablesResult?.success && deliverablesResult.data
@@ -134,7 +172,11 @@ export default async function DashboardDealDetailPage({ params, searchParams }: 
               },
             }
       }
-      notesError={!notesResult || notesResult.success ? undefined : notesResult.message ?? "Could not load deal notes."}
+      notesError={
+        !notesResult || notesResult.success
+          ? undefined
+          : (notesResult.message ?? "Could not load deal notes.")
+      }
       notesData={
         notesResult?.success && notesResult.data
           ? notesResult.data
@@ -152,7 +194,11 @@ export default async function DashboardDealDetailPage({ params, searchParams }: 
               },
             }
       }
-      filesError={!filesResult || filesResult.success ? undefined : filesResult.message ?? "Could not load deal files."}
+      filesError={
+        !filesResult || filesResult.success
+          ? undefined
+          : (filesResult.message ?? "Could not load deal files.")
+      }
       filesData={
         filesResult?.success && filesResult.data
           ? filesResult.data

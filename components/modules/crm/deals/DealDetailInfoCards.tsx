@@ -1,5 +1,11 @@
-import { Calendar, CurrencyDollar, FileText, UserCircle } from "@phosphor-icons/react/dist/ssr"
+import {
+  Calendar03Icon,
+  DollarCircleIcon,
+  File02Icon,
+  UserCircle02Icon,
+} from "@hugeicons/core-free-icons"
 
+import { HugeiconsIcon } from "@hugeicons/react"
 import { Card } from "@/components/ui/card"
 import type { DealDetail } from "@/types/deal"
 
@@ -31,30 +37,38 @@ export function DealDetailInfoCards({ deal }: DealDetailInfoCardsProps) {
   return (
     <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <Card className="rounded-[14px] border-border bg-muted p-4">
-        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Deal Value</p>
-        <p className="mt-2 flex items-center gap-1 text-[18px] font-bold text-foreground">
-          <CurrencyDollar size={15} />
+        <p className="font-mono text-[10px] text-muted-foreground tracking-wide">
+          Deal Value
+        </p>
+        <p className="mt-2 flex items-center gap-1 font-bold text-[18px] text-foreground">
+          <HugeiconsIcon icon={DollarCircleIcon} size={15} />
           {deal.currency} {formatDealValue(deal.dealValue)}
         </p>
       </Card>
       <Card className="rounded-[14px] border-border bg-muted p-4">
-        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Primary Contact</p>
-        <p className="mt-2 flex items-center gap-1 text-[14px] font-semibold text-foreground">
-          <UserCircle size={14} />
+        <p className="font-mono text-[10px] text-muted-foreground tracking-wide">
+          Primary Contact
+        </p>
+        <p className="mt-2 flex items-center gap-1 font-semibold text-[14px] text-foreground">
+          <HugeiconsIcon icon={UserCircle02Icon} size={14} />
           {deal.contactName ?? "No contact linked"}
         </p>
       </Card>
       <Card className="rounded-[14px] border-border bg-muted p-4">
-        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Timeline</p>
+        <p className="font-mono text-[10px] text-muted-foreground tracking-wide">
+          Timeline
+        </p>
         <p className="mt-2 flex items-center gap-1 text-[13px] text-muted-foreground">
-          <Calendar size={14} />
+          <HugeiconsIcon icon={Calendar03Icon} size={14} />
           {formatDate(deal.startDate)} - {formatDate(deal.dueDate)}
         </p>
       </Card>
       <Card className="rounded-[14px] border-border bg-muted p-4">
-        <p className="font-mono text-[10px] tracking-wide text-muted-foreground">Payment Terms</p>
+        <p className="font-mono text-[10px] text-muted-foreground tracking-wide">
+          Payment Terms
+        </p>
         <p className="mt-2 flex items-start gap-1 text-[13px] text-muted-foreground">
-          <FileText size={14} className="mt-0.5" />
+          <HugeiconsIcon icon={File02Icon} size={14} className="mt-0.5" />
           <span>{deal.paymentTerms ?? "Not specified"}</span>
         </p>
       </Card>

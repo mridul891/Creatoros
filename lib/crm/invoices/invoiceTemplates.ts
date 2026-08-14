@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client"
 
-export const DEFAULT_DELIVERABLE_INVOICE_TEMPLATE_KEY = "campaign-deliverable-default"
+export const DEFAULT_DELIVERABLE_INVOICE_TEMPLATE_KEY =
+  "campaign-deliverable-default"
 
 type BuildDeliverableInvoiceMetadataInput = {
   deliverableId: string
@@ -20,11 +21,18 @@ type BuildDeliverableInvoiceMetadataInput = {
   publishedUrl: string | null
 }
 
-export function buildDeliverableInvoiceDescription(input: Pick<BuildDeliverableInvoiceMetadataInput, "campaignName" | "platform" | "deliverableType">) {
+export function buildDeliverableInvoiceDescription(
+  input: Pick<
+    BuildDeliverableInvoiceMetadataInput,
+    "campaignName" | "platform" | "deliverableType"
+  >
+) {
   return `${input.campaignName}: ${input.platform} ${input.deliverableType}`
 }
 
-export function buildDeliverableInvoiceMetadata(input: BuildDeliverableInvoiceMetadataInput): Prisma.InputJsonObject {
+export function buildDeliverableInvoiceMetadata(
+  input: BuildDeliverableInvoiceMetadataInput
+): Prisma.InputJsonObject {
   const description = buildDeliverableInvoiceDescription(input)
 
   return {

@@ -3,8 +3,15 @@
 import { revalidatePath } from "next/cache"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import { createInvoiceFromDeliverable, InvoiceServiceError, listUserInvoices } from "@/lib/crm/invoices/invoiceService"
-import { createInvoiceFromDeliverableSchema, invoiceListSchema } from "@/lib/crm/invoices/invoiceValidation"
+import {
+  createInvoiceFromDeliverable,
+  InvoiceServiceError,
+  listUserInvoices,
+} from "@/lib/crm/invoices/invoiceService"
+import {
+  createInvoiceFromDeliverableSchema,
+  invoiceListSchema,
+} from "@/lib/crm/invoices/invoiceValidation"
 import type { InvoiceListData, InvoiceListItem } from "@/types/invoice"
 
 export type InvoiceMutationResult = {
@@ -27,7 +34,10 @@ function revalidateInvoicePaths(dealId?: string | null) {
   }
 }
 
-function mapInvoiceServiceError(error: unknown, fallbackMessage: string): InvoiceMutationResult {
+function mapInvoiceServiceError(
+  error: unknown,
+  fallbackMessage: string
+): InvoiceMutationResult {
   if (error instanceof InvoiceServiceError) {
     return {
       success: false,
@@ -41,7 +51,9 @@ function mapInvoiceServiceError(error: unknown, fallbackMessage: string): Invoic
   }
 }
 
-export async function createInvoiceFromDeliverableAction(deliverableId: string): Promise<InvoiceMutationResult> {
+export async function createInvoiceFromDeliverableAction(
+  deliverableId: string
+): Promise<InvoiceMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = createInvoiceFromDeliverableSchema.safeParse({ deliverableId })
 
@@ -53,7 +65,10 @@ export async function createInvoiceFromDeliverableAction(deliverableId: string):
   }
 
   try {
-    const data = await createInvoiceFromDeliverable(user.id, parsed.data.deliverableId)
+    const data = await createInvoiceFromDeliverable(
+      user.id,
+      parsed.data.deliverableId
+    )
     revalidateInvoicePaths(data.dealId)
     return {
       success: true,
@@ -61,12 +76,21 @@ export async function createInvoiceFromDeliverableAction(deliverableId: string):
       data,
     }
   } catch (error) {
-    console.error("invoices.create_from_deliverable_failed", { userId: user.id, deliverableId: parsed.data.deliverableId, error })
-    return mapInvoiceServiceError(error, "We could not create this invoice. Please try again.")
+    console.error("invoices.create_from_deliverable_failed", {
+      userId: user.id,
+      deliverableId: parsed.data.deliverableId,
+      error,
+    })
+    return mapInvoiceServiceError(
+      error,
+      "We could not create this invoice. Please try again."
+    )
   }
 }
 
-export async function listInvoicesAction(input: { search?: string; status?: string } = {}): Promise<InvoiceListResult> {
+export async function listInvoicesAction(
+  input: { search?: string; status?: string } = {}
+): Promise<InvoiceListResult> {
   const user = await requireOnboardedUser()
   const parsed = invoiceListSchema.safeParse(input)
 
@@ -84,7 +108,11 @@ export async function listInvoicesAction(input: { search?: string; status?: stri
       data,
     }
   } catch (error) {
-    console.error("invoices.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("invoices.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load invoices. Please try again.",

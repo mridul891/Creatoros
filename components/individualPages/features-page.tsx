@@ -1,16 +1,20 @@
-import { Robot, Calendar, Handshake } from "@phosphor-icons/react/dist/ssr";
-
-import { MarketingPageShell } from "./marketing-page-shell";
-import { SplitSection } from "../modules/Landing/split-section";
-import { SubpageHero } from "../modules/Landing/subpage-hero";
-import { ValuePillars } from "../modules/Landing/value-pillars";
-import { DIM } from "../modules/Landing/constants";
+import {
+  Agreement02Icon,
+  Calendar01Icon,
+  Robot01Icon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { DIM } from "../modules/Landing/constants"
 import {
   IMG_FEATURE_CALENDAR,
   IMG_FEATURE_DASHBOARD,
   IMG_INVOICING_SCREEN,
   IMG_PIPELINE_SCREEN,
-} from "../modules/Landing/image-urls";
+} from "../modules/Landing/image-urls"
+import { SplitSection } from "../modules/Landing/split-section"
+import { SubpageHero } from "../modules/Landing/subpage-hero"
+import { ValuePillars } from "../modules/Landing/value-pillars"
+import { MarketingPageShell } from "./marketing-page-shell"
 
 export function FeaturesPage() {
   return (
@@ -29,17 +33,19 @@ export function FeaturesPage() {
         body="From planning and publishing to sponsorship operations and invoicing, each feature is built to reduce operational drag and improve consistency."
         pillars={[
           {
-            icon: <Calendar size={15} color={DIM} />,
+            icon: <HugeiconsIcon icon={Calendar01Icon} size={15} color={DIM} />,
             title: "Planning & publishing",
             body: "Align content strategy with campaign timelines using a shared calendar and clear statuses.",
           },
           {
-            icon: <Handshake size={15} color={DIM} />,
+            icon: (
+              <HugeiconsIcon icon={Agreement02Icon} size={15} color={DIM} />
+            ),
             title: "Deal execution",
             body: "Manage partnership conversations, approvals, deliverables, and payout readiness in one pipeline.",
           },
           {
-            icon: <Robot size={15} color={DIM} />,
+            icon: <HugeiconsIcon icon={Robot01Icon} size={15} color={DIM} />,
             title: "AI assistance",
             body: "Use automated insights and recommendations to improve performance without heavy manual analysis.",
           },
@@ -103,7 +109,6 @@ export function FeaturesPage() {
         imgAlt="Feature: invoicing"
         reverse
       />
-
     </MarketingPageShell>
-  );
+  )
 }

@@ -4,22 +4,38 @@ import { useCallback, useEffect, useRef, useState } from "react"
 
 import { listDealDeliverablesAction } from "@/app/action/deliverableActions"
 import type { DeliverableStatus } from "@/enums/deliverable"
-import type { DeliverableListData, DeliverableListItem } from "@/types/deliverable"
+import type {
+  DeliverableListData,
+  DeliverableListItem,
+} from "@/types/deliverable"
 
 type UseDealDeliverablesOptions = {
   dealId: string
   initialData: DeliverableListData
 }
 
-export function useDealDeliverables({ dealId, initialData }: UseDealDeliverablesOptions) {
-  const [deliverables, setDeliverables] = useState<DeliverableListItem[]>(initialData.items)
+export function useDealDeliverables({
+  dealId,
+  initialData,
+}: UseDealDeliverablesOptions) {
+  const [deliverables, setDeliverables] = useState<DeliverableListItem[]>(
+    initialData.items
+  )
   const [pagination, setPagination] = useState(initialData.pagination)
   const [summary, setSummary] = useState(initialData.summary)
   const [search, setSearch] = useState(initialData.filters.search)
-  const [status, setStatus] = useState<DeliverableStatus | "all">(initialData.filters.status ?? "all")
-  const [platform, setPlatform] = useState(initialData.filters.platform ?? "all")
-  const [archive, setArchive] = useState<"active" | "archived">(initialData.filters.archive)
-  const [sort, setSort] = useState<"order" | "dueDate" | "updatedAt" | "status">(initialData.filters.sort)
+  const [status, setStatus] = useState<DeliverableStatus | "all">(
+    initialData.filters.status ?? "all"
+  )
+  const [platform, setPlatform] = useState(
+    initialData.filters.platform ?? "all"
+  )
+  const [archive, setArchive] = useState<"active" | "archived">(
+    initialData.filters.archive
+  )
+  const [sort, setSort] = useState<
+    "order" | "dueDate" | "updatedAt" | "status"
+  >(initialData.filters.sort)
   const [isLoading, setIsLoading] = useState(false)
   const [loadError, setLoadError] = useState("")
   const hasHydratedRef = useRef(false)
@@ -37,7 +53,7 @@ export function useDealDeliverables({ dealId, initialData }: UseDealDeliverables
     setLoadError("")
     setIsLoading(false)
     hasHydratedRef.current = false
-  }, [dealId, initialData])
+  }, [initialData])
 
   const refetch = useCallback(
     async (nextPage = 1) => {
@@ -63,7 +79,7 @@ export function useDealDeliverables({ dealId, initialData }: UseDealDeliverables
       setPagination(result.data.pagination)
       setSummary(result.data.summary)
     },
-    [archive, dealId, platform, search, sort, status],
+    [archive, dealId, platform, search, sort, status]
   )
 
   useEffect(() => {
@@ -85,7 +101,7 @@ export function useDealDeliverables({ dealId, initialData }: UseDealDeliverables
         clearTimeout(debounceRef.current)
       }
     }
-  }, [archive, platform, refetch, search, sort, status])
+  }, [refetch])
 
   return {
     deliverables,

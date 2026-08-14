@@ -1,7 +1,6 @@
 import throttle from "lodash.throttle"
-
-import { useUnmount } from "@/hooks/use-unmount"
 import { useMemo } from "react"
+import { useUnmount } from "@/hooks/use-unmount"
 
 interface ThrottleSettings {
   leading?: boolean | undefined
@@ -21,8 +20,7 @@ const defaultOptions: ThrottleSettings = {
  * @param dependencies The dependencies to watch for changes
  * @param options The throttle options
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useThrottledCallback<T extends (...args: any[]) => any>(
+export function useThrottledCallback<T extends (...args: unknown[]) => unknown>(
   fn: T,
   wait = 250,
   dependencies: React.DependencyList = [],
@@ -34,7 +32,7 @@ export function useThrottledCallback<T extends (...args: any[]) => any>(
 } {
   const handler = useMemo(
     () => throttle<T>(fn, wait, options),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // biome-ignore lint/correctness/useExhaustiveDependencies: This hook intentionally accepts a caller-provided dependency array.
     dependencies
   )
 

@@ -1,5 +1,5 @@
-import { ProductPage } from "@/components/individualPages/product-page";
-import type { Metadata } from "next";
+import type { Metadata } from "next"
+import { ProductPage } from "@/components/individualPages/product-page"
 
 export const metadata: Metadata = {
   title: "Product",
@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/product",
   },
-};
+}
 
 export default function ProductRoutePage() {
-  return <ProductPage />;
+  return <ProductPage />
 }

@@ -1,10 +1,9 @@
 "use server"
 
 import { z } from "zod"
-
-import { prisma } from "@/lib/prisma"
-import { requireUser } from "@/lib/auth/require-user"
 import { CREATOR_TYPES } from "@/enums/creators"
+import { requireUser } from "@/lib/auth/require-user"
+import { prisma } from "@/lib/prisma"
 
 const HANDLE_REGEX = /^[A-Za-z0-9._]{1,30}$/
 
@@ -68,7 +67,9 @@ function normalizeHandle(value: string | undefined) {
   return value.replace(/^@+/, "")
 }
 
-function getFieldErrors(error: z.ZodError): Partial<Record<CreatorOnboardingField, string>> {
+function getFieldErrors(
+  error: z.ZodError
+): Partial<Record<CreatorOnboardingField, string>> {
   const fields: Partial<Record<CreatorOnboardingField, string>> = {}
   for (const issue of error.issues) {
     const path = issue.path[0]
@@ -93,8 +94,12 @@ export async function saveCreatorOnboarding(
   const parsed = creatorOnboardingSchema.safeParse({
     creatorType: formData.get("creatorType"),
     niche: formData.get("niche"),
-    instagramHandle: normalizeHandle(sanitizeOptionalString(formData.get("instagramHandle"))),
-    youtubeHandle: normalizeHandle(sanitizeOptionalString(formData.get("youtubeHandle"))),
+    instagramHandle: normalizeHandle(
+      sanitizeOptionalString(formData.get("instagramHandle"))
+    ),
+    youtubeHandle: normalizeHandle(
+      sanitizeOptionalString(formData.get("youtubeHandle"))
+    ),
     bio: sanitizeOptionalString(formData.get("bio")),
   })
 

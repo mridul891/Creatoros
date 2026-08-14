@@ -22,8 +22,16 @@ export const contactSchema = z.object({
     .regex(PHONE_REGEX, "Please enter a valid phone number.")
     .max(30, "Phone number cannot exceed 30 characters.")
     .optional(),
-  jobTitle: z.string().trim().max(120, "Position cannot exceed 120 characters.").optional(),
-  notes: z.string().trim().max(5000, "Notes cannot exceed 5000 characters.").optional(),
+  jobTitle: z
+    .string()
+    .trim()
+    .max(120, "Position cannot exceed 120 characters.")
+    .optional(),
+  notes: z
+    .string()
+    .trim()
+    .max(5000, "Notes cannot exceed 5000 characters.")
+    .optional(),
   isPrimary: z.boolean().default(false),
 })
 

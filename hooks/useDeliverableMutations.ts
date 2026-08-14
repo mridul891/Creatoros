@@ -10,13 +10,18 @@ import {
   restoreDeliverableAction,
   updateDeliverableAction,
 } from "@/app/action/deliverableActions"
-import { buildDeliverableFormData, type DeliverableFormValues } from "@/lib/crm/deliverables/deliverableForm"
+import {
+  buildDeliverableFormData,
+  type DeliverableFormValues,
+} from "@/lib/crm/deliverables/deliverableForm"
 
 type UseDeliverableMutationsOptions = {
   onRefresh: () => void
 }
 
-export function useDeliverableMutations({ onRefresh }: UseDeliverableMutationsOptions) {
+export function useDeliverableMutations({
+  onRefresh,
+}: UseDeliverableMutationsOptions) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isMutating, setIsMutating] = useState(false)
 
@@ -29,10 +34,15 @@ export function useDeliverableMutations({ onRefresh }: UseDeliverableMutationsOp
     }
   }
 
-  async function submitUpdate(deliverableId: string, values: DeliverableFormValues) {
+  async function submitUpdate(
+    deliverableId: string,
+    values: DeliverableFormValues
+  ) {
     setIsSubmitting(true)
     try {
-      return await updateDeliverableAction(buildDeliverableFormData(values, deliverableId))
+      return await updateDeliverableAction(
+        buildDeliverableFormData(values, deliverableId)
+      )
     } finally {
       setIsSubmitting(false)
     }

@@ -2,17 +2,8 @@
 
 import { revalidatePath } from "next/cache"
 
-import { DEAL_STAGES } from "@/enums/deal"
+import type { DEAL_STAGES } from "@/enums/deal"
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import {
-  dealArchiveSchema,
-  dealCreateUpdateSchema,
-  dealListSchema,
-  dealPriorityUpdateSchema,
-  dealRestoreSchema,
-  dealStageUpdateSchema,
-  dealUpdateSchema,
-} from "@/lib/crm/deals/dealValidation"
 import {
   archiveDeal,
   createDeal,
@@ -27,6 +18,15 @@ import {
   updateDealPriority,
   updateDealStage,
 } from "@/lib/crm/deals/dealService"
+import {
+  dealArchiveSchema,
+  dealCreateUpdateSchema,
+  dealListSchema,
+  dealPriorityUpdateSchema,
+  dealRestoreSchema,
+  dealStageUpdateSchema,
+  dealUpdateSchema,
+} from "@/lib/crm/deals/dealValidation"
 import { getFieldErrors } from "@/lib/crm/shared/action"
 import { sanitizeOptionalString } from "@/lib/crm/shared/form"
 import type { DealDetail, DealField, DealListData } from "@/types/deal"
@@ -68,7 +68,10 @@ type DealGetResult =
       message: string
     }
 
-function mapDealServiceError(error: unknown, fallbackMessage: string): DealMutationResult {
+function mapDealServiceError(
+  error: unknown,
+  fallbackMessage: string
+): DealMutationResult {
   if (error instanceof DealServiceError) {
     if (error.code === "DUPLICATE" && error.field) {
       return {
@@ -121,11 +124,17 @@ function parseDealMutationFormData(formData: FormData) {
     priority: formData.get("priority"),
     startDate: sanitizeOptionalString(formData.get("startDate")),
     dueDate: sanitizeOptionalString(formData.get("dueDate")),
-    expectedCloseDate: sanitizeOptionalString(formData.get("expectedCloseDate")),
+    expectedCloseDate: sanitizeOptionalString(
+      formData.get("expectedCloseDate")
+    ),
     paymentDueDate: sanitizeOptionalString(formData.get("paymentDueDate")),
     paymentTerms: sanitizeOptionalString(formData.get("paymentTerms")),
-    campaignDescription: sanitizeOptionalString(formData.get("campaignDescription")),
-    deliverablesSummary: sanitizeOptionalString(formData.get("deliverablesSummary")),
+    campaignDescription: sanitizeOptionalString(
+      formData.get("campaignDescription")
+    ),
+    deliverablesSummary: sanitizeOptionalString(
+      formData.get("deliverablesSummary")
+    ),
     notes: sanitizeOptionalString(formData.get("notes")),
     source: sanitizeOptionalString(formData.get("source")),
     probability: sanitizeOptionalString(formData.get("probability")),
@@ -164,7 +173,11 @@ export async function listDealsAction(input?: {
       data,
     }
   } catch (error) {
-    console.error("deals.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("deals.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load your deals. Please try again.",
@@ -197,7 +210,11 @@ export async function getDealAction(dealId: string): Promise<DealGetResult> {
       }
     }
 
-    console.error("deals.get_failed", { userId: user.id, dealId: parsed.data.dealId, error })
+    console.error("deals.get_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      error,
+    })
     return {
       success: false,
       message: "We could not load this deal. Please try again.",
@@ -205,7 +222,9 @@ export async function getDealAction(dealId: string): Promise<DealGetResult> {
   }
 }
 
-export async function createDealAction(formData: FormData): Promise<DealMutationResult> {
+export async function createDealAction(
+  formData: FormData
+): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = parseDealMutationFormData(formData)
 
@@ -230,11 +249,16 @@ export async function createDealAction(formData: FormData): Promise<DealMutation
     }
   } catch (error) {
     console.error("deals.create_failed", { userId: user.id, error })
-    return mapDealServiceError(error, "We could not create this deal. Please try again.")
+    return mapDealServiceError(
+      error,
+      "We could not create this deal. Please try again."
+    )
   }
 }
 
-export async function updateDealAction(formData: FormData): Promise<DealMutationResult> {
+export async function updateDealAction(
+  formData: FormData
+): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = dealUpdateSchema.safeParse({
     dealId: formData.get("dealId"),
@@ -247,11 +271,17 @@ export async function updateDealAction(formData: FormData): Promise<DealMutation
     priority: formData.get("priority"),
     startDate: sanitizeOptionalString(formData.get("startDate")),
     dueDate: sanitizeOptionalString(formData.get("dueDate")),
-    expectedCloseDate: sanitizeOptionalString(formData.get("expectedCloseDate")),
+    expectedCloseDate: sanitizeOptionalString(
+      formData.get("expectedCloseDate")
+    ),
     paymentDueDate: sanitizeOptionalString(formData.get("paymentDueDate")),
     paymentTerms: sanitizeOptionalString(formData.get("paymentTerms")),
-    campaignDescription: sanitizeOptionalString(formData.get("campaignDescription")),
-    deliverablesSummary: sanitizeOptionalString(formData.get("deliverablesSummary")),
+    campaignDescription: sanitizeOptionalString(
+      formData.get("campaignDescription")
+    ),
+    deliverablesSummary: sanitizeOptionalString(
+      formData.get("deliverablesSummary")
+    ),
     notes: sanitizeOptionalString(formData.get("notes")),
     source: sanitizeOptionalString(formData.get("source")),
     probability: sanitizeOptionalString(formData.get("probability")),
@@ -276,12 +306,22 @@ export async function updateDealAction(formData: FormData): Promise<DealMutation
       data,
     }
   } catch (error) {
-    console.error("deals.update_failed", { userId: user.id, dealId: parsed.data.dealId, error })
-    return mapDealServiceError(error, "We could not update this deal. Please try again.")
+    console.error("deals.update_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      error,
+    })
+    return mapDealServiceError(
+      error,
+      "We could not update this deal. Please try again."
+    )
   }
 }
 
-export async function updateDealStageAction(dealId: string, stage: string): Promise<DealMutationResult> {
+export async function updateDealStageAction(
+  dealId: string,
+  stage: string
+): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = dealStageUpdateSchema.safeParse({ dealId, stage })
 
@@ -293,7 +333,11 @@ export async function updateDealStageAction(dealId: string, stage: string): Prom
   }
 
   try {
-    const data = await updateDealStage(user.id, parsed.data.dealId, parsed.data.stage)
+    const data = await updateDealStage(
+      user.id,
+      parsed.data.dealId,
+      parsed.data.stage
+    )
     revalidateDealPaths(parsed.data.dealId)
     return {
       success: true,
@@ -301,12 +345,23 @@ export async function updateDealStageAction(dealId: string, stage: string): Prom
       data,
     }
   } catch (error) {
-    console.error("deals.stage_update_failed", { userId: user.id, dealId: parsed.data.dealId, stage: parsed.data.stage, error })
-    return mapDealServiceError(error, "We could not update this deal stage. Please try again.")
+    console.error("deals.stage_update_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      stage: parsed.data.stage,
+      error,
+    })
+    return mapDealServiceError(
+      error,
+      "We could not update this deal stage. Please try again."
+    )
   }
 }
 
-export async function updateDealPriorityAction(dealId: string, priority: string): Promise<DealMutationResult> {
+export async function updateDealPriorityAction(
+  dealId: string,
+  priority: string
+): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = dealPriorityUpdateSchema.safeParse({ dealId, priority })
 
@@ -318,7 +373,11 @@ export async function updateDealPriorityAction(dealId: string, priority: string)
   }
 
   try {
-    const data = await updateDealPriority(user.id, parsed.data.dealId, parsed.data.priority)
+    const data = await updateDealPriority(
+      user.id,
+      parsed.data.dealId,
+      parsed.data.priority
+    )
     revalidateDealPaths(parsed.data.dealId)
     return {
       success: true,
@@ -332,11 +391,16 @@ export async function updateDealPriorityAction(dealId: string, priority: string)
       priority: parsed.data.priority,
       error,
     })
-    return mapDealServiceError(error, "We could not update this deal priority. Please try again.")
+    return mapDealServiceError(
+      error,
+      "We could not update this deal priority. Please try again."
+    )
   }
 }
 
-export async function archiveDealAction(dealId: string): Promise<DealMutationResult> {
+export async function archiveDealAction(
+  dealId: string
+): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = dealArchiveSchema.safeParse({ dealId })
   if (!parsed.success) {
@@ -354,12 +418,21 @@ export async function archiveDealAction(dealId: string): Promise<DealMutationRes
       message: "Deal archived successfully.",
     }
   } catch (error) {
-    console.error("deals.archive_failed", { userId: user.id, dealId: parsed.data.dealId, error })
-    return mapDealServiceError(error, "We could not archive this deal. Please try again.")
+    console.error("deals.archive_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      error,
+    })
+    return mapDealServiceError(
+      error,
+      "We could not archive this deal. Please try again."
+    )
   }
 }
 
-export async function restoreDealAction(dealId: string): Promise<DealMutationResult> {
+export async function restoreDealAction(
+  dealId: string
+): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = dealRestoreSchema.safeParse({ dealId })
   if (!parsed.success) {
@@ -377,12 +450,21 @@ export async function restoreDealAction(dealId: string): Promise<DealMutationRes
       message: "Deal restored successfully.",
     }
   } catch (error) {
-    console.error("deals.restore_failed", { userId: user.id, dealId: parsed.data.dealId, error })
-    return mapDealServiceError(error, "We could not restore this deal. Please try again.")
+    console.error("deals.restore_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      error,
+    })
+    return mapDealServiceError(
+      error,
+      "We could not restore this deal. Please try again."
+    )
   }
 }
 
-export async function deleteDealAction(dealId: string): Promise<DealMutationResult> {
+export async function deleteDealAction(
+  dealId: string
+): Promise<DealMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = dealArchiveSchema.safeParse({ dealId })
   if (!parsed.success) {
@@ -400,8 +482,15 @@ export async function deleteDealAction(dealId: string): Promise<DealMutationResu
       message: "Deal deleted successfully.",
     }
   } catch (error) {
-    console.error("deals.delete_failed", { userId: user.id, dealId: parsed.data.dealId, error })
-    return mapDealServiceError(error, "We could not delete this deal. Please try again.")
+    console.error("deals.delete_failed", {
+      userId: user.id,
+      dealId: parsed.data.dealId,
+      error,
+    })
+    return mapDealServiceError(
+      error,
+      "We could not delete this deal. Please try again."
+    )
   }
 }
 

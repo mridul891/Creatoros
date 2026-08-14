@@ -1,6 +1,7 @@
 "use client"
 
-import { DotsThree } from "@phosphor-icons/react/dist/ssr"
+import { MoreHorizontalIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
@@ -10,8 +11,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DEAL_PRIORITIES, DEAL_PRIORITY_THEME, DEAL_STAGES, DEAL_STAGE_LABEL } from "@/enums/deal"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import {
+  DEAL_PRIORITIES,
+  DEAL_PRIORITY_THEME,
+  DEAL_STAGE_LABEL,
+  DEAL_STAGES,
+} from "@/enums/deal"
 import type { DealListItem } from "@/types/deal"
 
 type DealsTableProps = {
@@ -40,26 +53,26 @@ export function DealsTable({
       <div className="overflow-x-auto">
         <Table className="min-w-[860px]">
           <TableHeader>
-            <TableRow className="border-b border-border hover:bg-transparent">
-              <TableHead className="min-w-[220px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableRow className="border-border border-b hover:bg-transparent">
+              <TableHead className="min-w-[220px] px-4 font-mono text-[10px] text-muted-foreground tracking-wider">
                 Campaign
               </TableHead>
-              <TableHead className="hidden min-w-[140px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground lg:table-cell">
+              <TableHead className="hidden min-w-[140px] px-4 font-mono text-[10px] text-muted-foreground tracking-wider lg:table-cell">
                 Brand
               </TableHead>
-              <TableHead className="hidden min-w-[130px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground xl:table-cell">
+              <TableHead className="hidden min-w-[130px] px-4 font-mono text-[10px] text-muted-foreground tracking-wider xl:table-cell">
                 Contact
               </TableHead>
-              <TableHead className="min-w-[170px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">
+              <TableHead className="min-w-[170px] px-4 font-mono text-[10px] text-muted-foreground tracking-wider">
                 Stage
               </TableHead>
-              <TableHead className="min-w-[160px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">
+              <TableHead className="min-w-[160px] px-4 font-mono text-[10px] text-muted-foreground tracking-wider">
                 Priority
               </TableHead>
-              <TableHead className="min-w-[120px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground">
+              <TableHead className="min-w-[120px] px-4 font-mono text-[10px] text-muted-foreground tracking-wider">
                 Value
               </TableHead>
-              <TableHead className="hidden min-w-[100px] px-4 font-mono text-[10px] tracking-wider text-muted-foreground md:table-cell">
+              <TableHead className="hidden min-w-[100px] px-4 font-mono text-[10px] text-muted-foreground tracking-wider md:table-cell">
                 Due
               </TableHead>
               <TableHead className="w-[44px] px-2" />
@@ -69,15 +82,19 @@ export function DealsTable({
             {items.map((item) => (
               <TableRow
                 key={item.id}
-                className={`cursor-pointer border-b border-border ${DEAL_PRIORITY_THEME[item.priority].row} hover:bg-muted`}
+                className={`cursor-pointer border-border border-b ${DEAL_PRIORITY_THEME[item.priority].row} hover:bg-muted`}
               >
                 <TableCell className="px-4 py-3">
                   <Link href={`/dashboard/deals/${item.id}`} className="block">
-                    <p className="truncate text-[13px] font-semibold text-foreground">{item.campaignName}</p>
+                    <p className="truncate font-semibold text-[13px] text-foreground">
+                      {item.campaignName}
+                    </p>
                   </Link>
                   <div className="mt-1 space-y-0.5 text-[11px] text-muted-foreground lg:hidden">
                     <p className="truncate">Brand: {item.brandName}</p>
-                    <p className="truncate">Contact: {item.contactName ?? "—"}</p>
+                    <p className="truncate">
+                      Contact: {item.contactName ?? "—"}
+                    </p>
                   </div>
                 </TableCell>
                 <TableCell className="hidden truncate px-4 text-[12px] text-muted-foreground lg:table-cell">
@@ -91,7 +108,12 @@ export function DealsTable({
                     value={item.stage}
                     aria-label={`Stage for ${item.campaignName}`}
                     disabled={isInlineUpdating || item.status !== "Active"}
-                    onChange={(event) => onStageChange(item.id, event.target.value as DealListItem["stage"])}
+                    onChange={(event) =>
+                      onStageChange(
+                        item.id,
+                        event.target.value as DealListItem["stage"]
+                      )
+                    }
                     className="h-8 w-full cursor-pointer rounded-[8px] border border-border bg-secondary px-2 text-[11px] text-muted-foreground"
                   >
                     {DEAL_STAGES.map((stage) => (
@@ -106,7 +128,12 @@ export function DealsTable({
                     value={item.priority}
                     aria-label={`Priority for ${item.campaignName}`}
                     disabled={isInlineUpdating || item.status !== "Active"}
-                    onChange={(event) => onPriorityChange(item.id, event.target.value as DealListItem["priority"])}
+                    onChange={(event) =>
+                      onPriorityChange(
+                        item.id,
+                        event.target.value as DealListItem["priority"]
+                      )
+                    }
                     className={`h-8 w-full cursor-pointer rounded-[8px] border px-2 text-[11px] ${DEAL_PRIORITY_THEME[item.priority].select}`}
                   >
                     {DEAL_PRIORITIES.map((priority) => (
@@ -116,7 +143,7 @@ export function DealsTable({
                     ))}
                   </select>
                 </TableCell>
-                <TableCell className="px-4 text-[12px] font-semibold text-muted-foreground">
+                <TableCell className="px-4 font-semibold text-[12px] text-muted-foreground">
                   {item.currency} {item.dealValue.toLocaleString()}
                 </TableCell>
                 <TableCell className="hidden px-4 text-[12px] text-muted-foreground md:table-cell">
@@ -132,26 +159,38 @@ export function DealsTable({
                         className="h-8 w-8 cursor-pointer p-0 text-muted-foreground hover:bg-muted"
                         onClick={(event) => event.stopPropagation()}
                       >
-                        <DotsThree size={14} />
+                        <HugeiconsIcon icon={MoreHorizontalIcon} size={14} />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                       align="end"
                       className="border-border bg-[#121212] text-muted-foreground"
                     >
-                      <DropdownMenuItem className="cursor-pointer" onClick={() => onEdit(item)}>
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => onEdit(item)}
+                      >
                         Edit
                       </DropdownMenuItem>
                       {item.status === "Active" ? (
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => onArchive(item)}>
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => onArchive(item)}
+                        >
                           Archive
                         </DropdownMenuItem>
                       ) : (
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => onRestore(item)}>
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => onRestore(item)}
+                        >
                           Restore
                         </DropdownMenuItem>
                       )}
-                      <DropdownMenuItem className="cursor-pointer text-[#E8402A]" onClick={() => onDelete(item)}>
+                      <DropdownMenuItem
+                        className="cursor-pointer text-[#E8402A]"
+                        onClick={() => onDelete(item)}
+                      >
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>

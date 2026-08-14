@@ -4,8 +4,16 @@ import { DEAL_FILE_CATEGORIES } from "@/enums/dealFile"
 
 export const fileCreateSchema = z.object({
   dealId: z.uuid("Deal id is invalid."),
-  fileName: z.string().trim().min(1, "File name is required.").max(255, "File name cannot exceed 255 characters."),
-  storagePath: z.string().trim().min(1, "Storage path is required.").max(1000, "Storage path cannot exceed 1000 characters."),
+  fileName: z
+    .string()
+    .trim()
+    .min(1, "File name is required.")
+    .max(255, "File name cannot exceed 255 characters."),
+  storagePath: z
+    .string()
+    .trim()
+    .min(1, "Storage path is required.")
+    .max(1000, "Storage path cannot exceed 1000 characters."),
   mimeType: z.string().trim().max(255).optional(),
   sizeBytes: z.coerce.number().int().nonnegative().optional(),
   category: z.enum(DEAL_FILE_CATEGORIES),

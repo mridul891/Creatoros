@@ -35,9 +35,25 @@ export function formatDateOnlyInput(date: Date | null): string {
 }
 
 export function startOfLocalDay(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    0,
+    0,
+    0,
+    0
+  )
 }
 
 export function endOfLocalDay(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999)
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    23,
+    59,
+    59,
+    999
+  )
 }

@@ -1,6 +1,6 @@
-import type { DealDetail, DealListItem } from "@/types/deal"
 import type { DealPriority, DealStage } from "@/enums/deal"
 import { formatDateOnlyInput } from "@/lib/crm/shared/date"
+import type { DealDetail, DealListItem } from "@/types/deal"
 
 export type DealFormValues = {
   brandId: string
@@ -50,15 +50,30 @@ function toDateInput(value: Date | null) {
   return formatDateOnlyInput(value)
 }
 
-export function dealToFormValues(deal: Pick<DealListItem, "brandId" | "contactId" | "campaignName" | "dealValue" | "currency" | "stage" | "priority" | "startDate" | "dueDate" | "expectedCloseDate" | "paymentDueDate"> & {
-  paymentTerms?: string | null
-  campaignDescription?: string | null
-  deliverablesSummary?: string | null
-  notes?: string | null
-  source?: string | null
-  probability?: number | null
-  externalRef?: string | null
-}): DealFormValues {
+export function dealToFormValues(
+  deal: Pick<
+    DealListItem,
+    | "brandId"
+    | "contactId"
+    | "campaignName"
+    | "dealValue"
+    | "currency"
+    | "stage"
+    | "priority"
+    | "startDate"
+    | "dueDate"
+    | "expectedCloseDate"
+    | "paymentDueDate"
+  > & {
+    paymentTerms?: string | null
+    campaignDescription?: string | null
+    deliverablesSummary?: string | null
+    notes?: string | null
+    source?: string | null
+    probability?: number | null
+    externalRef?: string | null
+  }
+): DealFormValues {
   return {
     brandId: deal.brandId,
     contactId: deal.contactId ?? "",

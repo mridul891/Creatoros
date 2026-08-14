@@ -1,6 +1,6 @@
 "use client"
 
-import { forwardRef, Fragment, useMemo } from "react"
+import { Fragment, forwardRef, useMemo } from "react"
 
 // --- Tiptap UI Primitive ---
 import {
@@ -18,7 +18,8 @@ import "@/components/tiptap-ui-primitive/button/button.scss"
 export type ButtonVariant = "ghost" | "primary"
 export type ButtonSize = "small" | "default" | "large"
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   showTooltip?: boolean
   tooltip?: React.ReactNode
   shortcutKeys?: string

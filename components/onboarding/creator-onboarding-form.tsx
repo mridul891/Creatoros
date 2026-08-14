@@ -1,26 +1,21 @@
 "use client"
 
-import { FormEvent, useState } from "react"
 import { useRouter } from "next/navigation"
+import { type FormEvent, useState } from "react"
 import { toast } from "sonner"
-
 import {
-  CREATOR_TYPE_OPTIONS,
-  CreatorType,
-} from "@/enums/creators"
-import {
-  saveCreatorOnboarding,
   type CreatorOnboardingResult,
+  saveCreatorOnboarding,
 } from "@/app/action/creatorOnboardingActions"
 import { Button } from "@/components/ui/button"
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { CREATOR_TYPE_OPTIONS, type CreatorType } from "@/enums/creators"
 import { cn } from "@/lib/utils"
 
 type CreatorOnboardingFormProps = {
@@ -35,14 +30,20 @@ type CreatorOnboardingFormProps = {
 
 type FieldErrors = NonNullable<CreatorOnboardingResult["fieldErrors"]>
 
-export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormProps) {
+export function CreatorOnboardingForm({
+  initialValues,
+}: CreatorOnboardingFormProps) {
   const router = useRouter()
-  const [creatorType, setCreatorType] = useState(initialValues?.creatorType ?? "")
+  const [creatorType, setCreatorType] = useState(
+    initialValues?.creatorType ?? ""
+  )
   const [niche, setNiche] = useState(initialValues?.niche ?? "")
   const [instagramHandle, setInstagramHandle] = useState(
     initialValues?.instagramHandle ?? ""
   )
-  const [youtubeHandle, setYoutubeHandle] = useState(initialValues?.youtubeHandle ?? "")
+  const [youtubeHandle, setYoutubeHandle] = useState(
+    initialValues?.youtubeHandle ?? ""
+  )
   const [bio, setBio] = useState(initialValues?.bio ?? "")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
@@ -60,7 +61,9 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
 
       if (!result.success) {
         setFieldErrors(result.fieldErrors ?? {})
-        setFormError(result.message ?? "Please review your details and try again.")
+        setFormError(
+          result.message ?? "Please review your details and try again."
+        )
         return
       }
 
@@ -79,19 +82,19 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
     <form onSubmit={handleSubmit} className="p-2">
       <FieldGroup className="gap-8">
         <div className="space-y-3">
-          <h1 className="text-base font-light tracking-tight text-black sm:text-[2.5rem] leading-tight">
+          <h1 className="font-light text-base text-black leading-tight tracking-tight sm:text-[2.5rem]">
             Almost there
           </h1>
-          <p className="text-sm text-black/50 leading-relaxed">
+          <p className="text-black/50 text-sm leading-relaxed">
             Tell us a bit about yourself so we can personalize your experience.
           </p>
         </div>
 
         <Field>
-          <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+          <FieldLabel className="font-medium text-black/40 text-xs uppercase tracking-wider">
             I am a
           </FieldLabel>
-          <div className="grid grid-cols-3 gap-2 mt-2">
+          <div className="mt-2 grid grid-cols-3 gap-2">
             {CREATOR_TYPE_OPTIONS.map((option) => (
               <button
                 key={option.value}
@@ -100,7 +103,7 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
                 onClick={() => setCreatorType(option.value)}
                 aria-pressed={creatorType === option.value}
                 className={cn(
-                  "relative h-12 rounded-lg border text-sm font-medium transition-all duration-200",
+                  "relative h-12 rounded-lg border font-medium text-sm transition-all duration-200",
                   "disabled:cursor-not-allowed disabled:opacity-50",
                   creatorType === option.value
                     ? "border-black bg-black text-white"
@@ -116,7 +119,7 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
         </Field>
 
         <Field>
-          <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+          <FieldLabel className="font-medium text-black/40 text-xs uppercase tracking-wider">
             Your niche
           </FieldLabel>
           <Input
@@ -135,9 +138,9 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field>
-            <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+            <FieldLabel className="font-medium text-black/40 text-xs uppercase tracking-wider">
               Instagram
-              <span className="ml-1 normal-case text-black/25">(optional)</span>
+              <span className="ml-1 text-black/25 normal-case">(optional)</span>
             </FieldLabel>
             <Input
               id="instagramHandle"
@@ -154,9 +157,9 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
           </Field>
 
           <Field>
-            <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+            <FieldLabel className="font-medium text-black/40 text-xs uppercase tracking-wider">
               YouTube
-              <span className="ml-1 normal-case text-black/25">(optional)</span>
+              <span className="ml-1 text-black/25 normal-case">(optional)</span>
             </FieldLabel>
             <Input
               id="youtubeHandle"
@@ -174,9 +177,9 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
         </div>
 
         <Field>
-          <FieldLabel className="text-xs font-medium uppercase tracking-wider text-black/40">
+          <FieldLabel className="font-medium text-black/40 text-xs uppercase tracking-wider">
             Short bio
-            <span className="ml-1 normal-case text-black/25">(optional)</span>
+            <span className="ml-1 text-black/25 normal-case">(optional)</span>
           </FieldLabel>
           <textarea
             id="bio"
@@ -188,13 +191,13 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
             disabled={isSubmitting}
             aria-invalid={Boolean(fieldErrors.bio)}
             rows={3}
-            className="mt-2 w-full resize-none rounded-lg border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition-colors placeholder:text-black/30 focus:border-black disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-2 w-full resize-none rounded-lg border border-black/10 bg-white px-4 py-3 text-black text-sm outline-none transition-colors placeholder:text-black/30 focus:border-black disabled:cursor-not-allowed disabled:opacity-50"
           />
           <FieldError>{fieldErrors.bio}</FieldError>
         </Field>
 
         {formError ? (
-          <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+          <div className="rounded-lg bg-red-50 p-3 text-red-600 text-sm">
             {formError}
           </div>
         ) : null}
@@ -202,12 +205,12 @@ export function CreatorOnboardingForm({ initialValues }: CreatorOnboardingFormPr
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-12 w-full rounded-lg bg-black text-white font-medium hover:bg-black/90 transition-colors"
+          className="h-12 w-full rounded-lg bg-black font-medium text-white transition-colors hover:bg-black/90"
         >
           {isSubmitting ? "Setting up..." : "Complete setup"}
         </Button>
 
-        <p className="text-center text-xs text-black/40">
+        <p className="text-center text-black/40 text-xs">
           You can always update this later in settings.
         </p>
       </FieldGroup>

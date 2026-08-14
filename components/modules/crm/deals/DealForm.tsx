@@ -1,18 +1,30 @@
 "use client"
 
+import { Loading03Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SearchableSelect } from "@/components/ui/searchable-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
-import { DEAL_PRIORITIES, DEAL_STAGES, DEAL_STAGE_LABEL } from "@/enums/deal"
-import { type DealFormValues } from "@/lib/crm/deals/dealForm"
+import { DEAL_PRIORITIES, DEAL_STAGE_LABEL, DEAL_STAGES } from "@/enums/deal"
+import type { DealFormValues } from "@/lib/crm/deals/dealForm"
 import type { DealField } from "@/types/deal"
 import { CrmFormDialog } from "../shared"
-import { CircleNotch } from "@phosphor-icons/react"
-import { Separator } from "@/components/ui/separator"
 
 type DealFormProps = {
   open: boolean
@@ -38,9 +50,9 @@ function SectionHeader({
 }) {
   return (
     <div className="space-y-1">
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      <h3 className="font-semibold text-foreground text-sm">{title}</h3>
       {description && (
-        <p className="text-xs text-muted-foreground">{description}</p>
+        <p className="text-muted-foreground text-xs">{description}</p>
       )}
     </div>
   )
@@ -102,10 +114,15 @@ export function DealForm({
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
-                <CircleNotch className="h-4 w-4 animate-spin" />
+                <HugeiconsIcon
+                  icon={Loading03Icon}
+                  className="h-4 w-4 animate-spin"
+                />
                 Saving...
               </span>
-            ) : submitLabel}
+            ) : (
+              submitLabel
+            )}
           </Button>
         </>
       }
@@ -117,7 +134,7 @@ export function DealForm({
             title="Campaign Details"
             description="Identify the campaign and associate it with a brand and contact."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field className="sm:col-span-2">
               <FieldLabel>Campaign Name</FieldLabel>
               <Input
@@ -148,7 +165,9 @@ export function DealForm({
               <SearchableSelect
                 options={contactOptions}
                 value={values.contactId || ""}
-                onValueChange={(contactId) => handleChange("contactId", contactId)}
+                onValueChange={(contactId) =>
+                  handleChange("contactId", contactId)
+                }
                 placeholder="Select contact (optional)"
                 searchPlaceholder="Search contacts..."
                 noResultsMessage="No contacts found"
@@ -167,7 +186,7 @@ export function DealForm({
             title="Deal Information"
             description="Define the financial terms and current status of the deal."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field>
               <FieldLabel>Deal Value</FieldLabel>
               <Input
@@ -239,8 +258,8 @@ export function DealForm({
                             priority === "High"
                               ? "bg-red-500"
                               : priority === "Medium"
-                              ? "bg-amber-500"
-                              : "bg-green-500"
+                                ? "bg-amber-500"
+                                : "bg-green-500"
                           }`}
                         />
                         {priority}
@@ -262,7 +281,7 @@ export function DealForm({
             title="Timeline"
             description="Set key dates for the campaign lifecycle."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Field>
               <FieldLabel>Start Date</FieldLabel>
               <Input
@@ -335,7 +354,9 @@ export function DealForm({
               <Textarea
                 rows={4}
                 value={values.campaignDescription}
-                onChange={(e) => handleChange("campaignDescription", e.target.value)}
+                onChange={(e) =>
+                  handleChange("campaignDescription", e.target.value)
+                }
                 placeholder="Deliverables, expectations, requirements..."
                 aria-invalid={Boolean(fieldErrors?.campaignDescription)}
               />

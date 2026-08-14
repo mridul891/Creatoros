@@ -1,6 +1,7 @@
 "use client"
 
-import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr"
+import { Search01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -13,20 +14,27 @@ type CrmSearchFieldProps = {
   className?: string
 }
 
-export function CrmSearchField({ value, placeholder, ariaLabel, onChange, className }: CrmSearchFieldProps) {
+export function CrmSearchField({
+  value,
+  placeholder,
+  ariaLabel,
+  onChange,
+  className,
+}: CrmSearchFieldProps) {
   return (
     <div className={cn("relative", className)}>
-      <MagnifyingGlass
+      <HugeiconsIcon
+        icon={Search01Icon}
         size={13}
         color="var(--muted-foreground)"
-        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2"
       />
       <Input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         aria-label={ariaLabel}
-        className="h-10 border-border bg-card pl-[34px] text-xs text-muted-foreground placeholder:text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
+        className="h-10 border-border bg-card pl-[34px] text-muted-foreground text-xs placeholder:text-muted-foreground focus-visible:border-[#E8402A] focus-visible:ring-[#E8402A]/20"
       />
     </div>
   )

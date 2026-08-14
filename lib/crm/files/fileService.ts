@@ -5,7 +5,11 @@ import { recordActivity } from "@/lib/crm/activity/activityService"
 import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
 import { prisma } from "@/lib/prisma"
 import type { DealFileListData, DealFileListItem } from "@/types/dealFile"
-import type { FileCreateInput, FileListInput, FileUpdateInput } from "./fileValidation"
+import type {
+  FileCreateInput,
+  FileListInput,
+  FileUpdateInput,
+} from "./fileValidation"
 
 const PAGE_SIZE_DEFAULT = 20
 const PAGE_SIZE_MAX = 50
@@ -24,7 +28,11 @@ export class FileServiceError extends Error {
   code: "NOT_FOUND" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
   field?: "fileId" | "dealId" | "fileName" | "storagePath" | "category"
 
-  constructor(message: string, code: FileServiceError["code"], field?: FileServiceError["field"]) {
+  constructor(
+    message: string,
+    code: FileServiceError["code"],
+    field?: FileServiceError["field"]
+  ) {
     super(message)
     this.name = "FileServiceError"
     this.code = code
@@ -56,7 +64,12 @@ function toListItem(item: {
     sizeBytes: item.sizeBytes == null ? null : Number(item.sizeBytes),
     category: item.category as DealFileListItem["category"],
     status: item.status as DealFileListItem["status"],
-    metadata: item.metadata && typeof item.metadata === "object" && !Array.isArray(item.metadata) ? (item.metadata as Record<string, unknown>) : null,
+    metadata:
+      item.metadata &&
+      typeof item.metadata === "object" &&
+      !Array.isArray(item.metadata)
+        ? (item.metadata as Record<string, unknown>)
+        : null,
     uploadedBy: item.uploadedBy,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
@@ -64,10 +77,20 @@ function toListItem(item: {
   }
 }
 
-async function getOwnedDeal(tx: PrismaTx, userId: string, dealId: string): Promise<OwnedDeal> {
+async function getOwnedDeal(
+  tx: PrismaTx,
+  userId: string,
+  dealId: string
+): Promise<OwnedDeal> {
   const deal = await tx.deal.findFirst({
     where: { id: dealId, userId },
-    select: { id: true, brandId: true, contactId: true, campaignName: true, status: true },
+    select: {
+      id: true,
+      brandId: true,
+      contactId: true,
+      campaignName: true,
+      status: true,
+    },
   })
   if (!deal) {
     throw new FileServiceError("Deal not found.", "NOT_FOUND", "dealId")
@@ -80,7 +103,13 @@ async function getOwnedFile(tx: PrismaTx, userId: string, fileId: string) {
     where: { id: fileId, userId },
     include: {
       deal: {
-        select: { id: true, brandId: true, contactId: true, campaignName: true, status: true },
+        select: {
+          id: true,
+          brandId: true,
+          contactId: true,
+          campaignName: true,
+          status: true,
+        },
       },
     },
   })
@@ -92,7 +121,11 @@ async function getOwnedFile(tx: PrismaTx, userId: string, fileId: string) {
 
 function ensureDealIsActive(deal: OwnedDeal) {
   if (deal.status === "Archived") {
-    throw new FileServiceError("Files cannot be modified for archived deals.", "INVALID_OPERATION", "dealId")
+    throw new FileServiceError(
+      "Files cannot be modified for archived deals.",
+      "INVALID_OPERATION",
+      "dealId"
+    )
   }
 }
 
@@ -120,10 +153,16 @@ async function recordFileActivity(options: {
   })
 }
 
-export async function listDealFiles(userId: string, input: FileListInput): Promise<DealFileListData> {
+export async function listDealFiles(
+  userId: string,
+  input: FileListInput
+): Promise<DealFileListData> {
   await getOwnedDeal(prisma, userId, input.dealId)
   const page = clampPage(input.page)
-  const pageSize = clampPageSize(input.pageSize, { pageSize: PAGE_SIZE_DEFAULT, maxPageSize: PAGE_SIZE_MAX })
+  const pageSize = clampPageSize(input.pageSize, {
+    pageSize: PAGE_SIZE_DEFAULT,
+    maxPageSize: PAGE_SIZE_MAX,
+  })
   const skip = (page - 1) * pageSize
   const search = input.search?.trim() ?? ""
 
@@ -246,7 +285,10 @@ export async function archiveFile(userId: string, fileId: string) {
     const existing = await getOwnedFile(tx, userId, fileId)
     ensureDealIsActive(existing.deal)
     if (existing.status === "Archived") {
-      throw new FileServiceError("File is already archived.", "INVALID_OPERATION")
+      throw new FileServiceError(
+        "File is already archived.",
+        "INVALID_OPERATION"
+      )
     }
 
     const updated = await tx.dealFile.update({
@@ -302,7 +344,10 @@ export async function deleteFile(userId: string, fileId: string) {
     const existing = await getOwnedFile(tx, userId, fileId)
     ensureDealIsActive(existing.deal)
     if (existing.status !== "Archived") {
-      throw new FileServiceError("Only archived files can be deleted.", "FORBIDDEN")
+      throw new FileServiceError(
+        "Only archived files can be deleted.",
+        "FORBIDDEN"
+      )
     }
     await tx.dealFile.delete({
       where: { id: existing.id },

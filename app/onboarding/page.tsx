@@ -1,8 +1,8 @@
+import Link from "next/link"
+import { redirect } from "next/navigation"
+import { CreatorOnboardingForm } from "@/components/onboarding/creator-onboarding-form"
 import { requireUser } from "@/lib/auth/require-user"
 import { prisma } from "@/lib/prisma"
-import { CreatorOnboardingForm } from "@/components/onboarding/creator-onboarding-form"
-import { redirect } from "next/navigation"
-import Link from "next/link"
 
 export default async function OnboardingPage() {
   const user = await requireUser()
@@ -25,12 +25,12 @@ export default async function OnboardingPage() {
               prefetch={false}
               className="inline-flex items-center gap-2 px-1 py-1 font-medium"
             >
-              <span className="text-sm font-semibold tracking-wide text-black">
+              <span className="font-semibold text-black text-sm tracking-wide">
                 !notyetlaunched
               </span>
             </Link>
           </div>
-          
+
           <div className="relative flex flex-1 items-center justify-center py-8 md:py-0">
             <div className="w-full max-w-md">
               <CreatorOnboardingForm
@@ -48,9 +48,9 @@ export default async function OnboardingPage() {
 
         <section className="relative hidden p-4 lg:block">
           <div className="relative h-full w-full overflow-hidden rounded-3xl">
-            <div className="absolute inset-0 bg-[url('/onboarding.png')] bg-cover bg-center" />
+            <div className="absolute inset-0 bg-[url('/onboarding.png')] bg-center bg-cover" />
             <div className="absolute inset-0 bg-black/30" />
-            
+
             <div className="relative flex h-full flex-col justify-between p-12">
               <div />
             </div>

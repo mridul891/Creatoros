@@ -1,7 +1,7 @@
 "use client"
 
-import { DotsThree } from "@phosphor-icons/react/dist/ssr"
-
+import { MoreHorizontalIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,7 +10,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import type { ContactListItem } from "@/types/contact"
 
 type ContactsTableProps = {
@@ -35,28 +42,32 @@ function StatusBadge({ status }: { status: ContactListItem["status"] }) {
   )
 }
 
-export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) {
+export function ContactsTable({
+  items,
+  onEdit,
+  onArchive,
+}: ContactsTableProps) {
   return (
     <div className="overflow-hidden rounded-[16px] border border-border bg-muted">
       <Table className="table-fixed border-collapse">
-        <TableHeader className="border-b border-border">
+        <TableHeader className="border-border border-b">
           <TableRow className="border-0 hover:bg-transparent">
-            <TableHead className="w-[26%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[26%] px-4 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               NAME
             </TableHead>
-            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               POSITION
             </TableHead>
-            <TableHead className="w-[20%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[20%] px-4 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               EMAIL
             </TableHead>
-            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[18%] px-4 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               PHONE
             </TableHead>
-            <TableHead className="w-[10%] px-4 py-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[10%] px-4 py-3 font-mono text-[10px] text-muted-foreground tracking-wider">
               STATUS
             </TableHead>
-            <TableHead className="w-[8%] px-4 py-3 text-right font-mono text-[10px] tracking-wider text-muted-foreground">
+            <TableHead className="w-[8%] px-4 py-3 text-right font-mono text-[10px] text-muted-foreground tracking-wider">
               ACTIONS
             </TableHead>
           </TableRow>
@@ -65,11 +76,13 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
           {items.map((contact) => (
             <TableRow
               key={contact.id}
-              className="border-b border-border bg-transparent hover:bg-muted"
+              className="border-border border-b bg-transparent hover:bg-muted"
             >
               <TableCell className="px-4 py-4">
                 <div className="min-w-0">
-                  <div className="truncate text-[13px] font-semibold text-foreground">{contact.name}</div>
+                  <div className="truncate font-semibold text-[13px] text-foreground">
+                    {contact.name}
+                  </div>
                   {contact.isPrimary ? (
                     <Badge className="mt-1 border-[rgba(232,64,42,0.28)] bg-[rgba(232,64,42,0.14)] text-[#E8402A]">
                       Primary
@@ -99,7 +112,7 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
                         size="icon-sm"
                         className="cursor-pointer text-muted-foreground hover:bg-muted"
                       >
-                        <DotsThree />
+                        <HugeiconsIcon icon={MoreHorizontalIcon} size={15} />
                         <span className="sr-only">Open actions</span>
                       </Button>
                     </DropdownMenuTrigger>
@@ -107,7 +120,10 @@ export function ContactsTable({ items, onEdit, onArchive }: ContactsTableProps) 
                       align="end"
                       className="w-32 border-border bg-[#121212] text-muted-foreground"
                     >
-                      <DropdownMenuItem onClick={() => onEdit(contact)} className="cursor-pointer">
+                      <DropdownMenuItem
+                        onClick={() => onEdit(contact)}
+                        className="cursor-pointer"
+                      >
                         Edit
                       </DropdownMenuItem>
                       {contact.status === "Active" ? (

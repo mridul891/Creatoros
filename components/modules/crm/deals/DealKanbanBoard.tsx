@@ -1,8 +1,9 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import Link from "next/link"
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr"
+import { useMemo, useState } from "react"
 
 import { DEAL_STAGES, type DealStage } from "@/enums/deal"
 import { groupDealsByStage } from "@/lib/crm/deals/dealPipeline"
@@ -15,7 +16,11 @@ type DealKanbanBoardProps = {
   onMove: (dealId: string, nextStage: DealStage) => Promise<void>
 }
 
-export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardProps) {
+export function DealKanbanBoard({
+  deals,
+  isMutating,
+  onMove,
+}: DealKanbanBoardProps) {
   const [dragDealId, setDragDealId] = useState<string | null>(null)
   const [dragOverStage, setDragOverStage] = useState<DealStage | null>(null)
 
@@ -48,7 +53,9 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
             <div
               key={stage}
               className={`rounded-[14px] border bg-muted p-2 transition ${
-                dragOverStage === stage ? "border-[#E8402A]/60 ring-1 ring-[#E8402A]/40" : "border-border"
+                dragOverStage === stage
+                  ? "border-[#E8402A]/60 ring-1 ring-[#E8402A]/40"
+                  : "border-border"
               }`}
               onDragOver={(event) => {
                 event.preventDefault()
@@ -68,7 +75,9 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
             >
               <div className="mb-2 flex items-center justify-between px-1">
                 <DealStageBadge stage={stage} />
-                <span className="font-mono text-[10px] text-muted-foreground">{items.length}</span>
+                <span className="font-mono text-[10px] text-muted-foreground">
+                  {items.length}
+                </span>
               </div>
 
               <div className="space-y-2">
@@ -83,9 +92,16 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
                     }}
                     className="rounded-[12px] border border-border bg-[#101010] p-3"
                   >
-                    <Link href={`/dashboard/deals/${deal.id}`} className="block">
-                      <p className="text-[12px] font-semibold text-foreground">{deal.campaignName}</p>
-                      <p className="mt-1 text-[11px] text-muted-foreground">{deal.brandName}</p>
+                    <Link
+                      href={`/dashboard/deals/${deal.id}`}
+                      className="block"
+                    >
+                      <p className="font-semibold text-[12px] text-foreground">
+                        {deal.campaignName}
+                      </p>
+                      <p className="mt-1 text-[11px] text-muted-foreground">
+                        {deal.brandName}
+                      </p>
                     </Link>
                     <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
                       <span>
@@ -94,7 +110,9 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
                       <span>{deal.priority}</span>
                     </div>
                     {deal.dueDate ? (
-                      <p className="mt-1 text-[10px] text-muted-foreground">Due {deal.dueDate.toLocaleDateString()}</p>
+                      <p className="mt-1 text-[10px] text-muted-foreground">
+                        Due {deal.dueDate.toLocaleDateString()}
+                      </p>
                     ) : null}
                     <button
                       type="button"
@@ -108,7 +126,8 @@ export function DealKanbanBoard({ deals, isMutating, onMove }: DealKanbanBoardPr
                         }
                       }}
                     >
-                      Advance <ArrowRight size={11} />
+                      Advance{" "}
+                      <HugeiconsIcon icon={ArrowRight01Icon} size={11} />
                     </button>
                   </div>
                 ))}

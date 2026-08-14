@@ -10,8 +10,13 @@ type UseDealActivityOptions = {
   initialData: ActivityListData
 }
 
-export function useDealActivity({ dealId, initialData }: UseDealActivityOptions) {
-  const [activities, setActivities] = useState<ActivityListItem[]>(initialData.items)
+export function useDealActivity({
+  dealId,
+  initialData,
+}: UseDealActivityOptions) {
+  const [activities, setActivities] = useState<ActivityListItem[]>(
+    initialData.items
+  )
   const [pagination, setPagination] = useState(initialData.pagination)
   const [isLoading, setIsLoading] = useState(false)
   const [loadError, setLoadError] = useState("")
@@ -23,7 +28,7 @@ export function useDealActivity({ dealId, initialData }: UseDealActivityOptions)
     setLoadError("")
     setIsLoading(false)
     hasHydratedRef.current = false
-  }, [dealId, initialData])
+  }, [initialData])
 
   const refetch = useCallback(
     async (nextPage: number) => {
@@ -44,7 +49,7 @@ export function useDealActivity({ dealId, initialData }: UseDealActivityOptions)
       setActivities(result.data.items)
       setPagination(result.data.pagination)
     },
-    [dealId, pagination.pageSize],
+    [dealId, pagination.pageSize]
   )
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 
 import { listBrandsAction } from "@/app/action/brandActions"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { BrandsPageServer } from "@/components/modules/crm/brands/BrandsPageServer"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 type DashboardBrandsPageProps = {
   searchParams: Promise<{
@@ -18,7 +18,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function DashboardBrandsPage({ searchParams }: DashboardBrandsPageProps) {
+export default async function DashboardBrandsPage({
+  searchParams,
+}: DashboardBrandsPageProps) {
   const params = await searchParams
   const search = params.search ?? ""
   const page = Number(params.page ?? 1)
@@ -31,7 +33,9 @@ export default async function DashboardBrandsPage({ searchParams }: DashboardBra
     return (
       <div className="w-full max-w-[960px] px-9 py-7">
         <Alert className="rounded-[18px] border-border bg-card px-6 py-12">
-          <AlertTitle className="text-xl font-bold text-foreground">Could not load brands</AlertTitle>
+          <AlertTitle className="font-bold text-foreground text-xl">
+            Could not load brands
+          </AlertTitle>
           <AlertDescription className="mt-2 text-[13px] text-muted-foreground">
             {result.message ?? "Please refresh and try again."}
           </AlertDescription>

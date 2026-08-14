@@ -1,4 +1,10 @@
-import type { DealArchiveFilter, DealPriority, DealSortOption, DealStage, DealViewMode } from "@/enums/deal"
+import type {
+  DealArchiveFilter,
+  DealPriority,
+  DealSortOption,
+  DealStage,
+  DealViewMode,
+} from "@/enums/deal"
 
 export interface DealListItem {
   id: string

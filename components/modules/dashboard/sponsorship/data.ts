@@ -1,10 +1,10 @@
-import { DealPriority, SponsorshipStage } from "@/enums/sponsorship";
-import type { Deal } from "@/types/sponsorship";
+import { DealPriority, SponsorshipStage } from "@/enums/sponsorship"
+import type { Deal } from "@/types/sponsorship"
 
 export interface MonthlyRevenueDatum {
-  month: string;
-  revenue: number;
-  deals: number;
+  month: string
+  revenue: number
+  deals: number
 }
 
 export const SEED_DEALS: Deal[] = [
@@ -200,7 +200,7 @@ export const SEED_DEALS: Deal[] = [
     added: "Feb 5",
     month: 2,
   },
-];
+]
 
 export const MONTHLY_DATA: MonthlyRevenueDatum[] = [
   { month: "Jan", revenue: 0, deals: 0 },
@@ -209,4 +209,4 @@ export const MONTHLY_DATA: MonthlyRevenueDatum[] = [
   { month: "Apr", revenue: 12300, deals: 2 },
   { month: "May", revenue: 8200, deals: 3 },
   { month: "Jun", revenue: 5400, deals: 2 },
-];
+]

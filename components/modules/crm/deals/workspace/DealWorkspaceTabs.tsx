@@ -5,8 +5,12 @@ import type { ReactNode } from "react"
 
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  DEAL_WORKSPACE_TAB_DEFINITIONS,
+  type DealWorkspaceTab,
+  isDealWorkspaceTab,
+} from "@/lib/crm/deals/dealWorkspaceTabs"
 import { buildDealWorkspaceUrl } from "@/lib/crm/deals/dealWorkspaceUrl"
-import { DEAL_WORKSPACE_TAB_DEFINITIONS, isDealWorkspaceTab, type DealWorkspaceTab } from "@/lib/crm/deals/dealWorkspaceTabs"
 
 type DealWorkspaceTabsProps = {
   dealId: string
@@ -16,7 +20,13 @@ type DealWorkspaceTabsProps = {
   renderTabContent: (tab: DealWorkspaceTab) => ReactNode
 }
 
-export function DealWorkspaceTabs({ dealId, activeTab, taskCount, deliverableCount, renderTabContent }: DealWorkspaceTabsProps) {
+export function DealWorkspaceTabs({
+  dealId,
+  activeTab,
+  taskCount,
+  deliverableCount,
+  renderTabContent,
+}: DealWorkspaceTabsProps) {
   const router = useRouter()
 
   function handleTabChange(nextTab: string) {
@@ -28,7 +38,11 @@ export function DealWorkspaceTabs({ dealId, activeTab, taskCount, deliverableCou
     <Tabs value={activeTab} onValueChange={handleTabChange}>
       <TabsList className="h-9 rounded-[10px] border border-border bg-muted p-1">
         {DEAL_WORKSPACE_TAB_DEFINITIONS.map((tab) => (
-          <TabsTrigger key={tab.id} value={tab.id} className="h-7 rounded-[8px] px-3 text-[11px] data-[state=active]:text-[#E8402A]">
+          <TabsTrigger
+            key={tab.id}
+            value={tab.id}
+            className="h-7 rounded-[8px] px-3 text-[11px] data-[state=active]:text-[#E8402A]"
+          >
             {tab.label}
             {tab.id === "tasks" ? ` (${taskCount})` : ""}
             {tab.id === "deliverables" ? ` (${deliverableCount})` : ""}
@@ -40,8 +54,10 @@ export function DealWorkspaceTabs({ dealId, activeTab, taskCount, deliverableCou
         <TabsContent key={tab.id} value={tab.id} className="mt-4">
           {tab.isPlaceholder ? (
             <Card className="rounded-[20px] border-border bg-card p-6">
-              <h2 className="text-lg font-bold text-foreground">{tab.label}</h2>
-              <p className="mt-2 text-[13px] text-muted-foreground">{tab.label} module is planned and architecture-ready.</p>
+              <h2 className="font-bold text-foreground text-lg">{tab.label}</h2>
+              <p className="mt-2 text-[13px] text-muted-foreground">
+                {tab.label} module is planned and architecture-ready.
+              </p>
             </Card>
           ) : (
             renderTabContent(tab.id)

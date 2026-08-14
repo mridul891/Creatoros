@@ -7,6 +7,6 @@ export function groupDealsByStage(deals: DealListItem[]) {
       accumulator[stage] = deals.filter((deal) => deal.stage === stage)
       return accumulator
     },
-    {} as Record<DealStage, DealListItem[]>,
+    {} as Record<DealStage, DealListItem[]>
   )
 }

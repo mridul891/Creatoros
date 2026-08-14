@@ -1,7 +1,7 @@
 "use client"
 
-import { Plus } from "@phosphor-icons/react/dist/ssr"
-
+import { PlusSignIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { ContactFilter } from "@/enums/contact"
@@ -28,7 +28,7 @@ export function BrandContactsToolbar({
     <>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-foreground">Contacts</h2>
+          <h2 className="font-bold text-foreground text-lg">Contacts</h2>
           <p className="mt-1 text-[12px] text-muted-foreground">
             {total} {total === 1 ? "contact" : "contacts"} in this brand
           </p>
@@ -36,9 +36,9 @@ export function BrandContactsToolbar({
         <Button
           type="button"
           onClick={onCreate}
-          className="h-9 cursor-pointer gap-2 bg-primary px-4 text-[12px] font-semibold text-primary-foreground hover:bg-primary"
+          className="h-9 cursor-pointer gap-2 bg-primary px-4 font-semibold text-[12px] text-primary-foreground hover:bg-primary"
         >
-          <Plus size={14} />
+          <HugeiconsIcon icon={PlusSignIcon} size={14} />
           Add Contact
         </Button>
       </div>
@@ -48,20 +48,23 @@ export function BrandContactsToolbar({
           value={search}
           onChange={onSearchChange}
           placeholder="Search name, email, position..."
-          className="w-full max-w-[320px]"
+          className="w-full max-w-xs"
         />
 
-        <Tabs value={status} onValueChange={(value) => onStatusChange(value as ContactFilter)}>
+        <Tabs
+          value={status}
+          onValueChange={(value) => onStatusChange(value as ContactFilter)}
+        >
           <TabsList className="h-10 border border-border bg-muted p-1">
             <TabsTrigger
               value="active"
-              className="h-8 cursor-pointer px-3 text-xs text-muted-foreground data-active:bg-muted data-active:text-foreground"
+              className="h-8 cursor-pointer px-3 text-muted-foreground text-xs data-active:bg-muted data-active:text-foreground"
             >
               Active
             </TabsTrigger>
             <TabsTrigger
               value="archived"
-              className="h-8 cursor-pointer px-3 text-xs text-muted-foreground data-active:bg-muted data-active:text-foreground"
+              className="h-8 cursor-pointer px-3 text-muted-foreground text-xs data-active:bg-muted data-active:text-foreground"
             >
               Archived
             </TabsTrigger>

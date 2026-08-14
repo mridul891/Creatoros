@@ -7,7 +7,12 @@ import { clampPage, clampPageSize } from "@/lib/crm/shared/pagination"
 import { applyCampaignTemplateInTransaction } from "@/lib/crm/templates/templateService"
 import { prisma } from "@/lib/prisma"
 import type { DealDetail, DealListData, DealListItem } from "@/types/deal"
-import { normalizeCampaignName, normalizeCurrency, type DealCreateUpdateInput, type DealListInput } from "./dealValidation"
+import {
+  type DealCreateUpdateInput,
+  type DealListInput,
+  normalizeCampaignName,
+  normalizeCurrency,
+} from "./dealValidation"
 
 const PAGE_SIZE_DEFAULT = 20
 const PAGE_SIZE_MAX = 50
@@ -17,10 +22,19 @@ type PrismaTx = Prisma.TransactionClient | PrismaClient
 const TERMINAL_STAGES = new Set(["Paid", "Cancelled"])
 
 export class DealServiceError extends Error {
-  code: "NOT_FOUND" | "DUPLICATE" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
+  code:
+    | "NOT_FOUND"
+    | "DUPLICATE"
+    | "INVALID_OPERATION"
+    | "FORBIDDEN"
+    | "UNKNOWN"
   field?: "campaignName" | "contactId" | "stage" | "priority"
 
-  constructor(message: string, code: DealServiceError["code"], field?: DealServiceError["field"]) {
+  constructor(
+    message: string,
+    code: DealServiceError["code"],
+    field?: DealServiceError["field"]
+  ) {
     super(message)
     this.name = "DealServiceError"
     this.code = code
@@ -104,7 +118,11 @@ async function assertOwnedContact(options: {
   })
 
   if (!contact) {
-    throw new DealServiceError("Selected contact is not valid for this brand.", "INVALID_OPERATION", "contactId")
+    throw new DealServiceError(
+      "Selected contact is not valid for this brand.",
+      "INVALID_OPERATION",
+      "contactId"
+    )
   }
 }
 
@@ -141,7 +159,7 @@ async function ensureNoActiveDuplicate(options: {
     throw new DealServiceError(
       "A deal with the same campaign name already exists for this brand.",
       "DUPLICATE",
-      "campaignName",
+      "campaignName"
     )
   }
 }
@@ -157,18 +175,35 @@ function getStageMilestones(stage: DealCreateUpdateInput["stage"]) {
 
 function applyStageMilestones(
   stage: DealCreateUpdateInput["stage"],
-  existing?: { deliveredAt: Date | null; completedAt: Date | null; paidAt: Date | null },
+  existing?: {
+    deliveredAt: Date | null
+    completedAt: Date | null
+    paidAt: Date | null
+  }
 ) {
   const now = new Date()
-  const stageIndex = ["Lead", "Contacted", "Negotiation", "ProposalSent", "ContractSigned", "Active", "Delivered", "Completed", "Paid", "Cancelled"].indexOf(stage)
+  const stageIndex = [
+    "Lead",
+    "Contacted",
+    "Negotiation",
+    "ProposalSent",
+    "ContractSigned",
+    "Active",
+    "Delivered",
+    "Completed",
+    "Paid",
+    "Cancelled",
+  ].indexOf(stage)
   const deliveredIndex = 6
   const completedIndex = 7
   const paidIndex = 8
 
   return {
-    deliveredAt: stageIndex >= deliveredIndex ? existing?.deliveredAt ?? now : null,
-    completedAt: stageIndex >= completedIndex ? existing?.completedAt ?? now : null,
-    paidAt: stageIndex >= paidIndex ? existing?.paidAt ?? now : null,
+    deliveredAt:
+      stageIndex >= deliveredIndex ? (existing?.deliveredAt ?? now) : null,
+    completedAt:
+      stageIndex >= completedIndex ? (existing?.completedAt ?? now) : null,
+    paidAt: stageIndex >= paidIndex ? (existing?.paidAt ?? now) : null,
   }
 }
 
@@ -180,13 +215,20 @@ function mapPrismaError(error: unknown): never {
     typeof error.code === "string" &&
     error.code === "P2002"
   ) {
-    throw new DealServiceError("A deal with the same campaign name already exists for this brand.", "DUPLICATE", "campaignName")
+    throw new DealServiceError(
+      "A deal with the same campaign name already exists for this brand.",
+      "DUPLICATE",
+      "campaignName"
+    )
   }
 
   throw error
 }
 
-function buildListWhere(userId: string, input: DealListInput): Prisma.DealWhereInput {
+function buildListWhere(
+  userId: string,
+  input: DealListInput
+): Prisma.DealWhereInput {
   const search = input.search?.trim() ?? ""
   const fromDate = input.fromDate ? new Date(input.fromDate) : undefined
   const toDate = input.toDate ? new Date(input.toDate) : undefined
@@ -218,7 +260,9 @@ function buildListWhere(userId: string, input: DealListInput): Prisma.DealWhereI
   }
 }
 
-function getSortOrder(sort: DealListInput["sort"]): Prisma.DealOrderByWithRelationInput {
+function getSortOrder(
+  sort: DealListInput["sort"]
+): Prisma.DealOrderByWithRelationInput {
   switch (sort) {
     case "value":
       return { dealValue: "desc" }
@@ -295,7 +339,13 @@ async function buildWidgets(userId: string): Promise<DealListData["widgets"]> {
     },
   })
 
-  const [activeDeals, inProgressDeals, dealsClosingSoon, overdueDeals, highestValueDeals] = await Promise.all([
+  const [
+    activeDeals,
+    inProgressDeals,
+    dealsClosingSoon,
+    overdueDeals,
+    highestValueDeals,
+  ] = await Promise.all([
     activeDealsPromise,
     dealsInProgressPromise,
     dealsClosingSoonPromise,
@@ -305,16 +355,24 @@ async function buildWidgets(userId: string): Promise<DealListData["widgets"]> {
 
   return {
     activeDeals,
-    revenueInProgress: inProgressDeals._sum.dealValue ? toNumber(inProgressDeals._sum.dealValue) : 0,
+    revenueInProgress: inProgressDeals._sum.dealValue
+      ? toNumber(inProgressDeals._sum.dealValue)
+      : 0,
     dealsClosingSoon,
     overdueDeals,
     highestValueDeals: highestValueDeals.map((item) => toListItem(item)),
   }
 }
 
-export async function listDeals(userId: string, input: DealListInput): Promise<DealListData> {
+export async function listDeals(
+  userId: string,
+  input: DealListInput
+): Promise<DealListData> {
   const requestedPage = clampPage(input.page)
-  const requestedPageSize = clampPageSize(input.pageSize, { pageSize: PAGE_SIZE_DEFAULT, maxPageSize: PAGE_SIZE_MAX })
+  const requestedPageSize = clampPageSize(input.pageSize, {
+    pageSize: PAGE_SIZE_DEFAULT,
+    maxPageSize: PAGE_SIZE_MAX,
+  })
   const isKanbanView = input.view === "kanban"
   const page = isKanbanView ? 1 : requestedPage
   const pageSize = isKanbanView ? PAGE_SIZE_MAX : requestedPageSize
@@ -379,7 +437,10 @@ export async function listDeals(userId: string, input: DealListInput): Promise<D
   }
 }
 
-export async function getDeal(userId: string, dealId: string): Promise<DealDetail> {
+export async function getDeal(
+  userId: string,
+  dealId: string
+): Promise<DealDetail> {
   const deal = await prisma.deal.findFirst({
     where: { id: dealId, userId },
     include: {
@@ -438,10 +499,16 @@ export async function getDeal(userId: string, dealId: string): Promise<DealDetai
 }
 
 export async function createDeal(userId: string, input: DealCreateUpdateInput) {
-  return prisma.$transaction(async (tx) => createDealInTransaction(tx, userId, input))
+  return prisma.$transaction(async (tx) =>
+    createDealInTransaction(tx, userId, input)
+  )
 }
 
-async function createDealInTransaction(tx: PrismaTx, userId: string, input: DealCreateUpdateInput) {
+async function createDealInTransaction(
+  tx: PrismaTx,
+  userId: string,
+  input: DealCreateUpdateInput
+) {
   await assertOwnedBrand(userId, input.brandId, tx)
   if (input.contactId) {
     await assertOwnedContact({
@@ -524,7 +591,11 @@ async function createDealInTransaction(tx: PrismaTx, userId: string, input: Deal
   }
 }
 
-export async function createDealWithTemplate(userId: string, input: DealCreateUpdateInput, templateId: string) {
+export async function createDealWithTemplate(
+  userId: string,
+  input: DealCreateUpdateInput,
+  templateId: string
+) {
   return prisma.$transaction(async (tx) => {
     const created = await createDealInTransaction(tx, userId, input)
     await applyCampaignTemplateInTransaction(tx, userId, created.id, templateId)
@@ -532,11 +603,18 @@ export async function createDealWithTemplate(userId: string, input: DealCreateUp
   })
 }
 
-export async function updateDeal(userId: string, dealId: string, input: DealCreateUpdateInput) {
+export async function updateDeal(
+  userId: string,
+  dealId: string,
+  input: DealCreateUpdateInput
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeal(tx, userId, dealId)
     if (existing.status === "Archived") {
-      throw new DealServiceError("Archived deals cannot be edited.", "INVALID_OPERATION")
+      throw new DealServiceError(
+        "Archived deals cannot be edited.",
+        "INVALID_OPERATION"
+      )
     }
 
     await assertOwnedBrand(userId, input.brandId, tx)
@@ -558,8 +636,17 @@ export async function updateDeal(userId: string, dealId: string, input: DealCrea
       excludingId: existing.id,
     })
 
-    if (!isValidStageTransition(existing.stage as DealDetail["stage"], input.stage)) {
-      throw new DealServiceError("This stage transition is not allowed.", "INVALID_OPERATION", "stage")
+    if (
+      !isValidStageTransition(
+        existing.stage as DealDetail["stage"],
+        input.stage
+      )
+    ) {
+      throw new DealServiceError(
+        "This stage transition is not allowed.",
+        "INVALID_OPERATION",
+        "stage"
+      )
     }
 
     const milestones = applyStageMilestones(input.stage, existing)
@@ -587,7 +674,10 @@ export async function updateDeal(userId: string, dealId: string, input: DealCrea
           source: input.source ?? null,
           probability: input.probability ?? null,
           externalRef: input.externalRef ?? null,
-          lastStageChangedAt: existing.stage === input.stage ? existing.lastStageChangedAt : new Date(),
+          lastStageChangedAt:
+            existing.stage === input.stage
+              ? existing.lastStageChangedAt
+              : new Date(),
           deliveredAt: milestones.deliveredAt,
           completedAt: milestones.completedAt,
           paidAt: milestones.paidAt,
@@ -620,16 +710,29 @@ export async function updateDeal(userId: string, dealId: string, input: DealCrea
   })
 }
 
-export async function updateDealStage(userId: string, dealId: string, stage: DealListItem["stage"]) {
+export async function updateDealStage(
+  userId: string,
+  dealId: string,
+  stage: DealListItem["stage"]
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeal(tx, userId, dealId)
 
     if (existing.status === "Archived") {
-      throw new DealServiceError("Archived deals cannot change stage.", "INVALID_OPERATION")
+      throw new DealServiceError(
+        "Archived deals cannot change stage.",
+        "INVALID_OPERATION"
+      )
     }
 
-    if (!isValidStageTransition(existing.stage as DealListItem["stage"], stage)) {
-      throw new DealServiceError("This stage transition is not allowed.", "INVALID_OPERATION", "stage")
+    if (
+      !isValidStageTransition(existing.stage as DealListItem["stage"], stage)
+    ) {
+      throw new DealServiceError(
+        "This stage transition is not allowed.",
+        "INVALID_OPERATION",
+        "stage"
+      )
     }
 
     const milestones = applyStageMilestones(stage, existing)
@@ -667,12 +770,20 @@ export async function updateDealStage(userId: string, dealId: string, stage: Dea
   })
 }
 
-export async function updateDealPriority(userId: string, dealId: string, priority: DealListItem["priority"]) {
+export async function updateDealPriority(
+  userId: string,
+  dealId: string,
+  priority: DealListItem["priority"]
+) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeal(tx, userId, dealId)
 
     if (existing.status === "Archived") {
-      throw new DealServiceError("Archived deals cannot change priority.", "INVALID_OPERATION", "priority")
+      throw new DealServiceError(
+        "Archived deals cannot change priority.",
+        "INVALID_OPERATION",
+        "priority"
+      )
     }
 
     const updated = await tx.deal.update({
@@ -709,7 +820,10 @@ export async function archiveDeal(userId: string, dealId: string) {
   return prisma.$transaction(async (tx) => {
     const existing = await getOwnedDeal(tx, userId, dealId)
     if (existing.status === "Archived") {
-      throw new DealServiceError("Deal is already archived.", "INVALID_OPERATION")
+      throw new DealServiceError(
+        "Deal is already archived.",
+        "INVALID_OPERATION"
+      )
     }
 
     const archived = await tx.deal.update({
@@ -774,7 +888,10 @@ export async function deleteDeal(userId: string, dealId: string) {
     const existing = await getOwnedDeal(tx, userId, dealId)
 
     if (!TERMINAL_STAGES.has(existing.stage)) {
-      throw new DealServiceError("Only cancelled or paid deals can be deleted.", "FORBIDDEN")
+      throw new DealServiceError(
+        "Only cancelled or paid deals can be deleted.",
+        "FORBIDDEN"
+      )
     }
 
     await tx.deal.delete({
@@ -807,7 +924,9 @@ export async function listDealFormOptions(userId: string) {
     }),
   ])
 
-  const contactsByBrand = contacts.reduce<Record<string, Array<{ id: string; name: string }>>>((accumulator, item) => {
+  const contactsByBrand = contacts.reduce<
+    Record<string, Array<{ id: string; name: string }>>
+  >((accumulator, item) => {
     if (!accumulator[item.brandId]) {
       accumulator[item.brandId] = []
     }

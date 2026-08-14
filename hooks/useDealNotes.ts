@@ -14,7 +14,9 @@ export function useDealNotes({ dealId, initialData }: UseDealNotesOptions) {
   const [notes, setNotes] = useState<DealNoteListItem[]>(initialData.items)
   const [pagination, setPagination] = useState(initialData.pagination)
   const [search, setSearch] = useState(initialData.filters.search)
-  const [archive, setArchive] = useState<"active" | "archived">(initialData.filters.archive)
+  const [archive, setArchive] = useState<"active" | "archived">(
+    initialData.filters.archive
+  )
   const [isLoading, setIsLoading] = useState(false)
   const [loadError, setLoadError] = useState("")
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -28,7 +30,7 @@ export function useDealNotes({ dealId, initialData }: UseDealNotesOptions) {
     setLoadError("")
     setIsLoading(false)
     hasHydratedRef.current = false
-  }, [dealId, initialData])
+  }, [initialData])
 
   const refetch = useCallback(
     async (nextPage = 1) => {
@@ -50,7 +52,7 @@ export function useDealNotes({ dealId, initialData }: UseDealNotesOptions) {
       setNotes(result.data.items)
       setPagination(result.data.pagination)
     },
-    [archive, dealId, search],
+    [archive, dealId, search]
   )
 
   useEffect(() => {
@@ -72,7 +74,7 @@ export function useDealNotes({ dealId, initialData }: UseDealNotesOptions) {
         clearTimeout(debounceRef.current)
       }
     }
-  }, [archive, refetch, search])
+  }, [refetch])
 
   return {
     notes,

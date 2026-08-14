@@ -3,8 +3,21 @@
 import { revalidatePath } from "next/cache"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import { archiveNote, createNote, deleteNote, listDealNotes, NoteServiceError, restoreNote, updateNote } from "@/lib/crm/notes/noteService"
-import { noteArchiveSchema, noteCreateSchema, noteListSchema, noteUpdateSchema } from "@/lib/crm/notes/noteValidation"
+import {
+  archiveNote,
+  createNote,
+  deleteNote,
+  listDealNotes,
+  NoteServiceError,
+  restoreNote,
+  updateNote,
+} from "@/lib/crm/notes/noteService"
+import {
+  noteArchiveSchema,
+  noteCreateSchema,
+  noteListSchema,
+  noteUpdateSchema,
+} from "@/lib/crm/notes/noteValidation"
 import type { DealNoteListData } from "@/types/dealNote"
 
 export type NoteMutationResult = {
@@ -28,7 +41,10 @@ function revalidateNotePaths(dealId?: string) {
   }
 }
 
-function mapNoteServiceError(error: unknown, fallbackMessage: string): NoteMutationResult {
+function mapNoteServiceError(
+  error: unknown,
+  fallbackMessage: string
+): NoteMutationResult {
   if (error instanceof NoteServiceError) {
     return {
       success: false,
@@ -66,7 +82,11 @@ export async function listDealNotesAction(input: {
       data,
     }
   } catch (error) {
-    console.error("notes.list_failed", { userId: user.id, input: parsed.data, error })
+    console.error("notes.list_failed", {
+      userId: user.id,
+      input: parsed.data,
+      error,
+    })
     return {
       success: false,
       message: "We could not load notes. Please try again.",
@@ -74,7 +94,9 @@ export async function listDealNotesAction(input: {
   }
 }
 
-export async function createNoteAction(formData: FormData): Promise<NoteMutationResult> {
+export async function createNoteAction(
+  formData: FormData
+): Promise<NoteMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = noteCreateSchema.safeParse({
     dealId: formData.get("dealId"),
@@ -99,18 +121,26 @@ export async function createNoteAction(formData: FormData): Promise<NoteMutation
     }
   } catch (error) {
     console.error("notes.create_failed", { userId: user.id, error })
-    return mapNoteServiceError(error, "We could not create this note. Please try again.")
+    return mapNoteServiceError(
+      error,
+      "We could not create this note. Please try again."
+    )
   }
 }
 
-export async function updateNoteAction(formData: FormData): Promise<NoteMutationResult> {
+export async function updateNoteAction(
+  formData: FormData
+): Promise<NoteMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = noteUpdateSchema.safeParse({
     noteId: formData.get("noteId"),
     dealId: formData.get("dealId"),
     title: formData.get("title"),
     content: formData.get("content"),
-    isPinned: formData.get("isPinned") === null ? undefined : formData.get("isPinned") === "true",
+    isPinned:
+      formData.get("isPinned") === null
+        ? undefined
+        : formData.get("isPinned") === "true",
   })
 
   if (!parsed.success) {
@@ -129,12 +159,21 @@ export async function updateNoteAction(formData: FormData): Promise<NoteMutation
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("notes.update_failed", { userId: user.id, noteId: parsed.data.noteId, error })
-    return mapNoteServiceError(error, "We could not update this note. Please try again.")
+    console.error("notes.update_failed", {
+      userId: user.id,
+      noteId: parsed.data.noteId,
+      error,
+    })
+    return mapNoteServiceError(
+      error,
+      "We could not update this note. Please try again."
+    )
   }
 }
 
-export async function archiveNoteAction(noteId: string): Promise<NoteMutationResult> {
+export async function archiveNoteAction(
+  noteId: string
+): Promise<NoteMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = noteArchiveSchema.safeParse({ noteId })
   if (!parsed.success) {
@@ -153,12 +192,21 @@ export async function archiveNoteAction(noteId: string): Promise<NoteMutationRes
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("notes.archive_failed", { userId: user.id, noteId: parsed.data.noteId, error })
-    return mapNoteServiceError(error, "We could not archive this note. Please try again.")
+    console.error("notes.archive_failed", {
+      userId: user.id,
+      noteId: parsed.data.noteId,
+      error,
+    })
+    return mapNoteServiceError(
+      error,
+      "We could not archive this note. Please try again."
+    )
   }
 }
 
-export async function restoreNoteAction(noteId: string): Promise<NoteMutationResult> {
+export async function restoreNoteAction(
+  noteId: string
+): Promise<NoteMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = noteArchiveSchema.safeParse({ noteId })
   if (!parsed.success) {
@@ -177,12 +225,21 @@ export async function restoreNoteAction(noteId: string): Promise<NoteMutationRes
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("notes.restore_failed", { userId: user.id, noteId: parsed.data.noteId, error })
-    return mapNoteServiceError(error, "We could not restore this note. Please try again.")
+    console.error("notes.restore_failed", {
+      userId: user.id,
+      noteId: parsed.data.noteId,
+      error,
+    })
+    return mapNoteServiceError(
+      error,
+      "We could not restore this note. Please try again."
+    )
   }
 }
 
-export async function deleteNoteAction(noteId: string): Promise<NoteMutationResult> {
+export async function deleteNoteAction(
+  noteId: string
+): Promise<NoteMutationResult> {
   const user = await requireOnboardedUser()
   const parsed = noteArchiveSchema.safeParse({ noteId })
   if (!parsed.success) {
@@ -201,8 +258,14 @@ export async function deleteNoteAction(noteId: string): Promise<NoteMutationResu
       data: { id: data.id },
     }
   } catch (error) {
-    console.error("notes.delete_failed", { userId: user.id, noteId: parsed.data.noteId, error })
-    return mapNoteServiceError(error, "We could not delete this note. Please try again.")
+    console.error("notes.delete_failed", {
+      userId: user.id,
+      noteId: parsed.data.noteId,
+      error,
+    })
+    return mapNoteServiceError(
+      error,
+      "We could not delete this note. Please try again."
+    )
   }
 }
-

@@ -1,7 +1,10 @@
 "use server"
 
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import { getCommandCenterData, type CommandCenterData } from "@/lib/crm/dashboard/commandCenterService"
+import {
+  type CommandCenterData,
+  getCommandCenterData,
+} from "@/lib/crm/dashboard/commandCenterService"
 
 export type CommandCenterResult =
   | {

@@ -1,7 +1,13 @@
 "use client"
 
+import {
+  Copy01Icon,
+  Delete02Icon,
+  Link01Icon,
+  MoreHorizontalIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import Link from "next/link"
-import { DotsThree, Copy, Trash, Link as LinkIcon } from "@phosphor-icons/react/dist/ssr"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -9,7 +15,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Script, TYPE_CFG, formatRelativeDate, getReadingTime, truncateText } from "./shared"
+import {
+  formatRelativeDate,
+  getReadingTime,
+  type Script,
+  TYPE_CFG,
+  truncateText,
+} from "./shared"
 
 type ScriptCardProps = {
   script: Script
@@ -18,7 +30,12 @@ type ScriptCardProps = {
   onLinkDeal?: (id: string) => void
 }
 
-export function ScriptCard({ script, onDuplicate, onDelete, onLinkDeal }: ScriptCardProps) {
+export function ScriptCard({
+  script,
+  onDuplicate,
+  onDelete,
+  onLinkDeal,
+}: ScriptCardProps) {
   const typeConfig = TYPE_CFG[script.type]
   const readingTime = getReadingTime(script.content)
   const preview = truncateText(script.content.replace(/<[^>]*>/g, ""), 80)
@@ -35,12 +52,14 @@ export function ScriptCard({ script, onDuplicate, onDelete, onLinkDeal }: Script
             style={{ backgroundColor: typeConfig.color }}
             aria-hidden="true"
           />
-          <span className="text-[11px] font-medium text-muted-foreground">
+          <span className="font-medium text-[11px] text-muted-foreground">
             {typeConfig.label}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[11px] text-muted-foreground">{readingTime}</span>
+          <span className="text-[11px] text-muted-foreground">
+            {readingTime}
+          </span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -52,23 +71,31 @@ export function ScriptCard({ script, onDuplicate, onDelete, onLinkDeal }: Script
                   e.stopPropagation()
                 }}
               >
-                <DotsThree size={14} weight="bold" />
+                <HugeiconsIcon
+                  icon={MoreHorizontalIcon}
+                  size={14}
+                  strokeWidth={2}
+                />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
-              <DropdownMenuItem onClick={(e) => {
-                e.preventDefault()
-                onDuplicate(script.id)
-              }}>
-                <Copy size={14} className="mr-2" />
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.preventDefault()
+                  onDuplicate(script.id)
+                }}
+              >
+                <HugeiconsIcon icon={Copy01Icon} size={14} className="mr-2" />
                 Duplicate
               </DropdownMenuItem>
               {script.type === "personal" && onLinkDeal && (
-                <DropdownMenuItem onClick={(e) => {
-                  e.preventDefault()
-                  onLinkDeal(script.id)
-                }}>
-                  <LinkIcon size={14} className="mr-2" />
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onLinkDeal(script.id)
+                  }}
+                >
+                  <HugeiconsIcon icon={Link01Icon} size={14} className="mr-2" />
                   Link to Deal
                 </DropdownMenuItem>
               )}
@@ -79,7 +106,7 @@ export function ScriptCard({ script, onDuplicate, onDelete, onLinkDeal }: Script
                 }}
                 className="text-destructive focus:text-destructive"
               >
-                <Trash size={14} className="mr-2" />
+                <HugeiconsIcon icon={Delete02Icon} size={14} className="mr-2" />
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -87,12 +114,12 @@ export function ScriptCard({ script, onDuplicate, onDelete, onLinkDeal }: Script
         </div>
       </div>
 
-      <h3 className="mt-3 text-sm font-semibold leading-snug text-foreground">
+      <h3 className="mt-3 font-semibold text-foreground text-sm leading-snug">
         {truncateText(script.title, 40)}
       </h3>
 
       {script.brandName && (
-        <p className="mt-1 text-[12px] font-medium text-primary">
+        <p className="mt-1 font-medium text-[12px] text-primary">
           {script.brandName}
         </p>
       )}
@@ -102,7 +129,7 @@ export function ScriptCard({ script, onDuplicate, onDelete, onLinkDeal }: Script
       </p>
 
       {preview && (
-        <p className="mt-3 line-clamp-2 text-[12px] leading-relaxed text-muted-foreground">
+        <p className="mt-3 line-clamp-2 text-[12px] text-muted-foreground leading-relaxed">
           {preview}
         </p>
       )}

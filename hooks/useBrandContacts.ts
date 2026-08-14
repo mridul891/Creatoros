@@ -11,11 +11,16 @@ type UseBrandContactsOptions = {
   initialData: ContactListData
 }
 
-export function useBrandContacts({ brandId, initialData }: UseBrandContactsOptions) {
+export function useBrandContacts({
+  brandId,
+  initialData,
+}: UseBrandContactsOptions) {
   const [contacts, setContacts] = useState<ContactListItem[]>(initialData.items)
   const [total, setTotal] = useState(initialData.total)
   const [search, setSearch] = useState(initialData.filters.search)
-  const [status, setStatus] = useState<ContactFilter>(initialData.filters.status)
+  const [status, setStatus] = useState<ContactFilter>(
+    initialData.filters.status
+  )
   const [isLoading, setIsLoading] = useState(false)
   const [loadError, setLoadError] = useState("")
   const hasHydratedRef = useRef(false)
@@ -40,7 +45,7 @@ export function useBrandContacts({ brandId, initialData }: UseBrandContactsOptio
       setContacts(result.data.items)
       setTotal(result.data.total)
     },
-    [brandId],
+    [brandId]
   )
 
   useEffect(() => {

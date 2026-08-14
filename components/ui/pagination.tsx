@@ -1,13 +1,16 @@
-import * as React from "react"
-
-import { cn } from "@/lib/utils"
+import {
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
+  MoreHorizontalIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import type * as React from "react"
 import { Button } from "@/components/ui/button"
-import { CaretLeft, CaretRight, DotsThree } from "@phosphor-icons/react/dist/ssr"
+import { cn } from "@/lib/utils"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav
-      role="navigation"
       aria-label="pagination"
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}
@@ -73,7 +76,7 @@ function PaginationPrevious({
       className={cn("pl-1.5!", className)}
       {...props}
     >
-      <CaretLeft data-icon="inline-start" />
+      <HugeiconsIcon icon={ArrowLeft01Icon} data-icon="inline-start" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   )
@@ -92,7 +95,7 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">{text}</span>
-      <CaretRight data-icon="inline-end" />
+      <HugeiconsIcon icon={ArrowRight01Icon} data-icon="inline-end" />
     </PaginationLink>
   )
 }
@@ -111,8 +114,7 @@ function PaginationEllipsis({
       )}
       {...props}
     >
-      <DotsThree
-      />
+      <HugeiconsIcon icon={MoreHorizontalIcon} />
       <span className="sr-only">More pages</span>
     </span>
   )

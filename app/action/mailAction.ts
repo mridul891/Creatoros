@@ -61,6 +61,9 @@ export async function sendEmail(
 
     return { success: true, id: data?.id ?? null }
   } catch {
-    return { success: false, message: "Failed to send email. Please try again." }
+    return {
+      success: false,
+      message: "Failed to send email. Please try again.",
+    }
   }
 }

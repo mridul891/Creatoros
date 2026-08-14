@@ -1,12 +1,13 @@
 "use client"
 
-import { cn } from "@/lib/utils"
+import { GoogleIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import Link from "next/link"
+import { useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
 import { FieldDescription, FieldGroup } from "@/components/ui/field"
 import { initiateGoogleOAuth } from "@/lib/inforge/auth-actions"
-import { GoogleLogo } from "@phosphor-icons/react/dist/ssr"
-import Link from "next/link"
-import { useState, useTransition } from "react"
+import { cn } from "@/lib/utils"
 
 export function LoginForm({
   className,
@@ -27,18 +28,12 @@ export function LoginForm({
   }
 
   return (
-    <div
-      className={cn(
-        "p-6 sm:p-8",
-        className
-      )}
-      {...props}
-    >
-      <div className="flex flex-col gap-7 mb-5">
+    <div className={cn("p-6 sm:p-8", className)} {...props}>
+      <div className="mb-5 flex flex-col gap-7">
         <FieldGroup className="gap-7">
-            <h1 className="text-base font-light tracking-tight text-black sm:text-[2.7rem]">
-              Welcome back
-            </h1>
+          <h1 className="font-semibold text-3xl text-black tracking-tight sm:text-4xl">
+            Welcome back
+          </h1>
 
           <Button
             variant="default"
@@ -46,9 +41,12 @@ export function LoginForm({
             type="button"
             onClick={handleGoogleSignIn}
             disabled={isPending}
-            className="h-12 w-full rounded-xl border-black! bg-card! text-foreground! shadow-sm hover:bg-card! focus-visible:ring-black/30!"
+            className="h-12 w-full cursor-pointer rounded-lg border-black! bg-card! text-foreground! shadow-sm hover:bg-card! focus-visible:ring-black/30!"
           >
-            <GoogleLogo className="size-4 text-foreground transition-colors group-hover/button:text-foreground" />
+            <HugeiconsIcon
+              icon={GoogleIcon}
+              className="size-4 text-foreground transition-colors group-hover/button:text-foreground"
+            />
             {isPending ? "Redirecting..." : "Sign in with Google"}
           </Button>
           {errorMessage ? (
@@ -58,7 +56,7 @@ export function LoginForm({
           ) : null}
         </FieldGroup>
       </div>
-      <FieldDescription className="mt-8 text-left text-xs leading-relaxed text-black/55">
+      <FieldDescription className="mt-8 text-left text-black/55 text-xs leading-relaxed">
         By signing in, you agree to our{" "}
         <Link href="/terms-and-conditions">Terms & Conditions</Link> and{" "}
         <Link href="/privacy-policy">Privacy Policy</Link>.

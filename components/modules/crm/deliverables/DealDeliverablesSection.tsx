@@ -1,19 +1,35 @@
 "use client"
 
-import { Plus } from "@phosphor-icons/react/dist/ssr"
+import { Add01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { getDeliverableAction } from "@/app/action/deliverableActions"
-import { CrmConfirmDialog, CrmPageHeaderClient, CrmPagination, CrmSearchField } from "@/components/modules/crm/shared"
+import {
+  CrmConfirmDialog,
+  CrmPageHeaderClient,
+  CrmPagination,
+  CrmSearchField,
+} from "@/components/modules/crm/shared"
 import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { DELIVERABLE_STATUSES } from "@/enums/deliverable"
 import { useDealDeliverables } from "@/hooks/useDealDeliverables"
 import { useDeliverableMutations } from "@/hooks/useDeliverableMutations"
 import { useInvoiceMutations } from "@/hooks/useInvoiceMutations"
-import { EMPTY_DELIVERABLE_FORM, deliverableDetailToFormValues, type DeliverableFormValues } from "@/lib/crm/deliverables/deliverableForm"
+import {
+  type DeliverableFormValues,
+  deliverableDetailToFormValues,
+  EMPTY_DELIVERABLE_FORM,
+} from "@/lib/crm/deliverables/deliverableForm"
 import { getDeliverableFormFieldErrors } from "@/lib/crm/deliverables/deliverableValidation"
 import { keepUnresolvedErrors } from "@/lib/crm/shared/formErrors"
 import type { DeliverableField, DeliverableListData } from "@/types/deliverable"
@@ -59,24 +75,41 @@ export function DealDeliverablesSection({
   const [editingId, setEditingId] = useState<string | null>(null)
   const [pendingArchiveId, setPendingArchiveId] = useState<string | null>(null)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
-  const [formValues, setFormValues] = useState<DeliverableFormValues>({ ...EMPTY_DELIVERABLE_FORM, dealId })
+  const [formValues, setFormValues] = useState<DeliverableFormValues>({
+    ...EMPTY_DELIVERABLE_FORM,
+    dealId,
+  })
   const [formError, setFormError] = useState("")
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<DeliverableField, string>>>({})
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<DeliverableField, string>>
+  >({})
 
-  const { isSubmitting, isMutating, submitCreate, submitUpdate, runArchive, runRestore, runDelete } = useDeliverableMutations({
+  const {
+    isSubmitting,
+    isMutating,
+    submitCreate,
+    submitUpdate,
+    runArchive,
+    runRestore,
+    runDelete,
+  } = useDeliverableMutations({
     onRefresh: () => {
       void refetch(pagination.page)
     },
   })
-  const { isCreatingFromDeliverableId, createFromDeliverable } = useInvoiceMutations({
-    onRefresh: () => {
-      void refetch(pagination.page)
-    },
-  })
+  const { isCreatingFromDeliverableId, createFromDeliverable } =
+    useInvoiceMutations({
+      onRefresh: () => {
+        void refetch(pagination.page)
+      },
+    })
 
   const displayError = initialLoadError ?? loadError
-  const pendingArchiveItem = pendingArchiveId ? deliverables.find((item) => item.id === pendingArchiveId) : null
-  const isArchiveActionRestore = pendingArchiveItem?.isArchived ?? archive === "archived"
+  const pendingArchiveItem = pendingArchiveId
+    ? deliverables.find((item) => item.id === pendingArchiveId)
+    : null
+  const isArchiveActionRestore =
+    pendingArchiveItem?.isArchived ?? archive === "archived"
 
   const activePlatforms = useMemo(() => {
     const set = new Set(deliverables.map((item) => item.platform))
@@ -112,7 +145,9 @@ export function DealDeliverablesSection({
   async function handleSubmit() {
     setFormError("")
     setFieldErrors({})
-    const result = editingId ? await submitUpdate(editingId, formValues) : await submitCreate(formValues)
+    const result = editingId
+      ? await submitUpdate(editingId, formValues)
+      : await submitCreate(formValues)
 
     if (!result.success) {
       setFormError(result.message ?? "Could not save deliverable.")
@@ -144,7 +179,9 @@ export function DealDeliverablesSection({
   async function confirmArchive() {
     if (!pendingArchiveId) return
     const target = deliverables.find((item) => item.id === pendingArchiveId)
-    const result = target?.isArchived ? await runRestore(pendingArchiveId) : await runArchive(pendingArchiveId)
+    const result = target?.isArchived
+      ? await runRestore(pendingArchiveId)
+      : await runArchive(pendingArchiveId)
     if (result.success) {
       setPendingArchiveId(null)
       await refetch(pagination.page)
@@ -173,15 +210,23 @@ export function DealDeliverablesSection({
         title="Deliverables"
         description="Brand-facing campaign outcomes and approval lifecycle."
         actionLabel="Add Deliverable"
-        actionIcon={<Plus size={14} />}
+        actionIcon={<HugeiconsIcon icon={Add01Icon} size={14} />}
         onAction={openCreate}
         className="mb-4"
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <CrmSearchField value={search} placeholder="Search deliverables" onChange={setSearch} className="w-[260px]" />
-        <Select value={status} onValueChange={(next) => setStatus(next as typeof status)}>
-          <SelectTrigger className="h-10 w-[170px] border-border bg-card text-xs text-muted-foreground">
+        <CrmSearchField
+          value={search}
+          placeholder="Search deliverables"
+          onChange={setSearch}
+          className="w-[260px]"
+        />
+        <Select
+          value={status}
+          onValueChange={(next) => setStatus(next as typeof status)}
+        >
+          <SelectTrigger className="h-10 w-[170px] border-border bg-card text-muted-foreground text-xs">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -194,7 +239,7 @@ export function DealDeliverablesSection({
           </SelectContent>
         </Select>
         <Select value={platform} onValueChange={setPlatform}>
-          <SelectTrigger className="h-10 w-[170px] border-border bg-card text-xs text-muted-foreground">
+          <SelectTrigger className="h-10 w-[170px] border-border bg-card text-muted-foreground text-xs">
             <SelectValue placeholder="Platform" />
           </SelectTrigger>
           <SelectContent>
@@ -206,8 +251,11 @@ export function DealDeliverablesSection({
             ))}
           </SelectContent>
         </Select>
-        <Select value={archive} onValueChange={(next) => setArchive(next as typeof archive)}>
-          <SelectTrigger className="h-10 w-[140px] border-border bg-card text-xs text-muted-foreground">
+        <Select
+          value={archive}
+          onValueChange={(next) => setArchive(next as typeof archive)}
+        >
+          <SelectTrigger className="h-10 w-[140px] border-border bg-card text-muted-foreground text-xs">
             <SelectValue placeholder="Visibility" />
           </SelectTrigger>
           <SelectContent>
@@ -215,8 +263,11 @@ export function DealDeliverablesSection({
             <SelectItem value="archived">Archived</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={sort} onValueChange={(next) => setSort(next as typeof sort)}>
-          <SelectTrigger className="h-10 w-[160px] border-border bg-card text-xs text-muted-foreground">
+        <Select
+          value={sort}
+          onValueChange={(next) => setSort(next as typeof sort)}
+        >
+          <SelectTrigger className="h-10 w-[160px] border-border bg-card text-muted-foreground text-xs">
             <SelectValue placeholder="Sort" />
           </SelectTrigger>
           <SelectContent>
@@ -229,24 +280,48 @@ export function DealDeliverablesSection({
       </div>
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <Button type="button" size="sm" variant="outline" className="h-8 text-[11px]">
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="h-8 text-[11px]"
+        >
           Total: {summary.total}
         </Button>
-        <Button type="button" size="sm" variant="outline" className="h-8 text-[11px]">
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="h-8 text-[11px]"
+        >
           Submitted: {summary.submitted}
         </Button>
-        <Button type="button" size="sm" variant="outline" className="h-8 text-[11px]">
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="h-8 text-[11px]"
+        >
           Needs Revision: {summary.needsRevision}
         </Button>
-        <Button type="button" size="sm" variant="outline" className="h-8 text-[11px]">
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="h-8 text-[11px]"
+        >
           Published: {summary.published}
         </Button>
       </div>
 
-      {displayError ? <p className="mb-4 text-[12px] text-[#E8402A]">{displayError}</p> : null}
+      {displayError ? (
+        <p className="mb-4 text-[#E8402A] text-[12px]">{displayError}</p>
+      ) : null}
 
       {isLoading ? (
-        <p className="text-[12px] text-muted-foreground">Loading deliverables...</p>
+        <p className="text-[12px] text-muted-foreground">
+          Loading deliverables...
+        </p>
       ) : deliverables.length === 0 ? (
         <DeliverablesEmptyState onCreate={openCreate} />
       ) : (
@@ -261,7 +336,13 @@ export function DealDeliverablesSection({
         />
       )}
 
-      {pagination.totalPages > 1 ? <CrmPagination page={pagination.page} totalPages={pagination.totalPages} onPageChange={setPage} /> : null}
+      {pagination.totalPages > 1 ? (
+        <CrmPagination
+          page={pagination.page}
+          totalPages={pagination.totalPages}
+          onPageChange={setPage}
+        />
+      ) : null}
 
       <DeliverableForm
         open={showForm}
@@ -278,7 +359,11 @@ export function DealDeliverablesSection({
 
       <CrmConfirmDialog
         open={Boolean(pendingArchiveId)}
-        title={isArchiveActionRestore ? "Restore deliverable?" : "Archive deliverable?"}
+        title={
+          isArchiveActionRestore
+            ? "Restore deliverable?"
+            : "Archive deliverable?"
+        }
         description={
           isArchiveActionRestore
             ? "This deliverable will become active and visible in active workflow."

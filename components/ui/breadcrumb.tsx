@@ -1,8 +1,12 @@
-import * as React from "react"
+import {
+  ArrowRight01Icon,
+  MoreHorizontalIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { Slot } from "radix-ui"
+import type * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { CaretRight, DotsThree } from "@phosphor-icons/react/dist/ssr"
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -20,7 +24,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "flex flex-wrap items-center gap-1.5 text-sm wrap-break-word text-muted-foreground",
+        "wrap-break-word flex flex-wrap items-center gap-1.5 text-muted-foreground text-sm",
         className
       )}
       {...props}
@@ -82,9 +86,7 @@ function BreadcrumbSeparator({
       className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? (
-        <CaretRight />
-      )}
+      {children ?? <HugeiconsIcon icon={ArrowRight01Icon} />}
     </li>
   )
 }
@@ -104,8 +106,7 @@ function BreadcrumbEllipsis({
       )}
       {...props}
     >
-      <DotsThree
-      />
+      <HugeiconsIcon icon={MoreHorizontalIcon} />
       <span className="sr-only">More</span>
     </span>
   )
@@ -113,10 +114,10 @@ function BreadcrumbEllipsis({
 
 export {
   Breadcrumb,
-  BreadcrumbList,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
+  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-  BreadcrumbEllipsis,
 }

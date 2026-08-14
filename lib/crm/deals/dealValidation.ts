@@ -1,9 +1,15 @@
 import { z } from "zod"
 
-import { DEAL_ARCHIVE_FILTERS, DEAL_PRIORITIES, DEAL_SORT_OPTIONS, DEAL_STAGES, DEAL_VIEW_MODES } from "@/enums/deal"
+import {
+  DEAL_ARCHIVE_FILTERS,
+  DEAL_PRIORITIES,
+  DEAL_SORT_OPTIONS,
+  DEAL_STAGES,
+  DEAL_VIEW_MODES,
+} from "@/enums/deal"
 import type { DealFormValues } from "@/lib/crm/deals/dealForm"
-import { parseDateOnlyInput } from "@/lib/crm/shared/date"
 import { getFieldErrors } from "@/lib/crm/shared/action"
+import { parseDateOnlyInput } from "@/lib/crm/shared/date"
 import type { DealField } from "@/types/deal"
 
 const stringDateToDate = z.preprocess((value) => {
@@ -22,7 +28,10 @@ const stringDateToDate = z.preprocess((value) => {
   return date
 }, z.date().optional())
 
-const valueSchema = z.coerce.number().positive("Deal value must be greater than 0.").max(99_999_999, "Deal value is too high.")
+const valueSchema = z.coerce
+  .number()
+  .positive("Deal value must be greater than 0.")
+  .max(99_999_999, "Deal value is too high.")
 
 export const dealCreateUpdateSchema = z
   .object({
@@ -34,18 +43,42 @@ export const dealCreateUpdateSchema = z
       .min(2, "Campaign name must be at least 2 characters.")
       .max(160, "Campaign name cannot exceed 160 characters."),
     dealValue: valueSchema,
-    currency: z.string().trim().toUpperCase().length(3, "Currency must be a 3-letter code."),
+    currency: z
+      .string()
+      .trim()
+      .toUpperCase()
+      .length(3, "Currency must be a 3-letter code."),
     stage: z.enum(DEAL_STAGES),
     priority: z.enum(DEAL_PRIORITIES),
     startDate: stringDateToDate,
     dueDate: stringDateToDate,
     expectedCloseDate: stringDateToDate,
     paymentDueDate: stringDateToDate,
-    paymentTerms: z.string().trim().max(1000, "Payment terms cannot exceed 1000 characters.").optional(),
-    campaignDescription: z.string().trim().max(5000, "Description cannot exceed 5000 characters.").optional(),
-    deliverablesSummary: z.string().trim().max(5000, "Deliverables cannot exceed 5000 characters.").optional(),
-    notes: z.string().trim().max(5000, "Notes cannot exceed 5000 characters.").optional(),
-    source: z.string().trim().max(120, "Source cannot exceed 120 characters.").optional(),
+    paymentTerms: z
+      .string()
+      .trim()
+      .max(1000, "Payment terms cannot exceed 1000 characters.")
+      .optional(),
+    campaignDescription: z
+      .string()
+      .trim()
+      .max(5000, "Description cannot exceed 5000 characters.")
+      .optional(),
+    deliverablesSummary: z
+      .string()
+      .trim()
+      .max(5000, "Deliverables cannot exceed 5000 characters.")
+      .optional(),
+    notes: z
+      .string()
+      .trim()
+      .max(5000, "Notes cannot exceed 5000 characters.")
+      .optional(),
+    source: z
+      .string()
+      .trim()
+      .max(120, "Source cannot exceed 120 characters.")
+      .optional(),
     probability: z.coerce.number().int().min(0).max(100).optional(),
     externalRef: z.string().trim().max(255).optional(),
     templateId: z.uuid("Template id is invalid.").optional(),
@@ -59,7 +92,11 @@ export const dealCreateUpdateSchema = z
       })
     }
 
-    if (value.expectedCloseDate && value.startDate && value.expectedCloseDate < value.startDate) {
+    if (
+      value.expectedCloseDate &&
+      value.startDate &&
+      value.expectedCloseDate < value.startDate
+    ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["expectedCloseDate"],
@@ -123,7 +160,9 @@ function toOptionalString(value: string) {
   return trimmed.length > 0 ? trimmed : undefined
 }
 
-export function getDealFormFieldErrors(values: DealFormValues): Partial<Record<DealField, string>> {
+export function getDealFormFieldErrors(
+  values: DealFormValues
+): Partial<Record<DealField, string>> {
   const parsed = dealCreateUpdateSchema.safeParse({
     brandId: values.brandId,
     contactId: toOptionalString(values.contactId),

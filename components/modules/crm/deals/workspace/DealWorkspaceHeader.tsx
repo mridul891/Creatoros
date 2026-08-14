@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-
+import { DealDetailInfoCards } from "@/components/modules/crm/deals/DealDetailInfoCards"
+import { DealStageBadge } from "@/components/modules/crm/deals/DealStageBadge"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,8 +14,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import type { DealDetail } from "@/types/deal"
-import { DealDetailInfoCards } from "@/components/modules/crm/deals/DealDetailInfoCards"
-import { DealStageBadge } from "@/components/modules/crm/deals/DealStageBadge"
 
 type DealWorkspaceHeaderProps = {
   deal: DealDetail
@@ -23,7 +22,12 @@ type DealWorkspaceHeaderProps = {
   onDelete: () => void
 }
 
-export function DealWorkspaceHeader({ deal, onEdit, onArchiveToggle, onDelete }: DealWorkspaceHeaderProps) {
+export function DealWorkspaceHeader({
+  deal,
+  onEdit,
+  onArchiveToggle,
+  onDelete,
+}: DealWorkspaceHeaderProps) {
   return (
     <>
       <div className="mb-5">
@@ -36,7 +40,9 @@ export function DealWorkspaceHeader({ deal, onEdit, onArchiveToggle, onDelete }:
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-muted-foreground" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-muted-foreground">{deal.campaignName}</BreadcrumbPage>
+              <BreadcrumbPage className="text-muted-foreground">
+                {deal.campaignName}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -45,8 +51,12 @@ export function DealWorkspaceHeader({ deal, onEdit, onArchiveToggle, onDelete }:
       <Card className="rounded-[20px] border-border bg-card px-7 py-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-foreground">{deal.campaignName}</h1>
-            <p className="mt-1 text-[13px] text-muted-foreground">{deal.brandName}</p>
+            <h1 className="font-extrabold text-2xl text-foreground tracking-[-0.03em]">
+              {deal.campaignName}
+            </h1>
+            <p className="mt-1 text-[13px] text-muted-foreground">
+              {deal.brandName}
+            </p>
             <div className="mt-2 flex items-center gap-2">
               <DealStageBadge stage={deal.stage} />
             </div>

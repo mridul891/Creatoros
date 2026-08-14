@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Space_Grotesk, DM_Sans } from "next/font/google"
+import { DM_Sans, Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "@/components/theme-provider"

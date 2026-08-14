@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import type { PipelineSummary } from "./metrics";
-import { KpiSummary } from "./KpiSummary";
+import { KpiSummary } from "./KpiSummary"
+import type { PipelineSummary } from "./metrics"
 
 interface PipelineStatsProps {
-  summary: PipelineSummary;
+  summary: PipelineSummary
 }
 
 export function PipelineStats({ summary }: PipelineStatsProps) {
-  return <KpiSummary summary={summary} />;
+  return <KpiSummary summary={summary} />
 }

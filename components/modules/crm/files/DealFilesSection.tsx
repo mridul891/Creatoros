@@ -1,14 +1,31 @@
 "use client"
 
-import { Download, Eye, UploadSimple, Archive, Pencil } from "@phosphor-icons/react/dist/ssr"
-import { useMemo, useState } from "react"
+import {
+  ArchiveIcon,
+  Download01Icon,
+  Edit02Icon,
+  Upload01Icon,
+  ViewIcon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import type { ChangeEvent } from "react"
+import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
-import { CrmConfirmDialog, CrmPagination, CrmSearchField } from "@/components/modules/crm/shared"
+import {
+  CrmConfirmDialog,
+  CrmPagination,
+  CrmSearchField,
+} from "@/components/modules/crm/shared"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { DEAL_FILE_CATEGORIES } from "@/enums/dealFile"
 import { useDealFiles } from "@/hooks/useDealFiles"
 import { useFileMutations } from "@/hooks/useFileMutations"
@@ -41,12 +58,37 @@ function formatSize(sizeBytes: number | null) {
   return `${(kb / 1024).toFixed(1)} MB`
 }
 
-export function DealFilesSection({ dealId, initialData, initialLoadError }: DealFilesSectionProps) {
-  const { files, pagination, search, archive, category, isLoading, loadError, setSearch, setArchive, setCategory, setPage, refetch } = useDealFiles({
+export function DealFilesSection({
+  dealId,
+  initialData,
+  initialLoadError,
+}: DealFilesSectionProps) {
+  const {
+    files,
+    pagination,
+    search,
+    archive,
+    category,
+    isLoading,
+    loadError,
+    setSearch,
+    setArchive,
+    setCategory,
+    setPage,
+    refetch,
+  } = useDealFiles({
     dealId,
     initialData,
   })
-  const { isSubmitting, isMutating, submitCreate, submitRename, runArchive, runRestore, runDelete } = useFileMutations({
+  const {
+    isSubmitting,
+    isMutating,
+    submitCreate,
+    submitRename,
+    runArchive,
+    runRestore,
+    runDelete,
+  } = useFileMutations({
     onRefresh: () => {
       void refetch(pagination.page)
     },
@@ -58,7 +100,10 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   const displayError = initialLoadError ?? loadError
-  const categoriesInList = useMemo(() => Array.from(new Set(files.map((file) => file.category))), [files])
+  const categoriesInList = useMemo(
+    () => Array.from(new Set(files.map((file) => file.category))),
+    [files]
+  )
 
   async function handleUploadFromInput(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
@@ -122,7 +167,10 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
   async function confirmArchive() {
     if (!pendingArchiveId) return
     const target = files.find((file) => file.id === pendingArchiveId)
-    const result = target?.status === "Archived" ? await runRestore(pendingArchiveId) : await runArchive(pendingArchiveId)
+    const result =
+      target?.status === "Archived"
+        ? await runRestore(pendingArchiveId)
+        : await runArchive(pendingArchiveId)
     if (result.success) {
       setPendingArchiveId(null)
       await refetch(pagination.page)
@@ -142,20 +190,34 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
     <div className="rounded-[20px] border border-border bg-card p-6">
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-foreground">Files</h2>
-          <p className="text-[12px] text-muted-foreground">Contracts, briefs, assets, media, invoices, and references.</p>
+          <h2 className="font-bold text-foreground text-lg">Files</h2>
+          <p className="text-[12px] text-muted-foreground">
+            Contracts, briefs, assets, media, invoices, and references.
+          </p>
         </div>
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-3 py-2 text-[12px] font-semibold text-primary-foreground">
-          <UploadSimple size={14} />
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-3 py-2 font-semibold text-[12px] text-primary-foreground">
+          <HugeiconsIcon icon={Upload01Icon} size={14} />
           Upload
-          <input type="file" className="hidden" onChange={handleUploadFromInput} />
+          <input
+            type="file"
+            className="hidden"
+            onChange={handleUploadFromInput}
+          />
         </label>
       </div>
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <CrmSearchField value={search} placeholder="Search files" onChange={setSearch} className="w-[260px]" />
-        <Select value={archive} onValueChange={(next) => setArchive(next as typeof archive)}>
-          <SelectTrigger className="h-10 w-[140px] border-border bg-card text-xs text-muted-foreground">
+        <CrmSearchField
+          value={search}
+          placeholder="Search files"
+          onChange={setSearch}
+          className="w-[260px]"
+        />
+        <Select
+          value={archive}
+          onValueChange={(next) => setArchive(next as typeof archive)}
+        >
+          <SelectTrigger className="h-10 w-[140px] border-border bg-card text-muted-foreground text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -163,30 +225,54 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
             <SelectItem value="archived">Archived</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={category} onValueChange={(next) => setCategory(next as typeof category)}>
-          <SelectTrigger className="h-10 w-[180px] border-border bg-card text-xs text-muted-foreground">
+        <Select
+          value={category}
+          onValueChange={(next) => setCategory(next as typeof category)}
+        >
+          <SelectTrigger className="h-10 w-[180px] border-border bg-card text-muted-foreground text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All categories</SelectItem>
-            {[...new Set([...DEAL_FILE_CATEGORIES, ...categoriesInList])].map((item) => (
-              <SelectItem key={item} value={item}>
-                {item}
-              </SelectItem>
-            ))}
+            {[...new Set([...DEAL_FILE_CATEGORIES, ...categoriesInList])].map(
+              (item) => (
+                <SelectItem key={item} value={item}>
+                  {item}
+                </SelectItem>
+              )
+            )}
           </SelectContent>
         </Select>
       </div>
 
-      {displayError ? <p className="mb-4 text-[12px] text-[#E8402A]">{displayError}</p> : null}
+      {displayError ? (
+        <p className="mb-4 text-[#E8402A] text-[12px]">{displayError}</p>
+      ) : null}
 
       {editingFile ? (
         <div className="mb-4 rounded-[12px] border border-border p-3">
-          <p className="mb-2 text-[12px] font-semibold text-foreground">Rename / update metadata</p>
+          <p className="mb-2 font-semibold text-[12px] text-foreground">
+            Rename / update metadata
+          </p>
           <div className="grid gap-2 md:grid-cols-3">
-            <Input value={draft.fileName} onChange={(e) => setDraft((prev) => ({ ...prev, fileName: e.target.value }))} />
-            <Input value={draft.storagePath} onChange={(e) => setDraft((prev) => ({ ...prev, storagePath: e.target.value }))} />
-            <Select value={draft.category} onValueChange={(next) => setDraft((prev) => ({ ...prev, category: next }))}>
+            <Input
+              value={draft.fileName}
+              onChange={(e) =>
+                setDraft((prev) => ({ ...prev, fileName: e.target.value }))
+              }
+            />
+            <Input
+              value={draft.storagePath}
+              onChange={(e) =>
+                setDraft((prev) => ({ ...prev, storagePath: e.target.value }))
+              }
+            />
+            <Select
+              value={draft.category}
+              onValueChange={(next) =>
+                setDraft((prev) => ({ ...prev, category: next }))
+              }
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -200,7 +286,12 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
             </Select>
           </div>
           <div className="mt-2 flex gap-2">
-            <Button type="button" size="sm" onClick={handleRename} disabled={isSubmitting}>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleRename}
+              disabled={isSubmitting}
+            >
               FloppyDisk
             </Button>
             <Button
@@ -221,64 +312,115 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
       <div className="overflow-x-auto rounded-[14px] border border-border">
         <table className="min-w-full">
           <thead>
-            <tr className="border-b border-border bg-muted text-left">
-              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">File</th>
-              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Category</th>
-              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Size</th>
-              <th className="px-4 py-3 text-[11px] font-semibold text-muted-foreground">Updated</th>
-              <th className="px-4 py-3 text-right text-[11px] font-semibold text-muted-foreground">Actions</th>
+            <tr className="border-border border-b bg-muted text-left">
+              <th className="px-4 py-3 font-semibold text-[11px] text-muted-foreground">
+                File
+              </th>
+              <th className="px-4 py-3 font-semibold text-[11px] text-muted-foreground">
+                Category
+              </th>
+              <th className="px-4 py-3 font-semibold text-[11px] text-muted-foreground">
+                Size
+              </th>
+              <th className="px-4 py-3 font-semibold text-[11px] text-muted-foreground">
+                Updated
+              </th>
+              <th className="px-4 py-3 text-right font-semibold text-[11px] text-muted-foreground">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-4 text-[12px] text-muted-foreground">
+                <td
+                  colSpan={5}
+                  className="px-4 py-4 text-[12px] text-muted-foreground"
+                >
                   Loading files...
                 </td>
               </tr>
             ) : files.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-4 text-[12px] text-muted-foreground">
+                <td
+                  colSpan={5}
+                  className="px-4 py-4 text-[12px] text-muted-foreground"
+                >
                   No files found for current filters.
                 </td>
               </tr>
             ) : (
               files.map((file) => (
-                <tr key={file.id} className="border-b border-border last:border-none">
+                <tr
+                  key={file.id}
+                  className="border-border border-b last:border-none"
+                >
                   <td className="px-4 py-3">
-                    <p className="text-[13px] font-semibold text-foreground">{file.fileName}</p>
-                    <p className="text-[11px] text-muted-foreground">{file.storagePath}</p>
+                    <p className="font-semibold text-[13px] text-foreground">
+                      {file.fileName}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">
+                      {file.storagePath}
+                    </p>
                   </td>
-                  <td className="px-4 py-3 text-[12px] text-muted-foreground">{file.category}</td>
-                  <td className="px-4 py-3 text-[12px] text-muted-foreground">{formatSize(file.sizeBytes)}</td>
-                  <td className="px-4 py-3 text-[12px] text-muted-foreground">{new Date(file.updatedAt).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-[12px] text-muted-foreground">
+                    {file.category}
+                  </td>
+                  <td className="px-4 py-3 text-[12px] text-muted-foreground">
+                    {formatSize(file.sizeBytes)}
+                  </td>
+                  <td className="px-4 py-3 text-[12px] text-muted-foreground">
+                    {new Date(file.updatedAt).toLocaleString()}
+                  </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
-                      <Button type="button" size="sm" variant="outline" className="h-8" onClick={() => openRename(file)}>
-                        <Pencil size={12} />
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        className="h-8"
+                        onClick={() => openRename(file)}
+                      >
+                        <HugeiconsIcon icon={Edit02Icon} size={12} />
                       </Button>
                       <Button
                         type="button"
                         size="sm"
                         variant="outline"
                         className="h-8"
-                        onClick={() => toast.info(`Preview path: ${file.storagePath}`)}
+                        onClick={() =>
+                          toast.info(`Preview path: ${file.storagePath}`)
+                        }
                       >
-                        <Eye size={12} />
+                        <HugeiconsIcon icon={ViewIcon} size={12} />
                       </Button>
                       <Button
                         type="button"
                         size="sm"
                         variant="outline"
                         className="h-8"
-                        onClick={() => toast.info(`Download path: ${file.storagePath}`)}
+                        onClick={() =>
+                          toast.info(`Download path: ${file.storagePath}`)
+                        }
                       >
-                        <Download size={12} />
+                        <HugeiconsIcon icon={Download01Icon} size={12} />
                       </Button>
-                      <Button type="button" size="sm" variant="outline" className="h-8" onClick={() => setPendingArchiveId(file.id)}>
-                        <Archive size={12} />
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        className="h-8"
+                        onClick={() => setPendingArchiveId(file.id)}
+                      >
+                        <HugeiconsIcon icon={ArchiveIcon} size={12} />
                       </Button>
-                      <Button type="button" size="sm" variant="destructive" className="h-8" onClick={() => setPendingDeleteId(file.id)}>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="destructive"
+                        className="h-8"
+                        onClick={() => setPendingDeleteId(file.id)}
+                      >
                         Delete
                       </Button>
                     </div>
@@ -290,7 +432,13 @@ export function DealFilesSection({ dealId, initialData, initialLoadError }: Deal
         </table>
       </div>
 
-      {pagination.totalPages > 1 ? <CrmPagination page={pagination.page} totalPages={pagination.totalPages} onPageChange={setPage} /> : null}
+      {pagination.totalPages > 1 ? (
+        <CrmPagination
+          page={pagination.page}
+          totalPages={pagination.totalPages}
+          onPageChange={setPage}
+        />
+      ) : null}
 
       <CrmConfirmDialog
         open={Boolean(pendingArchiveId)}

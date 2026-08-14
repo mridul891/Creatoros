@@ -1,6 +1,12 @@
-import type { DeliverableApprovalStatus, DeliverableStatus } from "@/enums/deliverable"
-import type { DeliverableDetail, DeliverableListItem } from "@/types/deliverable"
+import type {
+  DeliverableApprovalStatus,
+  DeliverableStatus,
+} from "@/enums/deliverable"
 import { formatDateOnlyInput } from "@/lib/crm/shared/date"
+import type {
+  DeliverableDetail,
+  DeliverableListItem,
+} from "@/types/deliverable"
 
 export type DeliverableFormValues = {
   dealId: string
@@ -51,7 +57,7 @@ export function deliverableToFormValues(
     | "brandNotes"
     | "revisionCount"
     | "orderIndex"
-  >,
+  >
 ): DeliverableFormValues {
   return {
     dealId: deliverable.dealId,
@@ -73,7 +79,10 @@ export function deliverableDetailToFormValues(deliverable: DeliverableDetail) {
   return deliverableToFormValues(deliverable)
 }
 
-export function buildDeliverableFormData(values: DeliverableFormValues, deliverableId?: string) {
+export function buildDeliverableFormData(
+  values: DeliverableFormValues,
+  deliverableId?: string
+) {
   const formData = new FormData()
   if (deliverableId) {
     formData.set("deliverableId", deliverableId)

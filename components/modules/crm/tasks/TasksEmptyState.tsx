@@ -1,6 +1,7 @@
 "use client"
 
-import { ClipboardText } from "@phosphor-icons/react/dist/ssr"
+import { ClipboardIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { CrmEmptyStateClient } from "../shared"
 
@@ -10,12 +11,16 @@ type TasksEmptyStateProps = {
   onCreate: () => void
 }
 
-export function TasksEmptyState({ hasFilters, isReadOnly = false, onCreate }: TasksEmptyStateProps) {
+export function TasksEmptyState({
+  hasFilters,
+  isReadOnly = false,
+  onCreate,
+}: TasksEmptyStateProps) {
   const canCreate = !hasFilters && !isReadOnly
 
   return (
     <CrmEmptyStateClient
-      icon={<ClipboardText size={18} />}
+      icon={<HugeiconsIcon icon={ClipboardIcon} size={18} />}
       title={hasFilters ? "No matching tasks" : "No tasks yet"}
       description={
         hasFilters

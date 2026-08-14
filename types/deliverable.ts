@@ -1,4 +1,7 @@
-import type { DeliverableApprovalStatus, DeliverableStatus } from "@/enums/deliverable"
+import type {
+  DeliverableApprovalStatus,
+  DeliverableStatus,
+} from "@/enums/deliverable"
 
 export interface DeliverableListItem {
   id: string

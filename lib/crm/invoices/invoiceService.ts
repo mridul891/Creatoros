@@ -5,7 +5,10 @@ import { InvoiceStatus } from "@/enums/invoice"
 import { recordActivity } from "@/lib/crm/activity/activityService"
 import { prisma } from "@/lib/prisma"
 import type { InvoiceListData, InvoiceListItem } from "@/types/invoice"
-import { buildDeliverableInvoiceDescription, buildDeliverableInvoiceMetadata } from "./invoiceTemplates"
+import {
+  buildDeliverableInvoiceDescription,
+  buildDeliverableInvoiceMetadata,
+} from "./invoiceTemplates"
 import type { InvoiceListInput } from "./invoiceValidation"
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient
@@ -16,7 +19,11 @@ export class InvoiceServiceError extends Error {
   code: "NOT_FOUND" | "INVALID_OPERATION" | "FORBIDDEN" | "UNKNOWN"
   field?: InvoiceServiceErrorField
 
-  constructor(message: string, code: InvoiceServiceError["code"], field?: InvoiceServiceErrorField) {
+  constructor(
+    message: string,
+    code: InvoiceServiceError["code"],
+    field?: InvoiceServiceErrorField
+  ) {
     super(message)
     this.name = "InvoiceServiceError"
     this.code = code
@@ -75,7 +82,10 @@ function getMetadataDescription(metadata: Prisma.JsonValue | null) {
   }
 
   const firstLineItem = lineItems[0]
-  if (!isRecord(firstLineItem) || typeof firstLineItem.description !== "string") {
+  if (
+    !isRecord(firstLineItem) ||
+    typeof firstLineItem.description !== "string"
+  ) {
     return ""
   }
 
@@ -102,8 +112,12 @@ function toListItem(item: {
   } | null
 }): InvoiceListItem {
   const metadata = isRecord(item.metadata) ? item.metadata : null
-  const brandName = item.deal?.brand.name ?? (typeof metadata?.brandName === "string" ? metadata.brandName : null)
-  const campaignName = item.deal?.campaignName ?? (typeof metadata?.campaignName === "string" ? metadata.campaignName : null)
+  const brandName =
+    item.deal?.brand.name ??
+    (typeof metadata?.brandName === "string" ? metadata.brandName : null)
+  const campaignName =
+    item.deal?.campaignName ??
+    (typeof metadata?.campaignName === "string" ? metadata.campaignName : null)
 
   return {
     id: item.id,
@@ -117,14 +131,19 @@ function toListItem(item: {
     issuedAt: item.issuedAt,
     dueDate: item.dueDate,
     status: item.status as InvoiceStatus,
-    description: getMetadataDescription(item.metadata) || campaignName || "Invoice",
+    description:
+      getMetadataDescription(item.metadata) || campaignName || "Invoice",
     metadata,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
   }
 }
 
-async function getOwnedDeliverable(tx: PrismaTx, userId: string, deliverableId: string): Promise<DeliverableWithDeal> {
+async function getOwnedDeliverable(
+  tx: PrismaTx,
+  userId: string,
+  deliverableId: string
+): Promise<DeliverableWithDeal> {
   const deliverable = await tx.deliverable.findFirst({
     where: { id: deliverableId, userId },
     select: {
@@ -167,7 +186,11 @@ async function getOwnedDeliverable(tx: PrismaTx, userId: string, deliverableId: 
   })
 
   if (!deliverable) {
-    throw new InvoiceServiceError("Deliverable not found.", "NOT_FOUND", "deliverableId")
+    throw new InvoiceServiceError(
+      "Deliverable not found.",
+      "NOT_FOUND",
+      "deliverableId"
+    )
   }
 
   return deliverable as DeliverableWithDeal
@@ -175,11 +198,19 @@ async function getOwnedDeliverable(tx: PrismaTx, userId: string, deliverableId: 
 
 function ensureInvoiceCanBeCreated(deliverable: DeliverableWithDeal) {
   if (deliverable.isArchived) {
-    throw new InvoiceServiceError("Archived deliverables cannot be invoiced.", "INVALID_OPERATION", "deliverableId")
+    throw new InvoiceServiceError(
+      "Archived deliverables cannot be invoiced.",
+      "INVALID_OPERATION",
+      "deliverableId"
+    )
   }
 
   if (deliverable.deal.status === "Archived") {
-    throw new InvoiceServiceError("Archived deals cannot be invoiced.", "INVALID_OPERATION", "dealId")
+    throw new InvoiceServiceError(
+      "Archived deals cannot be invoiced.",
+      "INVALID_OPERATION",
+      "dealId"
+    )
   }
 }
 
@@ -201,7 +232,10 @@ async function getNextInvoiceNumber(tx: PrismaTx, userId: string) {
   return `INV-${year}-${String(count + 1).padStart(4, "0")}`
 }
 
-export async function createInvoiceFromDeliverable(userId: string, deliverableId: string): Promise<InvoiceListItem> {
+export async function createInvoiceFromDeliverable(
+  userId: string,
+  deliverableId: string
+): Promise<InvoiceListItem> {
   return prisma.$transaction(async (tx) => {
     const deliverable = await getOwnedDeliverable(tx, userId, deliverableId)
     ensureInvoiceCanBeCreated(deliverable)
@@ -249,11 +283,13 @@ export async function createInvoiceFromDeliverable(userId: string, deliverableId
       brandId: deal.brandId,
       contactId: deal.contactId,
       title: "Invoice draft created",
-      description: `${invoiceNumber} was created for ${buildDeliverableInvoiceDescription({
-        campaignName: deal.campaignName,
-        platform: deliverable.platform,
-        deliverableType: deliverable.deliverableType,
-      })}.`,
+      description: `${invoiceNumber} was created for ${buildDeliverableInvoiceDescription(
+        {
+          campaignName: deal.campaignName,
+          platform: deliverable.platform,
+          deliverableType: deliverable.deliverableType,
+        }
+      )}.`,
       metadata: {
         invoiceNumber,
         deliverableId: deliverable.id,
@@ -274,7 +310,10 @@ export async function createInvoiceFromDeliverable(userId: string, deliverableId
   })
 }
 
-export async function listUserInvoices(userId: string, input: InvoiceListInput = {}): Promise<InvoiceListData> {
+export async function listUserInvoices(
+  userId: string,
+  input: InvoiceListInput = {}
+): Promise<InvoiceListData> {
   const search = input.search?.trim() ?? ""
   const where: Prisma.InvoiceWhereInput = {
     userId,
@@ -283,8 +322,14 @@ export async function listUserInvoices(userId: string, input: InvoiceListInput =
       ? {
           OR: [
             { invoiceNumber: { contains: search, mode: "insensitive" } },
-            { deal: { campaignName: { contains: search, mode: "insensitive" } } },
-            { deal: { brand: { name: { contains: search, mode: "insensitive" } } } },
+            {
+              deal: { campaignName: { contains: search, mode: "insensitive" } },
+            },
+            {
+              deal: {
+                brand: { name: { contains: search, mode: "insensitive" } },
+              },
+            },
           ],
         }
       : {}),
@@ -313,9 +358,15 @@ export async function listUserInvoices(userId: string, input: InvoiceListInput =
     items: listItems,
     summary: {
       total: listItems.length,
-      paidAmount: listItems.filter((item) => item.status === InvoiceStatus.PAID).reduce((sum, item) => sum + item.amount, 0),
-      sentAmount: listItems.filter((item) => item.status === InvoiceStatus.SENT).reduce((sum, item) => sum + item.amount, 0),
-      overdueAmount: listItems.filter((item) => item.status === InvoiceStatus.OVERDUE).reduce((sum, item) => sum + item.amount, 0),
+      paidAmount: listItems
+        .filter((item) => item.status === InvoiceStatus.PAID)
+        .reduce((sum, item) => sum + item.amount, 0),
+      sentAmount: listItems
+        .filter((item) => item.status === InvoiceStatus.SENT)
+        .reduce((sum, item) => sum + item.amount, 0),
+      overdueAmount: listItems
+        .filter((item) => item.status === InvoiceStatus.OVERDUE)
+        .reduce((sum, item) => sum + item.amount, 0),
     },
     filters: {
       search,

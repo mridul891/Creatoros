@@ -3,10 +3,9 @@
 import "server-only"
 
 import { cache } from "react"
-
-import { prisma } from "@/lib/prisma"
-import { createInsforgeServerClient } from "@/lib/inforge/server"
 import { syncUserFromInsforgeUser } from "@/lib/auth/sync-user"
+import { createInsforgeServerClient } from "@/lib/inforge/server"
+import { prisma } from "@/lib/prisma"
 
 export const getCurrentUser = cache(async () => {
   const insforge = await createInsforgeServerClient()
@@ -21,17 +20,12 @@ export const getCurrentUser = cache(async () => {
   if (!user) {
     return null
   }
-
-  try {
-    const existingUser = await prisma.user.findUnique({
-      where: { id: user.id },
-    })
-    if (existingUser) {
-      return existingUser
-    }
-
-    return syncUserFromInsforgeUser(user)
-  } catch (error) {
-    throw error
+  const existingUser = await prisma.user.findUnique({
+    where: { id: user.id },
+  })
+  if (existingUser) {
+    return existingUser
   }
+
+  return syncUserFromInsforgeUser(user)
 })

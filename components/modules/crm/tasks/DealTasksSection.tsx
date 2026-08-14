@@ -6,13 +6,28 @@ import { toast } from "sonner"
 import { getTaskAction } from "@/app/action/taskActions"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Card } from "@/components/ui/card"
-import { TASK_DUE_DATE_FILTERS, TASK_PRIORITIES, TASK_SORT_OPTIONS, TASK_STATUSES } from "@/enums/task"
+import {
+  type TASK_DUE_DATE_FILTERS,
+  type TASK_PRIORITIES,
+  type TASK_SORT_OPTIONS,
+  TASK_STATUSES,
+} from "@/enums/task"
 import { useDealTasks } from "@/hooks/useDealTasks"
 import { useTaskMutations } from "@/hooks/useTaskMutations"
-import { EMPTY_TASK_FORM, taskDetailToFormValues, taskToFormValues, type TaskFormValues } from "@/lib/crm/tasks/taskForm"
+import {
+  EMPTY_TASK_FORM,
+  type TaskFormValues,
+  taskDetailToFormValues,
+  taskToFormValues,
+} from "@/lib/crm/tasks/taskForm"
 import { getTaskFormFieldErrors } from "@/lib/crm/tasks/taskValidation"
-import type { TaskDetail, TaskField, TaskListData, TaskListItem } from "@/types/task"
 import type { DealDetail } from "@/types/deal"
+import type {
+  TaskDetail,
+  TaskField,
+  TaskListData,
+  TaskListItem,
+} from "@/types/task"
 import { CrmConfirmDialog, CrmPagination } from "../shared"
 import { TaskDetailPanel } from "./TaskDetailPanel"
 import { TaskForm } from "./TaskForm"
@@ -29,7 +44,10 @@ type DealTasksSectionProps = {
   onSummaryTotalChange?: (total: number) => void
 }
 
-function keepUnresolvedErrors(currentErrors: Partial<Record<TaskField, string>>, nextErrors: Partial<Record<TaskField, string>>) {
+function keepUnresolvedErrors(
+  currentErrors: Partial<Record<TaskField, string>>,
+  nextErrors: Partial<Record<TaskField, string>>
+) {
   const unresolved: Partial<Record<TaskField, string>> = {}
   for (const field of Object.keys(currentErrors) as TaskField[]) {
     const message = nextErrors[field]
@@ -40,7 +58,13 @@ function keepUnresolvedErrors(currentErrors: Partial<Record<TaskField, string>>,
   return unresolved
 }
 
-export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadError, onSummaryTotalChange }: DealTasksSectionProps) {
+export function DealTasksSection({
+  dealId,
+  dealStatus,
+  initialData,
+  initialLoadError,
+  onSummaryTotalChange,
+}: DealTasksSectionProps) {
   const {
     tasks,
     pagination,
@@ -75,22 +99,46 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
   const [isFetchingDetail, setIsFetchingDetail] = useState(false)
   const [detailLoadError, setDetailLoadError] = useState("")
 
-  const [createFormValues, setCreateFormValues] = useState<TaskFormValues>({ ...EMPTY_TASK_FORM, dealId })
-  const [createFieldErrors, setCreateFieldErrors] = useState<Partial<Record<TaskField, string>>>({})
+  const [createFormValues, setCreateFormValues] = useState<TaskFormValues>({
+    ...EMPTY_TASK_FORM,
+    dealId,
+  })
+  const [createFieldErrors, setCreateFieldErrors] = useState<
+    Partial<Record<TaskField, string>>
+  >({})
   const [createFormError, setCreateFormError] = useState("")
-  const [editFormValues, setEditFormValues] = useState<TaskFormValues>({ ...EMPTY_TASK_FORM, dealId })
-  const [editFieldErrors, setEditFieldErrors] = useState<Partial<Record<TaskField, string>>>({})
+  const [editFormValues, setEditFormValues] = useState<TaskFormValues>({
+    ...EMPTY_TASK_FORM,
+    dealId,
+  })
+  const [editFieldErrors, setEditFieldErrors] = useState<
+    Partial<Record<TaskField, string>>
+  >({})
   const [editFormError, setEditFormError] = useState("")
 
-  const { isSubmitting, isMutating, updatingTaskId, submitCreate, submitUpdate, runStatusChange, runArchive, runRestore, runDelete } =
-    useTaskMutations({
-      onRefresh: () => {
-        void refetch(pagination.page)
-      },
-    })
+  const {
+    isSubmitting,
+    isMutating,
+    updatingTaskId,
+    submitCreate,
+    submitUpdate,
+    runStatusChange,
+    runArchive,
+    runRestore,
+    runDelete,
+  } = useTaskMutations({
+    onRefresh: () => {
+      void refetch(pagination.page)
+    },
+  })
 
   const displayError = initialLoadError ?? loadError
-  const hasFilters = Boolean(search.trim()) || status !== "all" || priority !== "all" || archive === "archived" || dueDate !== "all"
+  const hasFilters =
+    Boolean(search.trim()) ||
+    status !== "all" ||
+    priority !== "all" ||
+    archive === "archived" ||
+    dueDate !== "all"
   const isReadOnly = dealStatus === "Archived"
 
   const summaryItems = useMemo(
@@ -101,7 +149,7 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
       { label: "Overdue", value: summary.overdue },
       { label: "Progress", value: `${summary.progress}%` },
     ],
-    [summary],
+    [summary]
   )
 
   useEffect(() => {
@@ -200,7 +248,10 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
     setEditFormError("")
   }
 
-  async function handleStatusChange(taskId: string, nextStatus: TaskListItem["status"]) {
+  async function handleStatusChange(
+    taskId: string,
+    nextStatus: TaskListItem["status"]
+  ) {
     if (isReadOnly) {
       return
     }
@@ -211,13 +262,19 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
     }
 
     setTasks((currentItems) =>
-      currentItems.map((task) => (task.id === taskId ? { ...task, status: nextStatus, updatedAt: new Date() } : task)),
+      currentItems.map((task) =>
+        task.id === taskId
+          ? { ...task, status: nextStatus, updatedAt: new Date() }
+          : task
+      )
     )
 
     const result = await runStatusChange(taskId, nextStatus)
     if (!result.success) {
       setTasks((currentItems) =>
-        currentItems.map((task) => (task.id === taskId ? { ...task, status: currentTask.status } : task)),
+        currentItems.map((task) =>
+          task.id === taskId ? { ...task, status: currentTask.status } : task
+        )
       )
     }
   }
@@ -251,9 +308,16 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
       <div className="rounded-[20px] border border-border bg-card p-6">
         <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {summaryItems.map((item) => (
-            <Card key={item.label} className="rounded-[14px] border-border bg-muted px-3 py-3">
-              <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{item.label}</p>
-              <p className="mt-1 text-[18px] font-bold text-foreground">{item.value}</p>
+            <Card
+              key={item.label}
+              className="rounded-[14px] border-border bg-muted px-3 py-3"
+            >
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                {item.label}
+              </p>
+              <p className="mt-1 font-bold text-[18px] text-foreground">
+                {item.value}
+              </p>
             </Card>
           ))}
         </div>
@@ -267,11 +331,27 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
           dueDate={dueDate}
           sort={sort}
           onSearchChange={setSearch}
-          onStatusChange={(value) => setStatus(value === "all" ? "all" : (value as (typeof TASK_STATUSES)[number]))}
-          onPriorityChange={(value) => setPriority(value === "all" ? "all" : (value as (typeof TASK_PRIORITIES)[number]))}
+          onStatusChange={(value) =>
+            setStatus(
+              value === "all"
+                ? "all"
+                : (value as (typeof TASK_STATUSES)[number])
+            )
+          }
+          onPriorityChange={(value) =>
+            setPriority(
+              value === "all"
+                ? "all"
+                : (value as (typeof TASK_PRIORITIES)[number])
+            )
+          }
           onArchiveChange={setArchive}
-          onDueDateChange={(value) => setDueDate(value as (typeof TASK_DUE_DATE_FILTERS)[number])}
-          onSortChange={(value) => setSort(value as (typeof TASK_SORT_OPTIONS)[number])}
+          onDueDateChange={(value) =>
+            setDueDate(value as (typeof TASK_DUE_DATE_FILTERS)[number])
+          }
+          onSortChange={(value) =>
+            setSort(value as (typeof TASK_SORT_OPTIONS)[number])
+          }
           onCreate={() => {
             if (isReadOnly) {
               return
@@ -291,8 +371,13 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
         ) : null}
 
         {displayError ? (
-          <Alert variant="destructive" className="mt-4 border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.1)]">
-            <AlertDescription className="text-[12px] text-[#E8402A]">{displayError}</AlertDescription>
+          <Alert
+            variant="destructive"
+            className="mt-4 border-[rgba(232,64,42,0.35)] bg-[rgba(232,64,42,0.1)]"
+          >
+            <AlertDescription className="text-[#E8402A] text-[12px]">
+              {displayError}
+            </AlertDescription>
           </Alert>
         ) : null}
 
@@ -300,7 +385,11 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
           {isLoading ? (
             <TasksSkeleton />
           ) : tasks.length === 0 ? (
-            <TasksEmptyState hasFilters={hasFilters} isReadOnly={isReadOnly} onCreate={() => setShowCreate(true)} />
+            <TasksEmptyState
+              hasFilters={hasFilters}
+              isReadOnly={isReadOnly}
+              onCreate={() => setShowCreate(true)}
+            />
           ) : (
             <>
               <TasksTable
@@ -315,7 +404,11 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
                 onDelete={setDeleting}
               />
               {pagination.totalPages > 1 ? (
-                <CrmPagination page={pagination.page} totalPages={pagination.totalPages} onPageChange={setPage} />
+                <CrmPagination
+                  page={pagination.page}
+                  totalPages={pagination.totalPages}
+                  onPageChange={setPage}
+                />
               ) : null}
             </>
           )}
@@ -364,7 +457,9 @@ export function DealTasksSection({ dealId, dealStatus, initialData, initialLoadE
 
       <TaskDetailPanel
         open={showDetail}
-        task={detailTaskId && detailTask?.id === detailTaskId ? detailTask : null}
+        task={
+          detailTaskId && detailTask?.id === detailTaskId ? detailTask : null
+        }
         isLoading={isFetchingDetail}
         loadError={detailLoadError}
         onOpenChange={(open) => {

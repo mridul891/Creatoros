@@ -1,4 +1,5 @@
-import { ClockCounterClockwise } from "@phosphor-icons/react/dist/ssr"
+import { Clock01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { CrmEmptyState } from "@/components/modules/crm/shared"
 
@@ -7,7 +8,7 @@ export function ActivityTimelineEmptyState() {
     <CrmEmptyState
       title="No activity yet"
       description="Important updates for this brand will appear here automatically."
-      icon={<ClockCounterClockwise size={18} />}
+      icon={<HugeiconsIcon icon={Clock01Icon} size={18} />}
       className="py-10"
     />
   )

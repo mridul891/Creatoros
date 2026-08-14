@@ -1,13 +1,14 @@
 "use client"
 
-import { Plus } from "@phosphor-icons/react/dist/ssr"
+import { Add01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { getDealAction } from "@/app/action/dealActions"
-import { DealKanbanBoard } from "@/components/modules/crm/deals/DealKanbanBoard"
 import { DealArchiveDialog } from "@/components/modules/crm/deals/DealArchiveDialog"
 import { DealDeleteDialog } from "@/components/modules/crm/deals/DealDeleteDialog"
+import { DealKanbanBoard } from "@/components/modules/crm/deals/DealKanbanBoard"
 import { DealsSummaryWidgets } from "@/components/modules/crm/deals/DealsSummaryWidgets"
 import { DealsTable } from "@/components/modules/crm/deals/DealsTable"
 import { DealsToolbar } from "@/components/modules/crm/deals/DealsToolbar"
@@ -15,11 +16,19 @@ import { useDealListSearch } from "@/hooks/useDealListSearch"
 import { useDealMutations } from "@/hooks/useDealMutations"
 import { useDealPipeline } from "@/hooks/useDealPipeline"
 import { useDealsNavigation } from "@/hooks/useDealsNavigation"
+import {
+  type DealFormValues,
+  dealDetailToFormValues,
+  EMPTY_DEAL_FORM,
+} from "@/lib/crm/deals/dealForm"
 import { getDealFormFieldErrors } from "@/lib/crm/deals/dealValidation"
-import { EMPTY_DEAL_FORM, type DealFormValues, dealDetailToFormValues } from "@/lib/crm/deals/dealForm"
 import type { DealField, DealListData, DealListItem } from "@/types/deal"
+import {
+  CrmEmptyStateClient,
+  CrmPageHeaderClient,
+  CrmPagination,
+} from "../shared"
 import { DealForm } from "./DealForm"
-import { CrmEmptyStateClient, CrmPageHeaderClient, CrmPagination } from "../shared"
 
 type DealsPageProps = {
   listData: DealListData
@@ -43,7 +52,11 @@ function keepUnresolvedErrors(
   return unresolved
 }
 
-export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps) {
+export function DealsPage({
+  listData,
+  brands,
+  contactsByBrand,
+}: DealsPageProps) {
   const filters = listData.filters
   const { navigateWith, navigateToPage, refresh } = useDealsNavigation(filters)
 
@@ -53,11 +66,17 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
   const [archiving, setArchiving] = useState<DealListItem | null>(null)
   const [restoring, setRestoring] = useState<DealListItem | null>(null)
   const [deleting, setDeleting] = useState<DealListItem | null>(null)
-  const [createFormValues, setCreateFormValues] = useState<DealFormValues>(EMPTY_DEAL_FORM)
-  const [createFieldErrors, setCreateFieldErrors] = useState<Partial<Record<DealField, string>>>({})
+  const [createFormValues, setCreateFormValues] =
+    useState<DealFormValues>(EMPTY_DEAL_FORM)
+  const [createFieldErrors, setCreateFieldErrors] = useState<
+    Partial<Record<DealField, string>>
+  >({})
   const [createFormError, setCreateFormError] = useState("")
-  const [editFormValues, setEditFormValues] = useState<DealFormValues>(EMPTY_DEAL_FORM)
-  const [editFieldErrors, setEditFieldErrors] = useState<Partial<Record<DealField, string>>>({})
+  const [editFormValues, setEditFormValues] =
+    useState<DealFormValues>(EMPTY_DEAL_FORM)
+  const [editFieldErrors, setEditFieldErrors] = useState<
+    Partial<Record<DealField, string>>
+  >({})
   const [editFormError, setEditFormError] = useState("")
 
   const { search, setSearch } = useDealListSearch({
@@ -70,7 +89,11 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
     sort: filters.sort,
   })
 
-  const { deals, isMutating: isPipelineMutating, moveDeal } = useDealPipeline({
+  const {
+    deals,
+    isMutating: isPipelineMutating,
+    moveDeal,
+  } = useDealPipeline({
     initialDeals: listData.items,
     onMoveSuccess: refresh,
   })
@@ -91,11 +114,15 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
   })
 
   const createContacts = useMemo(() => {
-    return createFormValues.brandId ? contactsByBrand[createFormValues.brandId] ?? [] : []
+    return createFormValues.brandId
+      ? (contactsByBrand[createFormValues.brandId] ?? [])
+      : []
   }, [contactsByBrand, createFormValues.brandId])
 
   const editContacts = useMemo(() => {
-    return editFormValues.brandId ? contactsByBrand[editFormValues.brandId] ?? [] : []
+    return editFormValues.brandId
+      ? (contactsByBrand[editFormValues.brandId] ?? [])
+      : []
   }, [contactsByBrand, editFormValues.brandId])
 
   function resetCreateForm() {
@@ -121,7 +148,10 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
     }
 
     const nextAllErrors = getDealFormFieldErrors(nextValues)
-    const unresolvedErrors = keepUnresolvedErrors(createFieldErrors, nextAllErrors)
+    const unresolvedErrors = keepUnresolvedErrors(
+      createFieldErrors,
+      nextAllErrors
+    )
     setCreateFieldErrors(unresolvedErrors)
   }
 
@@ -136,7 +166,10 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
     }
 
     const nextAllErrors = getDealFormFieldErrors(nextValues)
-    const unresolvedErrors = keepUnresolvedErrors(editFieldErrors, nextAllErrors)
+    const unresolvedErrors = keepUnresolvedErrors(
+      editFieldErrors,
+      nextAllErrors
+    )
     setEditFieldErrors(unresolvedErrors)
   }
 
@@ -201,11 +234,17 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
     setDeleting(null)
   }
 
-  async function handleStageChange(dealId: string, stage: DealListItem["stage"]) {
+  async function handleStageChange(
+    dealId: string,
+    stage: DealListItem["stage"]
+  ) {
     await runStageChange(dealId, stage)
   }
 
-  async function handlePriorityChange(dealId: string, priority: DealListItem["priority"]) {
+  async function handlePriorityChange(
+    dealId: string,
+    priority: DealListItem["priority"]
+  ) {
     await runPriorityChange(dealId, priority)
   }
 
@@ -225,12 +264,12 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
   }
 
   return (
-    <div className="w-full max-w-[1280px] px-4 py-6 sm:px-6 lg:px-9 lg:py-7">
+    <div className="w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-9 lg:py-7">
       <CrmPageHeaderClient
         title="Deals CRM"
         description="Track sponsorship opportunities from first outreach to final payment."
         actionLabel="New Deal"
-        actionIcon={<Plus size={15} />}
+        actionIcon={<HugeiconsIcon icon={Add01Icon} size={15} />}
         onAction={() => {
           resetCreateForm()
           setShowCreate(true)
@@ -260,9 +299,19 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
 
       {listData.items.length === 0 ? (
         <CrmEmptyStateClient
-          title={filters.search || filters.brandId || filters.priority || filters.stage ? "No matching deals" : "No deals found"}
+          title={
+            filters.search ||
+            filters.brandId ||
+            filters.priority ||
+            filters.stage
+              ? "No matching deals"
+              : "No deals found"
+          }
           description={
-            filters.search || filters.brandId || filters.priority || filters.stage
+            filters.search ||
+            filters.brandId ||
+            filters.priority ||
+            filters.stage
               ? "Try clearing one or more filters to widen your results."
               : "Create your first deal to start tracking your pipeline."
           }
@@ -273,7 +322,11 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
           }}
         />
       ) : filters.view === "kanban" ? (
-        <DealKanbanBoard deals={deals} isMutating={isPipelineMutating} onMove={moveDeal} />
+        <DealKanbanBoard
+          deals={deals}
+          isMutating={isPipelineMutating}
+          onMove={moveDeal}
+        />
       ) : (
         <>
           <DealsTable
@@ -286,7 +339,11 @@ export function DealsPage({ listData, brands, contactsByBrand }: DealsPageProps)
             onRestore={setRestoring}
             onDelete={setDeleting}
           />
-          <CrmPagination page={listData.pagination.page} totalPages={listData.pagination.totalPages} onPageChange={navigateToPage} />
+          <CrmPagination
+            page={listData.pagination.page}
+            totalPages={listData.pagination.totalPages}
+            onPageChange={navigateToPage}
+          />
         </>
       )}
 

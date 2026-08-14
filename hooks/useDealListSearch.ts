@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useEffect, useRef, useState } from "react"
 import { buildDealsUrl } from "@/lib/crm/deals/dealsUrl"
 
 type UseDealListSearchOptions = {
@@ -14,7 +14,15 @@ type UseDealListSearchOptions = {
   sort: string
 }
 
-export function useDealListSearch({ initialSearch, view, archive, stage, priority, brandId, sort }: UseDealListSearchOptions) {
+export function useDealListSearch({
+  initialSearch,
+  view,
+  archive,
+  stage,
+  priority,
+  brandId,
+  sort,
+}: UseDealListSearchOptions) {
   const router = useRouter()
   const [search, setSearch] = useState(initialSearch)
   const hasMountedRef = useRef(false)
@@ -39,12 +47,22 @@ export function useDealListSearch({ initialSearch, view, archive, stage, priorit
           brandId,
           sort,
           page: 1,
-        }),
+        })
       )
     }, 300)
 
     return () => clearTimeout(timeout)
-  }, [archive, brandId, initialSearch, priority, router, search, sort, stage, view])
+  }, [
+    archive,
+    brandId,
+    initialSearch,
+    priority,
+    router,
+    search,
+    sort,
+    stage,
+    view,
+  ])
 
   return {
     search,

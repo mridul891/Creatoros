@@ -1,31 +1,34 @@
 "use client"
 
-import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { toast } from "sonner"
 
 import { DealActivityTimelineSection } from "@/components/modules/crm/activity/DealActivityTimelineSection"
 import { DealOverviewSection } from "@/components/modules/crm/deals/workspace/DealOverviewSection"
 import { DealWorkspaceHeader } from "@/components/modules/crm/deals/workspace/DealWorkspaceHeader"
 import { DealWorkspaceTabs } from "@/components/modules/crm/deals/workspace/DealWorkspaceTabs"
+import { useDealMutations } from "@/hooks/useDealMutations"
+import {
+  type DealFormValues,
+  dealDetailToFormValues,
+} from "@/lib/crm/deals/dealForm"
 import { getDealFormFieldErrors } from "@/lib/crm/deals/dealValidation"
-import { dealDetailToFormValues, type DealFormValues } from "@/lib/crm/deals/dealForm"
-import { keepUnresolvedErrors } from "@/lib/crm/shared/formErrors"
 import type { DealWorkspaceTab } from "@/lib/crm/deals/dealWorkspaceTabs"
+import { keepUnresolvedErrors } from "@/lib/crm/shared/formErrors"
 import type { ActivityListData } from "@/types/activity"
 import type { DealDetail, DealField } from "@/types/deal"
 import type { DealFileListData } from "@/types/dealFile"
 import type { DealNoteListData } from "@/types/dealNote"
 import type { DeliverableListData } from "@/types/deliverable"
 import type { TaskListData } from "@/types/task"
-import { useDealMutations } from "@/hooks/useDealMutations"
-import { DealArchiveDialog } from "./DealArchiveDialog"
-import { DealDeleteDialog } from "./DealDeleteDialog"
-import { DealForm } from "./DealForm"
 import { DealDeliverablesSection } from "../deliverables/DealDeliverablesSection"
 import { DealFilesSection } from "../files/DealFilesSection"
 import { DealNotesSection } from "../notes/DealNotesSection"
 import { DealTasksSection } from "../tasks/DealTasksSection"
+import { DealArchiveDialog } from "./DealArchiveDialog"
+import { DealDeleteDialog } from "./DealDeleteDialog"
+import { DealForm } from "./DealForm"
 
 type DealDetailPageProps = {
   deal: DealDetail
@@ -62,15 +65,30 @@ export function DealDetailPage({
 }: DealDetailPageProps) {
   const router = useRouter()
   const [tasksTotal, setTasksTotal] = useState(tasksData.summary.total)
-  const [deliverablesTotal, setDeliverablesTotal] = useState(deliverablesData.summary.total)
+  const [deliverablesTotal, setDeliverablesTotal] = useState(
+    deliverablesData.summary.total
+  )
   const [showEdit, setShowEdit] = useState(false)
-  const [archiveMode, setArchiveMode] = useState<"archive" | "restore" | null>(null)
+  const [archiveMode, setArchiveMode] = useState<"archive" | "restore" | null>(
+    null
+  )
   const [showDelete, setShowDelete] = useState(false)
-  const [formValues, setFormValues] = useState<DealFormValues>(() => dealDetailToFormValues(deal))
+  const [formValues, setFormValues] = useState<DealFormValues>(() =>
+    dealDetailToFormValues(deal)
+  )
   const [formError, setFormError] = useState("")
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<DealField, string>>>({})
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<DealField, string>>
+  >({})
 
-  const { isSubmitting, isMutating, submitUpdate, runArchive, runRestore, runDelete } = useDealMutations({
+  const {
+    isSubmitting,
+    isMutating,
+    submitUpdate,
+    runArchive,
+    runRestore,
+    runDelete,
+  } = useDealMutations({
     onRefresh: () => router.refresh(),
     onDeleteSuccess: () => router.replace("/dashboard/deals"),
   })
@@ -95,7 +113,10 @@ export function DealDetailPage({
     if (!archiveMode) {
       return
     }
-    const result = archiveMode === "archive" ? await runArchive(deal.id) : await runRestore(deal.id)
+    const result =
+      archiveMode === "archive"
+        ? await runArchive(deal.id)
+        : await runRestore(deal.id)
     if (!result.success) return
     setArchiveMode(null)
   }
@@ -129,7 +150,9 @@ export function DealDetailPage({
           setFieldErrors({})
           setShowEdit(true)
         }}
-        onArchiveToggle={() => setArchiveMode(deal.status === "Active" ? "archive" : "restore")}
+        onArchiveToggle={() =>
+          setArchiveMode(deal.status === "Active" ? "archive" : "restore")
+        }
         onDelete={() => setShowDelete(true)}
       />
 
@@ -145,7 +168,13 @@ export function DealDetailPage({
             }
 
             if (tab === "activity") {
-              return <DealActivityTimelineSection dealId={deal.id} initialData={activityData} initialLoadError={activityError} />
+              return (
+                <DealActivityTimelineSection
+                  dealId={deal.id}
+                  initialData={activityData}
+                  initialLoadError={activityError}
+                />
+              )
             }
 
             if (tab === "tasks") {
@@ -172,11 +201,23 @@ export function DealDetailPage({
             }
 
             if (tab === "notes") {
-              return <DealNotesSection dealId={deal.id} initialData={notesData} initialLoadError={notesError} />
+              return (
+                <DealNotesSection
+                  dealId={deal.id}
+                  initialData={notesData}
+                  initialLoadError={notesError}
+                />
+              )
             }
 
             if (tab === "files") {
-              return <DealFilesSection dealId={deal.id} initialData={filesData} initialLoadError={filesError} />
+              return (
+                <DealFilesSection
+                  dealId={deal.id}
+                  initialData={filesData}
+                  initialLoadError={filesError}
+                />
+              )
             }
 
             return null

@@ -18,7 +18,9 @@ export const EMPTY_BRAND_FORM: BrandFormValues = {
   notes: "",
 }
 
-export function brandToFormValues(brand: Pick<BrandListItem, keyof BrandFormValues>): BrandFormValues {
+export function brandToFormValues(
+  brand: Pick<BrandListItem, keyof BrandFormValues>
+): BrandFormValues {
   return {
     name: brand.name,
     category: brand.category ?? "",

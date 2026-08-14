@@ -1,37 +1,37 @@
-import { InvoiceStatus, InvoiceTab } from "@/enums/invoice";
+import type { InvoiceStatus, InvoiceTab } from "@/enums/invoice"
 
 export interface Invoice {
-  id: string;
-  invoiceId: string;
-  client: string;
-  logo: string;
-  color: string;
-  amount: number;
-  currency: string;
-  issued: string;
-  due: string;
-  status: InvoiceStatus;
-  desc: string;
-  dealId: string | null;
-  metadata: Record<string, unknown> | null;
+  id: string
+  invoiceId: string
+  client: string
+  logo: string
+  color: string
+  amount: number
+  currency: string
+  issued: string
+  due: string
+  status: InvoiceStatus
+  desc: string
+  dealId: string | null
+  metadata: Record<string, unknown> | null
 }
 
 export interface InvoiceModalState {
-  invoice?: Invoice;
+  invoice?: Invoice
 }
 
 export interface InvoiceFormState {
-  client: string;
-  logo: string;
-  desc: string;
-  amount: number;
-  due: string;
-  status: InvoiceStatus;
+  client: string
+  logo: string
+  desc: string
+  amount: number
+  due: string
+  status: InvoiceStatus
 }
 
 export interface InvoiceFiltersState {
-  tab: InvoiceTab;
-  search: string;
+  tab: InvoiceTab
+  search: string
 }
 
 export interface InvoiceListItem {
