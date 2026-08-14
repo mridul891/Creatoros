@@ -165,7 +165,8 @@ DealFlow is a modern web application built with:
 - **Tailwind CSS** for styling
 - **Prisma** for database modeling and access
 - **PostgreSQL** as the primary database
-- **Supabase** direction for auth, storage, and database infrastructure
+- **InsForge** for auth, storage, and backend services
+- See `architecture.md` for the feature-oriented folder layout
 - **Stripe** for subscriptions and billing
 - **Resend** and React Email for transactional email
 - **Recharts** for dashboard visualizations
@@ -195,6 +196,8 @@ Run database migrations:
 ```bash
 pnpm prisma:migrate
 ```
+
+Prisma migrations in `prisma/migrations/` are the only migration source of truth.
 
 Run type checks:
 

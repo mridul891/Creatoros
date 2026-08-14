@@ -2,10 +2,10 @@ import type { Metadata } from "next"
 import { DM_Sans, Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import { GoogleAnalytics } from "@next/third-parties/google"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/shared/ThemeProvider"
 import { Toaster } from "@/components/ui/sonner"
+import MsClarity from "@/lib/infrastructure/ms-clarity"
 import { cn } from "@/lib/utils"
-import MsClarity from "../lib/ms-clarity"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],

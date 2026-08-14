@@ -4,8 +4,8 @@ import "server-only"
 
 import { cache } from "react"
 import { syncUserFromInsforgeUser } from "@/lib/auth/sync-user"
-import { createInsforgeServerClient } from "@/lib/inforge/server"
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/lib/db/prisma"
+import { createInsforgeServerClient } from "@/lib/insforge/server"
 
 export const getCurrentUser = cache(async () => {
   const insforge = await createInsforgeServerClient()
