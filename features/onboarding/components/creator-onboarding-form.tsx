@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { type FormEvent, useState } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -33,10 +32,19 @@ type CreatorOnboardingFormProps = {
 
 type FieldErrors = NonNullable<CreatorOnboardingResult["fieldErrors"]>
 
+function isNextRedirect(error: unknown) {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    typeof error.digest === "string" &&
+    error.digest.startsWith("NEXT_REDIRECT")
+  )
+}
+
 export function CreatorOnboardingForm({
   initialValues,
 }: CreatorOnboardingFormProps) {
-  const router = useRouter()
   const [creatorType, setCreatorType] = useState(
     initialValues?.creatorType ?? ""
   )
@@ -71,9 +79,11 @@ export function CreatorOnboardingForm({
       }
 
       toast.success(result.message ?? "Onboarding complete.")
-      router.push("/dashboard")
-      router.refresh()
     } catch (error) {
+      if (isNextRedirect(error)) {
+        throw error
+      }
+
       console.error("creator.onboarding_submit_failed", { error })
       setFormError("Something went wrong while saving your profile.")
     } finally {

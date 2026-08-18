@@ -7,8 +7,6 @@ import { requireUser } from "@/lib/auth/require-user"
 export default async function OnboardingPage() {
   const user = await requireUser()
 
-  console.log("required user", user)
-
   if (user.isOnboardingComplete) {
     redirect("/dashboard")
   }

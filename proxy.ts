@@ -1,5 +1,4 @@
-import { updateSession } from "@insforge/sdk/ssr/middleware"
-import { cookies } from "next/headers"
+import { updateSession, type CookieStore } from "@insforge/sdk/ssr/middleware"
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 
@@ -14,13 +13,16 @@ export default async function proxy(request: NextRequest) {
   }
 
   await updateSession({
-    requestCookies: await cookies(),
-    responseCookies: await cookies(),
+    requestCookies: request.cookies as unknown as CookieStore,
+    responseCookies: response.cookies as unknown as CookieStore,
   })
 
+  const { pathname } = request.nextUrl
   const accessToken = request.cookies.get("insforge_access_token")?.value
+  const requiresAuth =
+    pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding")
 
-  if (request.nextUrl.pathname.startsWith("/dashboard") && !accessToken) {
+  if (requiresAuth && !accessToken) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
@@ -28,5 +30,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/dashboard/:path*"],
+  matcher: ["/login", "/onboarding", "/dashboard", "/dashboard/:path*"],
 }

@@ -1,5 +1,7 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { z } from "zod"
 import { CREATOR_TYPES } from "@/features/onboarding/enums/creators"
 import {
@@ -99,11 +101,6 @@ export async function saveCreatorOnboarding(
 
   try {
     await upsertCreatorAndCompleteOnboarding(user.id, parsed.data)
-
-    return {
-      success: true,
-      message: "Onboarding complete. Redirecting to your dashboard.",
-    }
   } catch (error) {
     console.error("creator.onboarding_save_failed", {
       userId: user.id,
@@ -115,4 +112,8 @@ export async function saveCreatorOnboarding(
       message: "We could not save your profile. Please try again.",
     }
   }
+
+  revalidatePath("/onboarding")
+  revalidatePath("/dashboard", "layout")
+  redirect("/dashboard")
 }
