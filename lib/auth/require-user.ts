@@ -7,25 +7,30 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/db/prisma"
 import { getCurrentUserId } from "@/lib/auth/get-current-user"
 
-export async function requireUser() {
+export async function getCurrentUser() {
   const userId = await getCurrentUserId()
 
-  console.log("userId", userId)
-
   if (!userId) {
-    redirect("/login")
+    return null
   }
 
-  const user = await prisma.user.findUnique({
+  return prisma.user.findUnique({
     where: {
       id: userId,
     },
   })
+}
 
-  console.log("found user", user)
+export async function requireUser() {
+  const user = await getCurrentUser()
+
+  console.log("userId", user?.id)
+
   if (!user) {
     redirect("/login")
   }
+
+  console.log("found user", user)
 
   return user
 }
