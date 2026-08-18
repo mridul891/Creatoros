@@ -1,7 +1,8 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
-import { recordActivity } from "@/features/activity/services/activityService"
+import { recordActivity } from "@/features/activity"
+import { findOwnedBrand } from "@/features/brands"
 import { isValidStageTransition } from "@/features/deals/enums/deal"
 import {
   type DealCreateUpdateInput,
@@ -14,12 +15,14 @@ import type {
   DealListData,
   DealListItem,
 } from "@/features/deals/types/deal"
-import { applyCampaignTemplateInTransaction } from "@/features/templates/services/templateService"
+import { applyCampaignTemplateInTransaction } from "@/features/templates"
 import { prisma } from "@/lib/db/prisma"
-import { clampPage, clampPageSize } from "@/lib/utils/pagination"
-
-const PAGE_SIZE_DEFAULT = 20
-const PAGE_SIZE_MAX = 50
+import {
+  clampPage,
+  clampPageSize,
+  PAGE_SIZE_DEFAULT,
+  PAGE_SIZE_MAX,
+} from "@/lib/utils/pagination"
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient
 
@@ -94,12 +97,12 @@ function toListItem(deal: DealProjection): DealListItem {
   }
 }
 
-async function assertOwnedBrand(userId: string, brandId: string, tx: PrismaTx) {
-  const brand = await tx.brand.findFirst({
-    where: { id: brandId, userId },
-    select: { id: true },
-  })
-
+async function requireOwnedBrand(
+  userId: string,
+  brandId: string,
+  tx: PrismaTx
+) {
+  const brand = await findOwnedBrand(userId, brandId, tx)
   if (!brand) {
     throw new DealServiceError("Brand not found.", "NOT_FOUND")
   }
@@ -513,7 +516,7 @@ async function createDealInTransaction(
   userId: string,
   input: DealCreateUpdateInput
 ) {
-  await assertOwnedBrand(userId, input.brandId, tx)
+  await requireOwnedBrand(userId, input.brandId, tx)
   if (input.contactId) {
     await assertOwnedContact({
       tx,
@@ -621,7 +624,7 @@ export async function updateDeal(
       )
     }
 
-    await assertOwnedBrand(userId, input.brandId, tx)
+    await requireOwnedBrand(userId, input.brandId, tx)
     if (input.contactId) {
       await assertOwnedContact({
         tx,

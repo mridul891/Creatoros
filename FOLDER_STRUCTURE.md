@@ -25,7 +25,6 @@ dealFlow/
 ├── docs/                # Agent specs and implementation plans
 ├── architecture.md      # How to place new code
 ├── AGENTS.md
-├── CLAUDE.md
 ├── README.md
 ├── components.md
 ├── design.md
@@ -49,7 +48,7 @@ app/
 ├── (marketing)/               # /, /features, /product, /pricing, /waitlist, legal
 ├── (auth)/                    # /login, /onboarding
 ├── (dashboard)/dashboard/     # /dashboard and all /dashboard/*
-├── actions/                   # waitlist, mail, users
+├── actions/                   # waitlist, mail
 ├── api/auth/
 ├── layout.tsx
 ├── globals.css
@@ -71,9 +70,9 @@ Each domain owns components, actions, services, schemas, hooks, and types as nee
 | `invoices`, `templates` | Invoicing and campaign templates |
 | `media-kit` | Media kit editor / preview |
 | `scripts` | Script list + TipTap editor (`editor/`) |
-| `analytics` | Dashboard overview + analytics |
+| `analytics` | Dashboard overview (mock) + unused command-center service |
 | `sponsorship` | Content pipeline (mock) |
-| `calendar` | Content calendar |
+| `calendar` | Content calendar (mock) |
 | `onboarding` | Creator onboarding |
 
 ---
@@ -105,7 +104,7 @@ Each domain owns components, actions, services, schemas, hooks, and types as nee
 
 ## `types/` and `enums/`
 
-Shared only: `types/user.ts`, `types/futureModules.ts`, `enums/activity.ts`, `enums/post.ts`, `enums/dashboard-route.ts`, `enums/dashboard-page.ts`.
+Shared only: `types/user.ts`, `enums/activity.ts`, `enums/post.ts`, `enums/dashboard-route.ts`.
 
 Feature-specific types and enums live under `features/<domain>/`.
 
@@ -125,7 +124,6 @@ Use `pnpm prisma:migrate`. Do not add a second root `migrations/` tree.
 | File | Role |
 | --- | --- |
 | `architecture.md` | Placement and dependency rules |
-| `CLAUDE.md` | Session contract |
 | `AGENTS.md` | Next.js + InsForge agent rules |
 | `README.md` | Product narrative and setup |
 | `design.md` | Visual tokens |

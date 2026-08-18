@@ -46,7 +46,7 @@ Rule: `components/ui/` must not import features.
 
 Use for genuinely reusable application composites.
 
-- `components/shared/crm/` — CRM chrome: `CrmPageHeader`, `CrmFormDialog`, `CrmConfirmDialog`, `CrmEmptyState`, `CrmSearchField`, `CrmPagination`
+- `components/shared/crm/` — CRM chrome: `CrmPageHeaderClient`, `CrmFormDialog`, `CrmConfirmDialog`, `CrmEmptyState`, `CrmSearchField`, `CrmPagination`
 - `LoginForm`, `ThemeProvider`, motion primitives, `ImageWithFallback`
 
 Rule: new CRM feature UIs should compose from `components/shared/crm/` first.
@@ -86,7 +86,7 @@ Rule: keep these compositional; do not place low-level primitives here.
 
 - Data loading and permission-aware fetching should happen in server components/services.
 - Interactive UI, local state, drag-and-drop, dialogs, and toasts can be client components.
-- Follow existing split patterns when present (`*PageServer.tsx` + interactive page component).
+- Follow existing split patterns when present (feature `*PageServer.tsx` that fetches, plus an interactive page component).
 - Feature server actions stay in `features/<domain>/actions/` with `"use server"`.
 
 ---
@@ -103,7 +103,7 @@ Rule: keep these compositional; do not place low-level primitives here.
 ## Drift Guardrails
 
 - When in doubt, follow `architecture.md` and the on-disk `features/` tree.
-- Do not import another feature’s private internals; use public actions, services, types, or section components.
+- Do not import another feature’s private internals; use that feature’s public `index.ts` (or public actions, types, and section components).
 
 ---
 

@@ -1,21 +1,14 @@
-import type { User } from "@/types/user"
-import { MediaKitForm } from "./MediaKitForm"
-import { MediaKitView } from "./MediaKitView"
+import { MediaKitPageClient } from "@/features/media-kit/components/MediaKitPageClient";
+import type { MediaKitPageProps } from "@/features/media-kit/types/media-kit-page";
 
-type MediaKitUser = Pick<User, "name" | "email" | "avatarUrl">
-
-export function MediaKitPage({ user }: { user: MediaKitUser }) {
+export function MediaKitPage({
+  creatorsDetails,
+  mediaKit,
+}: MediaKitPageProps) {
   return (
-    <main className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden p-4 lg:grid-cols-2">
-      {/* Editor */}
-      <section className="min-h-0 min-w-0 overflow-y-auto border-r">
-        <MediaKitForm />
-      </section>
-
-      {/* Preview */}
-      <section className="min-h-0 min-w-0 overflow-y-auto">
-        <MediaKitView user={user} />
-      </section>
-    </main>
-  )
+    <MediaKitPageClient
+      creatorsDetails={creatorsDetails}
+      mediaKit={mediaKit}
+    />
+  );
 }

@@ -211,6 +211,14 @@ Run linting:
 pnpm lint
 ```
 
+Run a production build:
+
+```bash
+pnpm build
+```
+
+There is no test suite in this repository.
+
 ## Local PostgreSQL And Adminer
 
 This project includes a local Docker setup for PostgreSQL and Adminer.

@@ -29,6 +29,7 @@ model User {
   integrationAccounts  IntegrationAccount[]
   scripts              Scripts[]
   activities           Activity[]
+  mediaKit             MediaKit?
   createdAt            DateTime             @default(now()) @map("created_at")
   updatedAt            DateTime             @updatedAt @map("updated_at")
 
@@ -194,6 +195,26 @@ enum NotificationStatus {
 enum IntegrationPlatform {
   Instagram
   YouTube
+}
+
+enum MediaKitCategory {
+  fashion
+  beauty
+  fitness
+  gaming
+  technology
+  lifestyle
+  travel
+  food
+  business
+  other
+}
+
+enum MediaKitCurrency {
+  USD
+  EUR
+  GBP
+  INR
 }
 
 model Creator {
@@ -583,4 +604,69 @@ model Scripts {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("scripts")
+}
+
+model MediaKit {
+  id               String                    @id @default(uuid()) @db.Uuid
+  userId           String                    @unique @map("user_id") @db.Uuid
+  user             User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName      String                    @map("display_name")
+  handle           String
+  category         MediaKitCategory
+  bio              String?
+  avatarUrl        String?                   @map("avatar_url")
+  followers        Int                       @default(0)
+  avgReelViews     Int                       @default(0) @map("avg_reel_views")
+  avgLikes         Int                       @default(0) @map("avg_likes")
+  avgComments      Int                       @default(0) @map("avg_comments")
+  avgStoryViews    Int                       @default(0) @map("avg_story_views")
+  engagementRate   Decimal                   @map("engagement_rate") @db.Decimal(5, 2)
+  topAgeGroups     String                    @map("top_age_groups")
+  womenPercentage  Decimal                   @map("women_percentage") @db.Decimal(5, 2)
+  cities           String[]
+  countries        String[]
+  brandsWorkedWith String?                   @map("brands_worked_with")
+  currency         MediaKitCurrency          @default(INR)
+  ratePerThousand  Decimal                   @map("rate_per_thousand") @db.Decimal(12, 2)
+  paymentTerms     String                    @map("payment_terms")
+  addOns           Json                      @map("add_ons")
+  contactEmail     String                    @map("contact_email")
+  contactPhone     String?                   @map("contact_phone")
+  contactWebsite   String?                   @map("contact_website")
+  workItems        MediaKitWorkItem[]
+  rateDeliverables MediaKitRateDeliverable[]
+  createdAt        DateTime                  @default(now()) @map("created_at")
+  updatedAt        DateTime                  @updatedAt @map("updated_at")
+
+  @@index([userId, updatedAt(sort: Desc)], map: "media_kits_user_updated_at_idx")
+  @@map("media_kits")
+}
+
+model MediaKitWorkItem {
+  id         String   @id @default(uuid()) @db.Uuid
+  mediaKitId String   @map("media_kit_id") @db.Uuid
+  mediaKit   MediaKit @relation(fields: [mediaKitId], references: [id], onDelete: Cascade)
+  title      String
+  url        String
+  views      Int      @default(0)
+  orderIndex Int      @default(0) @map("order_index")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([mediaKitId, orderIndex], map: "media_kit_work_items_kit_order_idx")
+  @@map("media_kit_work_items")
+}
+
+model MediaKitRateDeliverable {
+  id         String   @id @default(uuid()) @db.Uuid
+  mediaKitId String   @map("media_kit_id") @db.Uuid
+  mediaKit   MediaKit @relation(fields: [mediaKitId], references: [id], onDelete: Cascade)
+  title      String
+  price      Decimal  @db.Decimal(12, 2)
+  orderIndex Int      @default(0) @map("order_index")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([mediaKitId, orderIndex], map: "media_kit_rate_deliverables_kit_order_idx")
+  @@map("media_kit_rate_deliverables")
 }

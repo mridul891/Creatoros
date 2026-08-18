@@ -2,10 +2,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { LoginForm } from "@/components/shared/LoginForm"
-import { getCurrentUser } from "@/lib/auth/get-current-user"
+import { getCurrentUserId } from "@/lib/auth/get-current-user"
 
 export default async function LoginPage() {
-  const user = await getCurrentUser()
+  const user = await getCurrentUserId()
   if (user) {
     redirect(user.isOnboardingComplete ? "/dashboard" : "/onboarding")
   }

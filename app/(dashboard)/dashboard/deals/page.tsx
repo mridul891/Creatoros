@@ -4,7 +4,7 @@ import {
   listDealFormOptionsAction,
   listDealsAction,
 } from "@/features/deals/actions/dealActions"
-import { DealsPageServer } from "@/features/deals/components/DealsPageServer"
+import { DealsPage } from "@/features/deals/components/DealsPage"
 
 export const metadata: Metadata = {
   title: "Deals",
@@ -76,7 +76,7 @@ export default async function DashboardDealsPage({
   }
 
   return (
-    <DealsPageServer
+    <DealsPage
       listData={listResult.data}
       brands={optionsResult.data.brands}
       contactsByBrand={optionsResult.data.contactsByBrand}

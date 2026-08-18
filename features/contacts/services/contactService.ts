@@ -1,7 +1,8 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
-import { recordActivity } from "@/features/activity/services/activityService"
+import { recordActivity } from "@/features/activity"
+import { findOwnedBrand } from "@/features/brands"
 import type { ContactFilter } from "@/features/contacts/enums/contact"
 import {
   normalizeContactName,
@@ -63,12 +64,12 @@ export class ContactServiceError extends Error {
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient
 
-async function assertOwnedBrand(userId: string, brandId: string, tx: PrismaTx) {
-  const brand = await tx.brand.findFirst({
-    where: { id: brandId, userId },
-    select: { id: true },
-  })
-
+async function requireOwnedBrand(
+  userId: string,
+  brandId: string,
+  tx: PrismaTx
+) {
+  const brand = await findOwnedBrand(userId, brandId, tx)
   if (!brand) {
     throw new ContactServiceError("Brand not found.", "NOT_FOUND")
   }
@@ -246,7 +247,7 @@ export async function listContactsByBrand(
   userId: string,
   input: ListContactsInput
 ): Promise<ContactListData> {
-  await assertOwnedBrand(userId, input.brandId, prisma)
+  await requireOwnedBrand(userId, input.brandId, prisma)
 
   const search = input.search?.trim() ?? ""
 
@@ -301,7 +302,7 @@ export async function getContact(
   brandId: string,
   contactId: string
 ): Promise<ContactDetail> {
-  await assertOwnedBrand(userId, brandId, prisma)
+  await requireOwnedBrand(userId, brandId, prisma)
   const contact = await getOwnedContact(userId, brandId, contactId, prisma)
 
   return {
@@ -328,7 +329,7 @@ export async function createContact(
   const normalizedEmail = input.email ? normalizeEmail(input.email) : null
 
   return prisma.$transaction(async (tx) => {
-    await assertOwnedBrand(userId, input.brandId, tx)
+    await requireOwnedBrand(userId, input.brandId, tx)
     const previousPrimary = await getPrimaryContactSnapshot(tx, input.brandId)
     await ensureNoDuplicates({
       tx,
@@ -408,7 +409,7 @@ export async function updateContact(
   const normalizedEmail = input.email ? normalizeEmail(input.email) : null
 
   return prisma.$transaction(async (tx) => {
-    await assertOwnedBrand(userId, input.brandId, tx)
+    await requireOwnedBrand(userId, input.brandId, tx)
     const previousPrimary = await getPrimaryContactSnapshot(tx, input.brandId)
     await getOwnedContact(userId, input.brandId, input.contactId, tx)
 
@@ -489,7 +490,7 @@ export async function archiveContact(
   contactId: string
 ) {
   return prisma.$transaction(async (tx) => {
-    await assertOwnedBrand(userId, brandId, tx)
+    await requireOwnedBrand(userId, brandId, tx)
     const previousPrimary = await getPrimaryContactSnapshot(tx, brandId)
     const contact = await getOwnedContact(userId, brandId, contactId, tx)
 

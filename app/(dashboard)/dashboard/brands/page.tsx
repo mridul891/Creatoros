@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { listBrandsAction } from "@/features/brands/actions/brandActions"
-import { BrandsPageServer } from "@/features/brands/components/BrandsPageServer"
+import { BrandsPage } from "@/features/brands/components/BrandsPage"
 
 type DashboardBrandsPageProps = {
   searchParams: Promise<{
@@ -43,5 +43,5 @@ export default async function DashboardBrandsPage({
     )
   }
 
-  return <BrandsPageServer listData={result.data} initialSearch={search} />
+  return <BrandsPage listData={result.data} initialSearch={search} />
 }

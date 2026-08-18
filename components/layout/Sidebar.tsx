@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Agreement02Icon,
@@ -11,12 +11,12 @@ import {
   GridViewIcon,
   Logout01Icon,
   SparklesIcon,
-} from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useCallback, useTransition } from "react"
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useCallback, useTransition } from "react";
 
 import {
   Sidebar as AppSidebar,
@@ -33,65 +33,65 @@ import {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { DashboardRoute } from "@/enums/dashboard-route"
-import { signOut } from "@/lib/insforge/auth-actions"
+} from "@/components/ui/sidebar";
+import { DashboardRoute } from "@/enums/dashboard-route";
+import { signOut } from "@/lib/insforge/auth-actions";
 
 type UserInfo = {
-  id: string
-  email: string
-  name: string | null
-  avatarUrl: string | null
-}
+  id: string;
+  email: string;
+  name: string | null;
+  avatarUrl: string | null;
+};
 
 type NavItem = {
-  href: DashboardRoute
-  label: string
-  icon: typeof GridViewIcon
-}
+  href: DashboardRoute;
+  label: string;
+  icon: typeof GridViewIcon;
+};
 
 const NAV_ITEMS: readonly NavItem[] = [
-  {
-    href: DashboardRoute.ROOT,
-    label: "Dashboard",
-    icon: GridViewIcon,
-  },
-  {
-    href: DashboardRoute.CALENDAR,
-    label: "Calendar",
-    icon: Calendar03Icon,
-  },
-  {
-    href: DashboardRoute.BRANDS,
-    label: "Brands",
-    icon: Building03Icon,
-  },
-  {
-    href: DashboardRoute.PIPELINE,
-    label: "Content Pipeline",
-    icon: BarChartIcon,
-  },
-  {
-    href: DashboardRoute.DEALS,
-    label: "Deals",
-    icon: Agreement02Icon,
-  },
-  {
-    href: DashboardRoute.INVOICES,
-    label: "Invoices",
-    icon: File02Icon,
-  },
+  // {
+  //   href: DashboardRoute.ROOT,
+  //   label: "Dashboard",
+  //   icon: GridViewIcon,
+  // },
+  // {
+  //   href: DashboardRoute.CALENDAR,
+  //   label: "Calendar",
+  //   icon: Calendar03Icon,
+  // },
+  // {
+  //   href: DashboardRoute.BRANDS,
+  //   label: "Brands",
+  //   icon: Building03Icon,
+  // },
+  // {
+  //   href: DashboardRoute.PIPELINE,
+  //   label: "Content Pipeline",
+  //   icon: BarChartIcon,
+  // },
+  // {
+  //   href: DashboardRoute.DEALS,
+  //   label: "Deals",
+  //   icon: Agreement02Icon,
+  // },
+  // {
+  //   href: DashboardRoute.INVOICES,
+  //   label: "Invoices",
+  //   icon: File02Icon,
+  // },
   {
     href: DashboardRoute.MEDIA_KIT,
     label: "Media Kit",
     icon: SparklesIcon,
   },
-  {
-    href: DashboardRoute.SCRIPTS,
-    label: "Scripts",
-    icon: FileCodeIcon,
-  },
-] as const
+  // {
+  //   href: DashboardRoute.SCRIPTS,
+  //   label: "Scripts",
+  //   icon: FileCodeIcon,
+  // },
+] as const;
 
 /**
  * Routes where child routes should also mark the parent navigation item active.
@@ -99,18 +99,18 @@ const NAV_ITEMS: readonly NavItem[] = [
 const NESTED_ROUTES = new Set<DashboardRoute>([
   DashboardRoute.BRANDS,
   DashboardRoute.DEALS,
-])
+]);
 
 function isNavItemActive(pathname: string, href: DashboardRoute): boolean {
   if (href === DashboardRoute.ROOT) {
-    return pathname === href
+    return pathname === href;
   }
 
   if (NESTED_ROUTES.has(href)) {
-    return pathname === href || pathname.startsWith(`${href}/`)
+    return pathname === href || pathname.startsWith(`${href}/`);
   }
 
-  return pathname === href
+  return pathname === href;
 }
 
 function getInitials(name: string | null): string {
@@ -120,47 +120,47 @@ function getInitials(name: string | null): string {
     .filter(Boolean)
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase())
-    .join("")
+    .join("");
 
-  return initials || "U"
+  return initials || "U";
 }
 
 type SidebarProps = {
-  data: UserInfo
-}
+  data: UserInfo;
+};
 
 export function Sidebar({ data }: SidebarProps) {
-  const pathname = usePathname()
-  const { isMobile, setOpenMobile, state } = useSidebar()
-  const [isPending, startTransition] = useTransition()
+  const pathname = usePathname();
+  const { isMobile, setOpenMobile, state } = useSidebar();
+  const [isPending, startTransition] = useTransition();
 
   const closeMobileSidebar = useCallback(() => {
     if (isMobile) {
-      setOpenMobile(false)
+      setOpenMobile(false);
     }
-  }, [isMobile, setOpenMobile])
+  }, [isMobile, setOpenMobile]);
 
   const handleSignOut = useCallback(() => {
     if (isPending) {
-      return
+      return;
     }
 
     startTransition(async () => {
       try {
-        await signOut()
+        await signOut();
       } catch (error) {
-        console.error("Failed to sign out:", error)
+        console.error("Failed to sign out:", error);
       }
-    })
-  }, [isPending])
+    });
+  }, [isPending]);
 
-  const userInitials = getInitials(data.name)
+  const userInitials = getInitials(data.name);
 
   return (
     <AppSidebar variant="inset" collapsible="icon" aria-label="Main navigation">
       <SidebarHeader className="px-3 py-3">
-        <div className="flex items-center gap-2">
-          <SidebarMenu className="min-w-0 flex-1">
+        <div className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
+          <SidebarMenu className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
@@ -174,15 +174,8 @@ export function Sidebar({ data }: SidebarProps) {
                   aria-label="Go to dashboard"
                   className="flex min-w-0 items-center gap-2"
                 >
-                  <span className="truncate font-semibold text-[15px] text-foreground tracking-[-0.01em] group-data-[collapsible=icon]:hidden">
+                  <span className="truncate font-semibold text-[15px] text-foreground tracking-[-0.01em]">
                     !yetlaunched
-                  </span>
-
-                  <span
-                    aria-hidden="true"
-                    className="hidden size-7 shrink-0 items-center justify-center rounded-lg bg-foreground font-bold text-background text-xs group-data-[collapsible=icon]:flex"
-                  >
-                    Y
                   </span>
                 </Link>
               </SidebarMenuButton>
@@ -218,7 +211,7 @@ export function Sidebar({ data }: SidebarProps) {
           <SidebarGroupContent>
             <SidebarMenu className="gap-1.5">
               {NAV_ITEMS.map(({ href, label, icon }) => {
-                const active = isNavItemActive(pathname, href)
+                const active = isNavItemActive(pathname, href);
 
                 return (
                   <SidebarMenuItem key={href}>
@@ -238,7 +231,7 @@ export function Sidebar({ data }: SidebarProps) {
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -300,5 +293,5 @@ export function Sidebar({ data }: SidebarProps) {
 
       <SidebarRail />
     </AppSidebar>
-  )
+  );
 }

@@ -4,10 +4,10 @@ import { PipelinePage } from "@/features/sponsorship/components"
 export const metadata: Metadata = {
   title: "Content Pipeline",
   alternates: {
-    canonical: "/dashboard/analytics",
+    canonical: "/dashboard/pipeline",
   },
 }
 
-export default function DashboardDealsAnalyticsPage() {
+export default function DashboardPipelinePage() {
   return <PipelinePage />
 }

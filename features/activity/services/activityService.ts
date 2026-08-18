@@ -5,11 +5,14 @@ import type {
   ActivityListData,
   ActivityListItem,
 } from "@/features/activity/types/activity"
+import { findOwnedBrand } from "@/features/brands"
 import { prisma } from "@/lib/db/prisma"
-import { clampPage, clampPageSize } from "@/lib/utils/pagination"
-
-const PAGE_SIZE_DEFAULT = 20
-const PAGE_SIZE_MAX = 50
+import {
+  clampPage,
+  clampPageSize,
+  PAGE_SIZE_DEFAULT,
+  PAGE_SIZE_MAX,
+} from "@/lib/utils/pagination"
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient
 
@@ -36,12 +39,12 @@ export type RecordActivityInput = {
   metadata?: Prisma.InputJsonValue
 }
 
-async function assertOwnedBrand(userId: string, brandId: string, tx: PrismaTx) {
-  const brand = await tx.brand.findFirst({
-    where: { id: brandId, userId },
-    select: { id: true },
-  })
-
+async function requireOwnedBrand(
+  userId: string,
+  brandId: string,
+  tx: PrismaTx
+) {
+  const brand = await findOwnedBrand(userId, brandId, tx)
   if (!brand) {
     throw new ActivityServiceError("Brand not found.", "NOT_FOUND")
   }
@@ -108,7 +111,7 @@ export async function listActivitiesByBrand(
     pageSize?: number
   }
 ): Promise<ActivityListData> {
-  await assertOwnedBrand(userId, input.brandId, prisma)
+  await requireOwnedBrand(userId, input.brandId, prisma)
 
   const page = clampPage(input.page)
   const pageSize = clampPageSize(input.pageSize, {

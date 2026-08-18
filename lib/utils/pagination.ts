@@ -1,3 +1,6 @@
+export const PAGE_SIZE_DEFAULT = 20
+export const PAGE_SIZE_MAX = 50
+
 export function clampPage(input: number | undefined) {
   if (!input || Number.isNaN(input)) {
     return 1

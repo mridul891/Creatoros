@@ -1,7 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
-import { recordActivity } from "@/features/activity/services/activityService"
+import { recordActivity } from "@/features/activity"
 import { TASK_PRIORITIES, type TaskPriority } from "@/features/tasks/enums/task"
 import {
   normalizeTaskTitle,
@@ -17,10 +17,13 @@ import type {
 } from "@/features/tasks/types/task"
 import { prisma } from "@/lib/db/prisma"
 import { endOfLocalDay, startOfLocalDay } from "@/lib/formatting/date-input"
-import { clampPage, clampPageSize } from "@/lib/utils/pagination"
+import {
+  clampPage,
+  clampPageSize,
+  PAGE_SIZE_DEFAULT,
+  PAGE_SIZE_MAX,
+} from "@/lib/utils/pagination"
 
-const PAGE_SIZE_DEFAULT = 20
-const PAGE_SIZE_MAX = 50
 const UPCOMING_WINDOW_DAYS = 14
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient

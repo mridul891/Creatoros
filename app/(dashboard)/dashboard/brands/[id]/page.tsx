@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 
 import { listBrandActivitiesAction } from "@/features/activity/actions/activityActions"
 import { getBrandAction } from "@/features/brands/actions/brandActions"
-import { BrandDetailPageServer } from "@/features/brands/components/BrandDetailPageServer"
+import { BrandDetailPage } from "@/features/brands/components/BrandDetailPage"
 import { listContactsByBrandAction } from "@/features/contacts/actions/contactActions"
 
 type DashboardBrandDetailPageProps = {
@@ -36,7 +36,7 @@ export default async function DashboardBrandDetailPage({
   }
 
   return (
-    <BrandDetailPageServer
+    <BrandDetailPage
       brand={result.data}
       contactsData={
         contactsResult.success && contactsResult.data

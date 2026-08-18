@@ -1,19 +1,19 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import { getCreatorForOnboarding } from "@/features/onboarding/actions/creatorOnboardingActions"
 import { CreatorOnboardingForm } from "@/features/onboarding/components/creator-onboarding-form"
 import { requireUser } from "@/lib/auth/require-user"
-import { prisma } from "@/lib/db/prisma"
 
 export default async function OnboardingPage() {
   const user = await requireUser()
+
+  console.log("required user", user)
 
   if (user.isOnboardingComplete) {
     redirect("/dashboard")
   }
 
-  const creator = await prisma.creator.findUnique({
-    where: { userId: user.id },
-  })
+  const creator = await getCreatorForOnboarding()
 
   return (
     <div className="min-h-svh bg-white text-black">

@@ -4,17 +4,6 @@ import { createAuthActions } from "@insforge/sdk/ssr"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
-export async function signInWithPassword(formData: FormData) {
-  const cookieStore = await cookies()
-  const auth = createAuthActions({ cookies: cookieStore })
-
-  const { data, error } = await auth.signInWithPassword({
-    email: String(formData.get("email")),
-    password: String(formData.get("password")),
-  })
-
-  return { user: data?.user ?? null, error }
-}
 
 export async function signOut() {
   const cookieStore = await cookies()

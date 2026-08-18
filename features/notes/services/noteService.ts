@@ -1,7 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
-import { recordActivity } from "@/features/activity/services/activityService"
+import { recordActivity } from "@/features/activity"
 import type {
   NoteCreateInput,
   NoteListInput,
@@ -12,10 +12,12 @@ import type {
   DealNoteListItem,
 } from "@/features/notes/types/dealNote"
 import { prisma } from "@/lib/db/prisma"
-import { clampPage, clampPageSize } from "@/lib/utils/pagination"
-
-const PAGE_SIZE_DEFAULT = 20
-const PAGE_SIZE_MAX = 50
+import {
+  clampPage,
+  clampPageSize,
+  PAGE_SIZE_DEFAULT,
+  PAGE_SIZE_MAX,
+} from "@/lib/utils/pagination"
 
 type PrismaTx = Prisma.TransactionClient | PrismaClient
 

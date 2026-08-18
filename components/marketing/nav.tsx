@@ -48,6 +48,13 @@ export function Nav() {
             <span className="sm:hidden">Join Waitlist</span>
             <span className="hidden sm:inline">Join The Waitlist</span>
           </Link>
+          <Link
+            href="/login"
+            className="rounded-[7px] bg-primary px-3 py-[7px] text-center font-semibold text-[12px] text-primary-foreground tracking-[-0.02em] no-underline shadow-sm transition-colors hover:bg-primary/90 sm:px-4 sm:text-[13px]"
+          >
+            <span className="sm:hidden">Login</span>
+            <span className="hidden sm:inline">Login</span>
+          </Link>
         </div>
       </div>
     </nav>

@@ -41,7 +41,7 @@ export function Hero() {
 
         <div className="mb-12 flex items-center justify-center gap-3 sm:mb-14">
           <Link
-            href="/waitlist"
+            href="/login"
             className="flex items-center gap-[7px] rounded-lg bg-primary px-5 py-3 font-semibold text-[14px] text-primary-foreground tracking-[-0.02em] no-underline shadow-md transition-all hover:bg-primary/90 hover:shadow-lg sm:px-[26px] sm:text-[15px]"
           >
             Get started free <HugeiconsIcon icon={ArrowRight02Icon} size={15} />

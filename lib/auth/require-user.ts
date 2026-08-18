@@ -4,10 +4,25 @@ import "server-only"
 
 import { redirect } from "next/navigation"
 
-import { getCurrentUser } from "@/lib/auth/get-current-user"
+import { prisma } from "@/lib/db/prisma"
+import { getCurrentUserId } from "@/lib/auth/get-current-user"
 
 export async function requireUser() {
-  const user = await getCurrentUser()
+  const userId = await getCurrentUserId()
+
+  console.log("userId", userId)
+
+  if (!userId) {
+    redirect("/login")
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  })
+
+  console.log("found user", user)
   if (!user) {
     redirect("/login")
   }

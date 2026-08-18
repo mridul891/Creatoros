@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import {
   MONTHLY_DATA,
   SEED_DEALS,
@@ -18,6 +18,7 @@ import {
 import { DealsRankedTable } from "./DealsRankedTable"
 import { InsightCards } from "./InsightCards"
 import { PipelineFunnel } from "./PipelineFunnel"
+import { redirect } from "next/navigation"
 
 const RevenueByCategory = dynamic(
   () => import("./RevenueByCategory").then((mod) => mod.RevenueByCategory),
@@ -40,6 +41,10 @@ const RevenueTrend = dynamic(
 )
 
 export function DashboardOverview() {
+
+  useEffect(() => {
+    redirect("/dashboard/media-kit")
+  }, [])
   const summary = useMemo(() => calculatePipelineSummary(SEED_DEALS), [])
   const insights = useMemo(() => calculateInsightMetrics(SEED_DEALS), [])
   const funnel = useMemo(() => buildFunnelData(SEED_DEALS), [])

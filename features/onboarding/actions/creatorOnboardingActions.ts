@@ -2,8 +2,14 @@
 
 import { z } from "zod"
 import { CREATOR_TYPES } from "@/features/onboarding/enums/creators"
+import {
+  getCreatorForUser,
+  upsertCreatorAndCompleteOnboarding,
+} from "@/features/onboarding/services/creatorService"
 import { requireUser } from "@/lib/auth/require-user"
-import { prisma } from "@/lib/db/prisma"
+import { sanitizeOptionalString } from "@/lib/utils/form"
+import { getFieldErrors } from "@/lib/utils/form-errors"
+import { getCurrentUserId } from "@/lib/auth/get-current-user"
 
 const HANDLE_REGEX = /^[A-Za-z0-9._]{1,30}$/
 
@@ -50,15 +56,6 @@ export type CreatorOnboardingResult = {
   fieldErrors?: Partial<Record<CreatorOnboardingField, string>>
 }
 
-function sanitizeOptionalString(value: FormDataEntryValue | null) {
-  if (typeof value !== "string") {
-    return undefined
-  }
-
-  const trimmed = value.trim()
-  return trimmed.length > 0 ? trimmed : undefined
-}
-
 function normalizeHandle(value: string | undefined) {
   if (!value) {
     return undefined
@@ -67,25 +64,12 @@ function normalizeHandle(value: string | undefined) {
   return value.replace(/^@+/, "")
 }
 
-function getFieldErrors(
-  error: z.ZodError
-): Partial<Record<CreatorOnboardingField, string>> {
-  const fields: Partial<Record<CreatorOnboardingField, string>> = {}
-  for (const issue of error.issues) {
-    const path = issue.path[0]
-    if (typeof path !== "string") {
-      continue
-    }
-
-    const field = path as CreatorOnboardingField
-    if (fields[field]) {
-      continue
-    }
-
-    fields[field] = issue.message
+export async function getCreatorForOnboarding() {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return null
   }
-
-  return fields
+  return getCreatorForUser(userId)
 }
 
 export async function saveCreatorOnboarding(
@@ -107,40 +91,14 @@ export async function saveCreatorOnboarding(
     return {
       success: false,
       message: "Please fix the highlighted fields.",
-      fieldErrors: getFieldErrors(parsed.error),
+      fieldErrors: getFieldErrors<CreatorOnboardingField>(parsed.error),
     }
   }
 
   const user = await requireUser()
 
   try {
-    await prisma.$transaction([
-      prisma.creator.upsert({
-        where: { userId: user.id },
-        update: {
-          creatorType: parsed.data.creatorType,
-          niche: parsed.data.niche,
-          instagramHandle: parsed.data.instagramHandle ?? null,
-          youtubeHandle: parsed.data.youtubeHandle ?? null,
-          bio: parsed.data.bio ?? null,
-        },
-        create: {
-          id: user.id,
-          userId: user.id,
-          creatorType: parsed.data.creatorType,
-          niche: parsed.data.niche,
-          instagramHandle: parsed.data.instagramHandle ?? null,
-          youtubeHandle: parsed.data.youtubeHandle ?? null,
-          bio: parsed.data.bio ?? null,
-        },
-      }),
-      prisma.user.update({
-        where: { id: user.id },
-        data: {
-          isOnboardingComplete: true,
-        },
-      }),
-    ])
+    await upsertCreatorAndCompleteOnboarding(user.id, parsed.data)
 
     return {
       success: true,

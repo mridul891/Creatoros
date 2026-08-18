@@ -21,12 +21,15 @@ export function WaitlistForm() {
     try {
       const formData = new FormData(e.currentTarget)
       const email = formData.get("email") as string
-      const _name = formData.get("name") as string
       if (!email) {
         toast.error("Email is required")
         return
       }
-      await joinWaitlist(formData)
+      const result = await joinWaitlist(formData)
+      if (!result.success) {
+        toast.error(result.message)
+        return
+      }
       await sendEmail(email)
 
       toast.success("You're on the waitlist 🎉")

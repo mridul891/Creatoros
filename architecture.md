@@ -13,7 +13,7 @@ app/ (routes, composition)
 
 - `app/` may import `features/`, `components/`, and `lib/`.
 - `features/` may import `components/ui`, `components/shared`, `components/layout`, `lib/`, `types/`, and `enums/`.
-- A feature may import another feature’s **public** actions, services, types, and section components. Do not import another feature’s private internals.
+- A feature may import another feature’s **public** API (`features/<domain>/index.ts`), actions, types, and section components. Do not import another feature’s private internals (`services/`, `hooks/`, etc.).
 - `components/ui/` must not import features.
 - `lib/` must not import UI or features.
 - Avoid circular dependencies.
@@ -29,8 +29,8 @@ app/ (routes, composition)
 | `components/layout/` | Dashboard shell (Sidebar). |
 | `components/marketing/` | Marketing sections and page shells. |
 | `lib/` | Infrastructure: auth, Prisma, InsForge, formatting, generic utils. |
-| `hooks/` | Generic UI hooks only (`use-mobile`, `use-media-query`, …). |
-| `types/` | Genuinely shared contracts (`user`, unused planning stubs). |
+| `hooks/` | Generic UI hooks only (`use-media-query`, TipTap window/rect helpers, …). |
+| `types/` | Genuinely shared contracts (`types/user.ts`). |
 | `enums/` | Shared enums (`activity`, `post`, `dashboard-route`). |
 | `prisma/` | Schema and **authoritative** migrations (`prisma/migrations/`). |
 | `styles/` | TipTap SCSS tokens. |
@@ -43,7 +43,7 @@ app/
   (marketing)/     → /, /features, /product, /pricing, /waitlist, legal
   (auth)/          → /login, /onboarding
   (dashboard)/dashboard/  → /dashboard, /dashboard/deals, …
-  actions/         → app-wide server actions (waitlist, mail, users)
+  actions/         → app-wide server actions (waitlist, mail)
   api/auth/
   layout.tsx, globals.css, sitemap.ts, robots.ts
 ```
@@ -70,7 +70,19 @@ features/<domain>/
 
 Current domains: `activity`, `analytics`, `brands`, `calendar`, `contacts`, `deals`, `deliverables`, `files`, `invoices`, `media-kit`, `notes`, `onboarding`, `scripts` (includes TipTap under `editor/`), `sponsorship`, `tasks`, `templates`.
 
-`recordActivity` in `features/activity/services` is a public API used by other mutating services.
+Public barrels (only where cross-feature imports exist):
+
+- `@/features/activity` — `recordActivity` (server-only; do not import this barrel from Client Components)
+- `@/features/brands` — `assertOwnedBrand`, `findOwnedBrand`
+- `@/features/templates` — `applyCampaignTemplateInTransaction`
+
+Activity UI (timeline sections, list types) is imported from `features/activity/components/` and `features/activity/types/`. Keep those separate from `recordActivity` so Prisma never ships to the browser.
+
+`recordActivity` is the write path used by other mutating services. Import it from `@/features/activity`, not from `services/`.
+
+`/dashboard` overview and `/dashboard/pipeline` currently use mock sponsorship data. `features/analytics/services/commandCenterService.ts` is a real Prisma command-center backend, not yet wired to a page.
+
+Onboarding reads/writes creator profiles through `features/onboarding/services/` and `features/onboarding/actions/`. Do not query Prisma from `app/` routes.
 
 Real CRM deals (`features/deals`) and the mock content pipeline (`features/sponsorship`) are separate. Do not merge them.
 
@@ -112,5 +124,5 @@ Real CRM deals (`features/deals`) and the mock content pipeline (`features/spons
 ## Shared UI rules
 
 - Prefer `components/ui/` before creating a new control.
-- CRM pages compose `components/shared/crm/` (`CrmPageHeader`, `CrmFormDialog`, `CrmEmptyState`, …).
+- CRM pages compose `components/shared/crm/` (`CrmPageHeaderClient`, `CrmFormDialog`, `CrmEmptyState`, …).
 - Business widgets do not belong in `components/ui/`.

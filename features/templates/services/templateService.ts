@@ -1,7 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client"
 
 import { ACTIVITY_ENTITY, ACTIVITY_TYPE } from "@/enums/activity"
-import { recordActivity } from "@/features/activity/services/activityService"
+import { recordActivity } from "@/features/activity"
 import { normalizeDeliverableType } from "@/features/deliverables/schemas/deliverableValidation"
 import { normalizeTaskTitle } from "@/features/tasks/schemas/taskValidation"
 import {
