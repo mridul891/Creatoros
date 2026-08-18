@@ -9,6 +9,7 @@ import {
   mapMediaKitToFormData,
   type MediaKitWithRelations,
 } from "@/features/media-kit/utils/mediaKitMappers"
+import { normalizeMediaKitHandle } from "@/features/media-kit/utils/normalizeMediaKitHandle"
 import { prisma } from "@/lib/db/prisma"
 
 const mediaKitInclude = {
@@ -41,6 +42,33 @@ export async function getMediaKitForUser(userId: string) {
   }
 
   return mapMediaKitToFormData(record as MediaKitWithRelations)
+}
+
+export async function getMediaKitByHandle(handle: string) {
+  const normalizedHandle = normalizeMediaKitHandle(handle)
+
+  if (!normalizedHandle) {
+    return null
+  }
+
+  const record = await prisma.mediaKit.findFirst({
+    where: {
+      handle: {
+        equals: normalizedHandle,
+        mode: "insensitive",
+      },
+    },
+    include: mediaKitInclude,
+  })
+
+  if (!record) {
+    return null
+  }
+
+  return {
+    formData: mapMediaKitToFormData(record as MediaKitWithRelations),
+    updatedAt: record.updatedAt,
+  }
 }
 
 export async function upsertMediaKit(userId: string, input: MediaKitFormData) {

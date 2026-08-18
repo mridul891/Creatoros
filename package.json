@@ -45,6 +45,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
+    "html2canvas-pro": "^2.3.8",
+    "jspdf": "^4.2.1",
     "lodash.throttle": "^4.1.1",
     "motion": "^12.42.2",
     "next": "16.2.6",

@@ -8,6 +8,7 @@ import type {
 import type { MediaKitFormData } from "@/features/media-kit/schema"
 import type { MediaKitPageProps } from "@/features/media-kit/types/media-kit-page"
 import { MEDIA_KIT_FORM_DEFAULT_VALUES } from "@/features/media-kit/utils/mediaKitFormDefaults"
+import { normalizeMediaKitHandle } from "@/features/media-kit/utils/normalizeMediaKitHandle"
 
 export type MediaKitWithRelations = MediaKit & {
   workItems: MediaKitWorkItem[]
@@ -25,10 +26,6 @@ function emptyToNull(value: string | null | undefined) {
 
   const trimmed = value.trim()
   return trimmed.length > 0 ? trimmed : null
-}
-
-function normalizeHandle(value: string) {
-  return value.trim().replace(/^@+/, "")
 }
 
 function mapCategoryToForm(
@@ -103,7 +100,7 @@ export function mapMediaKitToFormData(
 }
 
 export function mapFormDataToMediaKitScalars(input: MediaKitFormData) {
-  const handle = normalizeHandle(input.profile.handle)
+  const handle = normalizeMediaKitHandle(input.profile.handle)
 
   return {
     displayName: input.profile.name.trim(),
@@ -150,7 +147,7 @@ export function mapFormDataToRateDeliverables(input: MediaKitFormData) {
 }
 
 export function mapFormDataToProfileSync(input: MediaKitFormData) {
-  const handle = normalizeHandle(input.profile.handle)
+  const handle = normalizeMediaKitHandle(input.profile.handle)
 
   return {
     user: {
