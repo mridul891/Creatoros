@@ -1,5 +1,6 @@
 import "server-only"
 
+import { dash } from "@better-auth/infra"
 import { betterAuth } from "better-auth"
 import { prismaAdapter } from "better-auth/adapters/prisma"
 
@@ -14,6 +15,7 @@ export const auth = betterAuth({
   baseURL,
   secret: process.env.BETTER_AUTH_SECRET,
   database: prismaAdapter(prisma, { provider: "postgresql" }),
+  plugins: [dash()],
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
