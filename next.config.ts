@@ -1,6 +1,7 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["clayton-nondeprecative-lauralee.ngrok-free.dev"],
   images: {
     remotePatterns: [
       {
@@ -13,6 +14,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  
 }
 
 export default nextConfig

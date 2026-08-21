@@ -8,33 +8,21 @@ datasource db {
 }
 
 model User {
-  id                   String               @id @db.Uuid
-  email                String               @unique
+  id                   String    @id @db.Uuid
+  email                String    @unique
   name                 String?
-  avatarUrl            String?              @map("avatar_url")
-  lastSignInAt         DateTime?            @map("last_sign_in_at")
-  isOnboardingComplete Boolean              @default(false) @map("is_onboarding_complete")
+  avatarUrl            String?   @map("avatar_url")
+  emailVerified        Boolean   @default(false) @map("email_verified")
+  isOnboardingComplete Boolean   @default(false) @map("is_onboarding_complete")
   creator              Creator?
-  brands               Brand[]
-  contacts             Contact[]
-  deals                Deal[]
-  tasks                Task[]
-  deliverables         Deliverable[]
-  dealNotes            DealNote[]
-  dealFiles            DealFile[]
-  campaignTemplates    CampaignTemplate[]
   invoices             Invoice[]
-  payments             Payment[]
-  notifications        Notification[]
-  integrationAccounts  IntegrationAccount[]
-  scripts              Scripts[]
-  activities           Activity[]
   mediaKit             MediaKit?
-  createdAt            DateTime             @default(now()) @map("created_at")
-  updatedAt            DateTime             @updatedAt @map("updated_at")
+  accounts             Account[]
+  sessions             Session[]
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
 
   @@index([createdAt], map: "users_created_at_idx")
-  @@index([lastSignInAt], map: "users_last_sign_in_at_idx")
   @@map("users")
 }
 
@@ -44,157 +32,12 @@ enum CreatorType {
   Macro
 }
 
-enum ContactStatus {
-  Active
-  Archived
-}
-
-enum DealStage {
-  Lead
-  Contacted
-  Negotiation
-  ProposalSent
-  ContractSigned
-  Active
-  Delivered
-  Completed
-  Paid
-  Cancelled
-}
-
-enum DealPriority {
-  High
-  Medium
-  Low
-}
-
-enum DealStatus {
-  Active
-  Archived
-}
-
-enum TaskStatus {
-  Todo
-  InProgress
-  Blocked
-  InReview
-  Done
-}
-
-enum TaskPriority {
-  Low
-  Medium
-  High
-  Urgent
-}
-
-enum ActivityEntityType {
-  Brand
-  Contact
-  Deal
-  Deliverable
-  Task
-  Invoice
-  Payment
-  File
-  Note
-}
-
-enum ActivityType {
-  BrandCreated
-  BrandUpdated
-  BrandArchived
-  ContactCreated
-  ContactUpdated
-  ContactArchived
-  ContactPrimaryChanged
-  DealCreated
-  DealUpdated
-  DealStageChanged
-  DealArchived
-  DealRestored
-  TaskCreated
-  TaskUpdated
-  TaskStatusChanged
-  TaskCompleted
-  TaskArchived
-  TaskRestored
-  TaskDeleted
-  TaskReordered
-  DeliverableCreated
-  DeliverableUpdated
-  DeliverableSubmitted
-  DeliverableApproved
-  DeliverablePublished
-  DeliverableNeedsRevision
-  NoteAdded
-  NotePinned
-  FileUploaded
-  FileRenamed
-  FileArchived
-  InvoiceGenerated
-  PaymentReceived
-}
-
-enum DeliverableStatus {
-  Draft
-  Ready
-  Submitted
-  NeedsRevision
-  Approved
-  Published
-}
-
-enum DeliverableApprovalStatus {
-  NotSubmitted
-  Pending
-  ChangesRequested
-  Approved
-}
-
-enum DealNoteStatus {
-  Active
-  Archived
-}
-
-enum DealFileCategory {
-  Contract
-  CampaignBrief
-  Asset
-  RawMedia
-  FinalDeliverable
-  Invoice
-  Reference
-}
-
-enum DealFileStatus {
-  Active
-  Archived
-}
-
 enum InvoiceStatus {
   Draft
   Sent
   Paid
   Overdue
   Archived
-}
-
-enum PaymentStatus {
-  Pending
-  Received
-  Failed
-}
-
-enum NotificationStatus {
-  Unread
-  Read
-  Archived
-}
-
-enum IntegrationPlatform {
-  Instagram
-  YouTube
 }
 
 enum MediaKitCategory {
@@ -217,6 +60,62 @@ enum MediaKitCurrency {
   INR
 }
 
+model Account {
+  id                    String    @id @db.Uuid
+  accountId             String    @map("account_id")
+  providerId            String    @map("provider_id")
+  userId                String    @map("user_id") @db.Uuid
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @map("access_token")
+  refreshToken          String?   @map("refresh_token")
+  idToken               String?   @map("id_token")
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at")
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at")
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId], map: "accounts_user_id_idx")
+  @@map("accounts")
+}
+
+model Session {
+  id        String   @id @db.Uuid
+  expiresAt DateTime @map("expires_at")
+  token     String   @unique
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  userId    String   @map("user_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId], map: "sessions_user_id_idx")
+  @@map("sessions")
+}
+
+model Verification {
+  id         String   @id @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([identifier], map: "verifications_identifier_idx")
+  @@map("verifications")
+}
+
+model WaitlistEntry {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("waitlist_entries")
+}
+
 model Creator {
   id              String      @id @db.Uuid
   creatorType     CreatorType @default(Micro) @map("creator_type")
@@ -232,293 +131,10 @@ model Creator {
   @@map("creators")
 }
 
-model Brand {
-  id                  String     @id @default(uuid()) @db.Uuid
-  userId              String     @map("user_id") @db.Uuid
-  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  contacts            Contact[]
-  deals               Deal[]
-  activities          Activity[]
-  name                String
-  normalizedName      String     @map("normalized_name")
-  category            String?
-  website             String?
-  primaryContactName  String?    @map("primary_contact_name")
-  primaryContactEmail String?    @map("primary_contact_email")
-  notes               String?
-  createdAt           DateTime   @default(now()) @map("created_at")
-  updatedAt           DateTime   @updatedAt @map("updated_at")
-
-  @@unique([userId, normalizedName], map: "brands_user_id_normalized_name_key")
-  @@index([userId, updatedAt(sort: Desc)], map: "brands_user_id_updated_at_idx")
-  @@index([userId, category], map: "brands_user_id_category_idx")
-  @@map("brands")
-}
-
-model Contact {
-  id              String        @id @default(uuid()) @db.Uuid
-  userId          String        @map("user_id") @db.Uuid
-  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  brandId         String        @map("brand_id") @db.Uuid
-  brand           Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  deals           Deal[]
-  activities      Activity[]
-  name            String
-  normalizedName  String        @map("normalized_name")
-  email           String?
-  normalizedEmail String?       @map("normalized_email")
-  phoneNumber     String?       @map("phone_number")
-  jobTitle        String?       @map("job_title")
-  notes           String?
-  isPrimary       Boolean       @default(false) @map("is_primary")
-  status          ContactStatus @default(Active)
-  archivedAt      DateTime?     @map("archived_at")
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-
-  @@index([brandId, status, updatedAt(sort: Desc)], map: "contacts_brand_id_status_updated_at_idx")
-  @@index([brandId, isPrimary], map: "contacts_brand_id_is_primary_idx")
-  @@index([brandId, normalizedName], map: "contacts_brand_id_normalized_name_idx")
-  @@index([brandId, normalizedEmail], map: "contacts_brand_id_normalized_email_idx")
-  @@index([userId, updatedAt(sort: Desc)], map: "contacts_user_id_updated_at_idx")
-  @@map("contacts")
-}
-
-model Activity {
-  id          String             @id @default(uuid()) @db.Uuid
-  userId      String             @map("user_id") @db.Uuid
-  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type        ActivityType
-  entityType  ActivityEntityType @map("entity_type")
-  entityId    String             @map("entity_id")
-  brandId     String?            @map("brand_id") @db.Uuid
-  brand       Brand?             @relation(fields: [brandId], references: [id], onDelete: SetNull)
-  contactId   String?            @map("contact_id") @db.Uuid
-  contact     Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  dealId      String?            @map("deal_id") @db.Uuid
-  deal        Deal?              @relation(fields: [dealId], references: [id], onDelete: SetNull)
-  title       String
-  description String?
-  metadata    Json?
-  createdAt   DateTime           @default(now()) @map("created_at")
-
-  @@index([userId, createdAt(sort: Desc)], map: "activities_user_id_created_at_idx")
-  @@index([userId, brandId, createdAt(sort: Desc)], map: "activities_user_id_brand_id_created_at_idx")
-  @@index([userId, dealId, createdAt(sort: Desc)], map: "activities_user_id_deal_id_created_at_idx")
-  @@index([userId, entityType, entityId, createdAt(sort: Desc)], map: "activities_user_entity_created_at_idx")
-  @@index([userId, type, createdAt(sort: Desc)], map: "activities_user_type_created_at_idx")
-  @@map("activities")
-}
-
-model Deal {
-  id                     String        @id @default(uuid()) @db.Uuid
-  userId                 String        @map("user_id") @db.Uuid
-  user                   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  brandId                String        @map("brand_id") @db.Uuid
-  brand                  Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  contactId              String?       @map("contact_id") @db.Uuid
-  contact                Contact?      @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  activities             Activity[]
-  tasks                  Task[]
-  deliverables           Deliverable[]
-  notesEntity            DealNote[]
-  files                  DealFile[]
-  invoices               Invoice[]
-  campaignName           String        @map("campaign_name")
-  normalizedCampaignName String        @map("normalized_campaign_name")
-  dealValue              Decimal       @map("deal_value") @db.Decimal(12, 2)
-  currency               String        @default("USD")
-  stage                  DealStage     @default(Lead)
-  priority               DealPriority  @default(Medium)
-  status                 DealStatus    @default(Active)
-  startDate              DateTime?     @map("start_date")
-  dueDate                DateTime?     @map("due_date")
-  expectedCloseDate      DateTime?     @map("expected_close_date")
-  paymentDueDate         DateTime?     @map("payment_due_date")
-  paymentTerms           String?       @map("payment_terms")
-  campaignDescription    String?       @map("campaign_description")
-  deliverablesSummary    String?       @map("deliverables_summary")
-  notes                  String?
-  source                 String?
-  probability            Int?
-  externalRef            String?       @map("external_ref")
-  lastStageChangedAt     DateTime?     @map("last_stage_changed_at")
-  deliveredAt            DateTime?     @map("delivered_at")
-  completedAt            DateTime?     @map("completed_at")
-  paidAt                 DateTime?     @map("paid_at")
-  archivedAt             DateTime?     @map("archived_at")
-  createdAt              DateTime      @default(now()) @map("created_at")
-  updatedAt              DateTime      @updatedAt @map("updated_at")
-
-  @@unique([userId, brandId, normalizedCampaignName], map: "deals_user_brand_campaign_unique")
-  @@index([userId, status, updatedAt(sort: Desc)], map: "deals_user_status_updated_at_idx")
-  @@index([userId, stage, updatedAt(sort: Desc)], map: "deals_user_stage_updated_at_idx")
-  @@index([userId, brandId, stage], map: "deals_user_brand_stage_idx")
-  @@index([userId, dueDate], map: "deals_user_due_date_idx")
-  @@map("deals")
-}
-
-model Task {
-  id              String       @id @default(uuid()) @db.Uuid
-  userId          String       @map("user_id") @db.Uuid
-  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId          String       @map("deal_id") @db.Uuid
-  deal            Deal         @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  title           String
-  normalizedTitle String       @map("normalized_title")
-  description     String?
-  status          TaskStatus   @default(Todo)
-  priority        TaskPriority @default(Medium)
-  dueDate         DateTime?    @map("due_date")
-  orderIndex      Int          @default(0) @map("order_index")
-  createdBy       String       @map("created_by") @db.Uuid
-  updatedBy       String       @map("updated_by") @db.Uuid
-  isArchived      Boolean      @default(false) @map("is_archived")
-  archivedAt      DateTime?    @map("archived_at")
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-
-  @@unique([dealId, normalizedTitle, isArchived], map: "tasks_deal_title_archived_unique")
-  @@index([dealId, isArchived, orderIndex], map: "tasks_deal_archived_order_idx")
-  @@index([dealId, status, isArchived], map: "tasks_deal_status_archived_idx")
-  @@index([dealId, priority, isArchived], map: "tasks_deal_priority_archived_idx")
-  @@index([dealId, dueDate, isArchived], map: "tasks_deal_due_date_archived_idx")
-  @@index([userId, updatedAt(sort: Desc)], map: "tasks_user_updated_at_idx")
-  @@map("tasks")
-}
-
-model Deliverable {
-  id                        String                    @id @default(uuid()) @db.Uuid
-  userId                    String                    @map("user_id") @db.Uuid
-  user                      User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId                    String                    @map("deal_id") @db.Uuid
-  deal                      Deal                      @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  platform                  String
-  deliverableType           String                    @map("deliverable_type")
-  normalizedDeliverableType String                    @map("normalized_deliverable_type")
-  dueDate                   DateTime?                 @map("due_date")
-  status                    DeliverableStatus         @default(Draft)
-  approvalStatus            DeliverableApprovalStatus @default(NotSubmitted) @map("approval_status")
-  submissionUrl             String?                   @map("submission_url")
-  publishedUrl              String?                   @map("published_url")
-  internalNotes             String?                   @map("internal_notes")
-  brandNotes                String?                   @map("brand_notes")
-  revisionCount             Int                       @default(0) @map("revision_count")
-  orderIndex                Int                       @default(0) @map("order_index")
-  isArchived                Boolean                   @default(false) @map("is_archived")
-  archivedAt                DateTime?                 @map("archived_at")
-  createdBy                 String                    @map("created_by") @db.Uuid
-  updatedBy                 String                    @map("updated_by") @db.Uuid
-  createdAt                 DateTime                  @default(now()) @map("created_at")
-  updatedAt                 DateTime                  @updatedAt @map("updated_at")
-
-  @@index([dealId, isArchived, orderIndex], map: "deliverables_deal_archived_order_idx")
-  @@index([dealId, status, isArchived], map: "deliverables_deal_status_archived_idx")
-  @@index([dealId, dueDate, isArchived], map: "deliverables_deal_due_date_archived_idx")
-  @@index([userId, updatedAt(sort: Desc)], map: "deliverables_user_updated_at_idx")
-  @@map("deliverables")
-}
-
-model DealNote {
-  id         String         @id @default(uuid()) @db.Uuid
-  userId     String         @map("user_id") @db.Uuid
-  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId     String         @map("deal_id") @db.Uuid
-  deal       Deal           @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  title      String
-  content    String
-  isPinned   Boolean        @default(false) @map("is_pinned")
-  status     DealNoteStatus @default(Active)
-  createdBy  String         @map("created_by") @db.Uuid
-  updatedBy  String         @map("updated_by") @db.Uuid
-  createdAt  DateTime       @default(now()) @map("created_at")
-  updatedAt  DateTime       @updatedAt @map("updated_at")
-  archivedAt DateTime?      @map("archived_at")
-
-  @@index([dealId, status, isPinned, updatedAt(sort: Desc)], map: "deal_notes_deal_status_pinned_updated_idx")
-  @@index([userId, updatedAt(sort: Desc)], map: "deal_notes_user_updated_at_idx")
-  @@map("deal_notes")
-}
-
-model DealFile {
-  id          String           @id @default(uuid()) @db.Uuid
-  userId      String           @map("user_id") @db.Uuid
-  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId      String           @map("deal_id") @db.Uuid
-  deal        Deal             @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  fileName    String           @map("file_name")
-  storagePath String           @map("storage_path")
-  mimeType    String?          @map("mime_type")
-  sizeBytes   BigInt?          @map("size_bytes")
-  category    DealFileCategory
-  status      DealFileStatus   @default(Active)
-  metadata    Json?
-  uploadedBy  String           @map("uploaded_by") @db.Uuid
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  archivedAt  DateTime?        @map("archived_at")
-
-  @@index([dealId, status, category, updatedAt(sort: Desc)], map: "deal_files_deal_status_category_updated_idx")
-  @@index([userId, updatedAt(sort: Desc)], map: "deal_files_user_updated_at_idx")
-  @@map("deal_files")
-}
-
-model CampaignTemplate {
-  id             String                        @id @default(uuid()) @db.Uuid
-  userId         String                        @map("user_id") @db.Uuid
-  user           User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name           String
-  normalizedName String                        @map("normalized_name")
-  description    String?
-  isSystem       Boolean                       @default(false) @map("is_system")
-  tasks          CampaignTemplateTask[]
-  deliverables   CampaignTemplateDeliverable[]
-  createdAt      DateTime                      @default(now()) @map("created_at")
-  updatedAt      DateTime                      @updatedAt @map("updated_at")
-
-  @@unique([userId, normalizedName], map: "campaign_templates_user_normalized_name_key")
-  @@index([userId, updatedAt(sort: Desc)], map: "campaign_templates_user_updated_at_idx")
-  @@map("campaign_templates")
-}
-
-model CampaignTemplateTask {
-  id            String           @id @default(uuid()) @db.Uuid
-  templateId    String           @map("template_id") @db.Uuid
-  template      CampaignTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  title         String
-  description   String?
-  priority      TaskPriority     @default(Medium)
-  dueOffsetDays Int              @default(0) @map("due_offset_days")
-  orderIndex    Int              @default(0) @map("order_index")
-  createdAt     DateTime         @default(now()) @map("created_at")
-  updatedAt     DateTime         @updatedAt @map("updated_at")
-
-  @@index([templateId, orderIndex], map: "campaign_template_tasks_template_order_idx")
-  @@map("campaign_template_tasks")
-}
-
-model CampaignTemplateDeliverable {
-  id              String           @id @default(uuid()) @db.Uuid
-  templateId      String           @map("template_id") @db.Uuid
-  template        CampaignTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  platform        String
-  deliverableType String           @map("deliverable_type")
-  dueOffsetDays   Int              @default(0) @map("due_offset_days")
-  orderIndex      Int              @default(0) @map("order_index")
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-
-  @@index([templateId, orderIndex], map: "campaign_template_deliverables_template_order_idx")
-  @@map("campaign_template_deliverables")
-}
-
 model Invoice {
   id            String        @id @default(uuid()) @db.Uuid
   userId        String        @map("user_id") @db.Uuid
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dealId        String?       @map("deal_id") @db.Uuid
-  deal          Deal?         @relation(fields: [dealId], references: [id], onDelete: SetNull)
-  payments      Payment[]
   invoiceNumber String        @map("invoice_number")
   status        InvoiceStatus @default(Draft)
   amount        Decimal       @db.Decimal(12, 2)
@@ -531,79 +147,8 @@ model Invoice {
   updatedAt     DateTime      @updatedAt @map("updated_at")
 
   @@index([userId, status, dueDate], map: "invoices_user_status_due_date_idx")
-  @@index([dealId, createdAt(sort: Desc)], map: "invoices_deal_created_at_idx")
+  @@index([userId, createdAt(sort: Desc)], map: "invoices_user_created_at_idx")
   @@map("invoices")
-}
-
-model Payment {
-  id         String        @id @default(uuid()) @db.Uuid
-  userId     String        @map("user_id") @db.Uuid
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  invoiceId  String?       @map("invoice_id") @db.Uuid
-  invoice    Invoice?      @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
-  amount     Decimal       @db.Decimal(12, 2)
-  currency   String        @default("USD")
-  status     PaymentStatus @default(Pending)
-  receivedAt DateTime?     @map("received_at")
-  metadata   Json?
-  createdAt  DateTime      @default(now()) @map("created_at")
-  updatedAt  DateTime      @updatedAt @map("updated_at")
-
-  @@index([userId, status, createdAt(sort: Desc)], map: "payments_user_status_created_at_idx")
-  @@index([invoiceId, createdAt(sort: Desc)], map: "payments_invoice_created_at_idx")
-  @@map("payments")
-}
-
-model Notification {
-  id         String             @id @default(uuid()) @db.Uuid
-  userId     String             @map("user_id") @db.Uuid
-  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title      String
-  message    String
-  status     NotificationStatus @default(Unread)
-  entityType ActivityEntityType @map("entity_type")
-  entityId   String             @map("entity_id")
-  dealId     String?            @map("deal_id") @db.Uuid
-  metadata   Json?
-  createdAt  DateTime           @default(now()) @map("created_at")
-  updatedAt  DateTime           @updatedAt @map("updated_at")
-
-  @@index([userId, status, createdAt(sort: Desc)], map: "notifications_user_status_created_at_idx")
-  @@index([userId, dealId, createdAt(sort: Desc)], map: "notifications_user_deal_created_at_idx")
-  @@map("notifications")
-}
-
-model IntegrationAccount {
-  id                String              @id @default(uuid()) @db.Uuid
-  userId            String              @map("user_id") @db.Uuid
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  platform          IntegrationPlatform
-  externalAccountId String              @map("external_account_id")
-  accessToken       String?             @map("access_token")
-  refreshToken      String?             @map("refresh_token")
-  scopes            String[]
-  connectedAt       DateTime            @default(now()) @map("connected_at")
-  lastSyncedAt      DateTime?           @map("last_synced_at")
-  metadata          Json?
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @updatedAt @map("updated_at")
-
-  @@unique([userId, platform, externalAccountId], map: "integration_accounts_user_platform_external_key")
-  @@index([userId, platform], map: "integration_accounts_user_platform_idx")
-  @@map("integration_accounts")
-}
-
-model Scripts {
-  id          String   @id @default(uuid()) @db.Uuid
-  userId      String   @map("user_id") @db.Uuid
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name        String
-  description String?
-  code        Json?
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  @@map("scripts")
 }
 
 model MediaKit {

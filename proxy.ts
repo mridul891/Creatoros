@@ -1,32 +1,25 @@
-import { updateSession, type CookieStore } from "@insforge/sdk/ssr/middleware"
-import type { NextRequest } from "next/server"
-import { NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 
-export default async function proxy(request: NextRequest) {
-  const response = NextResponse.next({ request })
+const SESSION_COOKIE = "better-auth.session_token"
 
-  const insforgeUrl = process.env.NEXT_PUBLIC_INSFORGE_URL
-  const insforgeAnonKey = process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY
+const PROTECTED_PREFIXES = ["/dashboard", "/onboarding"]
 
-  if (!insforgeUrl || !insforgeAnonKey) {
-    return response
-  }
-
-  await updateSession({
-    requestCookies: request.cookies as unknown as CookieStore,
-    responseCookies: response.cookies as unknown as CookieStore,
-  })
-
+/**
+ * Fast-path route protection based on session-cookie presence.
+ * Real session validation happens server-side in layouts and actions.
+ */
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const accessToken = request.cookies.get("insforge_access_token")?.value
-  const requiresAuth =
-    pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding")
 
-  if (requiresAuth && !accessToken) {
+  const isProtected = PROTECTED_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  )
+
+  if (isProtected && !request.cookies.get(SESSION_COOKIE)) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
-  return response
+  return NextResponse.next()
 }
 
 export const config = {
