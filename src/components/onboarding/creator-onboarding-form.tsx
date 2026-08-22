@@ -1,6 +1,7 @@
 "use client"
 
-import { type FormEvent, useState } from "react"
+import posthog from "posthog-js"
+import { type FormEvent, useEffect, useState } from "react"
 import { toast } from "sonner"
 import {
   type CreatorOnboardingResult,
@@ -18,6 +19,11 @@ import { CREATOR_TYPE_OPTIONS, type CreatorType } from "@/enums/creators"
 import { cn } from "@/lib/utils"
 
 type CreatorOnboardingFormProps = {
+  user: {
+    id: string
+    email: string
+    name: string | null
+  }
   initialValues?: {
     creatorType?: CreatorType | null
     niche?: string | null
@@ -40,6 +46,7 @@ function isNextRedirect(error: unknown) {
 }
 
 export function CreatorOnboardingForm({
+  user,
   initialValues,
 }: CreatorOnboardingFormProps) {
   const [creatorType, setCreatorType] = useState(
@@ -56,6 +63,14 @@ export function CreatorOnboardingForm({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [formError, setFormError] = useState<string | null>(null)
+
+  useEffect(() => {
+    posthog.identify(user.id, {
+      email: user.email,
+      name: user.name ?? undefined,
+      is_onboarding_complete: false,
+    })
+  }, [user.email, user.id, user.name])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

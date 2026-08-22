@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import posthog from "posthog-js"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -129,6 +130,11 @@ export function InvoiceForm({ draft }: InvoiceFormProps) {
       return
     }
 
+    posthog.capture("invoice_generated", {
+      amount: result.invoice.amount,
+      currency: result.invoice.currency,
+      line_item_count: result.invoice.lineItems.length,
+    })
     setGeneratedInvoice(result.invoice)
     toast.success(`Invoice ${result.invoice.invoiceNumber} generated.`)
   }

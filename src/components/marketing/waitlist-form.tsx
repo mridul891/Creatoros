@@ -2,6 +2,7 @@
 
 import { ArrowRight02Icon, Loading03Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import posthog from "posthog-js"
 import { type FormEvent, useState } from "react"
 import { toast } from "sonner"
 import { sendEmail } from "@/app/actions/mailAction"
@@ -32,6 +33,7 @@ export function WaitlistForm() {
       }
       await sendEmail(email)
 
+      posthog.capture("waitlist_joined")
       toast.success("You're on the waitlist 🎉")
       setEmail("")
       setName("")

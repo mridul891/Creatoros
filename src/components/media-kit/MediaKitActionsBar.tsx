@@ -2,6 +2,7 @@
 
 import { Copy01Icon, Download01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import posthog from "posthog-js"
 import type { RefObject } from "react"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -39,6 +40,7 @@ export function MediaKitActionsBar({
 
     try {
       await navigator.clipboard.writeText(url)
+      posthog.capture("media_kit_public_link_copied")
       setCopied(true)
       toast.success("Public link copied.")
       window.setTimeout(() => setCopied(false), 2000)
@@ -58,6 +60,7 @@ export function MediaKitActionsBar({
 
     try {
       await downloadMediaKitPdf(element, displayName)
+      posthog.capture("media_kit_pdf_downloaded")
       toast.success("PDF downloaded.")
     } catch {
       toast.error("Could not generate PDF. Try again.")

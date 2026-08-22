@@ -1,5 +1,6 @@
 allowBuilds:
   '@parcel/watcher': true
+  '@posthog/cli': true
   '@prisma/client': true
   '@prisma/engines': true
   core-js: true

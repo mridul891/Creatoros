@@ -10,7 +10,8 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useCallback, useTransition } from "react"
+import posthog from "posthog-js"
+import { useCallback, useEffect, useTransition } from "react"
 import { signOut } from "@/app/actions/authActions"
 import {
   Sidebar as AppSidebar,
@@ -81,6 +82,14 @@ export function Sidebar({ data }: SidebarProps) {
   const { isMobile, setOpenMobile, state } = useSidebar()
   const [isPending, startTransition] = useTransition()
 
+  useEffect(() => {
+    posthog.identify(data.id, {
+      email: data.email,
+      name: data.name ?? undefined,
+      is_onboarding_complete: true,
+    })
+  }, [data.email, data.id, data.name])
+
   const closeMobileSidebar = useCallback(() => {
     if (isMobile) {
       setOpenMobile(false)
@@ -95,6 +104,7 @@ export function Sidebar({ data }: SidebarProps) {
     startTransition(async () => {
       try {
         await signOut()
+        posthog.reset()
       } catch (error) {
         console.error("Failed to sign out:", error)
       }

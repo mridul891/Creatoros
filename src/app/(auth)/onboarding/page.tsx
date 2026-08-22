@@ -32,6 +32,11 @@ export default async function OnboardingPage() {
           <div className="relative flex flex-1 items-center justify-center py-8 md:py-0">
             <div className="w-full max-w-md">
               <CreatorOnboardingForm
+                user={{
+                  id: user.id,
+                  email: user.email,
+                  name: user.name,
+                }}
                 initialValues={{
                   creatorType: creator?.creatorType ?? null,
                   niche: creator?.niche ?? null,

@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
+import posthog from "posthog-js"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -29,6 +30,11 @@ export function useMediaKitForm(
       return
     }
 
+    posthog.capture("media_kit_saved", {
+      is_new_media_kit: mediaKit === null,
+      deliverable_count: data.rates.deliverables.length,
+      work_item_count: data.work.items.length,
+    })
     toast.success(result.message ?? "Media kit saved.")
     router.refresh()
   }
