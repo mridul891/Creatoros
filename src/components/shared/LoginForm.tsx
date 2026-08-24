@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { FieldDescription, FieldGroup } from "@/components/ui/field"
-import { authClient } from "@/lib/auth/client"
+import { authClient } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
 
 export function LoginForm({

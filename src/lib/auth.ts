@@ -1,15 +1,9 @@
-import "server-only"
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
 
-import { dash } from "@better-auth/infra"
-import { betterAuth } from "better-auth"
-import { prismaAdapter } from "better-auth/adapters/prisma"
+import { prisma } from "@/lib/db/prisma";
 
-import { prisma } from "@/lib/db/prisma"
-
-const baseURL =
-  process.env.NODE_ENV === "development"
-    ? undefined
-    : (process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL)
+const baseURL = process.env.BETTER_AUTH_URL;
 
 export const auth = betterAuth({
   baseURL,
@@ -17,9 +11,9 @@ export const auth = betterAuth({
   trustedOrigins: [
     "https://www.notyetlaunched.xyz",
     "https://notyetlaunched.xyz",
+    "http://localhost:3000"
   ],
   database: prismaAdapter(prisma, { provider: "postgresql" }),
-  plugins: [dash()],
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -51,6 +45,6 @@ export const auth = betterAuth({
       generateId: () => crypto.randomUUID(),
     },
   },
-})
+});
 
-export type Session = typeof auth.$Infer.Session
+export type Session = typeof auth.$Infer.Session;
