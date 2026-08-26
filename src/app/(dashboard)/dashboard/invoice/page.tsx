@@ -1,17 +1,13 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 
-import { InvoiceEmptyState } from "@/components/invoices/InvoiceEmptyState"
-import { InvoiceForm } from "@/components/invoices/InvoiceForm"
-import { RecentInvoicesList } from "@/components/invoices/RecentInvoicesList"
-import { Separator } from "@/components/ui/separator"
+import { InvoicesDashboard } from "@/components/invoices/InvoicesDashboard"
+import { Button } from "@/components/ui/button"
 import { requireOnboardedUser } from "@/lib/auth/require-user"
-import {
-  getInvoiceDraftData,
-  listRecentInvoices,
-} from "@/server/invoiceService"
+import { listInvoicesForUser } from "@/server/invoiceService"
 
 export const metadata: Metadata = {
-  title: "Invoice Generation",
+  title: "Invoices",
   alternates: {
     canonical: "/dashboard/invoice",
   },
@@ -19,34 +15,25 @@ export const metadata: Metadata = {
 
 export default async function DashboardInvoicePage() {
   const user = await requireOnboardedUser()
-  const [draft, recentInvoices] = await Promise.all([
-    getInvoiceDraftData(user.id),
-    listRecentInvoices(user.id),
-  ])
+  const invoices = await listInvoicesForUser(user.id)
 
   return (
-    <div className="mx-auto flex w-full max-w-[880px] flex-col gap-6 px-4 py-7 sm:px-6 lg:px-8">
-      <header className="flex flex-col gap-1">
-        <h1 className="font-bold text-2xl tracking-[-0.03em]">
-          Invoice generation
-        </h1>
-        <p className="text-muted-foreground text-sm leading-[1.7]">
-          Generate invoices from your media kit rate card. Amounts are always
-          calculated from your saved pricing.
-        </p>
+    <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6 px-4 py-7 sm:px-6 lg:px-8">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="font-bold text-2xl tracking-[-0.03em]">Invoices</h1>
+          <p className="text-muted-foreground text-sm leading-[1.7]">
+            Create, manage, edit and download your invoices.
+          </p>
+        </div>
+        <Button asChild className="shrink-0">
+          <Link href="/dashboard/invoice/new">+ Create New Invoice</Link>
+        </Button>
       </header>
 
-      {draft ? (
-        <>
-          <Separator />
-          <main>
-            <InvoiceForm draft={draft} />
-          </main>
-          <RecentInvoicesList invoices={recentInvoices} />
-        </>
-      ) : (
-        <InvoiceEmptyState />
-      )}
+      <main>
+        <InvoicesDashboard invoices={invoices} />
+      </main>
     </div>
   )
 }

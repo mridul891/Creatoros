@@ -5,22 +5,27 @@ import Link from "next/link"
 import { ImageWithFallback } from "@/components/shared/ImageWithFallback"
 import { WRAP_CLASS } from "./constants"
 import { IMG_HERO } from "./image-urls"
-import { NetworkAsciiPattern } from "./NetworkAsciiPattern"
+import Image from "next/image"
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-background pt-24 pb-0 sm:pt-28 lg:pt-32">
-      <div className="pointer-events-none absolute top-[-220px] left-1/2 h-[460px] w-[620px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_50%_0%,rgba(32,97,238,0.06)_0%,transparent_65%)] sm:top-[-300px] sm:h-[600px] sm:w-[900px]" />
+      {/* bg.png as decorative background, fading into the page */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[560px] sm:h-[680px] lg:h-[980px]">
+        <Image
+          src="/bg.png"
+          alt=""
+          aria-hidden
+          loading="eager"
+          width={1200}
+          height={1080}
+          className="object-cover object-top w-full h-full opacity-65"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.35)_0%,transparent_45%,var(--background)_96%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent_0%,var(--background)_100%)]" />
+      </div>
 
-      {/* ASCII art patterns on sides */}
-      <NetworkAsciiPattern
-        side="left"
-        className="absolute top-[5%] -left-4 z-0 hidden sm:block lg:-left-8 xl:left-0"
-      />
-      <NetworkAsciiPattern
-        side="right"
-        className="absolute top-[8%] -right-4 z-0 hidden sm:block lg:-right-8 xl:right-0"
-      />
+      <div className="pointer-events-none absolute top-[-220px] left-1/2 h-[460px] w-[620px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_50%_0%,rgba(32,97,238,0.06)_0%,transparent_65%)] sm:top-[-300px] sm:h-[600px] sm:w-[900px]" />
 
       <div className={`${WRAP_CLASS} relative text-center`}>
         <div className="mb-7 inline-flex items-center gap-[7px] rounded-full border border-border bg-muted px-[14px] py-[5px] sm:mb-9">

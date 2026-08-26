@@ -1,3 +1,5 @@
+import { ArrowLeft02Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
@@ -15,7 +17,15 @@ export default async function LoginPage() {
       <div className="pointer-events-none absolute inset-0" />
       <div className="grid min-h-svh lg:grid-cols-2">
         <section className="relative flex flex-col p-6 md:p-10">
-          <div className="flex items-center justify-center md:justify-start">
+          <div className="flex items-center justify-center gap-4 md:justify-start">
+            <Link
+              href="/"
+              prefetch={false}
+              className="inline-flex items-center gap-1.5 rounded-[7px] px-1 py-1 font-medium text-sm text-black/60 transition-colors hover:text-black"
+            >
+              <HugeiconsIcon icon={ArrowLeft02Icon} size={16} strokeWidth={2} />
+              Back
+            </Link>
             <Link
               href="/"
               prefetch={false}

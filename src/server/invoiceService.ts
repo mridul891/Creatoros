@@ -1,13 +1,26 @@
 import type { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/db/prisma"
-import type { GenerateInvoiceInput } from "@/schemas/invoice"
+import type { GenerateInvoiceInput, InvoiceFormData } from "@/schemas/invoice"
 import type { MediaKitFormData } from "@/schemas/mediaKit"
 import type {
   GeneratedInvoice,
+  InvoiceDetailData,
+  InvoiceDiscountType,
   InvoiceDraftData,
+  InvoiceItemData,
   InvoiceLineItem,
+  InvoiceListItem,
+  InvoiceParty,
+  InvoicePaymentDetails,
+  InvoiceSellerDetails,
+  InvoiceShippingDetails,
+  InvoiceStatusValue,
   RecentInvoice,
 } from "@/types/invoice"
+import {
+  computeBalanceDue,
+  computeInvoiceTotals,
+} from "@/utils/invoiceCalculations"
 import { getRateAddOns } from "@/utils/mediaKitRateBreakdown"
 
 type MediaKitAddOns = MediaKitFormData["rates"]["addOns"]
@@ -241,4 +254,377 @@ export async function generateMediaKitInvoice(
     lineItems,
     notes: input.notes || null,
   }
+}
+
+function readJsonObject<T extends object>(
+  value: Prisma.JsonValue | null
+): Partial<T> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {}
+  }
+
+  return value as Partial<T>
+}
+
+function readJsonArray<T>(value: Prisma.JsonValue | null): T[] {
+  if (!Array.isArray(value)) {
+    return []
+  }
+
+  return value as T[]
+}
+
+type InvoiceRecordShape = {
+  id: string
+  invoiceNumber: string
+  status: string
+  currency: string
+  issuedAt: Date
+  dueDate: Date | null
+  paidDate: Date | null
+  amount: Prisma.Decimal
+  customerName: string | null
+  sellerDetails: Prisma.JsonValue | null
+  customerDetails: Prisma.JsonValue | null
+  shippingDetails: Prisma.JsonValue | null
+  paymentDetails: Prisma.JsonValue | null
+  items: Prisma.JsonValue | null
+  subtotal: Prisma.Decimal
+  discountAmount: Prisma.Decimal
+  taxLabel: string | null
+  taxRate: Prisma.Decimal
+  taxAmount: Prisma.Decimal
+  amountPaid: Prisma.Decimal
+  notes: string | null
+  terms: string | null
+  createdAt: Date
+  updatedAt: Date
+}
+
+export function mapInvoiceToDetail(
+  record: InvoiceRecordShape
+): InvoiceDetailData {
+  const sellerDefaults: InvoiceSellerDetails = {
+    businessName: "",
+    logoUrl: "",
+    website: "",
+    name: "",
+    email: "",
+    phone: "",
+    addressLine: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+    taxId: "",
+  }
+  const customerDefaults: InvoiceParty = {
+    name: "",
+    email: "",
+    phone: "",
+    addressLine: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+    taxId: "",
+  }
+  const shippingDefaults: InvoiceShippingDetails = {
+    name: "",
+    phone: "",
+    addressLine: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+  }
+  const paymentDefaults: InvoicePaymentDetails = {
+    accountName: "",
+    accountNumber: "",
+    ifscOrSwift: "",
+    bankName: "",
+    upiOrPaypal: "",
+  }
+
+  const seller: InvoiceSellerDetails = {
+    ...sellerDefaults,
+    ...readJsonObject<InvoiceSellerDetails>(record.sellerDetails),
+  }
+  const customer: InvoiceParty = {
+    ...customerDefaults,
+    ...readJsonObject<InvoiceParty>(record.customerDetails),
+  }
+  const shipping: InvoiceShippingDetails = {
+    ...shippingDefaults,
+    ...readJsonObject<InvoiceShippingDetails>(record.shippingDetails),
+  }
+  const paymentDetails: InvoicePaymentDetails = {
+    ...paymentDefaults,
+    ...readJsonObject<InvoicePaymentDetails>(record.paymentDetails),
+  }
+
+  const storedItems = readJsonArray<InvoiceItemData>(record.items)
+  const hasStoredItems = storedItems.length > 0
+
+  const itemsInput = hasStoredItems
+    ? storedItems
+    : [
+        {
+          id: "1",
+          name: "Services",
+          description: "",
+          quantity: 1,
+          unitPrice: Number(record.amount),
+          discountPercent: 0,
+        },
+      ]
+
+  const computed = computeInvoiceTotals(
+    itemsInput,
+    { discountType: "none", discountValue: 0 },
+    { taxRate: Number(record.taxRate) }
+  )
+
+  const subtotal = Number(record.subtotal)
+  const discountAmount = Number(record.discountAmount)
+  const taxAmount = Number(record.taxAmount)
+  const total = Number(record.amount)
+  const amountPaid = Number(record.amountPaid)
+  const shippingSameAsBilling =
+    hasStoredItems && Object.values(shipping).every((value) => !value)
+
+  return {
+    id: record.id,
+    invoiceNumber: record.invoiceNumber,
+    status: record.status as InvoiceStatusValue,
+    currency: record.currency,
+    issuedAt: toDateString(record.issuedAt),
+    dueDate: record.dueDate ? toDateString(record.dueDate) : null,
+    paidDate: record.paidDate ? toDateString(record.paidDate) : null,
+    seller,
+    customer,
+    shipping: shippingSameAsBilling ? null : shipping,
+    shippingSameAsBilling,
+    items: computed.items,
+    discountType: discountAmount > 0 ? "fixed" : "none",
+    discountValue: discountAmount > 0 ? discountAmount : 0,
+    taxLabel: record.taxLabel ?? "",
+    taxRate: Number(record.taxRate),
+    totals: {
+      subtotal,
+      discountAmount,
+      taxableAmount:
+        Math.round((subtotal - discountAmount + Number.EPSILON) * 100) / 100,
+      taxAmount,
+      total,
+    },
+    amountPaid,
+    balanceDue: computeBalanceDue(total, amountPaid),
+    notes: record.notes ?? "",
+    terms: record.terms ?? "",
+    paymentDetails,
+    createdAt: record.createdAt,
+    updatedAt: record.updatedAt,
+  }
+}
+
+function buildInvoiceWriteData(userId: string, data: InvoiceFormData) {
+  const totals = computeInvoiceTotals(
+    data.items,
+    { discountType: data.discountType, discountValue: data.discountValue },
+    { taxRate: data.taxRate }
+  )
+
+  const shipping = data.shippingSameAsBilling
+    ? ({
+        name: data.customer.name,
+        phone: data.customer.phone,
+        addressLine: data.customer.addressLine,
+        city: data.customer.city,
+        state: data.customer.state,
+        postalCode: data.customer.postalCode,
+        country: data.customer.country,
+      } satisfies InvoiceShippingDetails)
+    : data.shipping
+
+  return {
+    userId,
+    invoiceNumber: data.invoiceNumber?.trim() || "",
+    status: data.status,
+    amount: totals.total,
+    currency: data.currency,
+    issuedAt: parseDateString(data.issueDate),
+    dueDate: parseDateString(data.dueDate),
+    paidDate: data.status === "Paid" ? new Date() : null,
+    customerName: data.customer.name,
+    sellerDetails: data.seller as unknown as Prisma.InputJsonValue,
+    customerDetails: data.customer as unknown as Prisma.InputJsonValue,
+    shippingDetails: shipping as unknown as Prisma.InputJsonValue,
+    paymentDetails: data.paymentDetails as unknown as Prisma.InputJsonValue,
+    items: totals.items as unknown as Prisma.InputJsonValue,
+    subtotal: totals.subtotal,
+    discountAmount: totals.discountAmount,
+    taxLabel: data.taxLabel || null,
+    taxRate: data.taxRate,
+    taxAmount: totals.taxAmount,
+    amountPaid: data.amountPaid,
+    notes: data.notes || null,
+    terms: data.terms || null,
+    metadata: { source: "manual" } satisfies Prisma.InputJsonObject,
+  }
+}
+
+export async function listInvoicesForUser(
+  userId: string
+): Promise<InvoiceListItem[]> {
+  const records = await prisma.invoice.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      invoiceNumber: true,
+      customerName: true,
+      status: true,
+      amount: true,
+      currency: true,
+      issuedAt: true,
+      dueDate: true,
+      updatedAt: true,
+    },
+  })
+
+  return records.map((record) => ({
+    id: record.id,
+    invoiceNumber: record.invoiceNumber,
+    customerName: record.customerName,
+    status: record.status as InvoiceStatusValue,
+    amount: Number(record.amount),
+    currency: record.currency,
+    issuedAt: record.issuedAt,
+    dueDate: record.dueDate,
+    updatedAt: record.updatedAt,
+  }))
+}
+
+export async function getInvoiceDetailForUser(
+  userId: string,
+  invoiceId: string
+): Promise<InvoiceDetailData | null> {
+  const record = await prisma.invoice.findFirst({
+    where: { id: invoiceId, userId },
+  })
+
+  if (!record) {
+    return null
+  }
+
+  return mapInvoiceToDetail(record)
+}
+
+export async function createManualInvoice(
+  userId: string,
+  data: InvoiceFormData
+) {
+  const writeData = buildInvoiceWriteData(userId, data)
+
+  return prisma.$transaction(async (tx) => {
+    let invoiceNumber = writeData.invoiceNumber
+
+    if (!invoiceNumber) {
+      const year = writeData.issuedAt.getUTCFullYear()
+      const sequence = await getNextInvoiceNumber(tx, userId, year)
+      invoiceNumber = `INV-${year}-${sequence}`
+    }
+
+    const existing = await tx.invoice.findFirst({
+      where: { userId, invoiceNumber },
+      select: { id: true },
+    })
+
+    if (existing) {
+      throw new InvoiceServiceError(
+        `You already have an invoice numbered ${invoiceNumber}.`,
+        "INVALID_OPERATION"
+      )
+    }
+
+    return tx.invoice.create({
+      data: { ...writeData, invoiceNumber },
+    })
+  })
+}
+
+export async function updateManualInvoice(
+  userId: string,
+  invoiceId: string,
+  data: InvoiceFormData
+) {
+  const existing = await prisma.invoice.findFirst({
+    where: { id: invoiceId, userId },
+    select: { id: true },
+  })
+
+  if (!existing) {
+    throw new InvoiceServiceError("Invoice not found.", "NOT_FOUND")
+  }
+
+  const writeData = buildInvoiceWriteData(userId, data)
+
+  return prisma.$transaction(async (tx) => {
+    if (writeData.invoiceNumber) {
+      const duplicate = await tx.invoice.findFirst({
+        where: {
+          userId,
+          invoiceNumber: writeData.invoiceNumber,
+          id: { not: invoiceId },
+        },
+        select: { id: true },
+      })
+
+      if (duplicate) {
+        throw new InvoiceServiceError(
+          `You already have another invoice numbered ${writeData.invoiceNumber}.`,
+          "INVALID_OPERATION"
+        )
+      }
+    }
+
+    return tx.invoice.update({
+      where: { id: invoiceId },
+      data: writeData,
+    })
+  })
+}
+
+export async function deleteInvoiceForUser(userId: string, invoiceId: string) {
+  const result = await prisma.invoice.deleteMany({
+    where: { id: invoiceId, userId },
+  })
+
+  if (result.count === 0) {
+    throw new InvoiceServiceError("Invoice not found.", "NOT_FOUND")
+  }
+}
+
+export async function updateInvoiceStatusForUser(
+  userId: string,
+  invoiceId: string,
+  status: InvoiceStatusValue
+) {
+  const existing = await prisma.invoice.findFirst({
+    where: { id: invoiceId, userId },
+    select: { id: true },
+  })
+
+  if (!existing) {
+    throw new InvoiceServiceError("Invoice not found.", "NOT_FOUND")
+  }
+
+  await prisma.invoice.update({
+    where: { id: invoiceId },
+    data: {
+      status,
+      paidDate: status === "Paid" ? new Date() : null,
+    },
+  })
 }

@@ -1,5 +1,8 @@
 "use client"
 
+import { ArrowLeft02Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import Link from "next/link"
 import { useFormContext } from "react-hook-form"
 import { MediaKitAudienceSection } from "@/components/media-kit/MediaKitAudienceSection"
 import { MediaKitContactSection } from "@/components/media-kit/MediaKitContactSection"
@@ -29,7 +32,7 @@ export function MediaKitForm({ onSubmit }: MediaKitFormProps) {
     >
       <div className="flex-1 space-y-6 px-4 py-6 sm:px-6 lg:px-8">
         <header className="space-y-1">
-          <h1 className="font-heading font-semibold text-xl tracking-tight">
+          <h1 className="mt-3 font-heading font-semibold text-xl tracking-tight">
             Edit media kit
           </h1>
           <p className="text-muted-foreground text-sm">

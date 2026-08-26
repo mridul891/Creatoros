@@ -201,34 +201,42 @@ export function Sidebar({ data }: SidebarProps) {
         <SidebarMenu className="gap-1.5">
           <SidebarMenuItem>
             <SidebarMenuButton
+              asChild
               size="lg"
-              tooltip={`${data.name} — ${data.email}`}
+              tooltip={`${data.name} — Edit profile`}
               className="h-12 rounded-xl px-3"
             >
-              {data.avatarUrl ? (
-                <Image
-                  src={data.avatarUrl}
-                  alt=""
-                  width={32}
-                  height={32}
-                  className="size-8 shrink-0 rounded-lg object-cover"
-                  priority
-                />
-              ) : (
-                <span
-                  aria-hidden="true"
-                  className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted font-semibold text-xs"
-                >
-                  {userInitials}
-                </span>
-              )}
+              <Link
+                href="/profile"
+                onClick={closeMobileSidebar}
+                aria-label="Edit profile"
+                title="Edit profile"
+              >
+                {data.avatarUrl ? (
+                  <Image
+                    src={data.avatarUrl}
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="size-8 shrink-0 rounded-lg object-cover"
+                    priority
+                  />
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted font-semibold text-xs"
+                  >
+                    {userInitials}
+                  </span>
+                )}
 
-              <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{data.name}</span>
-                <span className="truncate text-muted-foreground text-xs">
-                  {data.email}
-                </span>
-              </div>
+                <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">{data.name}</span>
+                  <span className="truncate text-muted-foreground text-xs">
+                    {data.email}
+                  </span>
+                </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
 

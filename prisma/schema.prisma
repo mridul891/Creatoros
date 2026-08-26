@@ -36,6 +36,8 @@ enum InvoiceStatus {
   Draft
   Sent
   Paid
+  PartiallyPaid
+  Unpaid
   Overdue
   Archived
 }
@@ -147,6 +149,22 @@ model Invoice {
   dueDate       DateTime?     @map("due_date")
   paidDate      DateTime?     @map("paid_date")
   metadata      Json?
+
+  customerName     String?  @map("customer_name")
+  sellerDetails    Json?    @map("seller_details")
+  customerDetails  Json?    @map("customer_details")
+  shippingDetails  Json?    @map("shipping_details")
+  paymentDetails   Json?    @map("payment_details")
+  items            Json?
+  subtotal         Decimal  @default(0) @db.Decimal(12, 2)
+  discountAmount   Decimal  @default(0) @map("discount_amount") @db.Decimal(12, 2)
+  taxLabel         String?  @map("tax_label")
+  taxRate          Decimal  @default(0) @map("tax_rate") @db.Decimal(5, 2)
+  taxAmount        Decimal  @default(0) @map("tax_amount") @db.Decimal(12, 2)
+  amountPaid       Decimal  @default(0) @map("amount_paid") @db.Decimal(12, 2)
+  notes            String?
+  terms            String?
+
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @updatedAt @map("updated_at")
 
